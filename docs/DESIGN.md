@@ -6,6 +6,46 @@ Object Lens is a small local browser application for trying object detection on 
 
 The approved scope is one page, one image at a time, one fixed model and Chrome on Windows. The interface follows the approved design concept: a light background, large photograph, compact results list and essential controls. No accounts, history, cloud hosting, camera, video, batch processing, training, model picker or GPU tuning are included.
 
+## Two ways to use this project
+
+The application and its automated tests have different jobs. You can use the application without running pytest.
+
+| Command, from the project directory | What it does | Why you run it |
+| --- | --- | --- |
+| `.\.venv\Scripts\python.exe serve.py` | Starts a local server so you can open Object Lens in Chrome, choose photos and inspect predictions | To use or demonstrate the application yourself |
+| `.\.venv\Scripts\python.exe -m pytest` | Runs the existing tests in this repository and reports pass/fail results | To check that the implemented behavior still matches its requirements |
+
+The first command keeps serving files until you stop it with Ctrl+C. The second command finishes after the tests and their cleanup. Tests start their own temporary servers and headless browsers, so a manually started `serve.py` process is not required for testing. A second PowerShell window can run tests while your normal app window remains open.
+
+![The application path and the separate automated-testing path](diagrams/object-lens-runtime-flow.png)
+
+[Editable diagram](diagrams/object-lens-runtime-flow.html) · [SVG version](diagrams/object-lens-runtime-flow.svg)
+
+## What the pytest command actually does
+
+In `.\.venv\Scripts\python.exe -m pytest`, the executable selects this project's Python environment. Python's `-m` option launches the installed pytest module.
+
+1. pytest finds the `test_*.py` files in `tests`, as configured by `pytest.ini`.
+2. Test fixtures prepare the local server, test inputs and an isolated headless Chrome session.
+3. pytest runs each Python test function. The function describes actions and checks, called assertions.
+4. Selenium follows the test's instructions to select files, click controls and read the page.
+5. The assertions compare the observed behavior with the expected rule. pytest reports a pass or a failure.
+6. Fixtures close their browsers and servers. A failing browser check also attempts to preserve a screenshot, page HTML and console output for investigation.
+
+The test author supplies the expected behavior. pytest does not invent tests or independently decide what the application ought to do. Selenium operates the test browser; the pretrained detector is the component that recognizes objects in the image.
+
+For example, the requirement says an unsupported file should be rejected with a useful message. If the app displays that message, the negative test passes. An error message in the application can therefore be the correct result; the test fails when the observed behavior disagrees with its expectation.
+
+| Scenario | Expected application behavior | Meaning of a passing test |
+| --- | --- | --- |
+| A valid image exactly at the 10 MiB limit | Accept and process it | The inclusive size boundary is implemented correctly |
+| An image one byte above the limit | Reject it with an actionable message | Oversized input is handled correctly |
+| Replace a photo while its analysis is running | Only the current photo's results may appear | An old response cannot repaint the new image |
+
+In `.\.venv\Scripts\python.exe -m pytest -m inference`, the two `-m` options belong to different tools. The first launches pytest through Python; pytest interprets the second as a selection of tests marked `inference`. These run the actual model. The controlled UI tests instead supply deliberate predictions, delays or failures to test application behavior reproducibly.
+
+The longer worked example and a small optional test edit are in [the learning guide](LEARNING.md). The result counts and evidence limits are in [the verification record](VERIFICATION.md). Passing the application checks does not establish general object-recognition accuracy.
+
 ## Components
 
 | Component | Responsibility |
@@ -16,7 +56,9 @@ The approved scope is one page, one image at a time, one fixed model and Chrome 
 | Transformers.js 2.17.2 | Object-detection inference with a quantized DETR model |
 | ONNX Runtime Web 1.14.0 | CPU/WASM execution underneath Transformers.js |
 | Python standard HTTP server | Serves local application/model files on 127.0.0.1 |
-| pytest and Selenium | Runs assertions against the application in headless Chrome |
+| Python test code | Defines test actions and assertions about expected behavior |
+| pytest | Discovers and runs tests, manages fixtures and reports their outcomes |
+| Selenium | Controls the test browser and reads the page for assertions |
 
 The JavaScript library is kept on a pinned version compatible with the original example's API. A version migration is not part of this project. Exact model revision and asset checksums are in `asset-lock.json`.
 
@@ -58,3 +100,9 @@ Failures are investigated using reproduction steps, assertions, screenshots and 
 ## Delivery boundary
 
 The design and evidence will be updated to match the implementation. The user should be able to launch the app, run the suite, explain a representative test and adjust a small existing test after the final walkthrough. Development does not include teaching exercises or optional features. Publication remains a separate decision.
+
+## Sharing boundary
+
+The current decision is to keep the source code private. A LinkedIn learning update can use actual app screenshots or a short demonstration without a public repository or a hosted app. The README retains real screenshots with relative image links so the same documentation remains usable if repository sharing is chosen later. No publication or deployment is authorized by this documentation update.
+
+A prospective showcase should describe this as an AI-assisted learning project around a pretrained detector and Python browser automation. Credit the upstream example and distinguish application tests, actual inference, deliberately simulated failures and observed model mistakes. Do not claim that the model was trained here or that a local address such as `127.0.0.1` is a public demo link.

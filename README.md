@@ -4,11 +4,17 @@ A small local web application for exploring pretrained object detection, with Py
 
 Developed with assistance from AI tools.
 
-![Object Lens running real detection on a public sample photo](docs/screenshots/desktop.png)
+[![Object Lens running real detection on a public sample photo](docs/screenshots/desktop.png)](docs/screenshots/desktop.png)
+
+The source is currently kept private. Screenshots below are actual application captures, and the relative image links remain suitable for a future repository README.
 
 ## What it does
 
 Choose a photo, inspect predicted labels and boxes, highlight a result, then replace or clear the image. Object Lens focuses on a readable interface and reliable state handling. It adapts Hugging Face's educational object-detection example and uses a pretrained model; it does not train a model or detect semiconductor manufacturing defects.
+
+## Screenshots
+
+Open the [desktop result](docs/screenshots/desktop.png), [cat result](docs/screenshots/cat.png), [empty state](docs/screenshots/empty.png) or [narrow layout](docs/screenshots/narrow.png) at full resolution. The result captures use the real model on public sample photos. The earlier generated design concept is a separate planning reference, not execution evidence.
 
 ## Run locally
 
