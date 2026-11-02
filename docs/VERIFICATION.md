@@ -2,7 +2,11 @@
 
 Status: ready for the agreed local learning/evaluation workflow, based on the checks below on 2 November 2026. No blocking defect remains in that scope. This is not a production-recognition, hardware-validation or general-accuracy claim.
 
-## Final results
+## Extension checkpoint
+
+The minimum-score filter passed 29 controlled application/server checks in 199.37 seconds, including six new filter tests; three real-inference cases were deselected at this checkpoint. Evidence: `docs/evidence/score-filter-suite.xml` and `score-filter-record.json`. The combined extension will receive its own final verification after sample loading and PNG export are integrated. The results below describe the preceding base version.
+
+## Base-version results
 
 | Check | Observed result | Evidence |
 | --- | --- | --- |

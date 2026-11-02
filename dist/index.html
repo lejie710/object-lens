@@ -64,6 +64,15 @@
             <h2 id="objects-heading">Detections <span id="result-count" class="result-count">0</span></h2>
             <span class="score-heading" title="The detector's score for a prediction, not a measure of accuracy.">Model score</span>
           </div>
+          <div class="score-filter">
+            <div class="filter-label-row">
+              <label for="minimum-score">Minimum model score</label>
+              <output id="minimum-score-value" for="minimum-score">0.50</output>
+            </div>
+            <input id="minimum-score" type="range" min="0.50" max="1.00" step="0.01" value="0.50" aria-valuetext="0.50" aria-describedby="filter-help" disabled />
+            <p id="filter-help" class="filter-help">Scores are rounded for display. Filtering uses the full score.</p>
+            <p id="filter-summary" class="filter-summary" hidden></p>
+          </div>
           <ol id="results-list" class="results-list"></ol>
           <p id="results-empty" class="results-empty">Detections will appear here.</p>
           <p id="selection-help" class="selection-help" hidden>Select an object to highlight its box.</p>

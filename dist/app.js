@@ -4,6 +4,7 @@ const MAX_PIXELS = 16_000_000;
 const LOAD_TIMEOUT_MS = 120_000;
 const INFERENCE_TIMEOUT_MS = 90_000;
 const CONTROLLED_TIMEOUT_MS = 4_000;
+const DEFAULT_MINIMUM_SCORE = 0.5;
 const COLORS = ['#285bd4', '#008078', '#a36b00', '#9251a5', '#bb503b', '#547832'];
 const byId = (id) => document.getElementById(id);
 const elements = {
@@ -12,6 +13,8 @@ const elements = {
   empty: byId('empty-state'), stage: byId('image-stage'), preview: byId('image-preview'),
   boxes: byId('box-layer'), results: byId('results-list'), count: byId('result-count'),
   resultsEmpty: byId('results-empty'), selectionHelp: byId('selection-help'),
+  minimumScore: byId('minimum-score'), minimumScoreValue: byId('minimum-score-value'),
+  filterSummary: byId('filter-summary'),
   status: byId('status'), indicator: byId('status-indicator'),
   errorNotice: byId('error-notice'), error: byId('error-message'), retry: byId('retry-detection'),
 };
@@ -26,6 +29,8 @@ let modelFailed = false;
 let testMode = false;
 let loadTimer = null;
 let inferenceTimer = null;
+let currentPredictions = null;
+let selectedPredictionId = null;
 
 function setState(state, text) {
   document.documentElement.dataset.state = state;
@@ -49,12 +54,24 @@ function showError(message, { retry = false } = {}) {
   setState('error', 'Action needed');
 }
 
-function clearResults() {
+function clearRenderedResults() {
   elements.results.replaceChildren();
   elements.boxes.replaceChildren();
   elements.count.textContent = '0';
   elements.resultsEmpty.hidden = false;
   elements.selectionHelp.hidden = true;
+}
+
+function clearResults() {
+  currentPredictions = null;
+  selectedPredictionId = null;
+  clearRenderedResults();
+  elements.minimumScore.disabled = true;
+  elements.minimumScore.value = String(DEFAULT_MINIMUM_SCORE);
+  elements.minimumScoreValue.value = DEFAULT_MINIMUM_SCORE.toFixed(2);
+  elements.minimumScore.setAttribute('aria-valuetext', DEFAULT_MINIMUM_SCORE.toFixed(2));
+  elements.filterSummary.textContent = '';
+  elements.filterSummary.hidden = true;
 }
 
 function stopWorker() {
@@ -232,19 +249,21 @@ function startPendingInference() {
   }
 }
 
-function selectResult(index) {
+function selectResult(id) {
+  selectedPredictionId = id;
   const rows = elements.results.querySelectorAll('.result-row');
   const boxes = elements.boxes.querySelectorAll('.detection-box');
-  rows.forEach((row, item) => {
-    row.classList.toggle('is-selected', item === index);
-    row.setAttribute('aria-pressed', String(item === index));
+  rows.forEach((row) => {
+    const selected = row.dataset.predictionId === String(id);
+    row.classList.toggle('is-selected', selected);
+    row.setAttribute('aria-pressed', String(selected));
   });
-  boxes.forEach((box, item) => box.classList.toggle('is-selected', item === index));
+  boxes.forEach((box) => box.classList.toggle('is-selected', box.dataset.predictionId === String(id)));
 }
 
 function renderResults(predictions) {
   if (!Array.isArray(predictions)) throw new Error('The detector returned an unreadable result.');
-  const clean = predictions.map((prediction) => {
+  const clean = predictions.map((prediction, index) => {
     const { label, score, box } = prediction;
     if (typeof label !== 'string' || !label || !Number.isFinite(score) || score < 0 || score > 1 ||
         !box || !['xmin', 'ymin', 'xmax', 'ymax'].every((key) => Number.isFinite(box[key]))) {
@@ -252,13 +271,26 @@ function renderResults(predictions) {
     }
     const bounds = Object.fromEntries(Object.entries(box).map(([key, value]) => [key, Math.max(0, Math.min(1, value))]));
     if (bounds.xmax <= bounds.xmin || bounds.ymax <= bounds.ymin) throw new Error('The detector returned an invalid box.');
-    return { label, score, box: bounds };
+    return { id: index, label, score, box: bounds, color: COLORS[index % COLORS.length] };
   });
-  clearResults();
-  clean.forEach(({ label, score, box }, index) => {
-    const color = COLORS[index % COLORS.length];
+  currentPredictions = clean;
+  selectedPredictionId = null;
+  elements.minimumScore.disabled = clean.length === 0;
+  renderFilteredResults();
+}
+
+function renderFilteredResults() {
+  if (currentPredictions === null) return;
+  const minimum = Number(elements.minimumScore.value);
+  elements.minimumScoreValue.value = minimum.toFixed(2);
+  elements.minimumScore.setAttribute('aria-valuetext', minimum.toFixed(2));
+  // Keep original scores and identities. Display rounding must not change filtering.
+  const visible = currentPredictions.filter(({ score }) => score >= minimum);
+  clearRenderedResults();
+  visible.forEach(({ id, label, score, box, color }) => {
     const rectangle = document.createElement('div');
     rectangle.className = 'detection-box';
+    rectangle.dataset.predictionId = String(id);
     rectangle.dataset.label = label;
     for (const [key, value] of Object.entries(box)) rectangle.dataset[key] = String(value);
     rectangle.style.setProperty('--object-color', color);
@@ -278,6 +310,7 @@ function renderResults(predictions) {
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'result-row';
+    button.dataset.predictionId = String(id);
     button.dataset.label = label;
     button.dataset.score = String(score);
     button.setAttribute('aria-pressed', 'false');
@@ -293,17 +326,26 @@ function renderResults(predictions) {
     modelScore.className = 'object-score';
     modelScore.textContent = score.toFixed(2);
     button.append(dot, name, modelScore);
-    button.addEventListener('click', () => selectResult(index));
+    button.addEventListener('click', () => selectResult(id));
     item.append(button);
     elements.results.append(item);
   });
-  elements.count.textContent = String(clean.length);
-  elements.resultsEmpty.hidden = clean.length > 0;
-  elements.selectionHelp.hidden = clean.length === 0;
-  if (clean.length) {
-    selectResult(0);
-    setState('complete', `Detection complete. ${clean.length} ${clean.length === 1 ? 'prediction' : 'predictions'}.`);
+  elements.count.textContent = String(visible.length);
+  elements.resultsEmpty.hidden = visible.length > 0;
+  elements.selectionHelp.hidden = visible.length === 0;
+  const summary = `Showing ${visible.length} of ${currentPredictions.length} predictions.`;
+  elements.filterSummary.textContent = summary;
+  elements.filterSummary.hidden = false;
+  if (visible.length) {
+    const selection = visible.find(({ id }) => id === selectedPredictionId) || visible[0];
+    selectResult(selection.id);
+    setState('complete', `Detection complete. ${summary}`);
+  } else if (currentPredictions.length) {
+    selectedPredictionId = null;
+    elements.resultsEmpty.textContent = 'No predictions meet this minimum score.';
+    setState('filtered-empty', `Detection complete. ${summary} Lower the minimum score to see predictions.`);
   } else {
+    selectedPredictionId = null;
     elements.resultsEmpty.textContent = 'No supported objects were detected in this image.';
     setState('empty', 'Detection complete. No predictions.');
   }
@@ -375,6 +417,7 @@ elements.fileInput.addEventListener('change', () => {
   selectFile(file);
 });
 elements.clear.addEventListener('click', clearWorkspace);
+elements.minimumScore.addEventListener('input', renderFilteredResults);
 elements.retry.addEventListener('click', () => {
   clearError();
   if (currentImage) {
