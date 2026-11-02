@@ -1,0 +1,287 @@
+{
+  "evidence_type": "actual CPU/WASM inference on public sample photos",
+  "limitations": [
+    "Small convenience sample, not a general accuracy benchmark.",
+    "Expected labels use upstream image descriptions and independent AI-assisted visual review before inference; they are not exhaustive human annotations.",
+    "Times measure observed UI completion, including decoding/rendering and browser polling.",
+    "Workstation load is not controlled; values are not performance guarantees.",
+    "Baseline uses the common pinned runtime; it is not the stock upstream release."
+  ],
+  "model": "8be7ab59ff663484ee9ba2e8d8f267330d5ad03e",
+  "app": [
+    {
+      "image": "astronaut.png",
+      "expected_visible_labels": [
+        "person"
+      ],
+      "expected_labels_present": true,
+      "ui_completion_seconds": 13.612,
+      "predictions": [
+        {
+          "label": "person",
+          "score": 0.999136209487915,
+          "box": {
+            "xmin": 0.021740049123764038,
+            "ymin": 0.02529287338256836,
+            "xmax": 0.7172735035419464,
+            "ymax": 0.9838593006134033
+          }
+        }
+      ]
+    },
+    {
+      "image": "coffee.png",
+      "expected_visible_labels": [
+        "cup"
+      ],
+      "expected_labels_present": true,
+      "ui_completion_seconds": 8.881,
+      "predictions": [
+        {
+          "label": "spoon",
+          "score": 0.6670341491699219,
+          "box": {
+            "xmin": 0.5333429127931595,
+            "ymin": 0.5370612442493439,
+            "xmax": 0.6761172264814377,
+            "ymax": 0.8318335711956024
+          }
+        },
+        {
+          "label": "dining table",
+          "score": 0.991251528263092,
+          "box": {
+            "xmin": 0.0,
+            "ymin": 0.0006619095802307129,
+            "xmax": 0.994640976190567,
+            "ymax": 0.9848046898841858
+          }
+        },
+        {
+          "label": "cup",
+          "score": 0.997867226600647,
+          "box": {
+            "xmin": 0.28049442172050476,
+            "ymin": 0.03441202640533447,
+            "xmax": 0.6873231828212738,
+            "ymax": 0.7226728796958923
+          }
+        },
+        {
+          "label": "spoon",
+          "score": 0.9270511269569397,
+          "box": {
+            "xmin": 0.5379456281661987,
+            "ymin": 0.15333816409111023,
+            "xmax": 0.7107570171356201,
+            "ymax": 0.8263688385486603
+          }
+        }
+      ]
+    },
+    {
+      "image": "chelsea.png",
+      "expected_visible_labels": [
+        "cat"
+      ],
+      "expected_labels_present": true,
+      "ui_completion_seconds": 8.329,
+      "predictions": [
+        {
+          "label": "cat",
+          "score": 0.9979628324508667,
+          "box": {
+            "xmin": 0.0,
+            "ymin": 0.00043326616287231445,
+            "xmax": 0.9412459433078766,
+            "ymax": 0.9878460764884949
+          }
+        }
+      ]
+    },
+    {
+      "image": "camera.png",
+      "expected_visible_labels": [
+        "person"
+      ],
+      "expected_labels_present": true,
+      "ui_completion_seconds": 13.525,
+      "predictions": [
+        {
+          "label": "bicycle",
+          "score": 0.5072454214096069,
+          "box": {
+            "xmin": 0.42058609426021576,
+            "ymin": 0.5925002545118332,
+            "xmax": 0.7994721084833145,
+            "ymax": 0.98809714615345
+          }
+        },
+        {
+          "label": "handbag",
+          "score": 0.504966676235199,
+          "box": {
+            "xmin": 0.39772751927375793,
+            "ymin": 0.4329248517751694,
+            "xmax": 0.5716813504695892,
+            "ymax": 0.6168214231729507
+          }
+        },
+        {
+          "label": "person",
+          "score": 0.7547760009765625,
+          "box": {
+            "xmin": 0.5691089034080505,
+            "ymin": 0.31776629388332367,
+            "xmax": 0.6524437069892883,
+            "ymax": 0.466155007481575
+          }
+        },
+        {
+          "label": "person",
+          "score": 0.9908789396286011,
+          "box": {
+            "xmin": 0.0,
+            "ymin": 0.12527769804000854,
+            "xmax": 0.5835956931114197,
+            "ymax": 0.9790197014808655
+          }
+        },
+        {
+          "label": "person",
+          "score": 0.7018908262252808,
+          "box": {
+            "xmin": 0.5473232716321945,
+            "ymin": 0.31717757880687714,
+            "xmax": 0.6519182473421097,
+            "ymax": 0.5627953559160233
+          }
+        },
+        {
+          "label": "bicycle",
+          "score": 0.6816530823707581,
+          "box": {
+            "xmin": 0.42327655851840973,
+            "ymin": 0.5863320082426071,
+            "xmax": 0.7090180963277817,
+            "ymax": 0.989184096455574
+          }
+        }
+      ]
+    },
+    {
+      "image": "rocket.jpg",
+      "expected_visible_labels": [],
+      "expected_labels_present": null,
+      "ui_completion_seconds": 8.325,
+      "predictions": []
+    }
+  ],
+  "baseline": [
+    {
+      "image": "astronaut.png",
+      "ui_completion_seconds": 13.019,
+      "predictions": [
+        {
+          "box": {
+            "xmax": 0.7172729999999999,
+            "xmin": 0.02174,
+            "ymax": 0.9838589,
+            "ymin": 0.0252929
+          },
+          "label": "person"
+        }
+      ],
+      "matches_app_labels_and_boxes": true
+    },
+    {
+      "image": "coffee.png",
+      "ui_completion_seconds": 8.617,
+      "predictions": [
+        {
+          "box": {
+            "xmax": 0.6761170000000001,
+            "xmin": 0.533343,
+            "ymax": 0.831833,
+            "ymin": 0.537061
+          },
+          "label": "spoon"
+        },
+        {
+          "box": {
+            "xmax": 0.9946405500000001,
+            "xmin": 0,
+            "ymax": 0.984804909,
+            "ymin": 0.000661909
+          },
+          "label": "dining table"
+        },
+        {
+          "box": {
+            "xmax": 0.6873229999999999,
+            "xmin": 0.28049399999999997,
+            "ymax": 0.722673,
+            "ymin": 0.034412
+          },
+          "label": "cup"
+        },
+        {
+          "box": {
+            "xmax": 0.7107570000000001,
+            "xmin": 0.537946,
+            "ymax": 0.826369,
+            "ymin": 0.153338
+          },
+          "label": "spoon"
+        }
+      ],
+      "matches_app_labels_and_boxes": true
+    },
+    {
+      "image": "chelsea.png",
+      "ui_completion_seconds": 8.006,
+      "predictions": [
+        {
+          "box": {
+            "xmax": 0.9412461499999999,
+            "xmin": 0,
+            "ymax": 0.987846266,
+            "ymin": 0.000433266
+          },
+          "label": "cat"
+        }
+      ],
+      "matches_app_labels_and_boxes": true
+    }
+  ],
+  "network": [
+    "http://127.0.0.1:50445/",
+    "http://127.0.0.1:50445/app.js",
+    "http://127.0.0.1:50445/assets/models/Xenova/detr-resnet-50/config.json",
+    "http://127.0.0.1:50445/assets/models/Xenova/detr-resnet-50/onnx/model_quantized.onnx",
+    "http://127.0.0.1:50445/assets/models/Xenova/detr-resnet-50/preprocessor_config.json",
+    "http://127.0.0.1:50445/assets/runtime/ort-wasm-simd.wasm",
+    "http://127.0.0.1:50445/assets/runtime/transformers.min.js",
+    "http://127.0.0.1:50445/baseline/",
+    "http://127.0.0.1:50445/baseline/index.js",
+    "http://127.0.0.1:50445/baseline/style.css",
+    "http://127.0.0.1:50445/favicon.ico",
+    "http://127.0.0.1:50445/runtime-config.json",
+    "http://127.0.0.1:50445/style.css",
+    "http://127.0.0.1:50445/worker.js"
+  ],
+  "browser_version": "156.0.8078.74",
+  "initial_app_ready_seconds": 2.144,
+  "app_console": [],
+  "initial_baseline_ready_seconds": 1.538,
+  "baseline_console": [
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:50445/favicon.ico - Failed to load resource: the server responded with a status of 404 (File not found)",
+      "source": "network",
+      "timestamp": 1793611919810
+    }
+  ],
+  "external_http_requests": [],
+  "annotation_note": "Two metadata clarifications after review: expected labels are source-derived and AI-assisted, not human annotations; the unlabelled rocket case uses null (not applicable) instead of a vacuous true expected-label result. Prediction values and timing observations are unchanged. Initial report retained as observations-initial.json."
+}

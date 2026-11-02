@@ -30,6 +30,10 @@ The JavaScript library is kept on a pinned version compatible with the original 
 
 Clearing or replacing an image does not promise interruption of CPU work already underway. It prevents that old work from changing the visible result. There is no hosted inference API.
 
+A nonresponding worker has a bounded recovery path: model loading times out after 120 seconds and inference after 90 seconds. The worker is terminated, a clear error appears and Retry or a new valid image can recreate it. Controlled tests use a four-second deadline to exercise this path without waiting for a real model outage.
+
+The list is titled "Detections" and the completion message counts "predictions". A real sample produced duplicate spoon detections; the count therefore must not be interpreted as a verified count of distinct physical objects.
+
 ## Acceptance criteria
 
 | ID | Requirement |

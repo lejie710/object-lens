@@ -1,0 +1,43 @@
+{
+  "evidence_type": "real model repeated-session observation",
+  "target_seconds": 3600,
+  "started_utc": "2026-11-02T10:10:44.426940+00:00",
+  "source_hashes_before": {
+    "dist/app.js": "7bcd132531148f0de3cdd1f8d1fd3d7380bd841f29cf269c916b3f60b39625bb",
+    "dist/worker.js": "85cfc8620bb03d9d5cd8116afc72e1573b4baae3590932fdd5e943005aaebe84",
+    "dist/index.html": "eb022b21089566c08d85b9e982b79a312a8774a60ef10ad709b721e374a76a76",
+    "dist/style.css": "38ffd7078545627c3de4ee4ae1ca9bf152413824a84cf1c3bcb7bb028d91af5a",
+    "serve.py": "fbee47676ed615440f51eb4dad47c211c49c03a2afdc233e51683b719d4caedb"
+  },
+  "rapid_replacements": 32,
+  "clears": 320,
+  "status": "passed",
+  "limits": [
+    "Same laptop, one browser and worker, one fixed model, five repeated public photographs.",
+    "This is not load, hardware, memory-leak certification or general model accuracy.",
+    "Expected labels come from source descriptions and AI-assisted review, not exhaustive human annotations."
+  ],
+  "browser_version": "156.0.8078.74",
+  "ready_after_seconds": 2.291,
+  "elapsed_seconds": 3615.927,
+  "finished_utc": "2026-11-02T11:11:00.283594+00:00",
+  "source_hashes_after": {
+    "dist/app.js": "7bcd132531148f0de3cdd1f8d1fd3d7380bd841f29cf269c916b3f60b39625bb",
+    "dist/worker.js": "85cfc8620bb03d9d5cd8116afc72e1573b4baae3590932fdd5e943005aaebe84",
+    "dist/index.html": "eb022b21089566c08d85b9e982b79a312a8774a60ef10ad709b721e374a76a76",
+    "dist/style.css": "38ffd7078545627c3de4ee4ae1ca9bf152413824a84cf1c3bcb7bb028d91af5a",
+    "serve.py": "fbee47676ed615440f51eb4dad47c211c49c03a2afdc233e51683b719d4caedb"
+  },
+  "sources_unchanged": true,
+  "console": [],
+  "completed_cycles": 320,
+  "observed_images": [
+    "astronaut.png",
+    "camera.png",
+    "chelsea.png",
+    "coffee.png",
+    "rocket.jpg"
+  ],
+  "cycle_record": "Complete cycle records are retained locally in artifacts/stability/result.json.",
+  "post_run_change": "Only the empty-state text colour was darkened after this run; computed contrast and rendering were checked separately. Runtime logic and model were unchanged."
+}

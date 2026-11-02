@@ -1,0 +1,23 @@
+{
+  "description": "Selected verification evidence; raw originals remain local.",
+  "xml": [
+    {
+      "source": "artifacts/full-suite-results.xml",
+      "selected_copy": "initial-full-suite.xml",
+      "raw_sha256": "0e4d09d2f7dbcfe848d163352500e7162031815a141dae8e6d8e2d356e60a60e",
+      "change": "Removed 1 machine hostname attribute(s); other XML values preserved."
+    },
+    {
+      "source": "artifacts/clean-setup/pytest-results.xml",
+      "selected_copy": "fresh-setup-suite.xml",
+      "raw_sha256": "6dbc22f98368d8863858d8f6acb3bec01745aaa326fb3813cdce958adac0d6d1",
+      "change": "Removed 1 machine hostname attribute(s); other XML values preserved."
+    },
+    {
+      "source": "artifacts/final-suite-results.xml",
+      "selected_copy": "final-full-suite.xml",
+      "raw_sha256": "3024f782b27be07859bc4713e3695d4b4f9c12e12f9d6d071b9ea8b6bafe1953",
+      "change": "Removed 1 machine hostname attribute(s); other XML values preserved."
+    }
+  ]
+}

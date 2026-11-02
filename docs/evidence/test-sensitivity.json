@@ -1,0 +1,29 @@
+{
+  "evidence_type": "deliberately injected source faults in isolated copies",
+  "cases": [
+    {
+      "name": "reject-exact-limit",
+      "before": "if (file.size > MAX_BYTES)",
+      "after": "if (file.size >= MAX_BYTES)",
+      "test": "tests/test_ui.py::test_file_size_boundary[10485760-complete]",
+      "purpose": "The inclusive 10 MiB boundary test must reject an off-by-one implementation.",
+      "exit_code": 1,
+      "failures": 1,
+      "errors": 0,
+      "seconds": 29.309,
+      "detected_injected_fault": true
+    },
+    {
+      "name": "allow-stale-result",
+      "before": "if (data.id === revision && currentImage?.id === revision)",
+      "after": "if (currentImage)",
+      "test": "tests/test_ui.py::test_replacing_a_processing_image_discards_the_old_result[slow-car.png]",
+      "purpose": "The replacement test must notice an old dog result before the slow current car result.",
+      "exit_code": 1,
+      "failures": 1,
+      "errors": 0,
+      "seconds": 10.374,
+      "detected_injected_fault": true
+    }
+  ]
+}

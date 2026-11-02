@@ -1,0 +1,44 @@
+{
+  "transformers_js": "2.17.2",
+  "onnxruntime_web": "1.14.0",
+  "model": "Xenova/detr-resnet-50",
+  "model_revision": "8be7ab59ff663484ee9ba2e8d8f267330d5ad03e",
+  "files": [
+    {
+      "path": "assets/runtime/transformers.min.js",
+      "url": "https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2/dist/transformers.min.js",
+      "sha256": "bcf7cf304e51f470ed59409622b9d6ffbad80dfcf5baf6a40c919e4b9c4ff812",
+      "bytes": 897938
+    },
+    {
+      "path": "assets/runtime/ort-wasm-simd.wasm",
+      "url": "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.14.0/dist/ort-wasm-simd.wasm",
+      "sha256": "9bd07bababc65f53d061f457233eeae501be7ceb8a2adb9eef52d87fe776d865",
+      "bytes": 10014674
+    },
+    {
+      "path": "assets/runtime/ort-wasm.wasm",
+      "url": "https://cdn.jsdelivr.net/npm/onnxruntime-web@1.14.0/dist/ort-wasm.wasm",
+      "sha256": "bbdcb6b3c7d294577d806077630460be4e13ca35a345acb5e81188e9649fa74a",
+      "bytes": 9223228
+    },
+    {
+      "path": "assets/models/Xenova/detr-resnet-50/config.json",
+      "url": "https://huggingface.co/Xenova/detr-resnet-50/resolve/8be7ab59ff663484ee9ba2e8d8f267330d5ad03e/config.json",
+      "sha256": "2daaf8af0b4fe9d075fd728a6967b89a1084849d1b25de26338f97cd6ef41466",
+      "bytes": 4812
+    },
+    {
+      "path": "assets/models/Xenova/detr-resnet-50/preprocessor_config.json",
+      "url": "https://huggingface.co/Xenova/detr-resnet-50/resolve/8be7ab59ff663484ee9ba2e8d8f267330d5ad03e/preprocessor_config.json",
+      "sha256": "fd7b4c38d03d99e37f75eebba889e064db89fed8fd451139442d010a11f2dc5e",
+      "bytes": 455
+    },
+    {
+      "path": "assets/models/Xenova/detr-resnet-50/onnx/model_quantized.onnx",
+      "url": "https://huggingface.co/Xenova/detr-resnet-50/resolve/8be7ab59ff663484ee9ba2e8d8f267330d5ad03e/onnx/model_quantized.onnx",
+      "sha256": "cae09a307ed9247da7e2ce8bcf81522a6817f1ea2e82b9c4dde59f5964b62b4f",
+      "bytes": 43102531
+    }
+  ]
+}
