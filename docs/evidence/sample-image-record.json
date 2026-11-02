@@ -1,0 +1,10 @@
+{
+  "source": "artifacts/sample-image-suite.xml",
+  "sha256": "1d52c0b1949bdfe8b7d0dcd4b437f5bd0f261720999b6464bacb962e9b2fd801",
+  "redaction": "Removed hostname attribute only.",
+  "tests": 10,
+  "failures": 0,
+  "errors": 0,
+  "seconds": 137.27,
+  "scope": "Seven controlled sample checks and three actual-model cases. Coffee used Try sample; astronaut and cat used file selection."
+}

@@ -4,7 +4,11 @@ Status: ready for the agreed local learning/evaluation workflow, based on the ch
 
 ## Extension checkpoint
 
-The minimum-score filter passed 29 controlled application/server checks in 199.37 seconds, including six new filter tests; three real-inference cases were deselected at this checkpoint. Evidence: `docs/evidence/score-filter-suite.xml` and `score-filter-record.json`. The combined extension will receive its own final verification after sample loading and PNG export are integrated. The results below describe the preceding base version.
+The minimum-score filter passed 29 controlled application/server checks in 199.37 seconds, including six new filter tests; three real-inference cases were deselected at that checkpoint. Evidence: `docs/evidence/score-filter-suite.xml` and `score-filter-record.json`.
+
+Try sample passed seven controlled loading/recovery checks and three actual-model cases in 137.27 seconds. The coffee case used Try sample; astronaut and cat used file selection. The sample fetch deadline was exercised at its actual 15-second value. Evidence: `docs/evidence/sample-image-suite.xml` and `sample-image-record.json`.
+
+The combined extension will receive its own final verification after PNG export is integrated. The results below describe the preceding base version.
 
 ## Base-version results
 

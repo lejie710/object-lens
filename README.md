@@ -29,7 +29,7 @@ Open `http://127.0.0.1:8765` in Chrome. Keep that terminal open while using the 
 
 If you move the project, use its new location in `Set-Location`. If port 8765 is already in use, run `serve.py --port 8766` and open `http://127.0.0.1:8766` instead.
 
-For a first demonstration, choose `dist\samples\coffee.png`, select the cup result, then replace it with `dist\samples\chelsea.png`. Model predictions can contain mistakes or duplicates. The score is not an accuracy guarantee.
+For a first demonstration, click **Try sample**, select the cup result, and move **Minimum model score** from 0.50 to 0.80. Lower it again to restore hidden predictions. You can then choose your own photo or replace it with `dist\samples\chelsea.png`. Model predictions can contain mistakes or duplicates. The score is not an accuracy guarantee.
 
 ## Run the tests
 
