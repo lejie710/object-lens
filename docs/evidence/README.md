@@ -1,6 +1,8 @@
 # Selected verification evidence
 
-These files summarize actual local checks and preserve their evidence boundaries. Raw run outputs remain in the ignored `artifacts` directory. JUnit copies here remove the machine hostname; `export-record.json` records the original file hashes and that redaction. Test counts, assertions and timestamps are preserved.
+These files summarize actual local checks and preserve their evidence boundaries. Raw run outputs remain in the ignored `artifacts` directory. JUnit copies here remove the machine hostname. `export-record.json` records base-version hashes and redaction; `extension-verification.json` records the combined extension, with separate `score-filter-record.json` and `sample-image-record.json` checkpoint records. Test counts, assertions and timestamps are preserved.
+
+Selected text files use UTF-8 with LF line endings to match Git checkout. Raw-run hashes continue to refer to the original files under `artifacts`; normalizing a selected copy does not change those raw hashes.
 
 | File | What it establishes |
 | --- | --- |
