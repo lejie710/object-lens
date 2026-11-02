@@ -10,11 +10,11 @@ The source is currently kept private. Screenshots below are actual application c
 
 ## What it does
 
-Choose a photo, inspect predicted labels and boxes, highlight a result, and adjust the minimum model score to hide or restore predictions. The filter uses the existing result, without running the model again. Object Lens focuses on a readable interface and reliable state handling. It adapts Hugging Face's educational object-detection example and uses a pretrained model; it does not train a model or detect semiconductor manufacturing defects.
+Choose a photo or try the sample, inspect predicted labels and boxes, highlight a result, and adjust the minimum model score to hide or restore predictions. Save the visible predictions as an annotated PNG at the photo's original dimensions. Filtering and saving use the existing result, without running the model again. Object Lens focuses on a readable interface and reliable state handling. It adapts Hugging Face's educational object-detection example and uses a pretrained model; it does not train a model or detect semiconductor manufacturing defects.
 
 ## Screenshots
 
-Open the [desktop result](docs/screenshots/desktop.png), [cat result](docs/screenshots/cat.png), [empty state](docs/screenshots/empty.png) or [narrow layout](docs/screenshots/narrow.png) at full resolution. The result captures use the real model on public sample photos. The earlier generated design concept is a separate planning reference, not execution evidence.
+Open the [desktop result](docs/screenshots/desktop.png), [filtered result](docs/screenshots/filtered.png), [exported PNG](docs/screenshots/export.png), [empty state](docs/screenshots/empty.png) or [narrow layout](docs/screenshots/narrow.png) at full resolution. These captures use the current application and real model on a public sample photo. The earlier generated design concept is a separate planning reference, not execution evidence.
 
 ## Run locally
 
@@ -29,7 +29,7 @@ Open `http://127.0.0.1:8765` in Chrome. Keep that terminal open while using the 
 
 If you move the project, use its new location in `Set-Location`. If port 8765 is already in use, run `serve.py --port 8766` and open `http://127.0.0.1:8766` instead.
 
-For a first demonstration, click **Try sample**, select the cup result, and move **Minimum model score** from 0.50 to 0.80. Lower it again to restore hidden predictions. You can then choose your own photo or replace it with `dist\samples\chelsea.png`. Model predictions can contain mistakes or duplicates. The score is not an accuracy guarantee.
+For a first demonstration, click **Try sample**, select the cup result, and move **Minimum model score** from 0.50 to 0.80. Click **Save result** to download the photo with its visible boxes, labels and scores. Lower the filter again to restore hidden predictions. You can then choose your own photo or replace it with `dist\samples\chelsea.png`. Model predictions can contain mistakes or duplicates. The score is not an accuracy guarantee.
 
 ## Run the tests
 

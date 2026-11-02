@@ -83,6 +83,9 @@ def browser(request):
     options.add_argument("--no-first-run")
     options.add_argument("--no-default-browser-check")
     options.add_argument("--disable-search-engine-choice-screen")
+    # The application and model are local. Keep this isolated test browser from
+    # resolving unrelated hosts or starting ambient network downloads.
+    options.add_argument("--host-resolver-rules=MAP * ~NOTFOUND, EXCLUDE localhost, EXCLUDE 127.0.0.1")
     options.set_capability("goog:loggingPrefs", {"browser": "ALL"})
     os.environ.setdefault("SE_CACHE_PATH", str(ROOT / ".local" / "selenium"))
     os.environ.setdefault("SE_AVOID_STATS", "true")

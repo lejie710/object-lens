@@ -1,0 +1,82 @@
+{
+  "recorded_at": "2026-11-02T22:40:03+08:00",
+  "final_result": {
+    "passed": 48,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pytest_seconds": 418.62,
+    "controlled_application_and_server_cases": 45,
+    "real_inference_cases": 3
+  },
+  "command": ".\\.venv\\Scripts\\python.exe -m pytest --basetemp=.local\\pytest-final-extension-v2-20261102 --junitxml=artifacts\\extension-full-suite.xml",
+  "source_basis": "Working tree based on d8a0c27; the application and test hashes below identify the subsequently committed export version.",
+  "source_sha256": {
+    "dist/app.js": "4c0bd3667035463229f5c2c4d825f5cd2d83b4c5955ded95b62e90a41b3f559e",
+    "dist/png-export.js": "cb7171cec270e245a78f70a8f56cd62a921157825458a3aeb97ac8b513948c41",
+    "dist/worker.js": "85cfc8620bb03d9d5cd8116afc72e1573b4baae3590932fdd5e943005aaebe84",
+    "dist/index.html": "c3e576d3fbcea5f56c72e7b1dcae9e7d16cdf59ccd9cb1098fab65804c23c3da",
+    "dist/style.css": "15b584189e1ea4ced448492f1a780da32202b46f3d0f61f0a1fb2f8e6bbf0d80",
+    "serve.py": "fbee47676ed615440f51eb4dad47c211c49c03a2afdc233e51683b719d4caedb",
+    "tests/conftest.py": "5f4a2479e0befe5098e59448404520dd16eaee9c66cb668063bb5f759753e35c",
+    "tests/test_export.py": "1c62dabda67959a142319d46c5f46f5a6bdc45354346ceca058f29f04f8f3707",
+    "tests/test_filter.py": "af5ebecfb534aad69e81151e4d2063b4420e3d3beeb5c90d8e31a9e7b70ee525",
+    "tests/test_inference.py": "7c85025133aca57e60bc72fabf499321830b814954d33abefaf32064fde5b7f7",
+    "tests/test_sample.py": "66e21ae95ae7fa36156844e732c3606c8006d207de8ad73e0c7344f8948074df",
+    "tests/test_server.py": "6dbff96615d244a590363e8c340e665e00d6aa71be65e5b7e6278edd0ca34ce9",
+    "tests/test_ui.py": "5a388f29f6ad8d1c1566a12fe6eaa512681bb5bc03df329b39e2c439704cc5b6",
+    "tests/fixtures/test-worker.js": "7510534af004116336c4af3e1b82656a3a49e0ff3de6bc616223c45362851d92"
+  },
+  "exports": [
+    {
+      "source": "artifacts/export-png-suite.xml",
+      "sha256": "9bd617429aea07c84e62c86b3cbdddb4e629b5ec3ce599637af67cd9caf054ba",
+      "selected": "docs/evidence/export-png-suite.xml",
+      "redaction": "Removed hostname attributes only.",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "junit_seconds": 88.818
+    },
+    {
+      "source": "artifacts/extension-full-suite.xml",
+      "sha256": "3457da47e81454539db9b92dde942822daa062124a0c6c765bdfa5a8b6fd0287",
+      "selected": "docs/evidence/extension-full-suite.xml",
+      "redaction": "Removed hostname attributes only.",
+      "tests": 48,
+      "failures": 0,
+      "errors": 0,
+      "junit_seconds": 418.448
+    },
+    {
+      "source": "artifacts/extension-first-full-suite.xml",
+      "sha256": "0867293841ea40e0f3b29f40ec10d230656cca73deb4aa5932932236ef49d570",
+      "selected": "docs/evidence/extension-first-full-suite.xml",
+      "redaction": "Removed hostname attributes only.",
+      "tests": 48,
+      "failures": 1,
+      "errors": 0,
+      "junit_seconds": 457.397
+    },
+    {
+      "source": "artifacts/viewport-before-fix.xml",
+      "sha256": "81357698f44a435afa728b6b269dbd12883310a10a286d305ffd8c291eb6dd52",
+      "selected": "docs/evidence/viewport-before-fix.xml",
+      "redaction": "Removed hostname attributes only.",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "junit_seconds": 8.448
+    }
+  ],
+  "findings": {
+    "viewport": "A real 320-pixel layout overflow was reproduced: content 320 versus usable clientWidth 305. Removed body minimum width and strengthened checks to compare clientWidth. Final capture reports 305 versus 305.",
+    "unexpected_download": "The first combined run passed 47 cases and failed one empty-download-folder assertion. The extra 84039-byte file had a Cr24 version-3 container header and a ZIP payload containing model-info.pb and model.tflite, not PNG. Its producing request was not captured. External hostname resolution is now disabled only in isolated test browsers; the strict assertion was retained. The final full run passed."
+  },
+  "limitations": [
+    "One Windows laptop and Chrome; no cross-browser certification.",
+    "Selected-label real checks and filtered PNG output do not establish general model accuracy.",
+    "The earlier one-hour stability and fresh-environment results belong to the base version.",
+    "No hosted CI or public deployment was run."
+  ]
+}

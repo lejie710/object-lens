@@ -1,0 +1,193 @@
+{
+  "evidence_type": "real model demonstration and rendered review",
+  "limits": "One Windows laptop and Chrome; not a general accuracy or performance benchmark.",
+  "viewports": [
+    {
+      "availableWidth": 305,
+      "contentWidth": 305,
+      "controls": [
+        {
+          "id": "choose-image",
+          "left": 14,
+          "right": 138.125,
+          "width": 124.125
+        },
+        {
+          "id": "try-sample",
+          "left": 148.125,
+          "right": 250.703125,
+          "width": 102.578125
+        },
+        {
+          "id": "clear-image",
+          "left": 14,
+          "right": 80.28125,
+          "width": 66.28125
+        },
+        {
+          "id": "save-result",
+          "left": 90.28125,
+          "right": 192.921875,
+          "width": 102.640625
+        },
+        {
+          "id": "minimum-score",
+          "left": 37,
+          "right": 268,
+          "width": 231
+        }
+      ],
+      "width": 320
+    },
+    {
+      "availableWidth": 375,
+      "contentWidth": 375,
+      "controls": [
+        {
+          "id": "choose-image",
+          "left": 14,
+          "right": 138.125,
+          "width": 124.125
+        },
+        {
+          "id": "try-sample",
+          "left": 148.125,
+          "right": 250.703125,
+          "width": 102.578125
+        },
+        {
+          "id": "clear-image",
+          "left": 260.703125,
+          "right": 326.984375,
+          "width": 66.28125
+        },
+        {
+          "id": "save-result",
+          "left": 14,
+          "right": 116.640625,
+          "width": 102.640625
+        },
+        {
+          "id": "minimum-score",
+          "left": 37,
+          "right": 338,
+          "width": 301
+        }
+      ],
+      "width": 390
+    },
+    {
+      "availableWidth": 768,
+      "contentWidth": 768,
+      "controls": [
+        {
+          "id": "choose-image",
+          "left": 308.375,
+          "right": 434.5,
+          "width": 126.125
+        },
+        {
+          "id": "try-sample",
+          "left": 444.5,
+          "right": 549.078125,
+          "width": 104.578125
+        },
+        {
+          "id": "clear-image",
+          "left": 559.078125,
+          "right": 627.359375,
+          "width": 68.28125
+        },
+        {
+          "id": "save-result",
+          "left": 637.359375,
+          "right": 742,
+          "width": 104.640625
+        },
+        {
+          "id": "minimum-score",
+          "left": 500,
+          "right": 725,
+          "width": 225
+        }
+      ],
+      "width": 768
+    },
+    {
+      "availableWidth": 1440,
+      "contentWidth": 1440,
+      "controls": [
+        {
+          "id": "choose-image",
+          "left": 970.375,
+          "right": 1096.5,
+          "width": 126.125
+        },
+        {
+          "id": "try-sample",
+          "left": 1106.5,
+          "right": 1211.078125,
+          "width": 104.578125
+        },
+        {
+          "id": "clear-image",
+          "left": 1221.078125,
+          "right": 1289.359375,
+          "width": 68.28125
+        },
+        {
+          "id": "save-result",
+          "left": 1299.359375,
+          "right": 1404,
+          "width": 104.640625
+        },
+        {
+          "id": "minimum-score",
+          "left": 1118,
+          "right": 1381,
+          "width": 263
+        }
+      ],
+      "width": 1440
+    }
+  ],
+  "browser_version": "156.0.8078.74",
+  "sample_ui_seconds": 12.392,
+  "all_predictions": [
+    {
+      "label": "spoon",
+      "score": 0.6670341491699219
+    },
+    {
+      "label": "dining table",
+      "score": 0.991251528263092
+    },
+    {
+      "label": "cup",
+      "score": 0.997867226600647
+    },
+    {
+      "label": "spoon",
+      "score": 0.9270511269569397
+    }
+  ],
+  "filtered_predictions": [
+    {
+      "label": "dining table",
+      "score": 0.991251528263092
+    },
+    {
+      "label": "cup",
+      "score": 0.997867226600647
+    },
+    {
+      "label": "spoon",
+      "score": 0.9270511269569397
+    }
+  ],
+  "export_filename": "coffee-object-lens-min-0.80.png",
+  "export_relative_path": "downloads/0e4434a23971/coffee-object-lens-min-0.80.png",
+  "console": [],
+  "external_http_requests": [],
+  "passed": true
+}

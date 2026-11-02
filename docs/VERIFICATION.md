@@ -1,14 +1,27 @@
 # Verification and release assessment
 
-Status: ready for the agreed local learning/evaluation workflow, based on the checks below on 2 November 2026. No blocking defect remains in that scope. This is not a production-recognition, hardware-validation or general-accuracy claim.
+Status: ready for the extended local learning/evaluation workflow, including filtering, Try sample and PNG export, based on the checks below on 2 November 2026. No blocking defect remains in that scope. This is not a production-recognition, hardware-validation or general-accuracy claim.
 
-## Extension checkpoint
+## Final extension results
+
+| Check | Observed result | Evidence |
+| --- | --- | --- |
+| Combined complete suite | 48 passed, 0 failures/errors/skips; 418.62 seconds | `docs/evidence/extension-full-suite.xml` |
+| Export checkpoint | Eight controlled export checks passed in 89.03 seconds, including saved PNG bytes/geometry, EXIF orientation, failure, timeout and stale-export rejection | `docs/evidence/export-png-suite.xml` |
+| Actual-model demonstration | Try sample produced four coffee-photo predictions; minimum 0.80 retained three; an actual annotated PNG was downloaded | `docs/evidence/extension-demo.json` and `docs/screenshots/export.png` |
+| Current rendered review | Controls fit usable widths at 320, 390, 768 and 1440 CSS pixels. At 320, content and client width both measured 305 pixels after accounting for the vertical scrollbar | `docs/evidence/extension-demo.json` and `docs/screenshots/narrow-320.png` |
+
+The final suite contains 45 controlled application/server cases and three actual-model cases. The test browser resolves only loopback hostnames; model/runtime assets remain local. The separate real-model demonstration captured no page HTTP requests to external hosts and no browser-console entries. It is not a measurement of all operating-system network activity. Raw-source hashes and evidence redactions are recorded in `docs/evidence/extension-verification.json`.
+
+The desktop, narrow, filtered and exported-image captures were visually inspected. The export-status live region remains present before messages are added; source and keyboard/geometry checks do not constitute screen-reader certification. The earlier fresh-setup and one-hour stability runs below apply to the base version, not a repeated qualification of this extension.
+
+### Extension checkpoints
 
 The minimum-score filter passed 29 controlled application/server checks in 199.37 seconds, including six new filter tests; three real-inference cases were deselected at that checkpoint. Evidence: `docs/evidence/score-filter-suite.xml` and `score-filter-record.json`.
 
 Try sample passed seven controlled loading/recovery checks and three actual-model cases in 137.27 seconds. The coffee case used Try sample; astronaut and cat used file selection. The sample fetch deadline was exercised at its actual 15-second value. Evidence: `docs/evidence/sample-image-suite.xml` and `sample-image-record.json`.
 
-The combined extension will receive its own final verification after PNG export is integrated. The results below describe the preceding base version.
+The results below describe the preceding base version and are retained as historical evidence.
 
 ## Base-version results
 
@@ -39,6 +52,9 @@ Environment: Python 3.12.10, pytest 9.0.3, Selenium 4.40.0, Chrome 156.0.8078.74
 | AC4: stale-result protection | In-flight clear, quick and slow replacement checks; an isolated missing-guard fault is detected |
 | AC5: error recovery | Processing error, worker-start failure and nonresponding-worker retry checks |
 | AC6: usable interface | Keyboard focus, viewport checks, overlay-label contrast and actual rendered state inspection |
+| AC7: minimum-score filter | Exact raw-score boundary, restore without inference, stable identities/colors/selection, filtered-empty state and keyboard checks |
+| AC8: Try sample | Real local photo retrieval, failure/retry, actual 15-second timeout, delayed-fetch rejection and the real coffee inference case |
+| AC9: PNG export | Actual downloaded PNG bytes and dimensions, retained/removed box pixels, EXIF orientation, scoped failure/timeout recovery and stale-export cancellation |
 
 ## Evidence boundaries
 
@@ -54,6 +70,18 @@ Controlled application tests use labelled simulated predictions, delays or failu
 - The runtime-normalized upstream comparison matched Object Lens's labels and box coordinates on astronaut, coffee and chelsea. This is not a test of the stock upstream runtime.
 
 ## Findings
+
+### Extension F8: A 320-pixel viewport had less usable width than the earlier check measured
+
+Rendered review showed a horizontal scrollbar at 320 pixels. The page required a 320-pixel minimum body width, while the vertical scrollbar left a 305-pixel document client width. The earlier test compared scroll width with `window.innerWidth`, which included the scrollbar and concealed this overflow.
+
+A strengthened test first reproduced the real failure: `320 <= (305 + 1)` was false. Removing the fixed body minimum allowed the layout to fit. The test now covers both 320 and 390 pixels, compares against `document.documentElement.clientWidth`, and checks all added controls. The final real-photo capture measured 305 pixels for both content and usable width. The failing check is retained in `docs/evidence/viewport-before-fix.xml`; the final suite contains the passing regression checks. This was an observed defect and a corrected test expectation, not an injected application fault. The earlier base-version viewport summary is superseded for this narrow-width condition.
+
+### Extension F9: An unrelated file contaminated one download assertion
+
+The first combined suite passed 47 cases and failed an assertion that a deliberately timed-out PNG encoder must not create a download. The app had preserved its predictions, displayed the expected timeout message and re-enabled Save. The folder contained `downloads.htm.crdownload`, an 84,039-byte file with a CRX version-3 container header and ZIP entries named `model-info.pb` and `model.tflite`; it was not an application PNG. The producing request was not captured, so its exact origin remains unestablished.
+
+The test assertion was retained. External hostname resolution was disabled only in the isolated test browsers, matching the existing offline demonstration harness. The complete rerun passed all 48 cases. The first run is preserved in `docs/evidence/extension-first-full-suite.xml`. No system network or security setting was changed.
 
 ### F1: Missing recovery for a nonresponding worker
 
@@ -107,7 +135,7 @@ Initial model readiness was observed at 2.144 seconds for Object Lens. Image-to-
 
 ## Release decision and remaining limits
 
-Release for local exploration of the agreed stack and workflow. The specified application behavior passed its checks, real inference ran, fresh setup was reproduced and a bounded long session completed. Tests remain inspectable and can be changed without creating another framework.
+Release the extended version for local exploration of the agreed stack and workflow. All 48 combined checks passed, the real sample path ran, an annotated PNG was inspected and the current layouts fit their usable viewports. The earlier independent setup and bounded long session remain base-version evidence. Tests remain inspectable and can be changed without creating another framework.
 
 The model can miss or duplicate objects and produce incorrect labels. Partial label expectations came from upstream descriptions and AI-assisted visual inspection; this project does not contain an exhaustive human-annotated dataset. One laptop and one browser were checked. The long session is not a load test or memory-leak certification. Recorded timing is not a performance guarantee. No hosted CI, public deployment, GPU/NPU execution or semiconductor inspection was performed.
 

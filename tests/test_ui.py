@@ -317,23 +317,25 @@ def test_clear_is_reachable_and_usable_with_keyboard(app, make_image):
     assert_no_visible_image(app)
 
 
-def test_narrow_layout_preserves_results_and_does_not_overflow(app, make_image):
+@pytest.mark.parametrize("width", [320, 390])
+def test_narrow_layout_preserves_results_and_does_not_overflow(app, make_image, width):
     app.set_window_size(390, 844)
     # Chrome can impose a larger minimum outer-window width. Set the CSS viewport explicitly.
     app.execute_cdp_cmd("Emulation.setDeviceMetricsOverride", {
-        "width": 390, "height": 844, "deviceScaleFactor": 1, "mobile": False,
+        "width": width, "height": 844, "deviceScaleFactor": 1, "mobile": False,
     })
     upload(app, make_image())
     wait_state(app, "complete")
     metrics = app.execute_script("""
-        return {content: document.documentElement.scrollWidth, viewport: window.innerWidth};
+        return {content: document.documentElement.scrollWidth,
+                viewport: document.documentElement.clientWidth, outer: window.innerWidth};
     """)
-    assert metrics["viewport"] == 390
+    assert metrics["outer"] == width
     assert metrics["content"] <= metrics["viewport"] + 1
     assert app.find_element(By.ID, "results-list").is_displayed()
     app.find_element(By.CSS_SELECTOR, '.result-row[data-label="cup"]').click()
     assert app.find_element(By.CSS_SELECTOR, '.detection-box[data-label="cup"]').get_attribute("class").find("is-selected") >= 0
-    for control_id in ("choose-image", "clear-image"):
+    for control_id in ("choose-image", "try-sample", "clear-image", "save-result", "minimum-score"):
         rect = app.find_element(By.ID, control_id).rect
         assert rect["width"] > 0
         assert rect["x"] >= 0

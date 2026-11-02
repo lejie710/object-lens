@@ -1,4 +1,6 @@
 // Object Lens: one image, one active inference, and at most one latest pending image.
+import { createAnnotatedPng, resultFilename } from './png-export.js';
+
 const MAX_BYTES = 10 * 1024 * 1024;
 const MAX_PIXELS = 16_000_000;
 const LOAD_TIMEOUT_MS = 120_000;
@@ -11,6 +13,7 @@ const byId = (id) => document.getElementById(id);
 const elements = {
   fileInput: byId('file-input'), choose: byId('choose-image'), clear: byId('clear-image'),
   trySample: byId('try-sample'),
+  saveResult: byId('save-result'), exportMessage: byId('export-message'),
   filename: byId('filename'), dimensions: byId('image-dimensions'),
   empty: byId('empty-state'), stage: byId('image-stage'), preview: byId('image-preview'),
   boxes: byId('box-layer'), results: byId('results-list'), count: byId('result-count'),
@@ -34,6 +37,68 @@ let inferenceTimer = null;
 let currentPredictions = null;
 let selectedPredictionId = null;
 let sampleRequest = null;
+let exportRevision = 0;
+let exportBusy = false;
+
+function visiblePredictions() {
+  const minimum = Number(elements.minimumScore.value);
+  return (currentPredictions || []).filter(({ score }) => score >= minimum);
+}
+
+function updateExportButton() {
+  elements.saveResult.disabled = exportBusy || !currentImage || visiblePredictions().length === 0;
+  elements.saveResult.textContent = exportBusy ? 'Preparing PNG…' : 'Save result';
+}
+
+function invalidateExport() {
+  exportRevision += 1;
+  exportBusy = false;
+  elements.exportMessage.textContent = '';
+  elements.exportMessage.dataset.kind = '';
+  updateExportButton();
+}
+
+async function saveResult() {
+  const predictions = visiblePredictions();
+  if (exportBusy || !currentImage || !predictions.length) return;
+  const snapshot = currentImage;
+  const minimum = Number(elements.minimumScore.value);
+  const token = ++exportRevision;
+  exportBusy = true;
+  elements.exportMessage.textContent = '';
+  elements.exportMessage.dataset.kind = '';
+  updateExportButton();
+  try {
+    const blob = await createAnnotatedPng(snapshot, predictions);
+    // Clear, image replacement and filter changes all retire an older export.
+    if (token !== exportRevision || snapshot.id !== revision) return;
+    const url = URL.createObjectURL(blob);
+    try {
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = resultFilename(snapshot.filename, minimum);
+      document.body.append(link);
+      link.click();
+      link.remove();
+    } finally {
+      // Give the browser time to consume the download before releasing its URL.
+      setTimeout(() => URL.revokeObjectURL(url), 30_000);
+    }
+    elements.exportMessage.textContent = 'PNG download started.';
+  } catch (error) {
+    if (token !== exportRevision || snapshot.id !== revision) return;
+    console.error('Object Lens PNG export:', error);
+    elements.exportMessage.dataset.kind = 'error';
+    elements.exportMessage.textContent = error.name === 'TimeoutError'
+      ? 'Preparing the PNG took too long. Try Save result again.'
+      : 'The PNG could not be prepared. Try Save result again.';
+  } finally {
+    if (token === exportRevision) {
+      exportBusy = false;
+      updateExportButton();
+    }
+  }
+}
 
 function setState(state, text) {
   document.documentElement.dataset.state = state;
@@ -75,6 +140,7 @@ function clearResults() {
   elements.minimumScore.setAttribute('aria-valuetext', DEFAULT_MINIMUM_SCORE.toFixed(2));
   elements.filterSummary.textContent = '';
   elements.filterSummary.hidden = true;
+  invalidateExport();
 }
 
 function stopWorker() {
@@ -342,11 +408,12 @@ function renderResults(predictions) {
 
 function renderFilteredResults() {
   if (currentPredictions === null) return;
+  invalidateExport();
   const minimum = Number(elements.minimumScore.value);
   elements.minimumScoreValue.value = minimum.toFixed(2);
   elements.minimumScore.setAttribute('aria-valuetext', minimum.toFixed(2));
   // Keep original scores and identities. Display rounding must not change filtering.
-  const visible = currentPredictions.filter(({ score }) => score >= minimum);
+  const visible = visiblePredictions();
   clearRenderedResults();
   visible.forEach(({ id, label, score, box, color }) => {
     const rectangle = document.createElement('div');
@@ -473,6 +540,7 @@ function createWorker() {
 
 elements.choose.addEventListener('click', () => elements.fileInput.click());
 elements.trySample.addEventListener('click', trySample);
+elements.saveResult.addEventListener('click', saveResult);
 elements.fileInput.addEventListener('change', () => {
   const file = elements.fileInput.files[0];
   elements.fileInput.value = '';
