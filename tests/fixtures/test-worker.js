@@ -7,6 +7,13 @@ const samplePredictions = {
   ],
   dog: [{ label: 'dog', score: 0.93, box: { xmin: 0.15, ymin: 0.2, xmax: 0.75, ymax: 0.9 } }],
   car: [{ label: 'car', score: 0.95, box: { xmin: 0.05, ymin: 0.3, xmax: 0.95, ymax: 0.8 } }],
+  // Deliberate values around the display-filter boundary. The first score rounds
+  // to 0.80 in the UI but is below 0.80 and must not pass that minimum.
+  boundary: [
+    { label: 'spoon', score: 0.7999, box: { xmin: 0.05, ymin: 0.15, xmax: 0.2, ymax: 0.8 } },
+    { label: 'cup', score: 0.8, box: { xmin: 0.3, ymin: 0.3, xmax: 0.55, ymax: 0.7 } },
+    { label: 'bottle', score: 0.95, box: { xmin: 0.7, ymin: 0.1, xmax: 0.9, ymax: 0.9 } },
+  ],
 };
 
 self.onmessage = ({ data }) => {
@@ -28,6 +35,7 @@ self.onmessage = ({ data }) => {
     let predictions = samplePredictions.normal;
     if (filename.includes('dog')) predictions = samplePredictions.dog;
     if (filename.includes('car')) predictions = samplePredictions.car;
+    if (filename.includes('score-boundary')) predictions = samplePredictions.boundary;
     if (filename.startsWith('empty')) predictions = [];
     self.postMessage({ type: 'result', id: data.id, predictions, durationMs: delay });
   }, delay);

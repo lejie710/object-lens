@@ -70,6 +70,8 @@ The JavaScript library is kept on a pinned version compatible with the original 
 4. The app accepts results only for the currently selected image, then renders boxes and matching list entries.
 5. Selecting a list entry highlights the corresponding box. Clear removes the current image and invalidates any outstanding result.
 
+After successful inference, the app keeps validated predictions for that image. The minimum-score control redraws this cached set without invoking the model again. Each prediction keeps its identity and color when others are hidden. If the selected prediction is filtered out, the first visible prediction becomes selected. A new image or Clear resets the minimum to 0.50 and invalidates cached results.
+
 Clearing or replacing an image does not promise interruption of CPU work already underway. It prevents that old work from changing the visible result. There is no hosted inference API.
 
 A nonresponding worker has a bounded recovery path: model loading times out after 120 seconds and inference after 90 seconds. The worker is terminated, a clear error appears and Retry or a new valid image can recreate it. Controlled tests use a four-second deadline to exercise this path without waiting for a real model outage.
@@ -86,8 +88,9 @@ The list is titled "Detections" and the completion message counts "predictions".
 | AC4 | Results from an earlier image cannot repaint the page after replacement or clear. |
 | AC5 | An empty prediction set is distinct from an inference failure. A valid image can be processed after an input or inference error. |
 | AC6 | Keyboard controls have visible focus, updates are announced accessibly and the layout remains usable at a narrow viewport. |
+| AC7 | A keyboard-accessible minimum-score filter from 0.50 to 1.00 includes predictions whose underlying score is at least the selected minimum. Boxes, list and visible/total counts agree. Lowering the minimum restores hidden predictions without rerunning inference; filter-empty and model-empty states have different explanations. |
 
-The fixed confidence threshold is 0.5. The displayed value is a model score, not a measured accuracy percentage. Supported classes come from the model; unrecognized objects do not imply an application defect.
+The model's fixed inference threshold is 0.5. A separate display filter starts at 0.50, moves in steps of 0.01 and cannot recover lower-score predictions discarded by inference. Comparisons use the underlying model score, while visible scores are rounded to two decimal places. The displayed value is a model score, not a measured accuracy percentage. Supported classes come from the model; unrecognized objects do not imply an application defect.
 
 ## Verification approach
 

@@ -1,0 +1,12 @@
+{
+  "source": "artifacts/score-filter-suite.xml",
+  "sha256": "710cf6ab83af6f8fa8676a2b0b946e8a604f8857dde9576b59ad15697aa8bfd8",
+  "redaction": "Removed hostname attribute only.",
+  "tests": 29,
+  "failures": 0,
+  "errors": 0,
+  "deselected": 3,
+  "seconds": 199.37,
+  "scope": "Controlled application and server checks; no real inference at this checkpoint.",
+  "environment_note": "An atexit cleanup warning concerned the existing shared Windows pytest temp path; assertions and teardown completed with process exit code 0."
+}
