@@ -74,6 +74,7 @@ If the app cannot prepare detection because an asset is missing, run the asset p
 
 ## Read next
 
+- [System-design companion PDF](docs/system-design/Object_Lens_System_Design.pdf) and [editable Word document](docs/system-design/Object_Lens_System_Design.docx), both with clickable contents
 - [Design and acceptance criteria](docs/DESIGN.md)
 - [A short guide to the stack and one test](docs/LEARNING.md)
 - [Verification and release assessment](docs/VERIFICATION.md)

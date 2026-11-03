@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1092" viewBox="0 0 1000 1092" role="img" aria-labelledby="image-sequence-title image-sequence-desc" id="image-sequence-root">
+<title id="image-sequence-title">Object Lens image replacement sequence</title>
+<desc id="image-sequence-desc">The browser prepares a replacement image while the current inference finishes, discards the stale reply, then accepts only the replacement image&#x27;s result.</desc>
+<defs>
+      <style>#image-sequence-root { font-family: 'Segoe UI', Arial, sans-serif; }
+      #image-sequence-root figure { margin:0;max-width:1000px;width:100% }
+      @media print {
+#image-sequence-root figure { width:6.5in;max-width:100% }
+}</style>
+      <marker id="image-sequence-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4d5b70"/></marker>
+      <marker id="image-sequence-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#285bd4"/></marker>
+      <marker id="image-sequence-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#285bd4"/></marker>
+      <marker id="image-sequence-arrow-open" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><polyline points="1 1, 8 4, 1 7" fill="none" stroke="#4d5b70" stroke-width="1.2"/></marker>
+    </defs>
+<rect width="1000" height="1092" fill="#f7f8fa"/>
+<text x="40" y="44" font-family="'Segoe UI', Arial, sans-serif" font-size="28" font-weight="600" fill="#202632" text-anchor="start">Why an old result cannot repaint a new photo</text>
+<text x="40" y="80" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="400" fill="#4d5b70" text-anchor="start">Successful replacement example; vertical order is logical, not measured time.</text>
+<line x1="120" y1="184" x2="120" y2="940" stroke="#4d5b70" stroke-width="2" stroke-dasharray="7,6"/>
+<line x1="470" y1="184" x2="470" y2="940" stroke="#4d5b70" stroke-width="2" stroke-dasharray="7,6"/>
+<line x1="850" y1="184" x2="850" y2="940" stroke="#4d5b70" stroke-width="2" stroke-dasharray="7,6"/>
+<line x1="120" y1="228" x2="470" y2="228" stroke="#4d5b70" stroke-width="2" marker-end="url(#image-sequence-arrow)"/>
+<rect x="200" y="184" width="190" height="28" rx="2" fill="#f7f8fa"/><text x="295" y="208" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="middle">Choose image A</text>
+<line x1="470" y1="356" x2="850" y2="356" stroke="#4d5b70" stroke-width="2" stroke-dasharray="7,6" marker-end="url(#image-sequence-arrow-open)"/>
+<rect x="540" y="312" width="240" height="28" rx="2" fill="#f7f8fa"/><text x="660" y="336" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="middle">infer(A, image data)</text>
+<line x1="120" y1="424" x2="470" y2="424" stroke="#4d5b70" stroke-width="2" marker-end="url(#image-sequence-arrow)"/>
+<rect x="167" y="380" width="256" height="28" rx="2" fill="#f7f8fa"/><text x="295" y="404" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="middle">Replace with image B</text>
+<line x1="850" y1="584" x2="470" y2="584" stroke="#4d5b70" stroke-width="2" stroke-dasharray="7,6" marker-end="url(#image-sequence-arrow)"/>
+<rect x="596" y="540" width="128" height="28" rx="2" fill="#f7f8fa"/><text x="660" y="564" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="middle">result(A)</text>
+<line x1="470" y1="744" x2="850" y2="744" stroke="#4d5b70" stroke-width="2" stroke-dasharray="7,6" marker-end="url(#image-sequence-arrow-open)"/>
+<rect x="540" y="700" width="240" height="28" rx="2" fill="#f7f8fa"/><text x="660" y="724" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="middle">infer(B, image data)</text>
+<line x1="850" y1="820" x2="470" y2="820" stroke="#285bd4" stroke-width="2" stroke-dasharray="7,6" marker-end="url(#image-sequence-arrow-accent)"/>
+<rect x="596" y="776" width="128" height="28" rx="2" fill="#f7f8fa"/><text x="660" y="800" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#285bd4" text-anchor="middle">result(B)</text>
+<rect x="40" y="116" width="160" height="68" rx="8" fill="#ffffff" stroke="#8794a7" stroke-width="1.6"/>
+<text x="120" y="158" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="600" fill="#202632" text-anchor="middle">User</text>
+<rect x="338" y="116" width="264" height="68" rx="8" fill="#ffffff" stroke="#8794a7" stroke-width="1.6"/>
+<text x="470" y="158" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="600" fill="#202632" text-anchor="middle">Browser UI</text>
+<rect x="740" y="116" width="220" height="68" rx="8" fill="#ffffff" stroke="#8794a7" stroke-width="1.6"/>
+<text x="850" y="158" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="600" fill="#202632" text-anchor="middle">Model worker</text>
+<rect x="330" y="256" width="380" height="64" rx="8" fill="#f1f4f9" stroke="#a2adbd" stroke-width="1.6"/>
+<text x="350" y="282" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="600" fill="#202632" text-anchor="start">Set revision A</text>
+<text x="350" y="308" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="400" fill="#4d5b70" text-anchor="start">Validate and decode A</text>
+<rect x="330" y="452" width="380" height="88" rx="8" fill="#f1f4f9" stroke="#a2adbd" stroke-width="1.6"/>
+<text x="350" y="482" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="600" fill="#202632" text-anchor="start">Set revision B; prepare B</text>
+<text x="350" y="516" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="400" fill="#4d5b70" text-anchor="start">Keep only the latest pending image</text>
+<rect x="330" y="612" width="380" height="88" rx="8" fill="#f1f4f9" stroke="#a2adbd" stroke-width="1.6"/>
+<text x="350" y="642" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="600" fill="#202632" text-anchor="start">A is stale: discard its predictions</text>
+<text x="350" y="676" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="400" fill="#4d5b70" text-anchor="start">Release the active request</text>
+<rect x="330" y="848" width="380" height="88" rx="8" fill="#edf2ff" stroke="#285bd4" stroke-width="1.6"/>
+<text x="350" y="878" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="600" fill="#202632" text-anchor="start">B matches the current revision</text>
+<text x="350" y="912" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="400" fill="#4d5b70" text-anchor="start">Validate, cache and display B</text>
+<text x="40" y="984" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="400" fill="#4d5b70" text-anchor="start">Replacing A does not cancel its running model call; the UI ignores its late result.</text>
+<text x="40" y="1020" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="400" fill="#4d5b70" text-anchor="start">The next pending image starts when the active request finishes.</text>
+<text x="40" y="1060" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="400" fill="#4d5b70" text-anchor="start">Filter and PNG export reuse cached B results; neither reruns the model.</text>
+</svg>

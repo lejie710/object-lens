@@ -1,0 +1,61 @@
+{
+  "documented_application_commit": "781d9b75db1a3ebc9a200c238038b64aa108564a",
+  "date": "2026-11-02",
+  "source_sha256": "a8df9f4baa432548046dd7e1a1fc16a666bdfcad58ba381bd85ae73e0ff1d483",
+  "docx_sha256": "9f17263e4f3f7b5acc09b915ed69947cff77c4088df887abbc1a00802ebca813",
+  "pdf_sha256": "a47cfc56e819595ebbbc21b6cb0315d3d402a19881b823303213401177af2be5",
+  "page_count": 19,
+  "contents_heading_targets": 31,
+  "pdf_contents_links": 62,
+  "pdf_back_to_contents_links": 10,
+  "navigation_audit": "navigation-audit.json",
+  "navigation_audit_sha256": "ac00f08c80d5d3e6fa3a373aca9b030e89fd2643f8ca94c9ffa87ba5a8d71f4c",
+  "visual_review": {
+    "pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "render_scale": 1.5,
+    "render_backend": "Microsoft Word direct PDF export and bundled pypdfium2 page rasterization",
+    "authoring_agent": "Every final page inspected at readable scale; no clipping, overlap, missing glyph or unreadable diagram label observed.",
+    "independent_review": "Primary reviewing agent independently inspected every final page 1 to 19 and reported all readable with no clipping or overlap.",
+    "diagram_pages": [
+      5,
+      7,
+      11
+    ],
+    "actual_capture_pages": [
+      3,
+      9
+    ]
+  },
+  "source_checks": {
+    "implementation_and_test_hashes_verified": 14,
+    "evidence_and_capture_hashes_verified": 10,
+    "code_excerpts_verified_against_source": 2,
+    "figure_assets_found": 5,
+    "pending_or_draft_markers": 0,
+    "pdf_text_nul_or_replacement_characters": 0,
+    "python_helper_syntax": "passed"
+  },
+  "scope": "Document content, structure, navigation and rendered-page verification. Application execution evidence remains in docs/evidence/extension-verification.json.",
+  "status": "passed",
+  "text_normalization": "Authoring and selected-evidence text uses UTF-8 with LF line endings, matching Git checkout. Evidence metadata hashes were refreshed. Rendered prose, figures, DOCX/PDF bytes and the completed visual/link reviews are unchanged; original raw-run hashes were preserved."
+}

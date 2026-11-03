@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Object Lens automated browser testing workflow</title>
+<style>html,body{margin:0;background:#f7f8fa;font-family:'Segoe UI', Arial, sans-serif}body{display:flex;justify-content:center}figure{margin:0;max-width:1000px;width:100%}svg{display:block;width:100%;height:auto}@media print{figure{width:6.5in;max-width:100%}}</style>
+</head><body><figure><svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1184" viewBox="0 0 1000 1184" role="img" aria-labelledby="testing-workflow-title testing-workflow-desc">
+<title id="testing-workflow-title">Object Lens automated browser testing workflow</title>
+<desc id="testing-workflow-desc">pytest starts isolated resources, Selenium exercises the application with either controlled or real model responses, and assertions produce distinct test outcomes and evidence.</desc>
+<defs>
+      <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4d5b70"/></marker>
+      <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#285bd4"/></marker>
+      <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#285bd4"/></marker>
+      <marker id="arrow-open" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><polyline points="1 1, 8 4, 1 7" fill="none" stroke="#4d5b70" stroke-width="1.2"/></marker>
+    </defs>
+<rect width="1000" height="1184" fill="#f7f8fa"/>
+<text x="40" y="44" font-family="'Segoe UI', Arial, sans-serif" font-size="28" font-weight="600" fill="#202632" text-anchor="start">How browser tests produce evidence</text>
+<text x="40" y="80" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="400" fill="#4d5b70" text-anchor="start">Python owns the expected behavior; Selenium operates the isolated browser.</text>
+<path d="M 400,192 V 212 Q 400,220 392,220 H 268 Q 260,220 260,228 V 248" fill="none" stroke="#4d5b70" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 600,192 V 212 Q 600,220 608,220 H 732 Q 740,220 740,228 V 248" fill="none" stroke="#4d5b70" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 260,352 V 372 Q 260,380 268,380 H 392 Q 400,380 400,388 V 408" fill="none" stroke="#4d5b70" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 740,352 V 372 Q 740,380 732,380 H 608 Q 600,380 600,388 V 408" fill="none" stroke="#4d5b70" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 400,500 V 520 Q 400,528 392,528 H 268 Q 260,528 260,536 V 568" fill="none" stroke="#4d5b70" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 600,500 V 520 Q 600,528 608,528 H 732 Q 740,528 740,536 V 568" fill="none" stroke="#4d5b70" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 260,744 V 772 Q 260,780 268,780 H 392 Q 400,780 400,788 V 812" fill="none" stroke="#4d5b70" stroke-width="2" marker-end="url(#arrow)"/>
+<path d="M 740,744 V 772 Q 740,780 732,780 H 608 Q 600,780 600,788 V 812" fill="none" stroke="#4d5b70" stroke-width="2" marker-end="url(#arrow)"/>
+<line x1="500" y1="924" x2="500" y2="984" stroke="#4d5b70" stroke-width="2" marker-end="url(#arrow)"/>
+<rect x="240" y="104" width="520" height="88" rx="8" fill="#ffffff" stroke="#8794a7" stroke-width="1.6"/>
+<text x="500" y="140" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="600" fill="#202632" text-anchor="middle">Python + pytest</text>
+<text x="500" y="174" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="middle">Collect tests; fixtures start resources</text>
+<rect x="40" y="248" width="440" height="104" rx="8" fill="#ffffff" stroke="#8794a7" stroke-width="1.6"/>
+<text x="64" y="286" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="600" fill="#202632" text-anchor="start">Isolated local server</text>
+<text x="64" y="322" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="start">127.0.0.1 · temporary test port</text>
+<rect x="520" y="248" width="440" height="104" rx="8" fill="#ffffff" stroke="#8794a7" stroke-width="1.6"/>
+<text x="544" y="286" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="600" fill="#202632" text-anchor="start">Headless Chrome</text>
+<text x="544" y="322" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="400" fill="#4d5b70" text-anchor="start">Test-owned browser; no desktop clicks</text>
+<rect x="240" y="408" width="520" height="92" rx="8" fill="#ffffff" stroke="#8794a7" stroke-width="1.6"/>
+<text x="500" y="444" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="600" fill="#202632" text-anchor="middle">Selenium actions and observations</text>
+<text x="500" y="478" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="middle">Open app · select image · operate controls</text>
+<rect x="330" y="532" width="340" height="26" rx="2" fill="#f7f8fa"/><text x="500" y="554" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="400" fill="#4d5b70" text-anchor="middle">Each test uses one worker path</text>
+<rect x="40" y="568" width="440" height="176" rx="8" fill="#ffffff" stroke="#8794a7" stroke-width="1.6"/>
+<text x="64" y="606" font-family="'Segoe UI', Arial, sans-serif" font-size="23" font-weight="600" fill="#202632" text-anchor="start">Controlled application tests</text>
+<text x="64" y="642" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="400" fill="#4d5b70" text-anchor="start">Explicit test mode and test worker</text>
+<text x="64" y="676" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="400" fill="#4d5b70" text-anchor="start">Simulated predictions, delays or failures</text>
+<text x="64" y="718" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="600" fill="#285bd4" text-anchor="start">Purpose: UI rules and recovery</text>
+<rect x="520" y="568" width="440" height="176" rx="8" fill="#ffffff" stroke="#8794a7" stroke-width="1.6"/>
+<text x="544" y="606" font-family="'Segoe UI', Arial, sans-serif" font-size="23" font-weight="600" fill="#202632" text-anchor="start">Real inference checks</text>
+<text x="544" y="642" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="400" fill="#4d5b70" text-anchor="start">Normal server and real model worker</text>
+<text x="544" y="676" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="400" fill="#4d5b70" text-anchor="start">Public photos; actual local inference</text>
+<text x="544" y="718" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="600" fill="#285bd4" text-anchor="start">Purpose: real path and selected labels</text>
+<rect x="240" y="812" width="520" height="112" rx="8" fill="#edf2ff" stroke="#285bd4" stroke-width="1.6"/>
+<text x="500" y="850" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="600" fill="#202632" text-anchor="middle">Assert expected behavior</text>
+<text x="500" y="886" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="middle">pytest reports pass or fail</text>
+<text x="500" y="914" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="400" fill="#4d5b70" text-anchor="middle">An expected rejection can be a passing test.</text>
+<rect x="40" y="984" width="920" height="100" rx="8" fill="#ffffff" stroke="#8794a7" stroke-width="1.6"/>
+<text x="64" y="1022" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="600" fill="#202632" text-anchor="start">Failure evidence: screenshot, page HTML, console and test context</text>
+<text x="64" y="1058" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="start">Real-run evidence: prediction observations and actual screenshots</text>
+<text x="40" y="1124" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="400" fill="#4d5b70" text-anchor="start">Controlled results are simulated; real checks do not measure general model accuracy.</text>
+<text x="40" y="1156" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="400" fill="#4d5b70" text-anchor="start">Server-only checks run separately in Python. Fixtures close their own resources.</text>
+</svg></figure></body></html>

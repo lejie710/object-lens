@@ -2,7 +2,7 @@
 
 ## 1. Start with the application
 
-Launch the local server using the README command, open the page in Chrome and choose `dist/samples/coffee.png`. The detector proposes labels and boxes. Selecting the cup in the list highlights its box. Replace the image with `chelsea.png`, then use Clear.
+Launch the local server using the README command, open the page in Chrome and click Try sample. The detector proposes labels and boxes. Selecting the cup in the list highlights its box. Raise Minimum model score to 0.80, then use Save result to download the visible predictions as an annotated PNG. Lower the minimum to restore hidden predictions, replace the image with `chelsea.png`, then use Clear.
 
 These are actual model predictions. The coffee sample can produce two spoon boxes for the same visible spoon. The app should present those results faithfully and make them understandable; a passing UI test does not prove that the model is always right.
 
@@ -13,6 +13,7 @@ These are actual model predictions. The coffee sample can produce two spoon boxe
 | HTML and CSS | Define the page, controls, spacing and colours | Make the image and results understandable |
 | `dist/app.js` | Validates files, tracks the current image and renders results | Keeps what is on screen consistent with what the user selected |
 | `dist/worker.js` | Runs the pretrained detector in a browser worker | Performs inference without blocking the main interface |
+| `dist/png-export.js` | Draws the current filtered annotations into a PNG | Produces a reusable image without another model run |
 | `serve.py` | Serves local files to Chrome | Lets the browser load the app, model and runtime from this computer |
 | Python tests | Describe actions and expected outcomes | Turn a requirement into an executable check |
 | Selenium | Operates Chrome and reads page elements | Repeats user workflows automatically |
@@ -23,6 +24,8 @@ Python is the main language to learn for this project's automation. The actual a
 Headless Chrome still renders the page and can save screenshots, but it does not open a visible browser window. Selenium controls that isolated browser session, not your mouse or desktop. Your normal browser profile is not used for the tests.
 
 The pretrained model is the AI inside the app. The coding agent's help in developing this project is a separate form of AI assistance. Both are credited, and neither supplies a trustworthy expected answer automatically.
+
+The filter compares full model scores, even though the interface rounds them to two decimal places. A score of 0.7999 can display as 0.80 and still disappear at a minimum of 0.80. In the real coffee result, the cup score is about 0.9979: it displays as 1.00 but is below a minimum of 1.00. Neither displayed value is a measured accuracy percentage.
 
 ## 3. Follow one real test
 
@@ -84,6 +87,8 @@ A test failure can come from the application, the model, the test itself or the 
 During development, an attempted test of worker-loading failure initially did not create that failure at all: the server returned HTTP 200 and the page became Ready. The test was corrected to return HTTP 503 once, after which Retry succeeded. Changing the application to satisfy the mistaken first test would have addressed the wrong problem.
 
 The review also found a missing recovery path for a worker that never replies. The fix added a deadline and worker restart. A controlled silent-worker test verifies that recovery. This is not evidence that the real model was observed hanging.
+
+The extension's rendered review found a real narrow-layout defect. At a 320-pixel window width, the vertical scrollbar left only 305 pixels of usable width. A fixed 320-pixel body therefore overflowed, while a test using the full window width incorrectly passed. The corrected test uses the document's client width; it failed before the CSS fix and passes afterward. This is an example of improving both the application and the rule used to judge its output.
 
 ## 6. A useful release explanation
 

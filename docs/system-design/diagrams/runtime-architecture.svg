@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1052" viewBox="0 0 1000 1052" role="img" aria-labelledby="runtime-architecture-title runtime-architecture-desc" id="runtime-architecture-root">
+<title id="runtime-architecture-title">Object Lens runtime architecture</title>
+<desc id="runtime-architecture-desc">A local Python server supplies files while Chrome validates photos, runs a pretrained detector in a worker, filters current predictions and draws a PNG for download.</desc>
+<defs>
+      <style>#runtime-architecture-root { font-family: 'Segoe UI', Arial, sans-serif; }
+      #runtime-architecture-root figure { margin:0;max-width:1000px;width:100% }
+      @media print {
+#runtime-architecture-root figure { width:6.5in;max-width:100% }
+}</style>
+      <marker id="runtime-architecture-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4d5b70"/></marker>
+      <marker id="runtime-architecture-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#285bd4"/></marker>
+      <marker id="runtime-architecture-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#285bd4"/></marker>
+      <marker id="runtime-architecture-arrow-open" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto"><polyline points="1 1, 8 4, 1 7" fill="none" stroke="#4d5b70" stroke-width="1.2"/></marker>
+    </defs>
+<rect width="1000" height="1052" fill="#f7f8fa"/>
+<text x="40" y="44" font-family="'Segoe UI', Arial, sans-serif" font-size="28" font-weight="600" fill="#202632" text-anchor="start">Object Lens runtime architecture</text>
+<text x="40" y="80" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="start">Local file serving, browser inference and a reusable prediction cache</text>
+<rect x="40" y="298" width="920" height="692" rx="8" fill="#f1f4f9" stroke="#8794a7" stroke-width="1.6" stroke-dasharray="8,6"/>
+<text x="64" y="336" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="600" fill="#202632" text-anchor="start">Chrome browser</text>
+<text x="88" y="384" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="600" fill="#4d5b70" text-anchor="start">Main UI thread</text>
+<line x1="500" y1="234" x2="500" y2="298" stroke="#4d5b70" stroke-width="2" marker-end="url(#runtime-architecture-arrow)"/>
+<text x="520" y="274" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="400" fill="#4d5b70" text-anchor="start">Local HTTP files</text>
+<line x1="576" y1="472" x2="660" y2="472" stroke="#4d5b70" stroke-width="2" marker-end="url(#runtime-architecture-arrow)"/>
+<rect x="584" y="432" width="68" height="24" rx="2" fill="#f7f8fa"/><text x="618" y="452" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="400" fill="#4d5b70" text-anchor="middle">image</text>
+<line x1="660" y1="624" x2="576" y2="624" stroke="#4d5b70" stroke-width="2" stroke-dasharray="7,6" marker-end="url(#runtime-architecture-arrow)"/>
+<rect x="584" y="584" width="68" height="24" rx="2" fill="#f7f8fa"/><text x="618" y="604" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="400" fill="#4d5b70" text-anchor="middle">result</text>
+<line x1="332" y1="748" x2="332" y2="772" stroke="#4d5b70" stroke-width="2" marker-end="url(#runtime-architecture-arrow)"/>
+<line x1="576" y1="828" x2="660" y2="828" stroke="#4d5b70" stroke-width="2" marker-end="url(#runtime-architecture-arrow)"/>
+<rect x="582" y="788" width="72" height="24" rx="2" fill="#f7f8fa"/><text x="618" y="808" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="400" fill="#4d5b70" text-anchor="middle">visible</text>
+<rect x="40" y="110" width="920" height="124" rx="8" fill="#ffffff" stroke="#8794a7" stroke-width="1.6"/>
+<text x="64" y="150" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="600" fill="#202632" text-anchor="start">Local Python server</text>
+<text x="64" y="184" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="start">127.0.0.1:8765</text>
+<text x="324" y="184" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="start">HTML / CSS / JavaScript · runtime / model · sample</text>
+<text x="64" y="216" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="400" fill="#4d5b70" text-anchor="start">Serves files; does not receive uploaded photos for inference.</text>
+<rect x="88" y="408" width="488" height="124" rx="8" fill="#ffffff" stroke="#8794a7" stroke-width="1.6"/>
+<text x="112" y="446" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="600" fill="#202632" text-anchor="start">1. Choose a photo or Try sample</text>
+<text x="112" y="480" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="start">Validate and decode in the browser</text>
+<text x="112" y="514" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="start">Send image data URL + request ID</text>
+<rect x="660" y="408" width="272" height="296" rx="8" fill="#ffffff" stroke="#8794a7" stroke-width="1.6"/>
+<text x="684" y="446" font-family="'Segoe UI', Arial, sans-serif" font-size="23" font-weight="600" fill="#202632" text-anchor="start">Dedicated worker</text>
+<text x="684" y="486" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#202632" text-anchor="start">Pretrained DETR</text>
+<text x="684" y="520" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#202632" text-anchor="start">Transformers.js</text>
+<text x="684" y="554" font-family="'Segoe UI', Arial, sans-serif" font-size="21" font-weight="400" fill="#202632" text-anchor="start">ONNX Runtime Web</text>
+<text x="684" y="594" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="600" fill="#285bd4" text-anchor="start">CPU / WASM</text>
+<text x="684" y="638" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="400" fill="#4d5b70" text-anchor="start">One active inference</text>
+<text x="684" y="672" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="400" fill="#4d5b70" text-anchor="start">Base threshold: 0.50</text>
+<rect x="88" y="580" width="488" height="168" rx="8" fill="#edf2ff" stroke="#285bd4" stroke-width="1.6"/>
+<text x="112" y="616" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="600" fill="#202632" text-anchor="start">2. Current validated predictions</text>
+<text x="112" y="650" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="start">Labels and raw model scores</text>
+<text x="112" y="684" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="start">Normalized boxes · stable IDs</text>
+<text x="112" y="722" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="400" fill="#4d5b70" text-anchor="start">Image revision guard rejects stale results</text>
+<rect x="88" y="772" width="488" height="112" rx="8" fill="#ffffff" stroke="#8794a7" stroke-width="1.6"/>
+<text x="112" y="808" font-family="'Segoe UI', Arial, sans-serif" font-size="24" font-weight="600" fill="#202632" text-anchor="start">3. Filter cached predictions</text>
+<text x="112" y="840" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="start">Update boxes, list and selection</text>
+<text x="112" y="870" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="400" fill="#4d5b70" text-anchor="start">No new model run</text>
+<rect x="660" y="772" width="272" height="112" rx="8" fill="#ffffff" stroke="#8794a7" stroke-width="1.6"/>
+<text x="684" y="808" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="600" fill="#202632" text-anchor="start">Canvas PNG export</text>
+<text x="684" y="840" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="400" fill="#4d5b70" text-anchor="start">Main-thread drawing</text>
+<text x="684" y="870" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="400" fill="#4d5b70" text-anchor="start">Browser download</text>
+<text x="64" y="936" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="400" fill="#4d5b70" text-anchor="start">Prediction state is held in memory for the current image.</text>
+<text x="64" y="972" font-family="'Segoe UI', Arial, sans-serif" font-size="22" font-weight="600" fill="#285bd4" text-anchor="start">No hosted inference API · no database</text>
+<text x="40" y="1024" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="400" fill="#4d5b70" text-anchor="start">A higher display minimum hides predictions; it does not retrain or improve the model.</text>
+</svg>
