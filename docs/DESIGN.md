@@ -52,6 +52,7 @@ The longer worked example and a small optional test edit are in [the learning gu
 | --- | --- |
 | HTML and CSS | Accessible single-page interface and responsive layout |
 | JavaScript | File validation, image state, result display and selection |
+| Canvas PNG export | Draws the current filtered annotations over the decoded photo at its original dimensions |
 | Browser Web Worker | Runs the pretrained model without blocking the interface |
 | Transformers.js 2.17.2 | Object-detection inference with a quantized DETR model |
 | ONNX Runtime Web 1.14.0 | CPU/WASM execution underneath Transformers.js |
@@ -74,6 +75,10 @@ After successful inference, the app keeps validated predictions for that image. 
 
 Try sample reserves a new image revision before requesting the local photo. Clear or a newer selection invalidates that revision and cancels its pending fetch, so a late sample cannot overwrite the current workspace. A 15-second fetch deadline produces a recoverable sample-loading message. Sample loading uses the same image validation and inference path as file selection; there are no prerecorded sample answers in the normal application.
 
+Save result captures the current photo, minimum score and visible prediction set. A separate canvas renderer draws that photo with boxes, labels and model scores at the browser-decoded, orientation-corrected dimensions. It does not rerun inference or include application controls, selection emphasis or a summary strip. Before initiating the download, an export revision guard checks that neither the photo nor the filter changed while PNG encoding was pending. Clear, replacement and filter changes invalidate unfinished exports.
+
+Save is disabled when there are no visible predictions or the current export is being prepared. Encoding has a 15-second deadline. A scoped export message reports failure without discarding a valid detection result, and retry remains available. A successful message says the download started; it does not claim the operating system saved the file. Very small source images necessarily have limited annotation readability, and browser canvas limits can reject extreme image dimensions; failures are reported without silently changing resolution.
+
 Clearing or replacing an image does not promise interruption of CPU work already underway. It prevents that old work from changing the visible result. There is no hosted inference API.
 
 A nonresponding worker has a bounded recovery path: model loading times out after 120 seconds and inference after 90 seconds. The worker is terminated, a clear error appears and Retry or a new valid image can recreate it. Controlled tests use a four-second deadline to exercise this path without waiting for a real model outage.
@@ -92,6 +97,7 @@ The list is titled "Detections" and the completion message counts "predictions".
 | AC6 | Keyboard controls have visible focus, updates are announced accessibly and the layout remains usable at a narrow viewport. |
 | AC7 | A keyboard-accessible minimum-score filter from 0.50 to 1.00 includes predictions whose underlying score is at least the selected minimum. Boxes, list and visible/total counts agree. Lowering the minimum restores hidden predictions without rerunning inference; filter-empty and model-empty states have different explanations. |
 | AC8 | Try sample loads the existing coffee photo through the real application path. Missing, unreadable or unresponsive sample data is recoverable. A delayed response cannot undo Clear or replace a newer selected image. |
+| AC9 | Save result initiates a PNG download containing only the current filtered predictions at the decoded photo's original dimensions. It is unavailable without visible predictions. Encoding failure or timeout preserves the usable result, and a pending export cannot download after Clear, image replacement or filter change. |
 
 The model's fixed inference threshold is 0.5. A separate display filter starts at 0.50, moves in steps of 0.01 and cannot recover lower-score predictions discarded by inference. Comparisons use the underlying model score, while visible scores are rounded to two decimal places. The displayed value is a model score, not a measured accuracy percentage. Supported classes come from the model; unrecognized objects do not imply an application defect.
 

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="8.448" timestamp="2026-11-02T22:17:20.003683+08:00"><testcase classname="tests.test_ui" name="test_narrow_layout_preserves_results_and_does_not_overflow[320]" time="7.597"><failure message="assert 320 &lt;= (305 + 1)">app = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session="513d747397cbef65430c08344097c29d")&gt;
+make_image = &lt;function make_image.&lt;locals&gt;.create at 0x000001D27100BBA0&gt;
+width = 320
+
+    @pytest.mark.parametrize("width", [320, 390])
+    def test_narrow_layout_preserves_results_and_does_not_overflow(app, make_image, width):
+        app.set_window_size(390, 844)
+        # Chrome can impose a larger minimum outer-window width. Set the CSS viewport explicitly.
+        app.execute_cdp_cmd("Emulation.setDeviceMetricsOverride", {
+            "width": width, "height": 844, "deviceScaleFactor": 1, "mobile": False,
+        })
+        upload(app, make_image())
+        wait_state(app, "complete")
+        metrics = app.execute_script("""
+            return {content: document.documentElement.scrollWidth,
+                    viewport: document.documentElement.clientWidth, outer: window.innerWidth};
+        """)
+        assert metrics["outer"] == width
+&gt;       assert metrics["content"] &lt;= metrics["viewport"] + 1
+E       assert 320 &lt;= (305 + 1)
+
+tests\test_ui.py:334: AssertionError</failure></testcase></testsuite></testsuites>

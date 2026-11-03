@@ -13,7 +13,7 @@
 }
 
 * { box-sizing: border-box; }
-body { margin: 0; min-width: 320px; }
+body { margin: 0; min-width: 0; }
 button, input { font: inherit; }
 button { touch-action: manipulation; }
 button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #1f54cd; outline-offset: 4px; }
@@ -189,6 +189,9 @@ p, h1, h2 { margin: 0; }
 .object-score { font-size: 13px; font-variant-numeric: tabular-nums; }
 .results-empty, .selection-help { color: var(--muted); padding: 21px 10px 0; font-size: 13px; line-height: 1.6; }
 .prediction-note { margin-top: auto; padding: 50px 10px 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.export-message { color: #45536a; font-size: 12px; line-height: 1.6; }
+.export-message:not(:empty) { padding: 8px 10px 0; }
+.export-message[data-kind="error"] { color: #92382b; }
 
 .workspace-status { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; padding: 19px 7px 0; }
 .status-information { display: flex; align-items: baseline; gap: 10px; min-width: 0; }

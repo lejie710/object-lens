@@ -4,6 +4,14 @@ These files summarize actual local checks and preserve their evidence boundaries
 
 | File | What it establishes |
 | --- | --- |
+| `extension-full-suite.xml` | The final combined 48-case run for the three additions and the corrected narrow-layout check |
+| `extension-verification.json` | Final counts, application/test hashes, redaction records, actual findings and scope limits |
+| `extension-demo.json` | Real sample/filter/PNG workflow and current usable-width geometry on four viewports |
+| `score-filter-suite.xml` and `score-filter-record.json` | The 29-case controlled score-filter checkpoint |
+| `sample-image-suite.xml` and `sample-image-record.json` | Seven sample-loading checks plus three real-inference cases |
+| `export-png-suite.xml` | Eight controlled export cases using actual downloaded PNG bytes |
+| `viewport-before-fix.xml` | Reproduction of the observed 320-versus-305-pixel horizontal-overflow defect |
+| `extension-first-full-suite.xml` | Earlier 47-pass/one-failure run; the failed download-folder assertion found a non-PNG artifact, as explained in the verification record |
 | `initial-full-suite.xml` | The first complete 26-case run after the functional fixes |
 | `final-full-suite.xml` | The complete 26-case run with the final test diagnostics and valid PNG fixtures |
 | `fresh-setup-suite.xml` | The complete run from independently prepared source, environment, assets and driver cache on the same laptop |
@@ -14,4 +22,4 @@ These files summarize actual local checks and preserve their evidence boundaries
 | `stability-summary.json` | One hour of repeated real-model use on five fixed photos; not a load or accuracy benchmark |
 | `final-contrast-review.json` | Computed browser text contrast after the final empty-state colour adjustment |
 
-The generated design concept is separate from these records. Partial expected labels were based on upstream image descriptions and AI-assisted visual review, not exhaustive human annotation or the detector's own answers. The fresh-setup record is an earlier independent environment check; the final suite also includes later test-quality refinements.
+The generated design concept is separate from these records. Partial expected labels were based on upstream image descriptions and AI-assisted visual review, not exhaustive human annotation or the detector's own answers. The 26-case, fresh-setup, baseline-comparison and one-hour stability records belong to the earlier base version. The extension has its own final suite and demonstration record; earlier evidence is not relabelled as new execution.

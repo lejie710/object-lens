@@ -33,6 +33,7 @@
           <button id="choose-image" class="button button-primary" type="button">Choose image</button>
           <button id="try-sample" class="button button-secondary" type="button">Try sample</button>
           <button id="clear-image" class="button button-secondary" type="button" disabled>Clear</button>
+          <button id="save-result" class="button button-secondary" type="button" disabled>Save result</button>
           <input id="file-input" class="visually-hidden" type="file" name="image" accept="image/jpeg,image/png" aria-label="Choose a JPEG or PNG image" tabindex="-1" />
         </div>
       </div>
@@ -70,7 +71,7 @@
               <label for="minimum-score">Minimum model score</label>
               <output id="minimum-score-value" for="minimum-score">0.50</output>
             </div>
-            <input id="minimum-score" type="range" min="0.50" max="1.00" step="0.01" value="0.50" aria-valuetext="0.50" aria-describedby="filter-help" disabled />
+            <input id="minimum-score" name="minimum-score" type="range" min="0.50" max="1.00" step="0.01" value="0.50" aria-valuetext="0.50" aria-describedby="filter-help" disabled />
             <p id="filter-help" class="filter-help">Scores are rounded for display. Filtering uses the full score.</p>
             <p id="filter-summary" class="filter-summary" hidden></p>
           </div>
@@ -78,6 +79,7 @@
           <p id="results-empty" class="results-empty">Detections will appear here.</p>
           <p id="selection-help" class="selection-help" hidden>Select an object to highlight its box.</p>
           <p class="prediction-note">Predictions can be incorrect. Review the image.</p>
+          <p id="export-message" class="export-message" role="status" aria-live="polite" aria-atomic="true"></p>
         </aside>
       </section>
 
