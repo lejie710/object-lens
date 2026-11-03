@@ -24,6 +24,13 @@
     </header>
 
     <main id="main" class="app-main">
+      <section id="model-loading" class="model-loading" aria-labelledby="model-loading-title" data-phase="preparing">
+        <h2 id="model-loading-title">Preparing object detection</h2>
+        <p class="model-loading-help">The first visit loads a model of about 43 MB plus the browser runtime. Loading time depends on your connection and device. Cached files can make later visits quicker.</p>
+        <p id="model-loading-stage" class="model-loading-stage" role="status" aria-live="polite" aria-atomic="true">Loading detection files…</p>
+        <progress id="model-loading-progress" max="100" aria-labelledby="model-loading-stage"></progress>
+        <p id="model-loading-detail" class="model-loading-detail">You can choose an image while this loads.</p>
+      </section>
       <div class="workspace-toolbar">
         <div class="file-information">
           <p id="filename" class="filename">No image selected</p>
@@ -88,7 +95,10 @@
           <span id="status-indicator" class="status-indicator" data-kind="loading" aria-hidden="true"></span>
           <p id="status" role="status" aria-live="polite" aria-atomic="true">Preparing object detection…</p>
         </div>
-        <p class="local-note">Images are processed in your browser.</p>
+        <div class="footer-details">
+          <p class="local-note">Images are processed in your browser.</p>
+          <a class="credits-link" href="./credits.html">Credits and licenses</a>
+        </div>
       </footer>
     </main>
   </body>

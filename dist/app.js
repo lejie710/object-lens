@@ -21,6 +21,8 @@ const elements = {
   minimumScore: byId('minimum-score'), minimumScoreValue: byId('minimum-score-value'),
   filterSummary: byId('filter-summary'),
   status: byId('status'), indicator: byId('status-indicator'),
+  modelLoading: byId('model-loading'), modelLoadingStage: byId('model-loading-stage'),
+  modelLoadingProgress: byId('model-loading-progress'), modelLoadingDetail: byId('model-loading-detail'),
   errorNotice: byId('error-notice'), error: byId('error-message'), retry: byId('retry-detection'),
 };
 
@@ -39,6 +41,54 @@ let selectedPredictionId = null;
 let sampleRequest = null;
 let exportRevision = 0;
 let exportBusy = false;
+let modelFileStarted = false;
+let modelFileLoaded = false;
+
+function showModelLoading() {
+  modelFileStarted = false;
+  modelFileLoaded = false;
+  elements.modelLoading.hidden = false;
+  elements.modelLoading.dataset.phase = 'preparing';
+  elements.modelLoadingStage.textContent = 'Loading detection files…';
+  elements.modelLoadingProgress.removeAttribute('value');
+  elements.modelLoadingDetail.textContent = 'You can choose an image while this loads.';
+}
+
+function updateModelLoading(data) {
+  if (modelReady || modelFailed || elements.modelLoading.hidden) return;
+  if (!['initiate', 'download', 'progress', 'done'].includes(data.status)) return;
+  const isModel = typeof data.file === 'string' && /\.onnx$/i.test(data.file);
+  if (!isModel) {
+    // Small settings files may finish after the model starts. Do not let their
+    // individual progress replace the model's progress or initialization stage.
+    if (modelFileStarted || modelFileLoaded) return;
+    elements.modelLoadingStage.textContent = 'Loading detection settings…';
+    elements.modelLoadingProgress.removeAttribute('value');
+    elements.modelLoadingDetail.textContent = 'Preparing the files needed for object detection.';
+    return;
+  }
+  if (data.status === 'done') {
+    modelFileLoaded = true;
+    elements.modelLoading.dataset.phase = 'initializing';
+    elements.modelLoadingStage.textContent = 'Starting the detector…';
+    elements.modelLoadingProgress.removeAttribute('value');
+    elements.modelLoadingDetail.textContent = 'Model received. Loading and initializing the browser runtime.';
+    return;
+  }
+  if (modelFileLoaded) return;
+  modelFileStarted = true;
+  elements.modelLoading.dataset.phase = 'downloading';
+  elements.modelLoadingStage.textContent = 'Loading detection model…';
+  if (Number.isFinite(data.loaded) && Number.isFinite(data.total) && data.total > 0) {
+    const received = Math.max(0, Math.min(data.loaded, data.total));
+    const percentage = received / data.total * 100;
+    elements.modelLoadingProgress.value = percentage;
+    elements.modelLoadingDetail.textContent = `${(received / 1_000_000).toFixed(1)} of ${(data.total / 1_000_000).toFixed(1)} MB received (${Math.floor(percentage)}%).`;
+  } else {
+    elements.modelLoadingProgress.removeAttribute('value');
+    elements.modelLoadingDetail.textContent = 'Receiving the model. Download size is not available yet.';
+  }
+}
 
 function visiblePredictions() {
   const minimum = Number(elements.minimumScore.value);
@@ -158,6 +208,7 @@ function stopWorker() {
 function failWorker(message) {
   stopWorker();
   modelFailed = true;
+  elements.modelLoading.hidden = true;
   pendingImage = currentImage;
   clearResults();
   showError(message, { retry: true });
@@ -192,7 +243,7 @@ function clearWorkspace() {
   elements.clear.disabled = true;
   elements.resultsEmpty.textContent = 'Detections will appear here.';
   if (modelFailed) {
-    showError('Object detection could not start. Try again, or check the local setup instructions.', { retry: true });
+    showError('Object detection could not start. Try again or reload the page.', { retry: true });
   } else {
     setState(modelReady ? 'ready' : 'loading', modelReady ? 'Ready to choose an image' : 'Preparing object detection…');
   }
@@ -480,11 +531,16 @@ function renderFilteredResults() {
 }
 
 function onWorkerMessage({ data }) {
+  if (data.type === 'progress') {
+    updateModelLoading(data);
+    return;
+  }
   if (data.type === 'ready') {
     clearTimeout(loadTimer);
     loadTimer = null;
     modelReady = true;
     modelFailed = false;
+    elements.modelLoading.hidden = true;
     if (pendingImage) startPendingInference();
     else if (!currentImage && !sampleRequest && elements.errorNotice.hidden) setState('ready', 'Ready to choose an image');
     return;
@@ -512,7 +568,7 @@ function onWorkerMessage({ data }) {
   }
   if (data.type === 'error' && data.stage === 'load') {
     console.error('Object Lens model loading:', data.message);
-    failWorker('Object detection could not start. Try again, or check the local setup instructions.');
+    failWorker('Object detection could not start. Try again or reload the page.');
   }
 }
 
@@ -520,6 +576,7 @@ function createWorker() {
   stopWorker();
   clearError();
   modelFailed = false;
+  showModelLoading();
   try {
     const instance = new Worker(testMode ? './test-worker.js' : './worker.js', { type: 'module' });
     worker = instance;
@@ -527,14 +584,14 @@ function createWorker() {
     instance.onerror = (error) => {
       if (instance !== worker) return;
       console.error('Object Lens worker:', error.message);
-      failWorker('Object detection could not start. Try again, or check the local setup instructions.');
+      failWorker('Object detection could not start. Try again or reload the page.');
     };
     setState('loading', 'Preparing object detection…');
     loadTimer = setTimeout(() => workerTimedOut(instance), testMode ? CONTROLLED_TIMEOUT_MS : LOAD_TIMEOUT_MS);
     instance.postMessage({ type: 'load' });
   } catch (error) {
     console.error('Object Lens worker creation:', error);
-    failWorker('Object detection could not start. Try again, or check the local setup instructions.');
+    failWorker('Object detection could not start. Try again or reload the page.');
   }
 }
 
@@ -570,8 +627,9 @@ async function initialize() {
     createWorker();
   } catch (error) {
     modelFailed = true;
+    elements.modelLoading.hidden = true;
     console.error('Object Lens initialization:', error);
-    showError('Object detection could not start. Reload the page or check the local setup instructions.');
+    showError('Object detection could not start. Check your connection and reload the page.');
   }
 }
 

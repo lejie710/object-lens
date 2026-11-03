@@ -6,6 +6,9 @@ Selected text files use UTF-8 with LF line endings to match Git checkout. Raw-ru
 
 | File | What it establishes |
 | --- | --- |
+| `public-prep-full-suite.xml` and `public-prep-focused-suite.xml` | The 3 November 59-case full run and 11-case focused startup/package run |
+| `public-prep-verification.json` | Source hashes, raw-record provenance, current counts and explicit pre-deployment limits |
+| `public-prep-review.json` | Local static-package real inference/export, simulated model transfer, viewport, credits-link and keyboard observations; not hosted verification |
 | `extension-full-suite.xml` | The final combined 48-case run for the three additions and the corrected narrow-layout check |
 | `extension-verification.json` | Final counts, application/test hashes, redaction records, actual findings and scope limits |
 | `extension-demo.json` | Real sample/filter/PNG workflow and current usable-width geometry on four viewports |

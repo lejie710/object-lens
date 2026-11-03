@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f6f8" />
+    <meta name="description" content="How Object Lens processes photos, and the people and open-source projects behind it." />
+    <title>Credits and privacy · Object Lens</title>
+    <link rel="icon" href="data:," />
+    <style>
+      :root { color-scheme: light; font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif; color: #202632; background: #f5f6f8; font-synthesis: none; }
+      * { box-sizing: border-box; }
+      body { margin: 0; }
+      a { color: #285bd4; text-underline-offset: 3px; overflow-wrap: anywhere; }
+      a:hover { color: #1949bb; }
+      a:focus-visible { outline: 3px solid #1f54cd; outline-offset: 4px; border-radius: 2px; }
+      .skip-link { position: absolute; top: -70px; left: 16px; padding: 12px 16px; background: #fff; z-index: 2; }
+      .skip-link:focus { top: 12px; }
+      header { background: #fff; border-bottom: 1px solid #dee2e8; }
+      .header-inner { max-width: 860px; margin: 0 auto; padding: 22px 30px; display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; }
+      .brand { color: #202632; font-size: 20px; font-weight: 650; text-decoration: none; }
+      .back { font-size: 14px; }
+      main { max-width: 860px; margin: 0 auto; padding: 40px 30px 56px; }
+      h1 { margin: 0 0 14px; font-size: clamp(28px, 5vw, 34px); line-height: 1.2; font-weight: 650; letter-spacing: -0.6px; }
+      h2 { margin: 0 0 12px; font-size: 22px; line-height: 1.3; font-weight: 600; }
+      h3 { margin: 24px 0 8px; font-size: 17px; line-height: 1.4; font-weight: 600; }
+      p { margin: 0 0 12px; font-size: 16px; line-height: 1.65; }
+      .intro { color: #4d5b70; max-width: 680px; }
+      section { margin-top: 30px; padding-top: 28px; border-top: 1px solid #dee2e8; }
+      .links { color: #4d5b70; font-size: 14px; line-height: 1.9; }
+      .links a { display: inline-block; margin-right: 18px; }
+      .note { color: #4d5b70; font-size: 14px; }
+      footer { margin-top: 36px; padding-top: 20px; border-top: 1px solid #dee2e8; font-size: 14px; }
+      @media (max-width: 520px) {
+        .header-inner { padding: 18px 20px; }
+        main { padding: 30px 20px 42px; }
+        h2 { font-size: 20px; }
+        .links a { margin-right: 14px; }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <header>
+      <div class="header-inner">
+        <a class="brand" href="./">Object Lens</a>
+        <a class="back" href="./">Back to the app</a>
+      </div>
+    </header>
+    <main id="main" tabindex="-1">
+      <h1>Credits and privacy</h1>
+      <p class="intro">Object Lens is a small learning project for trying pretrained object detection in a photograph.</p>
+
+      <section aria-labelledby="your-photos">
+        <h2 id="your-photos">Your photos</h2>
+        <p>The photo you select is processed in your browser. Object Lens does not upload that photo to a server. The browser still requests the website's files, including the model and the optional sample photo.</p>
+        <p>Labels, boxes and scores are model predictions. They can be incorrect, and a model score is not a measured accuracy percentage. Review the photograph when interpreting a result.</p>
+      </section>
+
+      <section aria-labelledby="project">
+        <h2 id="project">Object Lens</h2>
+        <p>The project adapts the interaction demonstrated by Hugging Face's Transformers.js vanilla JavaScript object-detection example. The interface, input validation, background-worker integration, result handling, score filter and PNG export are project modifications.</p>
+        <p>Developed with assistance from AI tools.</p>
+        <p class="links">
+          <a href="licenses/object-lens-LICENSE.txt">Existing project license: Apache-2.0</a>
+          <a href="https://github.com/huggingface/transformers.js-examples/tree/204b0948e88cd2bdc046316e78b754359653caea/vanilla-js">Original example</a>
+          <a href="licenses/upstream-example-LICENSE.txt">Example license</a>
+        </p>
+      </section>
+
+      <section aria-labelledby="runtime-model">
+        <h2 id="runtime-model">Runtime and model</h2>
+
+        <h3>Transformers.js 2.17.2</h3>
+        <p>Hugging Face's JavaScript library loads the pretrained object-detection pipeline used by this application.</p>
+        <p class="links">
+          <a href="licenses/transformers-js-2.17.2-LICENSE.txt">Apache-2.0 license</a>
+          <a href="https://github.com/huggingface/transformers.js/tree/2.17.2">Versioned source</a>
+        </p>
+        <p class="note">The browser bundle also includes Hugging Face Jinja 0.2.2. Its <a href="licenses/huggingface-jinja-0.2.2-LICENSE.txt">MIT license</a> is included with these credits.</p>
+
+        <h3>ONNX Runtime Web 1.14.0</h3>
+        <p>Microsoft's runtime executes the prepared model on the CPU through WebAssembly. Copyright © Microsoft Corporation.</p>
+        <p class="links">
+          <a href="licenses/onnxruntime-web-1.14.0-LICENSE.txt">MIT license</a>
+          <a href="licenses/onnxruntime-1.14.0-ThirdPartyNotices.txt">Upstream third-party notices</a>
+          <a href="https://github.com/microsoft/onnxruntime/tree/v1.14.0">Versioned source</a>
+        </p>
+        <p class="note">The complete upstream third-party notice file is retained without modification.</p>
+
+        <h3>DETR ResNet-50</h3>
+        <p>The detector was pretrained before this project used it. Object Lens uses Xenova's quantized ONNX conversion of <code>facebook/detr-resnet-50</code>, originally released by Facebook Research. This project does not train or update the detector.</p>
+        <p>The base model is published under Apache-2.0. The retained model cards identify the base model and the exact conversion used here.</p>
+        <p class="links">
+          <a href="licenses/detr-LICENSE.txt">DETR license</a>
+          <a href="licenses/detr-resnet-50-model-card.md">Base-model card</a>
+          <a href="licenses/xenova-detr-resnet-50-model-card.md">Conversion model card</a>
+          <a href="https://huggingface.co/Xenova/detr-resnet-50/tree/8be7ab59ff663484ee9ba2e8d8f267330d5ad03e">Pinned ONNX conversion</a>
+        </p>
+      </section>
+
+      <section aria-labelledby="sample-photo">
+        <h2 id="sample-photo">Sample photo</h2>
+        <p>The coffee photograph is by Rachel Michetti, courtesy of Pikolo Espresso Bar. It is released under CC0 according to the scikit-image project and is copied unchanged from scikit-image v0.25.2.</p>
+        <p class="links">
+          <a href="https://scikit-image.org/docs/0.25.x/api/skimage.data.html#skimage.data.coffee">Photo attribution</a>
+          <a href="https://raw.githubusercontent.com/scikit-image/scikit-image/v0.25.2/skimage/data/coffee.png">Pinned photo source</a>
+          <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>
+        </p>
+      </section>
+
+      <footer><a href="./">Return to Object Lens</a></footer>
+    </main>
+  </body>
+</html>

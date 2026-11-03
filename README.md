@@ -39,6 +39,8 @@ For a first demonstration, click **Try sample**, select the cup result, and move
 
 Tests start and stop their own local servers and use headless Chrome. You do not need to start `serve.py` first. Controlled UI tests are separate from tests marked `inference`, which use the actual local model. See [verification and release assessment](docs/VERIFICATION.md) for results and limitations.
 
+The static-package integration check also uses the real model, but serves the prepared website through an ordinary local static server. It does not establish that a public URL has been deployed.
+
 If your first terminal is still running the app, open a second PowerShell window in this project directory for tests, or stop that server with Ctrl+C first.
 
 For a shorter run while learning one part:
@@ -74,6 +76,7 @@ If the app cannot prepare detection because an asset is missing, run the asset p
 
 ## Read next
 
+- [Public demo preparation and upload guide](docs/PUBLIC_DEMO.md)
 - [System-design companion PDF](docs/system-design/Object_Lens_System_Design.pdf) and [editable Word document](docs/system-design/Object_Lens_System_Design.docx), both with clickable contents
 - [Design and acceptance criteria](docs/DESIGN.md)
 - [A short guide to the stack and one test](docs/LEARNING.md)

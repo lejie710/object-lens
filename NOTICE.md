@@ -8,11 +8,12 @@ The Object Lens interface, file validation, background-worker integration, stale
 
 - Transformers.js 2.17.2: https://github.com/huggingface/transformers.js (Apache-2.0).
 - ONNX Runtime Web 1.14.0: https://github.com/microsoft/onnxruntime (MIT).
+- Hugging Face Jinja 0.2.2, embedded in the browser bundle: https://www.npmjs.com/package/@huggingface/jinja (MIT).
 - DETR model: https://huggingface.co/facebook/detr-resnet-50 (Apache-2.0 model card).
 - Browser-compatible model conversion: https://huggingface.co/Xenova/detr-resnet-50, with its exact revision in `asset-lock.json`.
 - Sample photographs and their separate licences: `docs/IMAGE_SOURCES.md`.
 
-Prepared model/runtime assets are local working dependencies and are excluded from Git. Original licence texts and sources should accompany any later redistribution as applicable. Publication is not part of this local project.
+Prepared model/runtime assets are excluded from Git but included in the deliberate public static package. The public credits page and `dist/licenses` retain the applicable original licence texts, upstream notices and model-card provenance; their source URLs and exact bytes are recorded in `credits-lock.json`. The existing project licence is preserved unchanged. Public deployment status and verification are recorded in `docs/PUBLIC_DEMO.md`.
 
 ## Baseline interpretation
 

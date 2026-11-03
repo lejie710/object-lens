@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-11-03",
+  "scope": "License and attribution text distributed with the public static application. Upstream text bytes are preserved.",
+  "files": [
+    {
+      "path": "licenses/object-lens-LICENSE.txt",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "source": "LICENSE"
+    },
+    {
+      "path": "licenses/transformers-js-2.17.2-LICENSE.txt",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "url": "https://raw.githubusercontent.com/huggingface/transformers.js/2.17.2/LICENSE"
+    },
+    {
+      "path": "licenses/onnxruntime-web-1.14.0-LICENSE.txt",
+      "bytes": 1073,
+      "sha256": "2f07c72751aed99790b8a4869cf2311df85a860b22ded05fa22803587a48922c",
+      "url": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.14.0/LICENSE"
+    },
+    {
+      "path": "licenses/onnxruntime-1.14.0-ThirdPartyNotices.txt",
+      "bytes": 299762,
+      "sha256": "cc63920441c5681cfb1663caf1de1858349b517fc1bed9ca669a85bc526cd13e",
+      "url": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.14.0/ThirdPartyNotices.txt"
+    },
+    {
+      "path": "licenses/detr-LICENSE.txt",
+      "bytes": 11354,
+      "sha256": "b208c52b00a2df2c8f4c3298c34407bf2bfe409968213372251c91fcc737a1a5",
+      "url": "https://raw.githubusercontent.com/facebookresearch/detr/29901c51d7fe8712168b8d0d64351170bc0f83e0/LICENSE"
+    },
+    {
+      "path": "licenses/detr-resnet-50-model-card.md",
+      "bytes": 5891,
+      "sha256": "bc7d74d96a9101113c06be3a90975510dd19671382eb6fdfc5d1edbb042a723b",
+      "url": "https://huggingface.co/facebook/detr-resnet-50/resolve/1d5f47bd3bdd2c4bbfa585418ffe6da5028b4c0b/README.md"
+    },
+    {
+      "path": "licenses/xenova-detr-resnet-50-model-card.md",
+      "bytes": 1811,
+      "sha256": "09f64e2f64fb3e64cefe581c72c8c79957f2614f46cd6b3d94fc1daff04641aa",
+      "url": "https://huggingface.co/Xenova/detr-resnet-50/resolve/8be7ab59ff663484ee9ba2e8d8f267330d5ad03e/README.md"
+    },
+    {
+      "path": "licenses/upstream-example-LICENSE.txt",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "url": "https://raw.githubusercontent.com/huggingface/transformers.js-examples/204b0948e88cd2bdc046316e78b754359653caea/LICENSE"
+    },
+    {
+      "path": "licenses/huggingface-jinja-0.2.2-LICENSE.txt",
+      "bytes": 1069,
+      "sha256": "d6e7b19451c1b3d1d66353bb4b1274138953b3bfd9ae60c56e77b1f548796982",
+      "url": "https://cdn.jsdelivr.net/npm/@huggingface/jinja@0.2.2/LICENSE",
+      "version_source": "https://raw.githubusercontent.com/huggingface/transformers.js/2.17.2/package-lock.json"
+    }
+  ],
+  "notes": [
+    "The project licence is copied unchanged from LICENSE; no new project licence is selected.",
+    "The pinned Transformers.js 2.17.2 package lists /LICENSE but no separate transformers.min.js.LICENSE.txt; its shipped browser bundle has no external licence-file reference.",
+    "The full ONNX Runtime 1.14.0 upstream third-party notice file is retained without claiming that every listed component is included in the browser build.",
+    "The Xenova conversion card identifies facebook/detr-resnet-50 as its base model. The pinned base-model card declares Apache-2.0; both cards are retained.",
+    "The browser bundle includes @huggingface/jinja. The Transformers.js 2.17.2 package-lock.json pins it to 0.2.2; its published MIT licence is included."
+  ]
+}

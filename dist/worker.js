@@ -16,8 +16,9 @@ async function load() {
     loading = pipeline('object-detection', 'Xenova/detr-resnet-50', {
       quantized: true,
       progress_callback: (event) => {
-        if (event.status === 'progress') {
-          self.postMessage({ type: 'progress', progress: event.progress });
+        if (['initiate', 'download', 'progress', 'done'].includes(event.status)) {
+          self.postMessage({ type: 'progress', status: event.status, file: event.file,
+            loaded: event.loaded, total: event.total, progress: event.progress });
         }
       },
     }).then((value) => { detector = value; return value; }).catch((error) => {

@@ -4,6 +4,8 @@ Read the [PDF companion](Object_Lens_System_Design.pdf) or the [editable Word ed
 
 Begin with the scope and technology responsibilities, then follow the architecture, image-replacement sequence and testing diagrams. The worked size-boundary test and real narrow-viewport defect explain how requirements, automation and failure investigation connect. The release assessment distinguishes the 48-case extension result from earlier base-version evidence.
 
+This is the versioned 2 November local-application companion. The later startup-feedback and static-hosting preparation changes are recorded in [Public demo preparation](../PUBLIC_DEMO.md); no hosted verification is implied by the earlier document or its retained results.
+
 ## Sources and generated files
 
 | File | Role |

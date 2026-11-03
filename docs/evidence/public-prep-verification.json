@@ -1,0 +1,84 @@
+{
+  "date": "2026-11-03",
+  "status": "Prepared and locally verified; public deployment and hosted verification have not occurred.",
+  "passed": 59,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "pytest_seconds": 441.33,
+  "non_inference_cases": 55,
+  "real_inference_cases": 4,
+  "focused_passed": 11,
+  "focused_seconds": 52.46,
+  "package_content_id": "a8981fa53c0dd2cbfa72cc831cb406d639255f3c68674d897d6025defb981bc4",
+  "source_sha256": {
+    "dist/app.js": "8430a901ba525259bee26cb7a35ed04af3fb9813a0387a8bd50b459353f833b9",
+    "dist/png-export.js": "cb7171cec270e245a78f70a8f56cd62a921157825458a3aeb97ac8b513948c41",
+    "dist/worker.js": "a791a655630ad942a784fc0d769c9b1123812b5e0491a0e23ca17ed800c6377d",
+    "dist/index.html": "d4b6944c8c2bce55a69903173d7fc6c009bddc49170ec3a461075ffa07d774bd",
+    "dist/style.css": "e4a1a8e3590fe79720ae588d53bee72f1d3e76c1e3118c75b6faffb5d0a41aa6",
+    "dist/credits.html": "38673103e5133b79e0c53e949d4b65dd42485d164f46b56c968a230a714bd6c0",
+    "dist/runtime-config.json": "80c98bfac072ba06f97197da8758f21bf1f8988a75b5302001b0eb22787d5d77",
+    "serve.py": "fbee47676ed615440f51eb4dad47c211c49c03a2afdc233e51683b719d4caedb",
+    "tools/build_public_demo.py": "cc6ae9545647be4d1369aa1ce9f45936e283c941b27927ed341e69834baf78d4",
+    "tools/check_public_demo.py": "17d8109d864634def9653b02020bbf9d259d06a5ef111377b06bb59aa52c812a",
+    "tests/conftest.py": "5f4a2479e0befe5098e59448404520dd16eaee9c66cb668063bb5f759753e35c",
+    "tests/test_export.py": "1c62dabda67959a142319d46c5f46f5a6bdc45354346ceca058f29f04f8f3707",
+    "tests/test_filter.py": "af5ebecfb534aad69e81151e4d2063b4420e3d3beeb5c90d8e31a9e7b70ee525",
+    "tests/test_inference.py": "7c85025133aca57e60bc72fabf499321830b814954d33abefaf32064fde5b7f7",
+    "tests/test_loading.py": "f31ae1624eedced851f0614b77d5ae1d85abc6f03a85cc69da52d50efce3516b",
+    "tests/test_public_package.py": "e4ec3606d4c4797ce05c964d7ea170af403bd8462de3738253629bde92fdb644",
+    "tests/test_sample.py": "66e21ae95ae7fa36156844e732c3606c8006d207de8ad73e0c7344f8948074df",
+    "tests/test_server.py": "6dbff96615d244a590363e8c340e665e00d6aa71be65e5b7e6278edd0ca34ce9",
+    "tests/test_ui.py": "5a388f29f6ad8d1c1566a12fe6eaa512681bb5bc03df329b39e2c439704cc5b6",
+    "tests/fixtures/test-worker.js": "7510534af004116336c4af3e1b82656a3a49e0ff3de6bc616223c45362851d92",
+    "asset-lock.json": "9304dd88602a161c3ac1e580fa559e01a22f285c57573bf77d708b0c1af58216",
+    "credits-lock.json": "095633d230a4a2300a3bd612b15eb76baf7253561b4df7713ea6c397f584fe2f"
+  },
+  "evidence": [
+    {
+      "source": "artifacts/public-release/full-suite.xml",
+      "sha256": "9d508bf4704dd25916fcd175eac5e38fedac4dc95830b184f1e65a381c5eefcc",
+      "selected": "docs/evidence/public-prep-full-suite.xml",
+      "redaction": "Removed hostname attributes only; selected XML uses LF line endings."
+    },
+    {
+      "source": "artifacts/public-release/focused-suite.xml",
+      "sha256": "5c9c042da4777811333ec675f4ead9ac701efc4c596c2b25952962f786ab86de",
+      "selected": "docs/evidence/public-prep-focused-suite.xml",
+      "redaction": "Removed hostname attributes only; selected XML uses LF line endings."
+    },
+    {
+      "source": "artifacts/public-release/review/run-lbjev4yr/observations.json",
+      "sha256": "0c184cfcdd4fd43c2b27414010a0ec5981cff8ae96b6bcdf0fd2e68e96e87d52",
+      "selected": "docs/evidence/public-prep-review.json",
+      "redaction": "Replaced the absolute generated-site path with the package content identity; JSON uses LF."
+    }
+  ],
+  "model_transfer": [
+    {
+      "path": "/assets/models/Xenova/detr-resnet-50/onnx/model_quantized.onnx",
+      "bytes": 43102531,
+      "expected_bytes": 43102531,
+      "complete": true,
+      "elapsed_seconds": 34.493,
+      "observed_mbps": 9.997
+    }
+  ],
+  "cold_ready_seconds": 36.776,
+  "transfer_scope": "Server-paced ONNX response on loopback; other files unpaced. Not real Internet or hosted performance.",
+  "visual_review": {
+    "screenshots": [
+      "model-loading.png",
+      "app-320.png",
+      "credits-320.png",
+      "credits-1440.png"
+    ],
+    "result": "Actual screenshots inspected; loading feedback, text, links and responsive layouts were readable without horizontal overflow."
+  },
+  "limits": [
+    "Chrome on one Windows laptop; other browsers and devices are not qualified.",
+    "Four actual-model cases do not establish general detection accuracy.",
+    "No public URL has been deployed or checked."
+  ]
+}
