@@ -1,0 +1,8 @@
+{
+  "background": "rgb(240, 242, 245)",
+  "foreground": "rgb(96, 109, 128)",
+  "ratio": 4.685183945835953,
+  "minimum": 4.5,
+  "passed": true,
+  "scope": "Final empty-state secondary text only; numerical contrast plus actual rendered screenshot."
+}

@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" data-state="loading">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f6f8" />
+    <meta name="description" content="Try object detection on a photo and inspect the predicted objects and their locations." />
+    <title>Object Lens</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./app.js" type="module"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to image workspace</a>
+    <header class="app-header">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <path d="M10 3H3v7M18 3h7v7M25 18v7h-7M10 25H3v-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" />
+        </svg>
+        <h1>Object Lens</h1>
+      </div>
+      <p class="app-description">Image object detection</p>
+      <span id="test-mode-notice" class="test-mode-notice" hidden>Controlled test mode</span>
+    </header>
+
+    <main id="main" class="app-main">
+      <div class="workspace-toolbar">
+        <div class="file-information">
+          <p id="filename" class="filename">No image selected</p>
+          <p id="image-dimensions" class="image-dimensions" hidden></p>
+        </div>
+        <div class="workspace-actions">
+          <button id="choose-image" class="button button-primary" type="button">Choose image</button>
+          <button id="clear-image" class="button button-secondary" type="button" disabled>Clear</button>
+          <input id="file-input" class="visually-hidden" type="file" name="image" accept="image/jpeg,image/png" aria-label="Choose a JPEG or PNG image" tabindex="-1" />
+        </div>
+      </div>
+
+      <div id="error-notice" class="error-notice" hidden>
+        <p id="error-message" role="alert"></p>
+        <button id="retry-detection" class="button button-secondary" type="button" hidden>Try again</button>
+      </div>
+
+      <section class="workspace" aria-label="Image and detection results">
+        <div id="image-pane" class="image-pane">
+          <div id="empty-state" class="empty-state">
+            <svg class="empty-image-icon" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+              <rect x="8" y="9" width="48" height="46" rx="4" stroke="currentColor" stroke-width="1.8" />
+              <circle cx="23" cy="24" r="5" stroke="currentColor" stroke-width="1.8" />
+              <path d="m10 47 13-12 9 8 10-15 12 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <h2>Choose an image to begin</h2>
+            <p>See the objects the model finds in your photo.</p>
+            <p class="file-limits">JPEG or PNG · Up to 10 MiB and 16 megapixels</p>
+          </div>
+          <div id="image-stage" class="image-stage" hidden aria-busy="false">
+            <img id="image-preview" class="image-preview" alt="Selected image for object detection" width="640" height="480" />
+            <div id="box-layer" class="box-layer" aria-hidden="true"></div>
+          </div>
+        </div>
+
+        <aside class="results-panel" aria-labelledby="objects-heading">
+          <div class="results-heading">
+            <h2 id="objects-heading">Detections <span id="result-count" class="result-count">0</span></h2>
+            <span class="score-heading" title="The detector's score for a prediction, not a measure of accuracy.">Model score</span>
+          </div>
+          <ol id="results-list" class="results-list"></ol>
+          <p id="results-empty" class="results-empty">Detections will appear here.</p>
+          <p id="selection-help" class="selection-help" hidden>Select an object to highlight its box.</p>
+          <p class="prediction-note">Predictions can be incorrect. Review the image.</p>
+        </aside>
+      </section>
+
+      <footer class="workspace-status">
+        <div class="status-information">
+          <span id="status-indicator" class="status-indicator" data-kind="loading" aria-hidden="true"></span>
+          <p id="status" role="status" aria-live="polite" aria-atomic="true">Preparing object detection…</p>
+        </div>
+        <p class="local-note">Images are processed in your browser.</p>
+      </footer>
+    </main>
+  </body>
+</html>

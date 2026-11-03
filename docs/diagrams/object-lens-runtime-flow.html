@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Object Lens: application and tests</title>
+  <style>
+    body { margin: 0; background: #fff; font-family: "Segoe UI", system-ui, sans-serif; }
+    svg { display: block; width: 100%; max-width: 1260px; height: auto; margin: 0 auto; }
+  </style>
+</head>
+<body>
+<svg xmlns="http://www.w3.org/2000/svg" width="1260" height="760" viewBox="0 0 1260 760" role="img" aria-labelledby="object-lens-runtime-flow-title object-lens-runtime-flow-desc">
+  <title id="object-lens-runtime-flow-title">Object Lens: application and tests</title>
+  <desc id="object-lens-runtime-flow-desc">The local Python server supplies files to the browser app, where a worker performs detection; separately, pytest runs Python test cases that use Selenium to operate and inspect a headless browser.</desc>
+  <defs>
+    <marker id="object-lens-runtime-flow-arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#4f5d75"/></marker>
+    <marker id="object-lens-runtime-flow-arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#285bd4"/></marker>
+    <marker id="object-lens-runtime-flow-arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0,8 3,0 6" fill="#2e5aa8"/></marker>
+  </defs>
+  <rect width="1260" height="760" fill="#ffffff"/>
+  <g font-family="Segoe UI, system-ui, sans-serif" fill="#202632">
+    <text x="46" y="48" font-size="29" font-weight="600">Object Lens: using the app and running tests</text>
+    <text x="46" y="80" font-size="18" fill="#4f5d75">Two commands start different workflows. The tests are separate from normal app use.</text>
+
+    <text x="46" y="129" font-size="22" font-weight="600">Use the app yourself</text>
+    <rect x="424" y="150" width="792" height="166" rx="8" fill="#f5f6f8" stroke="#bfc7d1" stroke-dasharray="5 4"/>
+    <rect x="442" y="141" width="170" height="25" fill="#ffffff"/>
+    <text x="453" y="160" font-size="17" fill="#4f5d75">Chrome browser</text>
+
+    <path d="M306 230H448" fill="none" stroke="#2e5aa8" stroke-width="2" marker-end="url(#object-lens-runtime-flow-arrow-link)"/>
+    <rect x="326" y="192" width="103" height="25" fill="#ffffff"/>
+    <text x="377" y="210" text-anchor="middle" font-size="17" fill="#4f5d75">serves files</text>
+    <path d="M742 211H888" fill="none" stroke="#285bd4" stroke-width="2" marker-end="url(#object-lens-runtime-flow-arrow-accent)"/>
+    <rect x="786" y="175" width="61" height="25" fill="#f5f6f8"/>
+    <text x="816" y="193" text-anchor="middle" font-size="17" fill="#4f5d75">image</text>
+    <path d="M888 268H742" fill="none" stroke="#4f5d75" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#object-lens-runtime-flow-arrow)"/>
+    <rect x="767" y="279" width="103" height="25" fill="#f5f6f8"/>
+    <text x="818" y="298" text-anchor="middle" font-size="17" fill="#4f5d75">predictions</text>
+
+    <rect x="46" y="179" width="260" height="110" rx="7" fill="#fff" stroke="#8190a4" stroke-width="1.5"/>
+    <text x="176" y="214" text-anchor="middle" font-size="23" font-weight="600">Python server</text>
+    <text x="176" y="243" text-anchor="middle" font-size="18" fill="#4f5d75">serve.py</text>
+    <text x="176" y="269" text-anchor="middle" font-size="17" fill="#4f5d75">makes local files available</text>
+
+    <rect x="448" y="179" width="294" height="110" rx="7" fill="#edf2ff" stroke="#285bd4" stroke-width="1.5"/>
+    <text x="595" y="214" text-anchor="middle" font-size="23" font-weight="600">Object Lens page</text>
+    <text x="595" y="243" text-anchor="middle" font-size="18" fill="#4f5d75">You choose and inspect photos</text>
+    <text x="595" y="269" text-anchor="middle" font-size="17" fill="#4f5d75">HTML, CSS and JavaScript</text>
+
+    <rect x="888" y="179" width="304" height="110" rx="7" fill="#fff" stroke="#8190a4" stroke-width="1.5"/>
+    <text x="1040" y="214" text-anchor="middle" font-size="23" font-weight="600">AI worker</text>
+    <text x="1040" y="243" text-anchor="middle" font-size="18" fill="#4f5d75">Runs the pretrained detector</text>
+    <text x="1040" y="269" text-anchor="middle" font-size="17" fill="#4f5d75">Returns labels, scores and boxes</text>
+    <text x="46" y="351" font-size="18" fill="#4f5d75">The model runs inside the browser. The Python server serves files, not predictions.</text>
+
+    <line x1="46" y1="381" x2="1214" y2="381" stroke="#dce2e9"/>
+    <text x="46" y="425" font-size="22" font-weight="600">Run automated tests</text>
+    <path d="M286 514H356" fill="none" stroke="#4f5d75" stroke-width="2" marker-end="url(#object-lens-runtime-flow-arrow)"/>
+    <rect x="299" y="477" width="43" height="25" fill="#ffffff"/>
+    <text x="320" y="496" text-anchor="middle" font-size="16" fill="#4f5d75">runs</text>
+    <path d="M616 514H686" fill="none" stroke="#4f5d75" stroke-width="2" marker-end="url(#object-lens-runtime-flow-arrow)"/>
+    <rect x="630" y="477" width="43" height="25" fill="#ffffff"/>
+    <text x="651" y="496" text-anchor="middle" font-size="16" fill="#4f5d75">calls</text>
+    <path d="M906 514H1006" fill="none" stroke="#285bd4" stroke-width="2" marker-end="url(#object-lens-runtime-flow-arrow-accent)"/>
+    <rect x="919" y="477" width="75" height="25" fill="#ffffff"/>
+    <text x="956" y="496" text-anchor="middle" font-size="16" fill="#4f5d75">controls</text>
+
+    <rect x="46" y="460" width="240" height="112" rx="7" fill="#edf2ff" stroke="#285bd4" stroke-width="1.5"/>
+    <text x="166" y="493" text-anchor="middle" font-size="23" font-weight="600">pytest</text>
+    <text x="166" y="523" text-anchor="middle" font-size="17" fill="#4f5d75">Discovers and runs tests</text>
+    <text x="166" y="550" text-anchor="middle" font-size="17" fill="#4f5d75">Reports pass or fail</text>
+
+    <rect x="356" y="460" width="260" height="112" rx="7" fill="#fff" stroke="#8190a4" stroke-width="1.5"/>
+    <text x="486" y="493" text-anchor="middle" font-size="23" font-weight="600">Python test cases</text>
+    <text x="486" y="523" text-anchor="middle" font-size="17" fill="#4f5d75">Actions and assertions</text>
+    <text x="486" y="550" text-anchor="middle" font-size="17" fill="#4f5d75">Compare actual with expected</text>
+
+    <rect x="686" y="460" width="220" height="112" rx="7" fill="#fff" stroke="#8190a4" stroke-width="1.5"/>
+    <text x="796" y="493" text-anchor="middle" font-size="23" font-weight="600">Selenium</text>
+    <text x="796" y="523" text-anchor="middle" font-size="17" fill="#4f5d75">Performs browser actions</text>
+    <text x="796" y="550" text-anchor="middle" font-size="17" fill="#4f5d75">Reads the page for checks</text>
+
+    <rect x="1006" y="460" width="208" height="112" rx="7" fill="#fff" stroke="#8190a4" stroke-width="1.5"/>
+    <text x="1110" y="493" text-anchor="middle" font-size="23" font-weight="600">Chrome</text>
+    <text x="1110" y="523" text-anchor="middle" font-size="17" fill="#4f5d75">The same application</text>
+    <text x="1110" y="550" text-anchor="middle" font-size="17" fill="#4f5d75">Headless during tests</text>
+
+    <text x="46" y="620" font-size="18" fill="#4f5d75">Fixtures start temporary servers and browsers. The assertions define what counts as correct.</text>
+    <text x="46" y="656" font-size="18" fill="#4f5d75">Controlled UI tests use deliberate model responses; real-model tests run the actual detector.</text>
+    <line x1="46" y1="685" x2="1214" y2="685" stroke="#dce2e9"/>
+    <text x="46" y="721" font-size="17" fill="#4f5d75">Conceptual workflow diagram based on the implementation. Arrows do not represent measured timing.</text>
+  </g>
+</svg>
+</body>
+</html>

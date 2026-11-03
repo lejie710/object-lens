@@ -1,0 +1,109 @@
+{
+  "evidence_type": "controlled rendered review, not AI inference",
+  "viewports": [
+    {
+      "content": 320,
+      "image": {
+        "left": 15,
+        "right": 305
+      },
+      "selectedZIndex": "1",
+      "tag": {
+        "left": 222.84375,
+        "right": 302.09375
+      },
+      "viewport": 320
+    },
+    {
+      "content": 390,
+      "image": {
+        "left": 15,
+        "right": 375
+      },
+      "selectedZIndex": "1",
+      "tag": {
+        "left": 292.140625,
+        "right": 371.390625
+      },
+      "viewport": 390
+    },
+    {
+      "content": 768,
+      "image": {
+        "left": 21,
+        "right": 477
+      },
+      "selectedZIndex": "1",
+      "tag": {
+        "left": 382.6875,
+        "right": 472.421875
+      },
+      "viewport": 768
+    },
+    {
+      "content": 1440,
+      "image": {
+        "left": 164,
+        "right": 956
+      },
+      "selectedZIndex": "1",
+      "tag": {
+        "left": 858.328125,
+        "right": 948.0625
+      },
+      "viewport": 1440
+    }
+  ],
+  "keyboard_order": [
+    {
+      "id": "",
+      "label": "Select laptop, model score 0.95",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "tag": "BUTTON"
+    },
+    {
+      "id": "",
+      "label": "Select baseball glove, model score 0.88",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "tag": "BUTTON"
+    },
+    {
+      "id": "",
+      "label": "Skip to image workspace",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "tag": "A"
+    },
+    {
+      "id": "choose-image",
+      "label": "Choose image",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "tag": "BUTTON"
+    },
+    {
+      "id": "clear-image",
+      "label": "Clear",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "tag": "BUTTON"
+    },
+    {
+      "id": "",
+      "label": "Select laptop, model score 0.95",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "tag": "BUTTON"
+    },
+    {
+      "id": "",
+      "label": "Select baseball glove, model score 0.88",
+      "outline": "solid",
+      "outlineWidth": "3px",
+      "tag": "BUTTON"
+    }
+  ],
+  "passed": true
+}

@@ -1,0 +1,31 @@
+{
+  "repository": "https://github.com/huggingface/transformers.js-examples",
+  "revision": "204b0948e88cd2bdc046316e78b754359653caea",
+  "files": [
+    {
+      "path": "index.html",
+      "url": "https://raw.githubusercontent.com/huggingface/transformers.js-examples/204b0948e88cd2bdc046316e78b754359653caea/vanilla-js/index.html",
+      "sha256": "30cce99f0e0fde870374a5d7db06db875f4438ec7d35d3c056b9342518738e47"
+    },
+    {
+      "path": "index.js",
+      "url": "https://raw.githubusercontent.com/huggingface/transformers.js-examples/204b0948e88cd2bdc046316e78b754359653caea/vanilla-js/index.js",
+      "sha256": "bb32830611552b45e9c24a46433db672a6f3f89ac45c7ecb42d18f05ff665b15"
+    },
+    {
+      "path": "style.css",
+      "url": "https://raw.githubusercontent.com/huggingface/transformers.js-examples/204b0948e88cd2bdc046316e78b754359653caea/vanilla-js/style.css",
+      "sha256": "32e033d0474042b5d56f058574615f3071afdf29050a1a17277f2d4a35b3cfff"
+    },
+    {
+      "path": "README.md",
+      "url": "https://raw.githubusercontent.com/huggingface/transformers.js-examples/204b0948e88cd2bdc046316e78b754359653caea/vanilla-js/README.md",
+      "sha256": "060ca55fcd092469481387cb188da4e517505fc04b3fb4408913cf3c93238159"
+    },
+    {
+      "path": "LICENSE",
+      "url": "https://raw.githubusercontent.com/huggingface/transformers.js-examples/204b0948e88cd2bdc046316e78b754359653caea/LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    }
+  ]
+}

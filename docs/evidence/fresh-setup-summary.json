@@ -1,0 +1,88 @@
+{
+  "status": "passed",
+  "source_tree_id": "3bd11c3a3f629d271b49d3c25c7349369a7ff04b",
+  "environment": "Fresh source/environment/assets/driver cache on the same Windows laptop; not a second-machine test.",
+  "python": "Python 3.12.10",
+  "pytest": "9.0.3",
+  "selenium": "4.40.0",
+  "chrome": "156.0.8078.74",
+  "chromedriver": "156.0.8078.80 (fb096c0011f9d50f0a264a9376420cdea9c421e3-refs/branch-heads/8078@{#1705})",
+  "locked_python_packages": 30,
+  "test_results": {
+    "tests": 26,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "pytest_reported_seconds": 205.13,
+  "junit_suite_seconds": 204.955,
+  "steps": [
+    {
+      "name": "01-python-version",
+      "seconds": 0.219,
+      "exit_code": 0
+    },
+    {
+      "name": "02-create-venv",
+      "seconds": 11.265,
+      "exit_code": 0
+    },
+    {
+      "name": "03-install-locked-packages",
+      "seconds": 57.485,
+      "exit_code": 0
+    },
+    {
+      "name": "04-prepare-assets",
+      "seconds": 128.75,
+      "exit_code": 0
+    },
+    {
+      "name": "05-verify-samples",
+      "seconds": 0.578,
+      "exit_code": 0
+    },
+    {
+      "name": "06-verify-assets",
+      "seconds": 0.641,
+      "exit_code": 0
+    },
+    {
+      "name": "07-package-consistency",
+      "seconds": 1.718,
+      "exit_code": 0
+    },
+    {
+      "name": "08-installed-versions",
+      "seconds": 1.641,
+      "exit_code": 0
+    },
+    {
+      "name": "09-browser-check",
+      "seconds": 41.219,
+      "exit_code": 0
+    },
+    {
+      "name": "10-full-tests",
+      "seconds": 207.109,
+      "exit_code": 0
+    },
+    {
+      "name": "11-verify-newline-repair",
+      "seconds": 1.39,
+      "exit_code": 0
+    },
+    {
+      "name": "12-verify-assets-after-repair",
+      "seconds": 0.672,
+      "exit_code": 0
+    }
+  ],
+  "original_app_sources_unchanged": true,
+  "minor_finding": "prepare_assets.py converted the manifest from LF to CRLF on Windows; values and asset hashes were unchanged.",
+  "repair_verified": true,
+  "source_changes_after_repair": [
+    "tools/prepare_assets.py"
+  ],
+  "note": "The full suite passed before the newline-only helper fix. The fix was then verified by redownloading one 455-byte derived asset; no full-suite repeat was needed."
+}
