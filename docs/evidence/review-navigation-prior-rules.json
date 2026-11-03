@@ -1,0 +1,268 @@
+{
+  "docx": "Object_Lens_System_Design.docx",
+  "pdf": "Object_Lens_missing_return_link.pdf",
+  "docx_sha256": "9f17263e4f3f7b5acc09b915ed69947cff77c4088df887abbc1a00802ebca813",
+  "pdf_sha256": "7099d84f0f38f999fa009521016125356e52be5c28c9e68a1e9dc8d5bbe697fc",
+  "pdf_pages": 19,
+  "word_pages": 19,
+  "contents_page": 2,
+  "heading_count": 31,
+  "docx_bookmarks": 33,
+  "docx_internal_links": 72,
+  "pdf_contents_links": 62,
+  "pdf_back_to_contents_links": 9,
+  "pdf_external_links": 4,
+  "placeholder_pages_allowed": false,
+  "headings": [
+    {
+      "bookmark": "OL_scope",
+      "title": "Scope and user workflow",
+      "page": 3,
+      "printed_page": "3",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_scope__Objectives_and_completion",
+      "title": "Objectives and completion",
+      "page": 4,
+      "printed_page": "4",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_architecture",
+      "title": "Technology and runtime architecture",
+      "page": 4,
+      "printed_page": "4",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_architecture__Server_and_wo_dfc08b9d",
+      "title": "Server and worker boundaries",
+      "page": 6,
+      "printed_page": "6",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_image_flow",
+      "title": "Image processing and result behavior",
+      "page": 6,
+      "printed_page": "6",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_image_flow__From_file_bytes_05287ed5",
+      "title": "From file bytes to predictions",
+      "page": 6,
+      "printed_page": "6",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_image_flow__Current_image_ownership",
+      "title": "Current image ownership",
+      "page": 7,
+      "printed_page": "7",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_image_flow__Bounded_recovery",
+      "title": "Bounded recovery",
+      "page": 8,
+      "printed_page": "8",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_features",
+      "title": "Filtering samples and PNG output",
+      "page": 8,
+      "printed_page": "8",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_features__Minimum_model_score",
+      "title": "Minimum model score",
+      "page": 8,
+      "printed_page": "8",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_features__Try_sample",
+      "title": "Try sample",
+      "page": 8,
+      "printed_page": "8",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_features__Save_result",
+      "title": "Save result",
+      "page": 9,
+      "printed_page": "9",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_automation",
+      "title": "Testing with Python pytest and Selenium",
+      "page": 10,
+      "printed_page": "10",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_automation__The_two_commands",
+      "title": "The two commands",
+      "page": 10,
+      "printed_page": "10",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_automation__Controlled_chec_0ae662a9",
+      "title": "Controlled checks and actual inference",
+      "page": 10,
+      "printed_page": "10",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_automation__A_worked_requirement",
+      "title": "A worked requirement",
+      "page": 11,
+      "printed_page": "11",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_test_design",
+      "title": "Requirements and test design",
+      "page": 12,
+      "printed_page": "12",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_test_design__Choosing_useful_cases",
+      "title": "Choosing useful cases",
+      "page": 13,
+      "printed_page": "13",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_investigation",
+      "title": "Failure investigation",
+      "page": 13,
+      "printed_page": "13",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_investigation__A_real_narro_756e0e49",
+      "title": "A real narrow viewport defect",
+      "page": 14,
+      "printed_page": "14",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_investigation__A_deliberate_3022f6c6",
+      "title": "A deliberate stale-result fault",
+      "page": 14,
+      "printed_page": "14",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_investigation__A_prediction_66ecb59b",
+      "title": "A prediction mistake is a different kind of finding",
+      "page": 15,
+      "printed_page": "15",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_investigation__An_unexpecte_99986ae6",
+      "title": "An unexpected file in a download check",
+      "page": 15,
+      "printed_page": "15",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_verification",
+      "title": "Verification and release assessment",
+      "page": 15,
+      "printed_page": "15",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_verification__Release_decision",
+      "title": "Release decision",
+      "page": 16,
+      "printed_page": "16",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_operation",
+      "title": "Running and maintaining the project",
+      "page": 17,
+      "printed_page": "17",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_operation__Use_the_application",
+      "title": "Use the application",
+      "page": 17,
+      "printed_page": "17",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_operation__Run_checks",
+      "title": "Run checks",
+      "page": 17,
+      "printed_page": "17",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_operation__Make_a_bounded_change",
+      "title": "Make a bounded change",
+      "page": 17,
+      "printed_page": "17",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_operation__AI_assistance_an_824a2be6",
+      "title": "AI assistance and honest demonstration",
+      "page": 18,
+      "printed_page": "18",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
+      "bookmark": "OL_reference",
+      "title": "Terms and source references",
+      "page": 18,
+      "printed_page": "18",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    }
+  ],
+  "problems": [],
+  "passed": true
+}

@@ -6,6 +6,11 @@ Selected text files use UTF-8 with LF line endings to match Git checkout. Raw-ru
 
 | File | What it establishes |
 | --- | --- |
+| `source-review-verification.json` and `review-full-suite.xml` | The corrected 72-case local gate, reviewed source hashes and limits; the suite used temporary files outside a Git checkout |
+| `review-startup-before.xml` and `review-startup-after.xml` | Five startup regressions failed before correction and passed afterward; the full suite also includes the additional worker-retry preparation case |
+| `review-package-before.xml` and `review-package-after.xml` | Reproduced outside-checkout provenance failure and successful browser-free package checks after correction |
+| `review-harness-cleanup.xml` | Three mocked cleanup regressions, with no real Chrome launched for those cases |
+| `review-navigation-original.json`, `review-navigation-negative.json`, `review-navigation-prior-rules.json` | Original document passes; removing one return link fails the strengthened checker but passed reconstructed prior rules |
 | `public-prep-full-suite.xml` and `public-prep-focused-suite.xml` | The 3 November 59-case full run and 11-case focused startup/package run |
 | `public-prep-verification.json` | Source hashes, raw-record provenance, current counts and explicit pre-deployment limits |
 | `public-prep-review.json` | Local static-package real inference/export, simulated model transfer, viewport, credits-link and keyboard observations; not hosted verification |

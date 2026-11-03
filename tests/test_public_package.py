@@ -7,6 +7,7 @@ from __future__ import annotations
 import hashlib
 import json
 import shutil
+import subprocess
 import threading
 import zipfile
 from functools import partial
@@ -21,7 +22,7 @@ from selenium.webdriver.common.by import By
 from test_export import downloads, wait_for_png  # noqa: F401 - imports the shared download fixture
 from test_filter import set_minimum
 from test_ui import result_labels, wait_state
-from tools.build_public_demo import build
+from tools.build_public_demo import build, git_provenance
 
 ROOT = Path(__file__).resolve().parents[1]
 APP_FILES = {
@@ -48,6 +49,33 @@ def write_payload(project, relative, contents):
 
 def locked_file(path, payload):
     return {"path": path, "bytes": len(payload), "sha256": hashlib.sha256(payload).hexdigest()}
+
+
+@pytest.mark.parametrize("probe_failure", ["not-repository", "missing-git"])
+def test_git_provenance_is_absent_for_a_non_repository_marker(tmp_path, monkeypatch, probe_failure):
+    project = tmp_path / "source-copy"
+    write_payload(project, ".git/config", b"PRIVATE_FIXTURE_SENTINEL\n")
+
+    def not_a_repository(command, **kwargs):
+        if probe_failure == "missing-git":
+            raise FileNotFoundError("Git is not installed in this controlled setup")
+        raise subprocess.CalledProcessError(128, command)
+
+    monkeypatch.setattr(subprocess, "check_output", not_a_repository)
+    assert git_provenance(project.resolve()) == (None, None)
+
+
+def test_git_provenance_never_uses_a_parent_repository(tmp_path, monkeypatch):
+    project = tmp_path / "source-copy"
+    write_payload(project, ".git/config", b"PRIVATE_FIXTURE_SENTINEL\n")
+
+    def parent_repository(command, **kwargs):
+        if command[-2:] == ["rev-parse", "--show-toplevel"]:
+            return str(tmp_path.resolve()) + "\n"
+        pytest.fail("A source copy must not inherit its parent's commit or status")
+
+    monkeypatch.setattr(subprocess, "check_output", parent_repository)
+    assert git_provenance(project.resolve()) == (None, None)
 
 
 @pytest.fixture

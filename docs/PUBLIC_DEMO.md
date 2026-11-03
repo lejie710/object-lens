@@ -1,6 +1,6 @@
 # Public demo preparation
 
-Status on 3 November 2026: the static deployment package is prepared and verified locally. A public deployment has not been performed, and no live URL has been verified.
+Status on 3 November 2026: the owner parked upload after the computer could not complete it. No successful public deployment or verified live URL is recorded. The corrected static package is prepared for later use; [the correctness review](SOURCE_REVIEW.md) describes the subsequent startup and verification fixes.
 
 ## Approved sharing boundary
 
@@ -10,11 +10,13 @@ The application processes selected photos in the visitor's browser. Its requests
 
 ## Prepared website
 
-The package has 23 allowlisted files: seven application/configuration files, six pinned model/runtime files, one public sample and nine licence/provenance texts. The reviewed payload is 64,120,218 bytes uncompressed; its ZIP is 34,571,780 bytes (about 34.6 MB). The archive contains `index.html` at its root. It excludes `docs`, `tests`, `.git`, `.venv`, `.local`, `artifacts` and the comparison baseline.
+The package has 23 allowlisted files: seven application/configuration files, six pinned model/runtime files, one public sample and nine licence/provenance texts. Each build's manifest records its exact byte counts, content identity and ZIP hash; the corrected ZIP is approximately 34.6 MB. The archive contains `index.html` at its root. It excludes `docs`, `tests`, `.git`, `.venv`, `.local`, `artifacts` and the comparison baseline.
 
 Normal static hosting reads `runtime-config.json` from the package with `testMode` set to the JSON boolean `false`. The local Python server still generates this response itself, allowing explicitly controlled tests to use their separate mode. The uploaded site needs no Python service, database or paid inference API.
 
 The loading notice distinguishes model transfer from runtime initialization. A model progress value of 100 does not claim that the detector is ready. Unknown transfer sizes remain indeterminate, errors remain separate, and an old worker cannot update a newer worker's loading state. The existing 120-second model-load deadline and 90-second inference deadline remain in place; very slow connections can require retry.
+
+Configuration now has its own 15-second request/body deadline before worker startup. Retry fetches it again without losing the selected image. Background readiness preserves existing input errors and unfinished file preparation.
 
 `credits-lock.json` records the source, byte count and SHA-256 of each distributed licence/model-card file. Their original bytes are preserved. The package also verifies all six runtime/model files against `asset-lock.json` and the coffee image against its independently pinned hash.
 
@@ -38,7 +40,7 @@ For an isolated static-server review, pass the actual generated `site` path:
 
 This helper uses a fresh headless Chrome profile. It paces only the model response on loopback, then checks real inference, filtering, PNG download, usable viewport widths, local credit links and keyboard focus. The simulated transfer is not Internet performance or proof of a deployed website.
 
-## Verification completed
+## Preparation verification before the correctness review
 
 - Full local suite: **59 passed**, zero failures/errors/skips, in **441.33 seconds**. This consists of 55 non-inference application/server/package checks and four actual-model cases.
 - Focused loading/package suite: 11 passed in 52.46 seconds.
@@ -47,6 +49,8 @@ This helper uses a fresh headless Chrome profile. It paces only the model respon
 - Rendered app review: 320, 390, 768 and 1440 CSS-pixel layouts fit the usable document width. Credits were inspected at desktop and 320 pixels; their local links returned HTTP 200 and keyboard focus remained visible.
 
 These are local preparation results. Chrome on one Windows laptop was exercised. Other browsers/devices, public connectivity, hosting access configuration, provider quotas and real Internet performance have not been qualified. No general model-accuracy claim is made. Earlier 48-case and one-hour records retain their original source/version scope.
+
+The later combined correctness-review suite passed 72 cases in 531.53 seconds, including four actual-model cases and the static-package workflow, with its temporary files outside any Git repository. Use [the source-review record](SOURCE_REVIEW.md) for this newer version. The earlier loading screenshots and paced-transfer figures above remain observations of the preceding preparation version.
 
 The [preparation verification record](evidence/public-prep-verification.json) binds source files and retained evidence. See the actual [model-loading capture](screenshots/public-prep/model-loading.png), [current app](screenshots/public-prep/app-1440.png) and [credits page](screenshots/public-prep/credits-1440.png).
 

@@ -128,6 +128,10 @@ def main() -> None:
     # This companion's body navigation returns to Contents. Every other internal
     # link is one of the title/page pairs generated for the static contents.
     toc_links = [link for link in internal_links if link["target_page"] != contents_page]
+    back_links = [link for link in internal_links if link["target_page"] == contents_page]
+    expected_back_links = sum(heading["level"] == 1 for heading in manifest["headings"])
+    if len(back_links) != expected_back_links:
+        problems.append("PDF back-to-contents link count differs from the section count")
     expected_targets = [int(actual[h["bookmark"]]["page"]) for h in headings for _ in range(2)]
     observed_targets = [link["target_page"] for link in toc_links]
     if observed_targets != expected_targets:
@@ -142,7 +146,7 @@ def main() -> None:
         "contents_page": contents_page, "heading_count": len(headings),
         "docx_bookmarks": len(bookmark_names), "docx_internal_links": len(anchors),
         "pdf_contents_links": len(toc_links),
-        "pdf_back_to_contents_links": len(internal_links) - len(toc_links),
+        "pdf_back_to_contents_links": len(back_links),
         "pdf_external_links": external_count,
         "placeholder_pages_allowed": args.allow_placeholder_pages,
         "headings": checks, "problems": problems, "passed": not problems,

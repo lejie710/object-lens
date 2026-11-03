@@ -84,6 +84,10 @@ Clearing or replacing an image does not promise interruption of CPU work already
 
 A nonresponding worker has a bounded recovery path: model loading times out after 120 seconds and inference after 90 seconds. The worker is terminated, a clear error appears and Retry or a new valid image can recreate it. Controlled tests use a four-second deadline to exercise this path without waiting for a real model outage.
 
+Before a worker is selected, configuration loading has a separate 15-second deadline covering both response headers and JSON body reading. A boolean testMode is required. Failure exposes Retry, which fetches configuration again while preserving a valid selected image. A new valid selection can also retry failed configuration. The worker cannot start with an unvalidated mode.
+
+File preparation retains its own image revision until reading and decoding finish. Successful background startup cannot clear an existing input error or announce an idle workspace during that preparation. Explicit retry restores the current preparation status where needed.
+
 Startup feedback is independent of the main application status. Worker events identify model transfer and runtime initialization; received bytes are displayed only for a valid finite total. Finishing the transfer does not mark the model ready. An actual ready response hides the notice, and a failure or retry retires or resets it. Progress must not overwrite an input error, sample-loading state or a newer worker's state.
 
 The list is titled "Detections" and the completion message counts "predictions". A real sample produced duplicate spoon detections; the count therefore must not be interpreted as a verified count of distinct physical objects.
@@ -101,7 +105,7 @@ The list is titled "Detections" and the completion message counts "predictions".
 | AC7 | A keyboard-accessible minimum-score filter from 0.50 to 1.00 includes predictions whose underlying score is at least the selected minimum. Boxes, list and visible/total counts agree. Lowering the minimum restores hidden predictions without rerunning inference; filter-empty and model-empty states have different explanations. |
 | AC8 | Try sample loads the existing coffee photo through the real application path. Missing, unreadable or unresponsive sample data is recoverable. A delayed response cannot undo Clear or replace a newer selected image. |
 | AC9 | Save result initiates a PNG download containing only the current filtered predictions at the decoded photo's original dimensions. It is unavailable without visible predictions. Encoding failure or timeout preserves the usable result, and a pending export cannot download after Clear, image replacement or filter change. |
-| AC10 | Startup feedback distinguishes model download from runtime readiness, handles unknown progress, preserves existing input errors and ignores retired-worker updates. |
+| AC10 | Startup feedback distinguishes configuration, model transfer and readiness, handles unknown progress, preserves input errors and active preparation, and ignores retired-worker updates. Configuration stalls/invalid responses are bounded and recover through a new request. |
 | AC11 | The public package contains only the approved app/configuration, verified model/runtime files, public sample and licence notices. It uses testMode false, excludes private/test materials and runs through ordinary static file serving. |
 
 The model's fixed inference threshold is 0.5. A separate display filter starts at 0.50, moves in steps of 0.01 and cannot recover lower-score predictions discarded by inference. Comparisons use the underlying model score, while visible scores are rounded to two decimal places. The displayed value is a model score, not a measured accuracy percentage. Supported classes come from the model; unrecognized objects do not imply an application defect.

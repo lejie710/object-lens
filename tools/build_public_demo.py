@@ -65,9 +65,15 @@ def checked_record(dist: Path, name: str, expected: dict | None = None) -> dict:
 def git_provenance(project_root: Path) -> tuple[str | None, bool | None]:
     if not (project_root / ".git").exists():
         return None, None
-    top = subprocess.check_output(
-        ["git", "-C", str(project_root), "rev-parse", "--show-toplevel"], text=True
-    ).strip()
+    try:
+        top = subprocess.check_output(
+            ["git", "-C", str(project_root), "rev-parse", "--show-toplevel"],
+            text=True, stderr=subprocess.DEVNULL,
+        ).strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        # A source copy can have a .git marker without a usable Git repository/tool.
+        # Provenance is optional; the content checks still apply to every file.
+        return None, None
     if Path(top).resolve() != project_root:
         return None, None
     commit = subprocess.check_output(

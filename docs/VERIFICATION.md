@@ -1,6 +1,12 @@
 # Verification and release assessment
 
-Status on 3 November 2026: the application and deliberate static website package are ready for owner upload, based on local verification. Public deployment and verification of a hosted URL have not occurred. This is not a production-recognition, hardware-validation or general-accuracy claim.
+Status on 3 November 2026: the corrected application and static package passed the local correctness-review gate. The owner has parked website upload, and no successful public deployment or verified hosted URL is recorded. This is not a production-recognition, hardware-validation or general-accuracy claim.
+
+## Correctness review results
+
+The current combined suite passed **72 cases**, with zero failures, errors or skips, in **531.53 seconds**, using a temporary directory outside any Git repository. It contains 68 non-inference and four actual-model cases. The review reproduced and fixed startup configuration/state gaps, a Git-provenance portability issue, failure-evidence cleanup and a document-link completeness check. A duplicate-label identity regression strengthens an existing requirement.
+
+See [Correctness review and regression fixes](SOURCE_REVIEW.md) and `docs/evidence/source-review-verification.json` for before/after evidence and source hashes. The records below remain dated checkpoints of their original implementations.
 
 ## Static website preparation results
 
@@ -63,6 +69,8 @@ Environment: Python 3.12.10, pytest 9.0.3, Selenium 4.40.0, Chrome 156.0.8078.74
 | AC7: minimum-score filter | Exact raw-score boundary, restore without inference, stable identities/colors/selection, filtered-empty state and keyboard checks |
 | AC8: Try sample | Real local photo retrieval, failure/retry, actual 15-second timeout, delayed-fetch rejection and the real coffee inference case |
 | AC9: PNG export | Actual downloaded PNG bytes and dimensions, retained/removed box pixels, EXIF orientation, scoped failure/timeout recovery and stale-export cancellation |
+| AC10: bounded startup and truthful status | Configuration headers/body timeout and retry, invalid configuration, input-error preservation, held-file preparation, model-progress and retired-worker tests |
+| AC11: deliberate static package | Exact file/ZIP/hash checks, private-file exclusions, provenance checks outside a checkout and real inference/export through an ordinary static server |
 
 ## Evidence boundaries
 

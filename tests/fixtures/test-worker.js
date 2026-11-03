@@ -14,6 +14,11 @@ const samplePredictions = {
     { label: 'cup', score: 0.8, box: { xmin: 0.3, ymin: 0.3, xmax: 0.55, ymax: 0.7 } },
     { label: 'bottle', score: 0.95, box: { xmin: 0.7, ymin: 0.1, xmax: 0.9, ymax: 0.9 } },
   ],
+  // Equal class labels still identify different predictions and image locations.
+  duplicateSpoons: [
+    { label: 'spoon', score: 0.7, box: { xmin: 0.1, ymin: 0.2, xmax: 0.25, ymax: 0.8 } },
+    { label: 'spoon', score: 0.95, box: { xmin: 0.65, ymin: 0.15, xmax: 0.8, ymax: 0.9 } },
+  ],
 };
 
 self.onmessage = ({ data }) => {
@@ -36,6 +41,7 @@ self.onmessage = ({ data }) => {
     if (filename.includes('dog')) predictions = samplePredictions.dog;
     if (filename.includes('car')) predictions = samplePredictions.car;
     if (filename.includes('score-boundary')) predictions = samplePredictions.boundary;
+    if (filename.includes('duplicate-spoons')) predictions = samplePredictions.duplicateSpoons;
     if (filename.startsWith('empty')) predictions = [];
     self.postMessage({ type: 'result', id: data.id, predictions, durationMs: delay });
   }, delay);
