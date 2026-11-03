@@ -30,9 +30,15 @@ The following observations use the upstream image descriptions and separate AI-a
 | `camera.png` | One `person` | Grayscale photograph of a person leaning toward a camera on a tripod. The person extends beyond the left and bottom edges. |
 | `rocket.jpg` | No required positive class | Rocket and launch towers at dusk. This illustrates limited model vocabulary. It is **not** a guaranteed empty-result fixture: unexpected detections must be recorded rather than suppressed. |
 
-The four positive probes can establish that real inference runs on a few known inputs. A miss is a model-quality observation to investigate; it does not automatically prove an application defect. Conversely, a label drawn on the wrong image or retained after clearing is an application-state defect even if that label was plausible for an earlier image.
+The four positive probes describe the original observation set. The automated photo-regression group uses three of them: astronaut/person, coffee/cup and chelsea/cat. A fourth actual-model test exercises coffee through the generated static package. A miss is a model-quality observation to investigate; it does not automatically prove an application defect. Conversely, a label drawn on the wrong image or retained after clearing is an application-state defect even if that label was plausible for an earlier image.
 
 Use controlled worker fixtures, clearly marked as simulated, to exercise exact empty/error/delay states. Do not describe those controlled results as model inference. Do not calculate general accuracy, precision or recall from this small, partially annotated set.
+
+## Box-position regression references
+
+The current photo tests use the selected person, cup and cat coordinates in `docs/evidence/model-observations.json` as regression references. Those coordinates are outputs of the earlier pinned model, not independent human-drawn annotations. A comparison can detect that the current output or rendering moved; it cannot establish localization accuracy.
+
+Each normalized edge allows a difference of 0.005, equivalent to 0.5 percent of that image extent, or about 2 to 3 source pixels in these photographs. Rendered positions allow the scaled edge tolerance plus 2 CSS pixels for rounding/borders. Widths and heights depend on two edges, so they allow two scaled edge tolerances plus 2 CSS pixels. `tests/test_inference.py` measures the actual image and box rectangles; the separate disposable-copy experiment verifies that deliberately displacing boxes fails the checks.
 
 ## Integrity record
 

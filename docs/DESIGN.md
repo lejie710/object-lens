@@ -50,7 +50,7 @@ The longer worked example and a small optional test edit are in [the learning gu
 
 | Component | Responsibility |
 | --- | --- |
-| HTML and CSS | Accessible single-page interface and responsive layout |
+| HTML and CSS | Single-page controls, responsive layout and configured status/error announcements |
 | JavaScript | File validation, image state, result display and selection |
 | Canvas PNG export | Draws the current filtered annotations over the decoded photo at its original dimensions |
 | Browser Web Worker | Runs the pretrained model without blocking the interface |
@@ -69,7 +69,7 @@ The JavaScript library is kept on a pinned version compatible with the original 
 1. The user selects a JPEG or PNG, or uses Try sample to load the existing coffee photo. The app validates format, size and dimensions before inference.
 2. The image is displayed, with any previous detections removed.
 3. A background worker runs the model and returns labels, model scores and normalized box coordinates.
-4. The app accepts results only for the currently selected image, then renders boxes and matching list entries.
+4. The app accepts results only for the currently selected image. It validates every prediction before rendering matching boxes and list entries. Invalid model responses produce a recoverable error rather than a partial, misleading result.
 5. Selecting a list entry highlights the corresponding box. Clear removes the current image and invalidates any outstanding result.
 
 After successful inference, the app keeps validated predictions for that image. The minimum-score control redraws this cached set without invoking the model again. Each prediction keeps its identity and color when others are hidden. If the selected prediction is filtered out, the first visible prediction becomes selected. A new image or Clear resets the minimum to 0.50 and invalidates cached results.
@@ -82,7 +82,7 @@ Save is disabled when there are no visible predictions or the current export is 
 
 Clearing or replacing an image does not promise interruption of CPU work already underway. It prevents that old work from changing the visible result. There is no hosted inference API.
 
-A nonresponding worker has a bounded recovery path: model loading times out after 120 seconds and inference after 90 seconds. The worker is terminated, a clear error appears and Retry or a new valid image can recreate it. Controlled tests use a four-second deadline to exercise this path without waiting for a real model outage.
+A nonresponding worker has a bounded recovery path: model loading times out after 120 seconds and inference after 90 seconds. The worker is terminated. A model-loading timeout describes preparation and offers retry; an inference timeout describes the image analysis. Clear removes image content and replaces that explanation with a generic detector-unavailable message offering restart. It does not claim that the stopped detector is ready or reclassify the prior failure as startup failure. Retry or a new valid image can recreate the worker. Normal controlled loading retains the production deadline; dedicated timeout cases accelerate only the relevant timer. Controlled inference uses four seconds. These tests simulate component failure and do not establish an observed real-model outage.
 
 Before a worker is selected, configuration loading has a separate 15-second deadline covering both response headers and JSON body reading. A boolean testMode is required. Failure exposes Retry, which fetches configuration again while preserving a valid selected image. A new valid selection can also retry failed configuration. The worker cannot start with an unvalidated mode.
 
@@ -101,7 +101,7 @@ The list is titled "Detections" and the completion message counts "predictions".
 | AC3 | A result selection highlights its matching box. Clear removes image and results. |
 | AC4 | Results from an earlier image cannot repaint the page after replacement or clear. |
 | AC5 | An empty prediction set is distinct from an inference failure. A valid image can be processed after an input or inference error. |
-| AC6 | Keyboard controls have visible focus, updates are announced accessibly and the layout remains usable at a narrow viewport. |
+| AC6 | Keyboard controls have visible focus, status/error elements carry the intended announcement configuration and meaningful content, and the layout remains usable at a narrow viewport. Actual screen-reader speech remains unverified. |
 | AC7 | A keyboard-accessible minimum-score filter from 0.50 to 1.00 includes predictions whose underlying score is at least the selected minimum. Boxes, list and visible/total counts agree. Lowering the minimum restores hidden predictions without rerunning inference; filter-empty and model-empty states have different explanations. |
 | AC8 | Try sample loads the existing coffee photo through the real application path. Missing, unreadable or unresponsive sample data is recoverable. A delayed response cannot undo Clear or replace a newer selected image. |
 | AC9 | Save result initiates a PNG download containing only the current filtered predictions at the decoded photo's original dimensions. It is unavailable without visible predictions. Encoding failure or timeout preserves the usable result, and a pending export cannot download after Clear, image replacement or filter change. |
@@ -114,13 +114,15 @@ The model's fixed inference threshold is 0.5. A separate display filter starts a
 
 The controlled browser tests exercise normal results, empty predictions, delays and errors through a test worker. They are deterministic tests of the application, not model-accuracy evidence. The test worker is served only when the Python server is explicitly started in test mode; normal use loads the real worker.
 
-Real-inference checks use publicly sourced photos with independent notes about their visible objects. These confirm an actual inference path and document observed limitations on a small sample. They do not establish general accuracy. The source example is retained in `baseline/upstream`, with its origin recorded in `baseline/source.json`. Any runnable local baseline adaptation must record its asset-path/runtime changes.
+Real-inference checks use publicly sourced photos with independent notes about their visible objects. They assert visible names and formatted scores. For astronaut/person, coffee/cup and chelsea/cat, selected coordinates are compared with earlier outputs of the same pinned model and rendered boxes are measured against the displayed image. Those reference coordinates are not independent ground-truth annotations. The checks establish a limited output/geometry regression and actual inference path, not localization accuracy or general recognition accuracy. The source example is retained in `baseline/upstream`, with its origin recorded in `baseline/source.json`. Any runnable local baseline adaptation must record its asset-path/runtime changes.
+
+Disposable-copy fault experiments deliberately remove visible result text or displace boxes to verify that the strengthened assertions fail. Controlled malformed-response cases cover invalid scores, coordinates and impossible boxes; valid out-of-range coordinates are clamped when they retain positive area. Announcement checks inspect DOM roles and live settings, not actual screen-reader behavior.
 
 Failures are investigated using reproduction steps, assertions, screenshots and browser logs. Initial loading and warm inference timing are recorded separately. No load, scalability, GPU or physical-hardware qualification is claimed.
 
 ## Delivery boundary
 
-The design and evidence stay versioned with the implementation. The user should be able to launch the app, run the suite, explain a representative test and adjust a small existing test after the final walkthrough. Development does not include teaching exercises or optional features. Public-demo preparation was approved on 3 November; verification of an actual hosted URL is an additional release step after the owner uploads the prepared package.
+The design and evidence stay versioned with the implementation. The user should be able to launch the app, run the suite, explain a representative test and adjust a small existing test after the final walkthrough. Optional learning exercises explain existing behavior without expanding the application feature scope. Public-demo preparation was approved on 3 November; verification of an actual hosted URL is an additional release step after the owner uploads the prepared package.
 
 ## Sharing boundary
 

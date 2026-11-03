@@ -5,48 +5,85 @@
     "subtitle": "System design and software quality",
     "audience": "Tan Le Jie",
     "language": "en",
-    "edition": "1.0",
+    "edition": "2.0",
     "status": "verified",
-    "date": "2 November 2026",
-    "documented_commit": "781d9b75db1a3ebc9a200c238038b64aa108564a",
-    "evidence_revision": "docs/evidence/extension-verification.json",
+    "date": "3 November 2026",
+    "documented_commit": "74d108f plus source hashes in the evidence record",
+    "evidence_revision": "docs/evidence/followup-verification.json",
     "source_repository": "object-lens",
     "source_visibility": "private",
     "outputs": [
       "Object_Lens_System_Design.docx",
       "Object_Lens_System_Design.pdf"
     ],
-    "evidence_policy": "Recorded checkpoint runs overlap and are not added together. The final combined suite determines extension regression acceptance. Historical base runs retain their dates and limits.",
+    "evidence_policy": "The current follow-up suite determines this local assessment. Historical 26-, 48-, 59- and 72-case records retain their dates and are not added together.",
     "content_authority": "source.json",
     "pending_items": [],
     "reviewed_source_sha256": {
-      "dist/app.js": "4c0bd3667035463229f5c2c4d825f5cd2d83b4c5955ded95b62e90a41b3f559e",
+      "asset-lock.json": "9304dd88602a161c3ac1e580fa559e01a22f285c57573bf77d708b0c1af58216",
+      "credits-lock.json": "095633d230a4a2300a3bd612b15eb76baf7253561b4df7713ea6c397f584fe2f",
+      "dist/app.js": "d9996cf27eb7d084a8b401671f04f4d1f64f45bf2414fcace4f756619234c831",
+      "dist/credits.html": "38673103e5133b79e0c53e949d4b65dd42485d164f46b56c968a230a714bd6c0",
+      "dist/index.html": "d4b6944c8c2bce55a69903173d7fc6c009bddc49170ec3a461075ffa07d774bd",
       "dist/png-export.js": "cb7171cec270e245a78f70a8f56cd62a921157825458a3aeb97ac8b513948c41",
-      "dist/worker.js": "85cfc8620bb03d9d5cd8116afc72e1573b4baae3590932fdd5e943005aaebe84",
-      "dist/index.html": "c3e576d3fbcea5f56c72e7b1dcae9e7d16cdf59ccd9cb1098fab65804c23c3da",
-      "dist/style.css": "15b584189e1ea4ced448492f1a780da32202b46f3d0f61f0a1fb2f8e6bbf0d80",
+      "dist/runtime-config.json": "80c98bfac072ba06f97197da8758f21bf1f8988a75b5302001b0eb22787d5d77",
+      "dist/style.css": "e4a1a8e3590fe79720ae588d53bee72f1d3e76c1e3118c75b6faffb5d0a41aa6",
+      "dist/worker.js": "a791a655630ad942a784fc0d769c9b1123812b5e0491a0e23ca17ed800c6377d",
+      "docs/evidence/model-observations.json": "2fc47a23ea4d948ec2558c479e9b7802d2012406ff32c977c3a23f635efcdd17",
+      "pytest.ini": "5ee196e2a6c29c1c03f7e84a994bf274451c39c3ccf8d4e46c6cddb6d7216399",
+      "requirements-lock.txt": "ca55ce2a97df508ac3ab5ec0ab1c6ae8bd9cf7f636a93759d12031e96998bae5",
+      "requirements.txt": "e22547340f95f8327dc5669a31f0a74d55f54748ce6374388918a4b9e1d47ba6",
       "serve.py": "fbee47676ed615440f51eb4dad47c211c49c03a2afdc233e51683b719d4caedb",
-      "tests/conftest.py": "5f4a2479e0befe5098e59448404520dd16eaee9c66cb668063bb5f759753e35c",
+      "tests/conftest.py": "ca815de5bc4af6372b63447de6ba397785693122995d1da3e806cd72a71b092b",
+      "tests/fixtures/test-worker.js": "ca9cd4c394f47a6d48ac97ecd0eb909a1f2c1c666db87a74ec14fb4103b81b9b",
       "tests/test_export.py": "1c62dabda67959a142319d46c5f46f5a6bdc45354346ceca058f29f04f8f3707",
-      "tests/test_filter.py": "af5ebecfb534aad69e81151e4d2063b4420e3d3beeb5c90d8e31a9e7b70ee525",
-      "tests/test_inference.py": "7c85025133aca57e60bc72fabf499321830b814954d33abefaf32064fde5b7f7",
+      "tests/test_filter.py": "e6bf885555bce350e039f5adadc42dfcfc8b8dfefd416700296abbe7791801c7",
+      "tests/test_harness_cleanup.py": "07ccefdd44a45495281019c2a90316f4f7193f1f7bf611dc000e9c45539bc301",
+      "tests/test_inference.py": "0eb6bc7fca60ef7aee095900a36222ec98720e50a15291d18c6551fa805ef5d8",
+      "tests/test_loading.py": "f31ae1624eedced851f0614b77d5ae1d85abc6f03a85cc69da52d50efce3516b",
+      "tests/test_public_package.py": "18c405e97a6a9b09dd43ca546064208cba83a210f53b8a945d12bf497ff5d2f1",
+      "tests/test_recovery.py": "16e15b3219251745db0f09a32d282b90e574e75da6ceb96f935d4d40fc671549",
       "tests/test_sample.py": "66e21ae95ae7fa36156844e732c3606c8006d207de8ad73e0c7344f8948074df",
       "tests/test_server.py": "6dbff96615d244a590363e8c340e665e00d6aa71be65e5b7e6278edd0ca34ce9",
-      "tests/test_ui.py": "5a388f29f6ad8d1c1566a12fe6eaa512681bb5bc03df329b39e2c439704cc5b6",
-      "tests/fixtures/test-worker.js": "7510534af004116336c4af3e1b82656a3a49e0ff3de6bc616223c45362851d92"
+      "tests/test_startup.py": "1c54f0a9ec3ee7dd2b666a98aa85df623c030a1b8d0e03b2c62c83d197d0f1ec",
+      "tests/test_ui.py": "513bed45e14ccdb47dc4012548ba1a69b22568f9cfec13aa446e6bea822334d6",
+      "tools/browser_check.py": "73c6355674fa3396a48e5768a50fcfd3050b1ed83a16fee5051f150bb1c9bfb7",
+      "tools/build_baseline.py": "7df1b3bed0b1a35cb6f84b654027c4d39a72b7f3b6ba9c0f3b77f657f9fb995f",
+      "tools/build_public_demo.py": "ac4eb8b129d4dd2ef754ce8e50a7e039905a6120e3d382da8b8c3663f8716702",
+      "tools/capture_demo.py": "2314f9d3803ded341e66303456dec5c323a9f4dcc4a8f0a17d7a934509af8e67",
+      "tools/capture_review.py": "0ff79a91c28abf51527f2d21a519026e22b5519f42569351a5ef61dcad2d0acb",
+      "tools/check_public_demo.py": "17d8109d864634def9653b02020bbf9d259d06a5ef111377b06bb59aa52c812a",
+      "tools/check_recovery_comparison.py": "a5e7f7c1cb765c347e282455bc7c0feccfb1e492310f96a8829ee569bea965c1",
+      "tools/check_review_sensitivity.py": "868d5734e5dfba4b99a6ed002e5cf5ae602d88a9ee6a079c9b394e587916949e",
+      "tools/collect_evidence.py": "c439610662e85f17baf66ad046556288e93da8217fdcc6fd6356282de5576168",
+      "tools/download_samples.py": "2d9c0a95fc4a8613e58d399e2e3fbedd6d4acb2e4c3489a2c7d5cd6f66f7dae9",
+      "tools/fetch_upstream.py": "6517139f8f7feb670461a606b2bf90bc9bf835d9bfdcf50956685c6d1cbc4b14",
+      "tools/prepare_assets.py": "8733667b051c6de9b25d742c4c29476df9177d4b88486ac96bd685a0d6d6dc2c",
+      "tools/record_verification.py": "8deeb9a262a6cdf0f0cf21d322c76e9f017c6cb9734b3d3fa39e4675566e9d44",
+      "docs/system-design/build_document.py": "8c3d887fac6e64ccbc0346d02b44f310a818aad31b1666378336561a1d63d528",
+      "docs/system-design/export_document.ps1": "4f5eac4b28948b1925a9471565c6388b7de7b8bfa240004b475e73d5c7847a5a",
+      "docs/system-design/verify_document_navigation.py": "413bbc73f7a9f4505d5661f19043ec4effebd8c03288bb2473d59098fca3b204",
+      "docs/system-design/verify_document_content.py": "3d2844974e9284847ff1e45b274ed2a7fc0ab3472e9c3bb811869bba3b6810e7"
     },
     "evidence_sha256": {
-      "docs/evidence/extension-verification.json": "e9582eb61268142909a49fc63fb003685a8b7ad167f388413b6eb0847317946a",
-      "docs/evidence/extension-full-suite.xml": "7161e88ffaa99703d9070e7f0c218cba93249b8e1c2b082e792224bb7a85a257",
-      "docs/evidence/extension-demo.json": "615fe81c42445ad5b7c93a119801ec9f84ea56a255a4dbc00a1e67cc11fbb360",
+      "docs/evidence/followup-verification.json": "82b5ea34d1ec9d12f810e5dd88e66b7feb7371f8043701a82db000acc5a1570d",
+      "docs/evidence/followup-full-suite.xml": "f269bfe9b7f708d97495d041b3666c8bf3fed143222cc3fab59c818e71924414",
+      "docs/evidence/followup-sensitivity.json": "46fdfd2ded3b2717348f0eb18a7942781be7ec506815679f60fe1ab1c3f1fd3c",
+      "docs/evidence/followup-rendered-review.json": "4f404e7f59a400a8c62bb221612526ec970a180134ffa6e9255f9fdbebd239c9",
+      "docs/evidence/followup-recovery-comparison.json": "523bf6cdb55f48d8ab42c297692984164ea3a293ef20394de5c9f67ea53b43d1",
+      "docs/evidence/followup-package.json": "c94b19092328000bc79a9178dd15e55a4213d299c97d7d4ea24e859c2f073fed",
+      "docs/evidence/model-observations.json": "2fc47a23ea4d948ec2558c479e9b7802d2012406ff32c977c3a23f635efcdd17",
       "docs/evidence/viewport-before-fix.xml": "45b7b5bb258a685f30057f868f86caf3cda5f357a8eb3a2d6026f0326b09fa9f",
+      "docs/evidence/extension-demo.json": "615fe81c42445ad5b7c93a119801ec9f84ea56a255a4dbc00a1e67cc11fbb360",
       "docs/evidence/extension-first-full-suite.xml": "11d57fa4540c7af80f1ae4d303e548637dc9c1082019bc25c7f1756f54950e57",
-      "docs/evidence/export-png-suite.xml": "574d356d863566910ab30b271839f2007bcf1d26bdabc834c473ee10d4c7ada2",
-      "docs/evidence/score-filter-record.json": "d9cc56cb4ed7b37fbc881d785b29fdcb89719008e40606e03adac01fb3f9149b",
-      "docs/evidence/sample-image-record.json": "882f8aa1a2f1671b14178535006834363ea8ce15ee7d450844d64e3f472a366d",
-      "docs/screenshots/desktop.png": "62b969dabea77f654b46df8c3c03072f4b90057b7c11d9c66c4cdecfcedb0b52",
-      "docs/screenshots/export.png": "a74cbc0fb02034136299010a9fcc2c2f22241fb0aa8ba38cdf70ab4f7fb57482"
-    }
+      "docs/evidence/review-full-suite.xml": "9acaa63a83cfb379eff4ccc8e751b79d155be65ad7aa352db2facadf39571c1e",
+      "docs/evidence/public-prep-full-suite.xml": "4cb86214a0ca91c236fa8fb21936cbee2920981b602ce2bdf91a865411876e5a",
+      "docs/evidence/extension-full-suite.xml": "7161e88ffaa99703d9070e7f0c218cba93249b8e1c2b082e792224bb7a85a257",
+      "docs/evidence/stability-summary.json": "07c63ee5a77d7e2339e680eabe13b24b0d166d648d882974519ac001622e9b70",
+      "docs/screenshots/review-followup/desktop.png": "4d86d92f4dcd5f84c5ee1c7f36256f4f5995bf2dae852d77d16717e85bc1ec5e",
+      "docs/screenshots/review-followup/export.png": "a74cbc0fb02034136299010a9fcc2c2f22241fb0aa8ba38cdf70ab4f7fb57482"
+    },
+    "base_commit": "74d108f70c0bea8ca09b2d5bdd3bb974023d523f"
   },
   "cover": [
     {
@@ -65,7 +102,7 @@
     },
     {
       "type": "paragraph",
-      "text": "The documented source version, execution records and release assessment identify the scope of the conclusions. A working interface and passing application tests do not establish general object-recognition accuracy.",
+      "text": "This edition refreshes the current application, the review follow-up and the evidence needed for a bounded local release. It explains stage-specific recovery, visible-output assertions and box-position regression. The exact tested source is identified by file hashes; public website upload remains parked. Passing these checks does not establish general object-recognition accuracy.",
       "sources": [],
       "status": "source_verified"
     }
@@ -73,15 +110,9 @@
   "reading_route": [
     {
       "type": "paragraph",
-      "text": "Read Scope and user workflow first, then Technology and runtime architecture. Follow Image processing and result behavior to understand the app. Testing with Python pytest and Selenium explains the separate automation path. Verification and release assessment records the observed outcomes.",
+      "text": "Start with scope and architecture, then follow image processing and the separate testing path. Verification records the current result and its limits. Figures are explanatory diagrams; screenshots are actual captures. Controlled failures, deliberate source faults and real model observations are identified separately.",
       "sources": [],
-      "status": "ready"
-    },
-    {
-      "type": "paragraph",
-      "text": "Architecture figures identify components and their responsibilities. Sequence figures show message order from top to bottom; they are not measured timelines. Actual screenshots are labelled as captures. Controlled responses, deliberately injected faults and real model observations are identified separately.",
-      "sources": [],
-      "status": "ready"
+      "status": "source_verified"
     }
   ],
   "sections": [
@@ -97,6 +128,12 @@
         },
         {
           "type": "paragraph",
+          "text": "The source repository remains private. A static public package is prepared locally from an explicit allowlist, but website upload is parked and there is no verified public URL. A local server, source publication and deployment are separate operations.",
+          "sources": [],
+          "status": "source_verified"
+        },
+        {
+          "type": "paragraph",
           "text": "The main workflow is to choose an image or try the sample, wait for inference, inspect the boxes and matching result rows, adjust the minimum score and save the visible annotations as PNG. Clear removes the current image and its results. Replacing a photo starts a new image workflow.",
           "sources": [],
           "status": "ready"
@@ -104,8 +141,8 @@
         {
           "type": "figure",
           "id": "app-overview",
-          "path": "../screenshots/desktop.png",
-          "caption": "Figure 1  Object Lens after real inference on the public coffee sample. The selected prediction links a result row to its box.",
+          "path": "../screenshots/review-followup/desktop.png",
+          "caption": "Figure 1  Current application after real inference on the public coffee sample, captured during the 3 November review follow-up. The selected prediction links its visible row to its box; credits remain available.",
           "alt": "Actual application screenshot showing the image, prediction boxes, result list, minimum score, Try sample and Save result controls.",
           "status": "verified_actual_capture"
         },
@@ -225,6 +262,11 @@
               "A small standard-library server is sufficient for local use"
             ],
             [
+              "Static website package",
+              "Contains the same app, normal-mode configuration, model assets, sample and credits",
+              "Allows ordinary static serving without the custom Python routes"
+            ],
+            [
               "Python and pytest",
               "Define checks, prepare fixtures and report assertions",
               "Keep the core automation in one language with a mature test runner"
@@ -245,7 +287,7 @@
           "type": "figure",
           "id": "runtime-architecture",
           "path": "diagrams/runtime-architecture.png",
-          "caption": "Figure 2  Runtime responsibilities. The local server provides files; the browser performs inference and draws PNG output. The separate automated-testing workflow appears in Figure 5.",
+          "caption": "Figure 2  Runtime responsibilities. The local server provides files; the browser performs inference and draws PNG output. The separate automated-testing workflow appears in Figure 5. This figure illustrates local Python serving; the static package supplies the same browser files through an ordinary static server.",
           "alt": "Runtime architecture showing the local Python file server, browser interface, local model assets, dedicated inference worker, current prediction cache and main-thread canvas PNG export.",
           "status": "source_verified_and_render_reviewed",
           "max_height_inches": 8.0
@@ -278,6 +320,40 @@
           "text": "Running inference in a worker keeps model execution out of the main page thread, but it does not make the computation free or provide a speed guarantee. This version uses CPU/WASM with one thread. It makes no GPU, NPU or semiconductor validation claim.",
           "sources": [],
           "status": "ready"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Configuration and loading feedback"
+        },
+        {
+          "type": "paragraph",
+          "text": "The page first loads runtime configuration under a 15-second deadline covering response headers and the JSON body. The testMode value must be a boolean before a worker can start. A failed request exposes retry and retains a valid selected image. A new valid selection can also retry configuration.",
+          "sources": [
+            "dist/app.js",
+            "tests/test_startup.py"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "paragraph",
+          "text": "Model feedback separates transfer progress from runtime initialization. Received bytes are shown only when a finite total is known. A transfer at 100 percent is not readiness; only the worker ready event establishes that. Worker callbacks must still belong to the current worker instance. Background startup cannot erase an input error or say the page is idle while a file is still being read.",
+          "sources": [
+            "dist/app.js",
+            "dist/worker.js",
+            "tests/test_loading.py"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "paragraph",
+          "text": "The static package must be served at the site root because worker asset paths begin with /assets. Browser caching may retain model/runtime downloads; the app keeps selected photo data and current predictions in its page/worker and provides no persistent photo-history feature. Clear resets current image state, not cached model assets.",
+          "sources": [
+            "dist/worker.js",
+            "dist/app.js",
+            "docs/PUBLIC_DEMO.md"
+          ],
+          "status": "source_verified"
         }
       ]
     },
@@ -308,7 +384,7 @@
           "text": "const predictions = await detector(data.image, { threshold: 0.5, percentage: true });",
           "source": {
             "file": "dist/worker.js",
-            "lines": "42"
+            "symbol": "infer"
           },
           "status": "source_verified"
         },
@@ -361,7 +437,7 @@
           "caption": "Figure 3  Image A finishes after the user selects image B. The application discards A's stale reply, then processes the latest pending image. Filtering and PNG export use retained results after inference.",
           "alt": "Sequence diagram showing image A replaced by image B, rejection of A's stale result, inference of B, and optional filtering or PNG export from the current results.",
           "status": "source_verified_and_render_reviewed",
-          "max_height_inches": 8.0
+          "max_height_inches": 6.1
         },
         {
           "type": "heading",
@@ -387,15 +463,44 @@
         },
         {
           "type": "paragraph",
-          "text": "Model loading has a 120-second watchdog and inference a 90-second watchdog in normal operation. A nonresponding worker is terminated, the error is explained, and the user can retry. Controlled tests use a shorter four-second deadline to exercise this recovery path.",
+          "text": "Model loading has a 120-second watchdog and inference a 90-second watchdog. The failed worker is terminated. Loading-timeout feedback describes model preparation, while inference-timeout feedback describes image analysis. Clear removes the photo and replaces the earlier explanation with a generic detector-unavailable message offering restart. It does not claim readiness or reclassify the prior failure as startup failure. Retry or a new valid image recreates the worker.",
+          "sources": [
+            "dist/app.js",
+            "tests/test_recovery.py"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "paragraph",
+          "text": "Normal controlled-worker loading retains the production 120-second deadline. Dedicated loading-timeout tests accelerate only that timer in their isolated browser; controlled inference uses a four-second deadline. A simulated failure proves that recovery works under the chosen condition, not that the real model was observed hanging.",
           "sources": [],
-          "status": "ready"
+          "status": "source_verified"
         },
         {
           "type": "paragraph",
           "text": "An empty prediction set, an invalid image and an inference failure have different meanings. Empty results mean the detector returned no predictions under its configured output threshold. Invalid input failed validation. An inference failure means the requested processing did not complete successfully. The page should communicate the correct state and offer the applicable recovery.",
           "sources": [],
           "status": "ready"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Reject invalid model output"
+        },
+        {
+          "type": "paragraph",
+          "text": "The page validates the returned array and each prediction before displaying results. Labels must be nonblank strings, scores must be finite numeric values from 0 to 1, and the four coordinates must be finite numbers. Coordinates are clamped to the image bounds only if the resulting rectangle has positive area. Missing fields, invalid scores and reversed, collapsed or wholly out-of-bounds rectangles are rejected.",
+          "sources": [
+            "dist/app.js",
+            "tests/test_recovery.py"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "paragraph",
+          "text": "A malformed prediction invalidates the response as a whole, including a batch with an otherwise valid entry. The page reports the problem, leaves no misleading boxes or result rows, and allows a later valid response to recover. The controlled fixtures intentionally create these failures; the real-model observations did not produce them.",
+          "sources": [],
+          "status": "source_verified"
         }
       ]
     },
@@ -430,8 +535,8 @@
           "type": "paragraph",
           "text": "The boxes, list and visible count update from the same filtered set. Predictions retain their original identities and colors. If the selected prediction remains visible, selection is preserved. If it is hidden, the first remaining prediction becomes selected; if none remains, selection is cleared.",
           "sources": [
-            "dist/app.js:391-481",
-            "tests/test_filter.py:86-149"
+            "dist/app.js",
+            "tests/test_filter.py"
           ],
           "status": "source_verified"
         },
@@ -439,8 +544,8 @@
           "type": "paragraph",
           "text": "When the model returned predictions but the filter hides all of them, the page says that no predictions meet the minimum score and invites the user to lower it. The image stays visible and the slider stays enabled. If the detector returned an empty set, the page uses a different empty message. Displayed scores are rounded to two decimals; comparisons use the original score.",
           "sources": [
-            "dist/app.js:409-480",
-            "tests/test_filter.py:108-124"
+            "dist/app.js",
+            "tests/test_filter.py"
           ],
           "status": "source_verified"
         },
@@ -459,8 +564,8 @@
           "type": "paragraph",
           "text": "The sample file and its attribution already belong to the prepared local assets. A missing or unreadable sample produces an actionable error and a new Try sample attempt can recover. A 15-second deadline aborts a fetch that does not finish.",
           "sources": [
-            "dist/app.js:275-307",
-            "tests/test_sample.py:102-118,168-193"
+            "dist/app.js",
+            "tests/test_sample.py"
           ],
           "status": "source_verified"
         },
@@ -468,8 +573,8 @@
           "type": "paragraph",
           "text": "Sample loading reserves a new image revision before starting its fetch. Clear or a newer image selection aborts that request and retires its identity. A late response cannot become the current image. Controlled delayed-response tests exercise both Clear and replacement; this is verified prevention of a design risk, not a claim that a production incident occurred.",
           "sources": [
-            "dist/app.js:264-307",
-            "tests/test_sample.py:120-148"
+            "dist/app.js",
+            "tests/test_sample.py"
           ],
           "status": "source_verified"
         },
@@ -488,8 +593,8 @@
           "type": "paragraph",
           "text": "The on-screen boxes are HTML elements over the image. PNG export draws the same visible prediction data onto a canvas in the page's main thread. Coordinates are scaled to the decoded image dimensions, and text labels include the class and rounded model score. Label backgrounds and text are kept within the canvas. The saved PNG is therefore checked separately from the screen.",
           "sources": [
-            "dist/png-export.js:3-61",
-            "tests/test_export.py:86-133"
+            "dist/png-export.js",
+            "tests/test_export.py"
           ],
           "status": "source_verified"
         },
@@ -497,9 +602,9 @@
           "type": "paragraph",
           "text": "Export captures one image, one visible prediction set and the selected minimum. Clear, replacement or a filter change invalidates an export still being encoded, so it cannot initiate a stale download. Save is disabled when no predictions are visible and while an export is being prepared. An encoder failure or the 15-second encoding deadline leaves the displayed result intact and makes Save available for another attempt.",
           "sources": [
-            "dist/app.js:43-98",
-            "dist/png-export.js:44-60",
-            "tests/test_export.py:137-246"
+            "dist/app.js",
+            "dist/png-export.js",
+            "tests/test_export.py"
           ],
           "status": "source_verified"
         },
@@ -507,16 +612,16 @@
           "type": "paragraph",
           "text": "The application reports PNG download started after handing the generated file to the browser. It does not claim that the operating system has confirmed a completed save. The filename includes the source image stem and the display minimum, for example coffee-object-lens-min-0.80.png.",
           "sources": [
-            "dist/app.js:61-98",
-            "dist/png-export.js:63-67"
+            "dist/app.js",
+            "dist/png-export.js"
           ],
           "status": "source_verified"
         },
         {
           "type": "figure",
           "id": "png-output",
-          "path": "../screenshots/export.png",
-          "caption": "Figure 4  Actual PNG saved from the coffee sample at minimum score 0.80. It contains the photo and three visible prediction annotations, without a summary strip.",
+          "path": "../screenshots/review-followup/export.png",
+          "caption": "Figure 4  Actual PNG saved during the current review follow-up from the coffee sample at minimum score 0.80. It contains the photo and three visible prediction annotations, without application controls.",
           "alt": "Actual saved PNG showing the photo with aligned visible prediction boxes, labels and scores, without application controls or a summary strip.",
           "status": "verified_actual_capture"
         },
@@ -588,14 +693,14 @@
         },
         {
           "type": "paragraph",
-          "text": "Tests marked inference run the actual prepared model. They establish that the integration can execute and record the output on the chosen sample images. A few public photos are not a labelled accuracy benchmark.",
+          "text": "Tests marked inference run the actual prepared model. Three photo cases assert person, cup and cat text/scores, compare the selected coordinates with earlier pinned-model outputs and measure actual rendered geometry. A fourth case serves the generated package through an ordinary static server and exercises actual inference, filtering and PNG download. These are limited integration/regression checks, not an accuracy benchmark.",
           "sources": [],
           "status": "ready"
         },
         {
           "type": "code",
           "caption": "Run a focused group",
-          "text": "# Controlled application and server checks\n.\\.venv\\Scripts\\python.exe -m pytest -m \"not inference\"\n\n# Actual-model checks\n.\\.venv\\Scripts\\python.exe -m pytest -m inference",
+          "text": "# Non-model application, server, package and harness checks\n.\\.venv\\Scripts\\python.exe -m pytest -m \"not inference\"\n\n# Actual-model checks\n.\\.venv\\Scripts\\python.exe -m pytest -m inference",
           "source": null,
           "status": "ready"
         },
@@ -627,17 +732,17 @@
         },
         {
           "type": "code",
-          "caption": "Excerpt 2  Representative boundary test from the final implementation",
-          "text": "@pytest.mark.parametrize(\"size,expected_state\", [(10 * 1024 * 1024, \"complete\"), (10 * 1024 * 1024 + 1, \"error\")])\ndef test_file_size_boundary(app, make_image, size, expected_state):\n    upload(app, make_image(\"size-boundary.png\", total_bytes=size))\n    wait_state(app, expected_state, timeout=20)\n    if expected_state == \"error\":\n        assert app.find_element(By.ID, \"error-message\").is_displayed()\n        assert result_labels(app) == []\n    else:\n        assert result_labels(app) == [\"laptop\", \"cup\"]",
+          "caption": "Excerpt 2  Inclusive byte-size boundary and useful error content",
+          "text": "def test_file_size_boundary(app, make_image, size, expected_state):\n    upload(app, make_image(\"size-boundary.png\", total_bytes=size))\n    wait_state(app, expected_state, timeout=20)\n    if expected_state == \"error\":\n        assert_actionable_error(app, \"10 mib\", \"smaller\", \"jpeg\", \"png\")\n        assert result_labels(app) == []\n    else:\n        assert result_labels(app) == [\"laptop\", \"cup\"]",
           "source": {
             "file": "tests/test_ui.py",
-            "lines": "223-231"
+            "symbol": "test_file_size_boundary"
           },
           "status": "source_verified"
         },
         {
           "type": "paragraph",
-          "text": "The decorator runs the same test at two sizes: exactly 10 MiB and one byte above it. Read the function in four parts: prepare a valid image with the chosen byte count; submit it through Selenium; wait for an observable state; assert the expected rejection or controlled prediction list. The image must remain decodable so the case reaches the intended size rule. The laptop/cup labels are deliberate test-worker responses, not recognition results.",
+          "text": "In tests/test_ui.py, the parameterization above this function runs the same test at two sizes: exactly 10 MiB and one byte above it. Read the function in four parts: prepare a valid image with the chosen byte count; submit it through Selenium; wait for an observable state; assert the expected rejection or controlled prediction list. The image must remain decodable so the case reaches the intended size rule. The laptop/cup labels are deliberate test-worker responses, not recognition results.",
           "sources": [],
           "status": "source_verified"
         },
@@ -676,7 +781,7 @@
             [
               "AC2",
               "The current image has one matching row for each displayed box",
-              "test_ui.py: current-image row and box matching; test_inference.py: actual-model observations"
+              "test_ui.py: visible names/scores, identity and geometry; test_inference.py: three selected-box regressions"
             ],
             [
               "AC3",
@@ -691,27 +796,37 @@
             [
               "AC5",
               "Invalid input, empty results and inference failure remain distinct and recoverable",
-              "test_ui.py: invalid input, controlled empty/error, startup failure and nonresponding worker"
+              "test_recovery.py: malformed output, loading/inference failure, Clear and successful retry"
             ],
             [
               "AC6",
-              "Keyboard controls and narrow layouts remain usable",
-              "test_ui.py: clientWidth overflow check at 320/390; test_filter.py and test_sample.py: keyboard actions"
+              "Keyboard controls, narrow layout and configured status/error announcements remain usable",
+              "test_ui.py: viewport, visible error content, roles and live-region settings; keyboard checks"
             ],
             [
               "AC7",
               "The filter consistently selects retained current predictions using raw scores",
-              "test_filter.py: six cases for exact score, restoration/no new inference, identity/selection, reset, errors and keyboard"
+              "test_filter.py: raw-score boundary, restore without inference, duplicate/stable identity, selection, reset, errors and keyboard"
             ],
             [
               "AC8",
               "Try sample follows ordinary image validation and inference",
-              "test_sample.py: seven cases; test_inference.py: real coffee through Try sample"
+              "test_sample.py: fetch/decode failure, timeout, replacement and keyboard; test_inference.py: real coffee through Try sample"
             ],
             [
               "AC9",
               "PNG output contains the current visible annotations at oriented resolution",
-              "test_export.py: eight cases, including orientation, retained/excluded pixels, failed/late encoding and recovery"
+              "test_export.py: orientation, retained/excluded pixels, failed/late encoding and recovery"
+            ],
+            [
+              "AC10",
+              "Startup is bounded and preserves the correct current state",
+              "test_startup.py and test_loading.py: configuration deadline, preparation, progress and retired workers"
+            ],
+            [
+              "AC11",
+              "The package exposes only approved public files and runs with an ordinary static server",
+              "test_public_package.py: allowlist, hashes, privacy/provenance and actual model/export"
             ]
           ],
           "widths": [
@@ -748,7 +863,7 @@
           "type": "paragraph",
           "text": "The PNG checks verify decoded dimensions, including a JPEG stored at 320 by 240 pixels that displays and exports at 240 by 320 after EXIF rotation. Known pixel locations check for a retained box, an excluded box and an unchanged background. Encoder-failure and delayed-callback cases test recovery and cancellation. The actual-model coffee export separately demonstrates the full integration.",
           "sources": [
-            "tests/test_export.py:86-246"
+            "tests/test_export.py"
           ],
           "status": "source_verified"
         },
@@ -766,11 +881,41 @@
         },
         {
           "type": "paragraph",
-          "text": "The export-message element remains present as a polite live region even when empty; styling adds spacing only when it has text. This preserves the intended announcement mechanism. DOM/CSS inspection, keyboard checks and visible focus do not certify how every screen reader will announce it.",
+          "text": "Status, input errors, loading feedback and export feedback have automated checks for useful visible content and the intended announcement configuration. The export-message element remains present as a polite live region even when empty. These checks inspect page content and DOM settings; they do not certify actual screen-reader speech or complete accessibility.",
           "sources": [
-            "dist/index.html:82",
-            "dist/style.css:192-194"
+            "dist/index.html",
+            "dist/style.css"
           ],
+          "status": "source_verified"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Visible results and box regression"
+        },
+        {
+          "type": "paragraph",
+          "text": "Reading only data attributes can miss an empty visible label. The strengthened checks inspect rendered names in result rows and corresponding box labels, and formatted scores in result rows. Deliberately blanking that text in a disposable copy must fail the assertions even if data-label and data-score remain correct.",
+          "sources": [
+            "tests/test_ui.py",
+            "tests/test_inference.py",
+            "tools/check_review_sensitivity.py"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "paragraph",
+          "text": "The three reference boxes come from the earlier output of the same pinned model in model-observations.json. Each normalized edge may differ by 0.005, which is 0.5 percent of the image extent and about 2 to 3 source pixels for these samples. Rendered positions allow that scaled edge tolerance plus 2 CSS pixels for layout rounding/borders; widths and heights allow two edge tolerances plus 2 CSS pixels. Actual rendered position and size are measured relative to the displayed image. Deliberately displacing every box must fail even though its label and count remain unchanged.",
+          "sources": [
+            "tests/test_inference.py",
+            "docs/evidence/model-observations.json"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "paragraph",
+          "text": "These comparisons answer whether a selected result or its rendering changed. Independent human box annotations would be needed to assess localization accuracy. Neither a good match nor a high score establishes that all predictions are correct.",
+          "sources": [],
           "status": "source_verified"
         }
       ]
@@ -881,8 +1026,8 @@
           "text": "Changing the body's min-width from 320px to 0 lets the responsive layout use the actual available width. A subsequent real-model capture measured content and available widths of 305 and 305 at 320, and 375 and 375 at 390. The 768- and 1440-pixel layouts also fit their available widths. This finding combines an application fix with a stronger test measurement; it was not an injected source fault.",
           "sources": [
             "docs/evidence/viewport-before-fix.xml",
-            "dist/style.css:16",
-            "tests/test_ui.py:320-342",
+            "dist/style.css",
+            "tests/test_ui.py",
             "docs/evidence/extension-demo.json"
           ],
           "status": "source_verified"
@@ -939,8 +1084,30 @@
           "type": "paragraph",
           "text": "The strict assertion was retained. The isolated test browser was then configured to resolve only localhost and 127.0.0.1 because its application and model assets are served locally. This change is confined to the test browser and does not alter the computer's network or security settings. The subsequent complete rerun passed all 48 cases.",
           "sources": [
-            "tests/conftest.py:81-88",
+            "tests/conftest.py",
             "docs/evidence/extension-full-suite.xml"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Current recovery wording and assertion gaps"
+        },
+        {
+          "type": "paragraph",
+          "text": "The preceding timeout callback used an image-detection explanation while the model was still loading. Clear then described any failed worker as a startup failure. The follow-up separates the failure stages and preserves a truthful unavailable state until retry succeeds. Controlled reproductions check the visible explanation, absence of old results and subsequent recovery.",
+          "sources": [
+            "docs/SOURCE_REVIEW.md",
+            "tests/test_recovery.py"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "paragraph",
+          "text": "Fresh disposable-copy experiments validate the strengthened visible-text and geometry assertions. A shared six-case clean baseline passes first, followed by four fresh deliberate-fault copies. The records retain each source change and its intended failing assertion. A deliberate source fault demonstrates sensitivity to that specific mistake; it is not a production incident or a broad mutation-testing score.",
+          "sources": [
+            "docs/evidence/followup-sensitivity.json"
           ],
           "status": "source_verified"
         }
@@ -952,94 +1119,91 @@
       "blocks": [
         {
           "type": "paragraph",
-          "text": "The following checkpoints were executed on 2 November 2026. Their case counts overlap, so they must not be added together. The final combined suite is the regression result for the integrated extension. Historical base evidence is identified separately.",
-          "sources": [
-            "docs/evidence/score-filter-record.json",
-            "docs/evidence/sample-image-record.json",
-            "docs/evidence/export-png-suite.xml"
-          ],
+          "text": "The current review follow-up was executed on 3 November 2026. Its exact commands, environment, source hashes and selected evidence are recorded in followup-verification.json. The starting commit is 74d108f; the final file hashes identify the later tested changes. Checkpoints overlap and are never added together.",
+          "sources": [],
           "status": "source_verified"
         },
         {
           "type": "table",
-          "caption": "Table 7  Execution record and evidence limits",
+          "caption": "Table 7  Current and historical execution records",
           "columns": [
             "Check",
-            "Result",
+            "Observed result",
             "Evidence and limit"
           ],
           "rows": [
             [
-              "Final combined suite",
-              "48 passed; 0 failures/errors/skips; 418.62 s",
-              "45 controlled application/server cases and three actual-model cases; extension-full-suite.xml"
+              "Current combined suite",
+              "93 passed; 0 failures/errors/skips; 648.509 s JUnit",
+              "89 non-model and 4 actual-model cases; followup-full-suite.xml"
             ],
             [
-              "Filter checkpoint",
-              "29 passed; 199.37 s",
-              "23 existing controlled checks and six filter cases; actual-model cases deselected"
+              "Current deliberate faults",
+              "6 clean passes; 7 intended failures across 4 faults",
+              "followup-sensitivity.json; selected faults in disposable copies"
             ],
             [
-              "Sample checkpoint",
-              "10 passed; 137.27 s",
-              "Seven controlled sample cases plus three actual-model cases"
+              "Current rendered review",
+              "12 captures inspected; 320/390/768/1440 px layouts fit",
+              "followup-rendered-review.json; real coffee workflow and labelled controlled recovery capture"
             ],
             [
-              "PNG checkpoint",
-              "8 passed; 89.03 s",
-              "Actual PNG encoding/download with controlled predictions and deliberate encoding faults"
+              "Current static package",
+              "23 entries verified; 34,572,254 bytes in ZIP",
+              "followup-package.json; prepared locally, not deployed"
             ],
             [
-              "Real feature demonstration",
-              "Passed on the coffee sample",
-              "Four original predictions; three at 0.80; actual 600 x 400 PNG, no captured console entries or external HTTP requests"
+              "Preceding correctness review",
+              "72 passed; 531.53 s",
+              "Historical 3 November source; review-full-suite.xml"
             ],
             [
-              "Rendered viewport review",
-              "320, 390, 768 and 1440 CSS px fit",
-              "Content width compared with available clientWidth; keyboard/accessibility limits stated separately"
+              "Public preparation",
+              "59 passed; 441.33 s",
+              "Historical 3 November preparation; public-prep-full-suite.xml"
             ],
             [
-              "Earlier base long session",
-              "320 cycles in 3615.927 s",
-              "Historical five-photo repeated-use observation; does not cover the extension"
+              "Combined extension",
+              "48 passed; 418.62 s",
+              "Historical 2 November extension; extension-full-suite.xml"
+            ],
+            [
+              "Base repeated use",
+              "320 cycles; 3615.927 s",
+              "Historical base only; no current flake-rate or memory-leak claim"
             ]
           ],
           "widths": [
-            1.65,
-            1.85,
-            2.6
+            1.55,
+            1.9,
+            2.65
           ]
         },
         {
           "type": "paragraph",
-          "text": "The separate real-model demonstration captured no page HTTP requests to external hosts and no browser-console entries. Those observations describe that browser session; they are not a measurement of all operating-system network activity. Selected JUnit records remove machine hostname attributes, and the evidence manifest records the raw-source hashes and that redaction.",
+          "text": "The before/after recovery comparison ran the same three controlled wording checks against the earlier source and the current source: three expected pre-Clear failures in 26.732 seconds, followed by three passes in 27.644 seconds. Only the passing current checks continue through Clear, unavailable feedback, Retry and a valid new image. The baseline Clear behavior is not independently reached by those failed checks.",
           "sources": [
-            "docs/evidence/extension-verification.json",
-            "docs/evidence/extension-demo.json"
+            "docs/evidence/followup-recovery-comparison.json"
           ],
           "status": "source_verified"
         },
         {
           "type": "paragraph",
-          "text": "The recorded environment uses Python 3.12.10, pytest 9.0.3, Selenium 4.40.0, Chrome 156.0.8078.74 and ChromeDriver 156.0.8078.80 on one Windows laptop. Pinned asset versions and checksums remain in asset-lock.json. This is a local execution record, not a second-machine or cross-browser qualification.",
-          "sources": [
-            "docs/VERIFICATION.md",
-            "docs/evidence/extension-demo.json"
-          ],
-          "status": "source_verified"
-        },
-        {
-          "type": "paragraph",
-          "text": "The earlier base also recorded a complete suite with 26 passes, comprising 23 controlled application/server checks and three actual-model checks. Those earlier results describe the base version. They are not added to the extension counts or used as proof that the new filter, sample or PNG behavior passed.",
+          "text": "The recorded current environment is Python 3.12.10, pytest 9.0.3, Selenium 4.40.0, Chrome 156.0.8078.80 and ChromeDriver 156.0.8078.80. This was one Windows laptop with headless Chrome and prepared local assets. Workstation load was not controlled, so timing is an observation rather than a performance promise.",
           "sources": [],
           "status": "source_verified"
         },
         {
           "type": "paragraph",
-          "text": "The sample expectations were based on upstream image descriptions and separate AI-assisted visual review before inference. They are not exhaustive human annotations. The project has not established a general detection-accuracy figure, production performance, Safari or iOS behavior, or semiconductor defect-detection capability.",
+          "text": "Source and evidence hashes bind observations to inspectable bytes. Selected JUnit copies remove the machine hostname; the raw hashes and redaction are retained in the manifest. New scripts for sensitivity, before/after recovery comparison, rendered capture and verification recording are tracked under tools. Historical helpers that existed only in ignored artifacts are not claimed to have been reconstructed.",
           "sources": [],
-          "status": "ready"
+          "status": "source_verified"
+        },
+        {
+          "type": "paragraph",
+          "text": "The three real-photo box references are earlier pinned-model outputs, not independent annotations. Scores remain model scores, duplicate predictions are still possible and the filter only changes the displayed set. Malformed-response and timeout cases use deliberate controlled failures. Announcement checks establish configured DOM behavior, not actual screen-reader output.",
+          "sources": [],
+          "status": "source_verified"
         },
         {
           "type": "heading",
@@ -1048,19 +1212,15 @@
         },
         {
           "type": "paragraph",
-          "text": "Release for the agreed local learning and demonstration workflow is recommended for the documented version. Final complete-suite result: 48 passed; 0 failures, errors or skips; 418.62 seconds. The focused feature checks, actual-model sample demonstration, downloaded PNG inspection and corrected viewport measurements provide the supporting evidence. The release remains limited to the tested local environment and the specified acceptance criteria.",
-          "sources": [
-            "docs/evidence/extension-verification.json",
-            "docs/evidence/extension-full-suite.xml",
-            "docs/evidence/extension-demo.json"
-          ],
+          "text": "The current combined result is 93 passed, 0 failures/errors/skips; 648.509 seconds of JUnit suite time (89 non-model and 4 real-model cases). Together with the targeted failure/recovery checks, deliberate-fault sensitivity and current rendered review, it supports the agreed local learning and demonstration workflow. The refreshed book and static ZIP are local deliverables. Website upload remains parked and no public URL has been verified.",
+          "sources": [],
           "status": "source_verified"
         },
         {
           "type": "paragraph",
-          "text": "A private local release means the documented version is suitable for its agreed local use under the tested conditions. It does not mean that the source has been published, that an online service is deployed, or that an employer has accepted the project as proof of role qualification.",
+          "text": "Other browsers/devices, Safari/iOS, hosted CI, public deployment, a general accuracy dataset, GPU/NPU execution, semiconductor inspection and production scale remain outside the evidence. The old one-hour session does not requalify the current revision. Repository content also cannot prove the owner's personal understanding or unaided authorship.",
           "sources": [],
-          "status": "ready"
+          "status": "source_verified"
         }
       ]
     },
@@ -1076,13 +1236,13 @@
         {
           "type": "code",
           "caption": "Start the local server",
-          "text": "Set-Location '%USERPROFILE%\\Downloads\\Apple-SDET\\object-lens'\n.\\.venv\\Scripts\\python.exe serve.py",
+          "text": ".\\.venv\\Scripts\\python.exe serve.py",
           "source": null,
           "status": "ready"
         },
         {
           "type": "paragraph",
-          "text": "Open http://127.0.0.1:8765 in Chrome and keep the terminal running. Ctrl+C stops the server. If the project is moved, adjust the Set-Location path. If that port is already in use, choose another with serve.py --port 8766 and open the corresponding local address.",
+          "text": "Open http://127.0.0.1:8765 in Chrome and keep the terminal running. Ctrl+C stops the server. If that port is already in use, choose another with serve.py --port 8766 and open the corresponding local address.",
           "sources": [],
           "status": "ready"
         },
@@ -1195,6 +1355,16 @@
           "text": "A demonstration can honestly describe the application workflow, the role of each technology, one acceptance criterion and its test, an investigated failure, and the scope of the release decision. The owner's understanding should be demonstrated through explanations and actions actually performed, without inventing prior experience.",
           "sources": [],
           "status": "ready"
+        },
+        {
+          "type": "paragraph",
+          "text": "The current public package has an exact allowlist: application files, normal-mode configuration, six pinned runtime/model assets, the public coffee sample and license/provenance texts. Tests, documents, environments and Git history are excluded. An ordinary static-server integration test verifies the package locally. Source publication through GitHub Desktop and website deployment remain separate owner actions.",
+          "sources": [
+            "tools/build_public_demo.py",
+            "tests/test_public_package.py",
+            "docs/PUBLIC_DEMO.md"
+          ],
+          "status": "source_verified"
         }
       ]
     },
@@ -1304,11 +1474,15 @@
             ],
             [
               "Test setup and behavior",
-              "tests/conftest.py; test_ui.py; test_filter.py; test_sample.py; test_export.py; test_inference.py; test_server.py"
+              "tests/conftest.py; UI, recovery, inference, startup, loading, filter, sample, export, server and public-package tests"
             ],
             [
               "Verification records",
-              "docs/VERIFICATION.md, docs/evidence and retained local artifacts"
+              "docs/VERIFICATION.md; followup-verification.json; followup-sensitivity.json; historical records remain dated"
+            ],
+            [
+              "Reproducible current evidence",
+              "tools/check_review_sensitivity.py, check_recovery_comparison.py, capture_review.py and record_verification.py"
             ],
             [
               "Public sample provenance",

@@ -58,6 +58,8 @@ try {
         protected_view_count = [int]$wordInstance.ProtectedViewWindows.Count
         word_version = [string]$wordInstance.Version
         apartment = [string][System.Threading.Thread]::CurrentThread.ApartmentState
+        powershell_version = [string]$PSVersionTable.PSVersion
+        existing_execution_policy = [string](Get-ExecutionPolicy)
     }
     Write-Output ($diagnostics | ConvertTo-Json -Compress)
     [System.IO.File]::WriteAllText(($resultPath + '.state.json'), ($diagnostics | ConvertTo-Json), (New-Object System.Text.UTF8Encoding($false)))

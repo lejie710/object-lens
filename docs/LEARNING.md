@@ -72,13 +72,17 @@ This is a suggested post-delivery change, not a claim that you have already made
 
 | Evidence | Question it answers | What it cannot establish |
 | --- | --- | --- |
-| Controlled laptop/cup response | Does the app display matching rows and boxes? | Whether an AI model recognizes that image |
+| Controlled laptop/cup response | Does the app display the expected visible names, two-decimal scores and matching rows/boxes? | Whether an AI model recognizes that image |
 | Controlled delayed response | Can an old result repaint a newly selected image? | How often a real model responds slowly |
 | Controlled error or silence | Can the app recover instead of remaining stuck? | That the real model actually suffered that failure |
-| Real astronaut/cup/cat tests | Does the prepared local model run and include a reviewed expected label? | General accuracy, absence of duplicates or correctness of every other prediction |
+| Real astronaut/cup/cat tests | Does the pinned model run, show the expected label/score and retain the selected box location and rendered geometry? | General accuracy, independent localization accuracy or correctness of every other prediction |
 | Baseline comparison | Did shared labels and boxes change under the same pinned inference setup? | Equivalence to every upstream library version or all possible images |
 
-The selected-label inference tests are deliberately small. For example, finding `cup` in the coffee image does not fail because there are also duplicate spoon predictions. Those are recorded separately in the evaluation notes.
+The real-model tests are deliberately small. For example, the cup check does not reject the extra duplicate spoon predictions. Its reference coordinates are earlier outputs from the same model, not human-drawn correct boxes. Comparing those values detects regression; it cannot prove localization accuracy.
+
+A test that only reads `data-label="cup"` can pass even when the visible word is blank. The strengthened checks read the text the user sees as well as identity metadata. Disposable-copy experiments blank names/scores or move boxes, then show the intended assertions fail. A deliberately introduced fault is evidence about test sensitivity, not a naturally discovered product incident.
+
+Malformed-response and timeout cases ask whether the app rejects invalid component output and recovers. They do not claim the real model produced those faults. Similarly, checking `role` and `aria-live` confirms the configured announcement mechanism; it does not measure what a screen reader actually speaks.
 
 ## 5. Understand a failure before changing the code
 
@@ -90,7 +94,13 @@ The review also found a missing recovery path for a worker that never replies. T
 
 The extension's rendered review found a real narrow-layout defect. At a 320-pixel window width, the vertical scrollbar left only 305 pixels of usable width. A fixed 320-pixel body therefore overflowed, while a test using the full window width incorrectly passed. The corrected test uses the document's client width; it failed before the CSS fix and passes afterward. This is an example of improving both the application and the rule used to judge its output.
 
-## 6. A useful release explanation
+## 6. A small exercise with an answer
+
+Suppose the model score is 0.7999, the visible score is 0.80 and the filter minimum is 0.80. Should the prediction remain visible, and what should a test inspect?
+
+Answer: it should be hidden, because filtering compares the unrounded 0.7999 with 0.80. A display assertion separately checks that the score is formatted as 0.80 before filtering. These are different requirements: rounding is presentation, while inclusion uses the original model value. The existing `test_filter.py` boundary case is an executable example.
+
+## 7. A useful release explanation
 
 An honest explanation connects the requirement, test and evidence: "I checked that replacing an image cannot display its predecessor's results. I tested delayed responses deliberately, kept those tests separate from real inference, and preserved failure evidence. The app is suitable for this local learning/evaluation workflow, with the model limitations documented."
 

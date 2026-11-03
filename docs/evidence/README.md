@@ -6,17 +6,22 @@ Selected text files use UTF-8 with LF line endings to match Git checkout. Raw-ru
 
 | File | What it establishes |
 | --- | --- |
-| `source-review-verification.json` and `review-full-suite.xml` | The corrected 72-case local gate, reviewed source hashes and limits; the suite used temporary files outside a Git checkout |
+| `followup-verification.json` and `followup-full-suite.xml` | Current review-follow-up suite, environment, exact commands, source hashes and retained-record provenance |
+| `followup-sensitivity.json` | Reproducible deliberate source faults in disposable copies, with passing controls and expected assertion failures |
+| `followup-recovery-comparison.json` | Three pre-Clear wording failures against the earlier source and three current passes that continue through Clear/Retry/recovery; controlled faults |
+| `followup-rendered-review.json` | Current real-model app/export captures, viewport observations and explicitly controlled error/recovery captures |
+| `followup-package.json` | Rebuilt local static package identity and verification; no deployment |
+| `source-review-verification.json` and `review-full-suite.xml` | Historical corrected 72-case local gate, reviewed source hashes and limits; the suite used temporary files outside a Git checkout |
 | `review-startup-before.xml` and `review-startup-after.xml` | Five startup regressions failed before correction and passed afterward; the full suite also includes the additional worker-retry preparation case |
 | `review-package-before.xml` and `review-package-after.xml` | Reproduced outside-checkout provenance failure and successful browser-free package checks after correction |
 | `review-harness-cleanup.xml` | Three mocked cleanup regressions, with no real Chrome launched for those cases |
 | `review-navigation-original.json`, `review-navigation-negative.json`, `review-navigation-prior-rules.json` | Original document passes; removing one return link fails the strengthened checker but passed reconstructed prior rules |
 | `public-prep-full-suite.xml` and `public-prep-focused-suite.xml` | The 3 November 59-case full run and 11-case focused startup/package run |
-| `public-prep-verification.json` | Source hashes, raw-record provenance, current counts and explicit pre-deployment limits |
+| `public-prep-verification.json` | Source hashes, raw-record provenance, historical preparation counts and explicit pre-deployment limits |
 | `public-prep-review.json` | Local static-package real inference/export, simulated model transfer, viewport, credits-link and keyboard observations; not hosted verification |
 | `extension-full-suite.xml` | The final combined 48-case run for the three additions and the corrected narrow-layout check |
 | `extension-verification.json` | Final counts, application/test hashes, redaction records, actual findings and scope limits |
-| `extension-demo.json` | Real sample/filter/PNG workflow and current usable-width geometry on four viewports |
+| `extension-demo.json` | Historical real sample/filter/PNG workflow and usable-width geometry on four viewports |
 | `score-filter-suite.xml` and `score-filter-record.json` | The 29-case controlled score-filter checkpoint |
 | `sample-image-suite.xml` and `sample-image-record.json` | Seven sample-loading checks plus three real-inference cases |
 | `export-png-suite.xml` | Eight controlled export cases using actual downloaded PNG bytes |
@@ -32,4 +37,4 @@ Selected text files use UTF-8 with LF line endings to match Git checkout. Raw-ru
 | `stability-summary.json` | One hour of repeated real-model use on five fixed photos; not a load or accuracy benchmark |
 | `final-contrast-review.json` | Computed browser text contrast after the final empty-state colour adjustment |
 
-The generated design concept is separate from these records. Partial expected labels were based on upstream image descriptions and AI-assisted visual review, not exhaustive human annotation or the detector's own answers. The 26-case, fresh-setup, baseline-comparison and one-hour stability records belong to the earlier base version. The extension has its own final suite and demonstration record; earlier evidence is not relabelled as new execution.
+The generated design concept is separate from these records. Partial expected labels were based on upstream image descriptions and AI-assisted visual review, not exhaustive human annotation or the detector's own answers. The 26-case, fresh-setup, baseline-comparison and one-hour stability records belong to the earlier base version. The extension, public preparation, preceding correctness review and current follow-up each have separately identified records. Earlier evidence is not relabelled as new execution. New reusable procedures are tracked under `tools`; historical procedures that existed only in ignored artifacts are not claimed to have been reconstructed.

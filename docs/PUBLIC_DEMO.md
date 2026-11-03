@@ -1,20 +1,20 @@
 # Public demo preparation
 
-Status on 3 November 2026: the owner parked upload after the computer could not complete it. No successful public deployment or verified live URL is recorded. The corrected static package is prepared for later use; [the correctness review](SOURCE_REVIEW.md) describes the subsequent startup and verification fixes.
+Status on 3 November 2026: the owner parked upload after the computer could not complete it. No successful public deployment or verified live URL is recorded. The static package has been rebuilt after the review follow-up for local inspection. [The current verification record](evidence/followup-verification.json) identifies the source and [the package record](evidence/followup-package.json) identifies the archive. [The correctness reviews](SOURCE_REVIEW.md) distinguish the earlier startup fixes and the current assertion/recovery work.
 
 ## Approved sharing boundary
 
 The public demo may be visited without repository access. The GitHub repository remains private. Visitors necessarily receive the browser application's HTML, CSS, JavaScript, model and runtime files; those delivered files can be inspected. Private design documents, tests, repository history, environments and raw evidence are not part of the public package.
 
-The application processes selected photos in the visitor's browser. Its requests obtain the website, model/runtime files and optional public coffee sample; it does not upload the selected photo for inference. The hosting provider still handles ordinary website requests. The public credits page explains this distinction and the model's limits.
+The application processes selected photos in the visitor's browser. Its requests obtain the website, model/runtime files and optional public coffee sample; it does not upload the selected photo for inference. The hosting provider still handles ordinary website requests. The browser may cache downloaded runtime/model assets. Selected photo data and predictions are held by the active page/worker; the app has no saved-photo history or persistent photo-storage feature. Clearing the page removes its current image state, not browser-cached model files. The public credits page explains this distinction and the model's limits.
 
 ## Prepared website
 
-The package has 23 allowlisted files: seven application/configuration files, six pinned model/runtime files, one public sample and nine licence/provenance texts. Each build's manifest records its exact byte counts, content identity and ZIP hash; the corrected ZIP is approximately 34.6 MB. The archive contains `index.html` at its root. It excludes `docs`, `tests`, `.git`, `.venv`, `.local`, `artifacts` and the comparison baseline.
+The package has 23 allowlisted files: seven application/configuration files, six pinned model/runtime files, one public sample and nine licence/provenance texts. Each build's manifest records its exact byte counts, content identity and ZIP hash; the corrected ZIP is approximately 34.6 MB. The archive contains `index.html` at its root. Host it at the site root: worker asset URLs begin with `/assets`, so deployment under a URL subdirectory is not supported by this version. It excludes `docs`, `tests`, `.git`, `.venv`, `.local`, `artifacts` and the comparison baseline.
 
 Normal static hosting reads `runtime-config.json` from the package with `testMode` set to the JSON boolean `false`. The local Python server still generates this response itself, allowing explicitly controlled tests to use their separate mode. The uploaded site needs no Python service, database or paid inference API.
 
-The loading notice distinguishes model transfer from runtime initialization. A model progress value of 100 does not claim that the detector is ready. Unknown transfer sizes remain indeterminate, errors remain separate, and an old worker cannot update a newer worker's loading state. The existing 120-second model-load deadline and 90-second inference deadline remain in place; very slow connections can require retry.
+The loading notice distinguishes model transfer from runtime initialization. A model progress value of 100 does not claim that the detector is ready. Unknown transfer sizes remain indeterminate, errors remain separate, and an old worker cannot update a newer worker's loading state. Loading and inference timeout messages identify the failed stage. Clear after a stopped worker preserves an unavailable/retry state rather than claiming readiness. The existing 120-second model-load deadline and 90-second inference deadline remain in place; very slow connections can require retry.
 
 Configuration now has its own 15-second request/body deadline before worker startup. Retry fetches it again without losing the selected image. Background readiness preserves existing input errors and unfinished file preparation.
 
@@ -50,13 +50,13 @@ This helper uses a fresh headless Chrome profile. It paces only the model respon
 
 These are local preparation results. Chrome on one Windows laptop was exercised. Other browsers/devices, public connectivity, hosting access configuration, provider quotas and real Internet performance have not been qualified. No general model-accuracy claim is made. Earlier 48-case and one-hour records retain their original source/version scope.
 
-The later combined correctness-review suite passed 72 cases in 531.53 seconds, including four actual-model cases and the static-package workflow, with its temporary files outside any Git repository. Use [the source-review record](SOURCE_REVIEW.md) for this newer version. The earlier loading screenshots and paced-transfer figures above remain observations of the preceding preparation version.
+The later combined correctness-review suite passed 72 cases in 531.53 seconds, including four actual-model cases and the static-package workflow, with its temporary files outside any Git repository. That is also now a historical checkpoint; use [the verification assessment](VERIFICATION.md) for the current follow-up result. The earlier loading screenshots and paced-transfer figures above remain observations of the preceding preparation version.
 
-The [preparation verification record](evidence/public-prep-verification.json) binds source files and retained evidence. See the actual [model-loading capture](screenshots/public-prep/model-loading.png), [current app](screenshots/public-prep/app-1440.png) and [credits page](screenshots/public-prep/credits-1440.png).
+The [preparation verification record](evidence/public-prep-verification.json) binds source files and retained evidence. See the actual [model-loading capture](screenshots/public-prep/model-loading.png), [preparation-version app](screenshots/public-prep/app-1440.png) and [credits page](screenshots/public-prep/credits-1440.png).
 
-## Owner publication steps
+## Parked owner publication procedure
 
-Use a personal Vercel account on the free Hobby plan for this personal, non-commercial demo. A paid plan and a purchased domain are not required for this workflow. Use an owned account rather than leaving an anonymous deployment unclaimed, because anonymous deployments expire.
+The earlier preparation selected a personal Vercel Drop workflow and referenced the free Hobby plan. Upload is parked: the steps below preserve that procedure and are not an instruction to resume it during this follow-up. Provider terms, account eligibility and current limits must be checked again if publication resumes. No paid plan or domain purchase is part of the current scope.
 
 1. Sign in to Vercel and open [Vercel Drop](https://vercel.com/drop).
 2. Upload the prepared `Object_Lens_Public_Demo.zip`, or the contents of its `site` directory. Select the personal Hobby account/team and a project name.
@@ -65,10 +65,10 @@ Use a personal Vercel account on the free Hobby plan for this personal, non-comm
 
 A dropped project is not automatically connected to Git. Merging or pushing a later branch does not update this website by itself. To update it, rebuild the package and upload it to the existing project. Git-connected automatic deployments are a separate optional change.
 
-Sources checked on 3 November 2026: [Vercel Drop](https://vercel.com/docs/drop), [Hobby plan and usage limits](https://vercel.com/docs/plans/hobby). Account eligibility, availability of a particular project name and remaining usage allowance depend on the owner's account.
+Sources recorded during the earlier 3 November preparation: [Vercel Drop](https://vercel.com/docs/drop), [Hobby plan and usage limits](https://vercel.com/docs/plans/hobby). Account eligibility, availability of a particular project name and remaining usage allowance depend on the owner's account.
 
 ## Still required after publication
 
 Verify the actual HTTPS production address from a fresh signed-out browser. Confirm that it opens the app rather than an authentication page; observe a fresh model load; run Try sample and a selected public photo; exercise filtering, PNG download and recovery; check the visible layout and console; and verify that private documents and test routes are absent. Record the actual URL, date, build identity, observations and remaining limits separately from the local results above.
 
-After those checks, update the README's live-demo link and the design's hosting record. The Word/PDF companion remains the versioned explanation of the prior local application; this addendum records the release-preparation changes until hosted evidence is available.
+After those checks, update the README's live-demo link and the design's hosting record. The refreshed Word/PDF companion includes the current local implementation and static-package boundary. It does not substitute for hosted evidence.

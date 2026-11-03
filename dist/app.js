@@ -218,10 +218,12 @@ function failWorker(message) {
   showError(message, { retry: true });
 }
 
-function workerTimedOut(instance) {
+function workerTimedOut(instance, stage) {
   if (instance !== worker) return;
-  console.error('Object Lens worker timed out.');
-  failWorker('Detection took too long. Try again or choose another image.');
+  console.error(`Object Lens ${stage} timed out.`);
+  failWorker(stage === 'load'
+    ? 'The detection model took too long to load. Try again or reload the page.'
+    : 'Image analysis took too long. Try again or choose another image.');
 }
 
 function removeImage() {
@@ -248,7 +250,7 @@ function clearWorkspace() {
   elements.clear.disabled = true;
   elements.resultsEmpty.textContent = 'Detections will appear here.';
   if (modelFailed) {
-    showError('Object detection could not start. Try again or reload the page.', { retry: true });
+    showError('Object detection is unavailable. Try again to restart the detector.', { retry: true });
   } else {
     setState(modelReady ? 'ready' : 'loading', modelReady ? 'Ready to choose an image' : 'Preparing object detection…');
   }
@@ -434,7 +436,7 @@ function startPendingInference() {
   const instance = worker;
   clearTimeout(inferenceTimer);
   inferenceTimer = setTimeout(() => {
-    if (activeRequest === image.id) workerTimedOut(instance);
+    if (activeRequest === image.id) workerTimedOut(instance, 'infer');
   }, testMode ? CONTROLLED_TIMEOUT_MS : INFERENCE_TIMEOUT_MS);
   try {
     instance.postMessage({ type: 'infer', id: image.id, image: image.image, filename: image.filename });
@@ -459,12 +461,17 @@ function selectResult(id) {
 function renderResults(predictions) {
   if (!Array.isArray(predictions)) throw new Error('The detector returned an unreadable result.');
   const clean = predictions.map((prediction, index) => {
-    const { label, score, box } = prediction;
-    if (typeof label !== 'string' || !label || !Number.isFinite(score) || score < 0 || score > 1 ||
-        !box || !['xmin', 'ymin', 'xmax', 'ymax'].every((key) => Number.isFinite(box[key]))) {
+    if (!prediction || typeof prediction !== 'object' || Array.isArray(prediction)) {
       throw new Error('The detector returned an unreadable result.');
     }
-    const bounds = Object.fromEntries(Object.entries(box).map(([key, value]) => [key, Math.max(0, Math.min(1, value))]));
+    const { label, score, box } = prediction;
+    if (typeof label !== 'string' || !label.trim() || !Number.isFinite(score) || score < 0 || score > 1 ||
+        !box || typeof box !== 'object' || Array.isArray(box) ||
+        !['xmin', 'ymin', 'xmax', 'ymax'].every((key) => Number.isFinite(box[key]))) {
+      throw new Error('The detector returned an unreadable result.');
+    }
+    const bounds = Object.fromEntries(['xmin', 'ymin', 'xmax', 'ymax']
+      .map((key) => [key, Math.max(0, Math.min(1, box[key]))]));
     if (bounds.xmax <= bounds.xmin || bounds.ymax <= bounds.ymin) throw new Error('The detector returned an invalid box.');
     return { id: index, label, score, box: bounds, color: COLORS[index % COLORS.length] };
   });
@@ -575,7 +582,8 @@ function onWorkerMessage({ data }) {
           renderResults(data.predictions);
         } catch (error) {
           console.error('Object Lens result validation:', error);
-          showError('The result could not be displayed. Try again or choose another image.', { retry: true });
+          clearResults();
+          showError('The detector returned an invalid result. Try again or choose another image.', { retry: true });
         }
       } else {
         console.error('Object Lens inference:', data.message);
@@ -602,13 +610,16 @@ function createWorker() {
     instance.onerror = (error) => {
       if (instance !== worker) return;
       console.error('Object Lens worker:', error.message);
-      failWorker('Object detection could not start. Try again or reload the page.');
+      failWorker(modelReady
+        ? 'Object detection stopped unexpectedly. Try again or choose another image.'
+        : 'Object detection could not start. Try again or reload the page.');
     };
     // Background startup must not dismiss an input error or an active file read.
     if (elements.errorNotice.hidden && preparingImageId === null) {
       setState('loading', 'Preparing object detection…');
     }
-    loadTimer = setTimeout(() => workerTimedOut(instance), testMode ? CONTROLLED_TIMEOUT_MS : LOAD_TIMEOUT_MS);
+    // Controlled startup progress tests use the same deadline as the real model.
+    loadTimer = setTimeout(() => workerTimedOut(instance, 'load'), LOAD_TIMEOUT_MS);
     instance.postMessage({ type: 'load' });
   } catch (error) {
     console.error('Object Lens worker creation:', error);

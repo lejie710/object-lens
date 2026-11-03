@@ -1,160 +1,105 @@
 # Verification and release assessment
 
-Status on 3 November 2026: the corrected application and static package passed the local correctness-review gate. The owner has parked website upload, and no successful public deployment or verified hosted URL is recorded. This is not a production-recognition, hardware-validation or general-accuracy claim.
+Status on 3 November 2026: the review follow-up keeps Object Lens suitable for its bounded local learning and demonstration workflow. The current combined result is **93 passed, 0 failures/errors/skips; 648.509 seconds of JUnit suite time (89 non-model and 4 real-model cases)**. Website upload remains parked; no successful public deployment or verified public URL is recorded.
 
-## Correctness review results
+## Current review follow-up
 
-The current combined suite passed **72 cases**, with zero failures, errors or skips, in **531.53 seconds**, using a temporary directory outside any Git repository. It contains 68 non-inference and four actual-model cases. The review reproduced and fixed startup configuration/state gaps, a Git-provenance portability issue, failure-evidence cleanup and a document-link completeness check. A duplicate-label identity regression strengthens an existing requirement.
+Environment: Python 3.12.10, pytest 9.0.3, Selenium 4.40.0, Chrome 156.0.8078.80 and ChromeDriver 156.0.8078.80. The integrated runner recorded 650.572 seconds of wall time; the JUnit suite duration above is the separate test-suite measurement. The run used one browser at a time.
 
-See [Correctness review and regression fixes](SOURCE_REVIEW.md) and `docs/evidence/source-review-verification.json` for before/after evidence and source hashes. The records below remain dated checkpoints of their original implementations.
+The current execution record is [followup-verification.json](evidence/followup-verification.json), with the combined JUnit result in [followup-full-suite.xml](evidence/followup-full-suite.xml). It records the exact commands, environment and final source hashes. The implementation continues starting commit `74d108f`; the new hashes identify the tested changes without pretending that the starting commit already contained them.
 
-## Static website preparation results
-
-The current full suite passed **59 cases**, with zero failures, errors or skips, in **441.33 seconds**: 55 non-inference application/server/package checks and four actual-model cases. The focused startup/package run passed 11 cases in 52.46 seconds. The new real case serves the generated package using only `SimpleHTTPRequestHandler`; it verifies normal configuration, absent private/test routes, actual sample inference, filtering and a downloaded 600 by 400 PNG.
-
-An additional review paced only the model response at a simulated 10 Mbps on loopback. All 43,102,531 model bytes arrived in 34.493 seconds (observed 9.997 Mbps), with detector readiness at 36.776 seconds in that run. This is a controlled local transfer observation, not a real Internet benchmark. Model-byte progress was visible before readiness. App layouts at 320/390/768/1440 pixels and the credits page at 320/1440 pixels fit their usable widths; screenshots and keyboard focus were inspected. The captured browser console was empty.
-
-Evidence: `docs/evidence/public-prep-full-suite.xml`, `public-prep-focused-suite.xml`, `public-prep-review.json` and `public-prep-verification.json`. The package and its source/notice checksums are described in [Public demo preparation](PUBLIC_DEMO.md). The 2 November results below retain their original version scope and are not relabelled as current or hosted runs.
-
-## 2 November extension results
-
-| Check | Observed result | Evidence |
+| Agreed improvement | What is checked | What the evidence does not establish |
 | --- | --- | --- |
-| Combined complete suite | 48 passed, 0 failures/errors/skips; 418.62 seconds | `docs/evidence/extension-full-suite.xml` |
-| Export checkpoint | Eight controlled export checks passed in 89.03 seconds, including saved PNG bytes/geometry, EXIF orientation, failure, timeout and stale-export rejection | `docs/evidence/export-png-suite.xml` |
-| Actual-model demonstration | Try sample produced four coffee-photo predictions; minimum 0.80 retained three; an actual annotated PNG was downloaded | `docs/evidence/extension-demo.json` and `docs/screenshots/export.png` |
-| Current rendered review | Controls fit usable widths at 320, 390, 768 and 1440 CSS pixels. At 320, content and client width both measured 305 pixels after accounting for the vertical scrollbar | `docs/evidence/extension-demo.json` and `docs/screenshots/narrow-320.png` |
+| Visible labels and scores | Result rows and box labels show the expected name; result rows show two-decimal model scores; blank text in disposable copies is detected | Correct recognition of arbitrary images |
+| Real-model box positions | Person, cup and cat coordinates stay within a stated tolerance of earlier pinned-model outputs; actual box geometry agrees with the displayed image | Localization accuracy against independent human annotations |
+| Truthful timeout and Clear feedback | Model-loading and inference deadlines have distinct explanations; Clear leaves a stopped detector unavailable; Retry restores operation | That a real model outage occurred |
+| Malformed model responses | Representative invalid scores, missing/non-finite coordinates, impossible boxes and mixed valid/invalid batches are rejected without misleading detections; recovery and clamping are checked | Exhaustive validation of every possible object shape or dependency fault |
+| Useful feedback and announcements | Important input errors contain the format/limit/recovery information; status and error elements retain intended roles/live settings | Actual screen-reader speech, accessibility certification or every assistive technology |
+| Current documentation and package | Current claims reconcile with the new evidence; Word/PDF contents, page references, return links and page layout are verified; package allowlist and hashes pass | Deployment or correctness on an untested hosting provider |
 
-The final suite contains 45 controlled application/server cases and three actual-model cases. The test browser resolves only loopback hostnames; model/runtime assets remain local. The separate real-model demonstration captured no page HTTP requests to external hosts and no browser-console entries. It is not a measurement of all operating-system network activity. Raw-source hashes and evidence redactions are recorded in `docs/evidence/extension-verification.json`.
+The current browser review and images are recorded in [followup-rendered-review.json](evidence/followup-rendered-review.json) and `docs/screenshots/review-followup`. Real coffee inference and export captures are distinguished from the deliberately controlled timeout/Clear state. The public package's separate record is [followup-package.json](evidence/followup-package.json). Browser console and request observations describe the captured sessions, not all operating-system activity.
 
-The desktop, narrow, filtered and exported-image captures were visually inspected. The export-status live region remains present before messages are added; source and keyboard/geometry checks do not constitute screen-reader certification. The earlier fresh-setup and one-hour stability runs below apply to the base version, not a repeated qualification of this extension.
+## Reproduce the evidence
 
-### Extension checkpoints
+From the prepared repository environment:
 
-The minimum-score filter passed 29 controlled application/server checks in 199.37 seconds, including six new filter tests; three real-inference cases were deselected at that checkpoint. Evidence: `docs/evidence/score-filter-suite.xml` and `score-filter-record.json`.
+```powershell
+.\.venv\Scripts\python.exe tools/prepare_assets.py --verify-only
+.\.venv\Scripts\python.exe tools/download_samples.py --verify
+.\.venv\Scripts\python.exe -m pytest
+.\.venv\Scripts\python.exe tools/check_review_sensitivity.py --output artifacts/review-sensitivity-new
+.\.venv\Scripts\python.exe tools/check_recovery_comparison.py --output artifacts/recovery-comparison-new
+.\.venv\Scripts\python.exe tools/capture_review.py --screenshots artifacts/review-captures-new --report artifacts/review-captures-new.json
+.\.venv\Scripts\python.exe tools/record_verification.py --retain-prefix followup-new
+.\.venv\Scripts\python.exe tools/build_public_demo.py
+```
 
-Try sample passed seven controlled loading/recovery checks and three actual-model cases in 137.27 seconds. The coffee case used Try sample; astronaut and cat used file selection. The sample fetch deadline was exercised at its actual 15-second value. Evidence: `docs/evidence/sample-image-suite.xml` and `sample-image-record.json`.
+The manifest records the exact invocation used for the retained run, including its temporary directory outside any Git checkout. The helpers retain reusable procedures for the new sensitivity, capture and evidence-export work. They do not reconstruct every historical experiment whose original helper remained under ignored `artifacts`. JUnit evidence copies remove hostnames; the manifest records redaction and hashes of the raw and selected records.
 
-The results below describe the preceding base version and are retained as historical evidence.
+Normal production deadlines remain 15 seconds for configuration, 120 seconds for model loading and 90 seconds for inference. Normal controlled loading keeps the production 120-second deadline. Dedicated loading-timeout tests accelerate only its 120000 ms timer to 2500 ms; controlled inference uses four seconds. Those durations exercise failure paths and are not measured model performance. Test processes run headlessly with local assets and a cached driver. They do not change system security settings.
 
-## Base-version results
+## Deliberate fault sensitivity
 
-| Check | Observed result | Evidence |
-| --- | --- | --- |
-| Final complete suite | 26 passed, 0 failures/errors/skips; 215.13 seconds | `docs/evidence/final-full-suite.xml` |
-| Independent fresh setup | Fresh source, virtual environment, locked packages, model/runtime files and driver cache on the same laptop; 26 passed in 205.13 seconds | `docs/evidence/fresh-setup-summary.json` and `fresh-setup-suite.xml` |
-| One-hour repeated use | 320 completed cycles, 320 clears and 32 rapid replacements; 3615.927 seconds; no observed failure or browser console entry | `docs/evidence/stability-summary.json` |
-| Prediction repeatability within that session | One recorded label sequence per repeated photo; five fixed photos, not 320 distinct inputs | Complete local cycle record in `artifacts/stability/result.json` |
-| Real output comparison | Labels and normalized boxes matched the local baseline on astronaut, coffee and chelsea | `docs/evidence/model-observations.json` |
-| Rendered UI review | 320, 390, 768 and 1440 CSS-pixel widths; no horizontal overflow, readable edge labels, visible keyboard focus and correct selected-box stacking | `docs/evidence/rendered-review.json` |
-| Test sensitivity | Two isolated deliberate source faults were caught by their intended tests | `docs/evidence/test-sensitivity.json` |
-| Ordinary launch walkthrough | README command served the real app on port 8765; coffee/cup, replacement with cat, selection and clear succeeded | `artifacts/launch-check/result.json` and actual screenshots |
+[followup-recovery-comparison.json](evidence/followup-recovery-comparison.json) records three controlled wording checks failing against `74d108f` in 26.732 seconds and all three passing against the corrected source in 27.644 seconds. The old checks fail before Clear, so they do not independently reproduce the old Clear message. The passing current checks continue through Clear, truthful detector unavailability, Retry and a successful new image. The substituted runtime crash is a component simulation; no production trigger is claimed.
 
-The final suite contains 23 controlled application/server checks and three real-inference checks. Controlled checks do not establish AI accuracy. The initial fresh-setup run preceded the later test-diagnostic and PNG-fixture refinements; the final suite includes those refinements. No application behavior changed between those runs.
+[followup-sensitivity.json](evidence/followup-sensitivity.json) records fresh disposable-copy experiments and their intended failing assertions. A six-case clean baseline passes before the four deliberate-fault runs. The clean application is preserved. These results show that the selected checks detect the selected faults; they are not a mutation score, broad test-completeness proof or naturally observed production incidents.
 
-After the complete suite and long-session run, the only application change was a slightly darker empty-state text colour. Its computed contrast and actual rendering were checked separately; no logic, model, layout or interaction changed.
-
-Environment: Python 3.12.10, pytest 9.0.3, Selenium 4.40.0, Chrome 156.0.8078.74 and ChromeDriver 156.0.8078.80. Runtime/model versions and file checksums are in `asset-lock.json`. This was one Windows laptop, not a second-machine or cross-browser qualification.
+Earlier external review reported that blank labels/scores, displaced boxes and removed announcement settings could pass the previous assertions. That report motivated the new checks. Only the new locally retained runs are claimed as this follow-up's reproduced evidence. The malformed responses are deliberate test-worker outputs, not faults observed from the real pretrained model.
 
 ## Acceptance coverage
 
-| Criterion | Main evidence |
+| Criterion | Representative evidence |
 | --- | --- |
-| AC1: input limits and rejection | Exact byte-size boundary, pixel boundary, JPEG, EXIF orientation, unsupported content and truncated PNG checks |
-| AC2: current-image results | Row/box matching and geometry checks; three real-model selected-label checks |
-| AC3: selection and clearing | Selected-box tests, keyboard Clear and rendered selection review |
-| AC4: stale-result protection | In-flight clear, quick and slow replacement checks; an isolated missing-guard fault is detected |
-| AC5: error recovery | Processing error, worker-start failure and nonresponding-worker retry checks |
-| AC6: usable interface | Keyboard focus, viewport checks, overlay-label contrast and actual rendered state inspection |
-| AC7: minimum-score filter | Exact raw-score boundary, restore without inference, stable identities/colors/selection, filtered-empty state and keyboard checks |
-| AC8: Try sample | Real local photo retrieval, failure/retry, actual 15-second timeout, delayed-fetch rejection and the real coffee inference case |
-| AC9: PNG export | Actual downloaded PNG bytes and dimensions, retained/removed box pixels, EXIF orientation, scoped failure/timeout recovery and stale-export cancellation |
-| AC10: bounded startup and truthful status | Configuration headers/body timeout and retry, invalid configuration, input-error preservation, held-file preparation, model-progress and retired-worker tests |
-| AC11: deliberate static package | Exact file/ZIP/hash checks, private-file exclusions, provenance checks outside a checkout and real inference/export through an ordinary static server |
+| AC1: input limits and useful rejection | Exact 10 MiB and 16,000,000-pixel boundaries, JPEG/EXIF, unsupported content and truncated PNG; meaningful visible format/limit messages |
+| AC2: current-image results | Visible labels/scores, row/box identity, controlled geometry and selected-box regression on three real photos |
+| AC3: selection and Clear | Selected-box/keyboard checks; Clear removes content and preserves truthful unavailable state after a stopped worker |
+| AC4: stale-result protection | In-flight Clear, fast/slow replacement, sample-fetch cancellation and retired-worker checks |
+| AC5: recovery | Input errors, empty results, inference failure, malformed responses, model/inference timeout and recovery |
+| AC6: usable interface | Keyboard/focus, usable viewport widths, visible status/error content and announcement-configuration assertions |
+| AC7: score filter | Raw-score boundary, restore without inference, stable identity/color/selection, filter-empty and keyboard behavior |
+| AC8: Try sample | Real local-photo path; missing/unreadable data, actual 15-second fetch timeout and late-response rejection |
+| AC9: PNG export | Downloaded PNG bytes/dimensions, retained/excluded annotation pixels, EXIF, encoder failure/timeout and stale-export rejection |
+| AC10: bounded startup | Configuration headers/body deadline, invalid configuration, preserved input errors/preparation, model progress, stage-specific worker failure and Retry |
+| AC11: static package | Exact file/ZIP/hash checks, private-file exclusions, optional Git provenance outside a checkout and actual model/export through an ordinary static server |
 
-## Evidence boundaries
+## Historical checkpoints
 
-Controlled application tests use labelled simulated predictions, delays or failures. Real inference uses the prepared pretrained model and public photographs. The generated approved design concept is not an execution screenshot. Tests of selected-label presence do not measure general recognition accuracy.
+These executions retain their original source, date and limits. Counts overlap and are never added to the current result.
 
-## Earlier verification stages
-
-- Initial controlled suite: 18 passed; three real-inference cases were deselected.
-- Real-model checks: person in astronaut, cup in coffee and cat in chelsea all passed.
-- A corrected worker-startup recovery test passed after its first attempt failed to create the intended network fault.
-- Six focused recovery/format tests passed after the watchdog and test improvements.
-- A separate real-model evaluation ran on five public photos with external hostname resolution disabled in the isolated browser. Recorded HTTP requests stayed on numeric loopback.
-- The runtime-normalized upstream comparison matched Object Lens's labels and box coordinates on astronaut, coffee and chelsea. This is not a test of the stock upstream runtime.
-
-## Findings
-
-### Extension F8: A 320-pixel viewport had less usable width than the earlier check measured
-
-Rendered review showed a horizontal scrollbar at 320 pixels. The page required a 320-pixel minimum body width, while the vertical scrollbar left a 305-pixel document client width. The earlier test compared scroll width with `window.innerWidth`, which included the scrollbar and concealed this overflow.
-
-A strengthened test first reproduced the real failure: `320 <= (305 + 1)` was false. Removing the fixed body minimum allowed the layout to fit. The test now covers both 320 and 390 pixels, compares against `document.documentElement.clientWidth`, and checks all added controls. The final real-photo capture measured 305 pixels for both content and usable width. The failing check is retained in `docs/evidence/viewport-before-fix.xml`; the final suite contains the passing regression checks. This was an observed defect and a corrected test expectation, not an injected application fault. The earlier base-version viewport summary is superseded for this narrow-width condition.
-
-### Extension F9: An unrelated file contaminated one download assertion
-
-The first combined suite passed 47 cases and failed an assertion that a deliberately timed-out PNG encoder must not create a download. The app had preserved its predictions, displayed the expected timeout message and re-enabled Save. The folder contained `downloads.htm.crdownload`, an 84,039-byte file with a CRX version-3 container header and ZIP entries named `model-info.pb` and `model.tflite`; it was not an application PNG. The producing request was not captured, so its exact origin remains unestablished.
-
-The test assertion was retained. External hostname resolution was disabled only in the isolated test browsers, matching the existing offline demonstration harness. The complete rerun passed all 48 cases. The first run is preserved in `docs/evidence/extension-first-full-suite.xml`. No system network or security setting was changed.
-
-### F1: Missing recovery for a nonresponding worker
-
-Code review found that the active request could remain occupied forever if the worker never returned a result or error. Clearing the photo did not release that request, so a later image could remain pending. No real model hang was observed.
-
-The fix adds bounded loading/inference deadlines, terminates the failed worker and allows retry with the current image. A controlled silent-worker test now verifies clear, new-image selection, timeout and successful retry. Production deadlines are 120 seconds for loading and 90 seconds for inference; controlled tests use four seconds.
-
-### F2: A startup-failure test did not actually inject its intended fault
-
-The first request-blocking attempt left the page Ready. Its preserved page/console and server log show the worker returned HTTP 200. This was a test-fixture problem, not an application defect. A test-only server now returns HTTP 503 once and then permits a successful retry.
-
-### F3: Prediction counts are not verified object counts
-
-The real coffee photo produced two overlapping spoon predictions. The results heading was changed to "Detections" and the status counts "predictions". No model predictions were removed to make the result look more accurate.
-
-The camera photo produced a large person box together with additional person and bicycle predictions around the camera/tripod. These illustrate limitations of the general-purpose pretrained detector. The rocket photo produced no predictions; rocket is outside the supported category list. No complete dataset accuracy metric is claimed.
-
-### F4: Overlay label contrast
-
-White text on the original teal label background measured 4.401:1. Darkening that colour to `#008078` raised the contrast to 4.818:1. Other label colours meet 4.5:1 for their white text.
-
-The final review also found empty-state secondary text at 4.478:1 against the image-pane background. A scoped change to `#606D80` raised it to 4.685:1. Computed browser colours and a refreshed actual screenshot verified that adjustment. This was a targeted contrast/render check, not full accessibility certification.
-
-### F5: The first isolated-network evidence run blocked loopback too
-
-The first browser host-resolution rule caused `ERR_NAME_NOT_RESOLVED` before the application was reached. Explicitly excluding `127.0.0.1`, as well as localhost, corrected the evidence harness. The subsequent local-model run completed. This was an environment/test setup issue.
-
-### F6: Stable manifest output on Windows
-
-Fresh setup preserved all asset values and hashes but rewrote the lock manifest with CRLF line endings. The setup helpers now write explicit LF. Redownloading one 455-byte derived configuration file verified that the repaired manifest matches the archived source bytes. This was a reproducibility detail, not an application or model failure.
-
-### F7: Clearer diagnostics and stronger fixtures
-
-A deliberate off-by-one fault was detected, but the first failure output was a generic Selenium timeout. The wait helper now reports expected state, observed state, visible filename and UI error. Normal cases passed, and a separate injected fault verified the improved message without changing the delivered app.
-
-The size-boundary image generator was also strengthened: it now places a valid PNG `tEXt` metadata chunk before IEND instead of relying on browser-tolerated trailing bytes. An independent parser checked chunk lengths, CRCs, decoded scanline length and IEND placement. Both exact boundary sizes passed their expected browser checks. These are test-quality improvements, not production defects.
-
-## Real model evaluation
-
-The five-photo observations and timings are in `artifacts/evaluation/observations.json`. They are a small convenience sample. Timing is measured from image submission until the visible UI reports completion, including decoding, inference, rendering and polling; workstation load was not controlled.
-
-| Image | Observed labels | Interpretation |
+| Milestone | Recorded result | Retained evidence |
 | --- | --- | --- |
-| astronaut.png | person | Reviewed expected label present |
-| coffee.png | spoon, dining table, cup, spoon | Cup present; duplicate spoon predictions visible |
-| chelsea.png | cat | Reviewed expected label present |
-| camera.png | bicycle, handbag, person, person, person, bicycle | Expected person present; visual review shows additional mistaken/duplicate predictions |
-| rocket.jpg | none | Observed empty prediction set on an out-of-vocabulary example |
+| 3 November preceding correctness review | 72 passed, 0 failures/errors/skips; 531.53 s; 68 non-inference and four real-model cases | `review-full-suite.xml`, `source-review-verification.json` |
+| 3 November public preparation | 59 passed; 441.33 s; focused run 11 passed in 52.46 s | `public-prep-full-suite.xml`, `public-prep-focused-suite.xml`, `public-prep-verification.json` |
+| 2 November combined extension | 48 passed; 418.62 s; 45 non-inference and three real-model cases | `extension-full-suite.xml`, `extension-verification.json` |
+| Filter checkpoint | 29 controlled cases passed; 199.37 s | `score-filter-suite.xml`, `score-filter-record.json` |
+| Sample checkpoint | Seven controlled plus three real cases passed; 137.27 s | `sample-image-suite.xml`, `sample-image-record.json` |
+| PNG checkpoint | Eight controlled export cases passed; 89.03 s | `export-png-suite.xml` |
+| Base final suite | 26 passed; 215.13 s | `final-full-suite.xml` |
+| Base fresh setup on the same laptop | 26 passed; 205.13 s | `fresh-setup-summary.json`, `fresh-setup-suite.xml` |
+| Base repeated use | 320 cycles, 320 clears and 32 rapid replacements; 3615.927 s; no observed failure | `stability-summary.json` |
 
-Initial model readiness was observed at 2.144 seconds for Object Lens. Image-to-result observations ranged from 8.325 to 13.612 seconds in that run. These are environment-specific observations, not a performance promise or proof of acceleration.
+The historical public-preparation review paced only the model response at 10 Mbps on loopback: 43,102,531 bytes arrived in 34.493 seconds, and readiness occurred at 36.776 seconds. This controlled transfer observation is not Internet performance. The historical environment was Python 3.12.10, pytest 9.0.3, Selenium 4.40.0, Chrome 156.0.8078.74 and ChromeDriver 156.0.8078.80; the new manifest independently records the current run's versions.
+
+## Findings and their interpretation
+
+The preceding review reproduced missing configuration deadlines, startup erasing an input error, readiness misreporting an unfinished file read, optional package provenance failing outside Git, failure-evidence writing bypassing browser cleanup, and an incomplete document-navigation check. [SOURCE_REVIEW.md](SOURCE_REVIEW.md) preserves the before/after evidence and describes this follow-up separately.
+
+The extension's 320-pixel viewport defect was observed rather than injected. Its vertical scrollbar left 305 pixels of usable width, but the body's minimum was 320 pixels. Comparing against `window.innerWidth` hid the overflow; the corrected check uses `documentElement.clientWidth`. [viewport-before-fix.xml](evidence/viewport-before-fix.xml) retains the real failing assertion, and the historical extension capture measured 305-pixel content inside that 305-pixel space after correction.
+
+The first extension suite had 47 passes and one failed download-folder assertion. The extra file was `downloads.htm.crdownload`, with a CRX container header, not an application PNG; its producing request was not captured. The assertion was retained and external hostname resolution was disabled only inside isolated test browsers. The rerun passed 48 cases. [extension-first-full-suite.xml](evidence/extension-first-full-suite.xml) preserves that failed run without inventing its origin.
+
+Earlier setup/test issues included a worker-failure injection that initially returned HTTP 200, an authenticated Git request unsuitable for public asset retrieval, proxy handling for numeric loopback, CRLF manifest output and insufficient failure diagnostics. Their original records remain in the evidence index. The base watchdog work addressed a possible silent worker; no real-model hang was observed.
+
+## Real-model observations and limits
+
+The five-photo historical observations are in [model-observations.json](evidence/model-observations.json). Astronaut produced person; coffee produced spoon, dining table, cup and another spoon; chelsea produced cat; camera included person with incorrect/duplicate other predictions; rocket produced no predictions. These convenience samples are not an exhaustive annotated dataset.
+
+The three new geometry checks compare against earlier coordinates from that same pinned model, with tolerance documented in `tests/test_inference.py`. This detects a position regression or rendering displacement. It cannot establish whether the reference boxes are objectively correct. Expected-label notes came from upstream descriptions and separate AI-assisted visual inspection; they are partial expectations, not full human annotations.
 
 ## Release decision and remaining limits
 
-Release the extended version for local exploration of the agreed stack and workflow. All 48 combined checks passed, the real sample path ran, an annotated PNG was inspected and the current layouts fit their usable viewports. The earlier independent setup and bounded long session remain base-version evidence. Tests remain inspectable and can be changed without creating another framework.
+The current combined suite and targeted fault/recovery evidence support the agreed local exploration workflow: **93 passed, 0 failures/errors/skips; 648.509 seconds of JUnit suite time (89 non-model and 4 real-model cases)**. The refreshed documents and rebuilt static ZIP are local deliverables. Source publication remains owner-operated, and website upload remains parked.
 
-The model can miss or duplicate objects and produce incorrect labels. Partial label expectations came from upstream descriptions and AI-assisted visual inspection; this project does not contain an exhaustive human-annotated dataset. One laptop and one browser were checked. The long session is not a load test or memory-leak certification. Recorded timing is not a performance guarantee. No hosted CI, public deployment, GPU/NPU execution or semiconductor inspection was performed.
+Only the recorded Windows/Chrome environment was checked. No other browser, iOS/Safari, hosted CI, deployed URL, general accuracy benchmark, GPU/NPU execution, semiconductor inspection or production-scale behavior was qualified. The historical one-hour session does not requalify this revision, establish a flake rate or certify memory-leak freedom. Timing varies with workstation load. Live-region configuration checks are not actual screen-reader testing.
 
-Raw failure captures remain local under `artifacts`. Selected repository evidence removes the machine hostname from JUnit XML and records that redaction. A baseline-only missing favicon returned HTTP 404; it did not affect inference or the delivered UI.
-
-Optional cleanup of generated verification copies was not performed because this machine blocked the unsigned PowerShell cleanup script. No execution policy or permissions were changed. Those ignored copies remain under `.local`; the maintained application is the root `dist` directory. The documented launch and test commands use Python directly and were verified successfully.
+Raw outputs and retained recovery-comparison copies remain under ignored working directories. The sensitivity runner removes its own temporary source copies after each run while preserving logs and results. The maintained application is the repository's root `dist` directory. Preserve those evidence boundaries when explaining the project or using screenshots in a learning update.

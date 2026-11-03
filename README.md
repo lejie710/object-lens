@@ -4,7 +4,7 @@ A small local web application for exploring pretrained object detection, with Py
 
 Developed with assistance from AI tools.
 
-[![Object Lens running real detection on a public sample photo](docs/screenshots/desktop.png)](docs/screenshots/desktop.png)
+[![Object Lens running real detection on a public sample photo](docs/screenshots/review-followup/desktop.png)](docs/screenshots/review-followup/desktop.png)
 
 The source is currently kept private. Screenshots below are actual application captures, and the relative image links remain suitable for a future repository README.
 
@@ -14,48 +14,11 @@ Choose a photo or try the sample, inspect predicted labels and boxes, highlight 
 
 ## Screenshots
 
-Open the [desktop result](docs/screenshots/desktop.png), [filtered result](docs/screenshots/filtered.png), [exported PNG](docs/screenshots/export.png), [empty state](docs/screenshots/empty.png) or [narrow layout](docs/screenshots/narrow.png) at full resolution. These captures use the current application and real model on a public sample photo. The earlier generated design concept is a separate planning reference, not execution evidence.
+Open the [desktop result](docs/screenshots/review-followup/desktop.png), [filtered result](docs/screenshots/review-followup/filtered.png), [exported PNG](docs/screenshots/review-followup/export.png), [empty state](docs/screenshots/review-followup/empty.png) or [narrow layout](docs/screenshots/review-followup/width-390.png) at full resolution. These 3 November review-follow-up captures use the current application and real model on the public coffee sample. The empty view is captured before selection; the exported PNG contains the actual retained predictions. Older captures remain historical evidence in their original paths. The earlier generated design concept is a separate planning reference, not execution evidence.
 
-## Run locally
+## First setup
 
-From this project directory in PowerShell:
-
-```powershell
-Set-Location '%USERPROFILE%\Downloads\Apple-SDET\object-lens'
-.\.venv\Scripts\python.exe serve.py
-```
-
-Open `http://127.0.0.1:8765` in Chrome. Keep that terminal open while using the app; stop the server with Ctrl+C. The application binds only to this computer. You do not need to activate the virtual environment.
-
-If you move the project, use its new location in `Set-Location`. If port 8765 is already in use, run `serve.py --port 8766` and open `http://127.0.0.1:8766` instead.
-
-For a first demonstration, click **Try sample**, select the cup result, and move **Minimum model score** from 0.50 to 0.80. Click **Save result** to download the photo with its visible boxes, labels and scores. Lower the filter again to restore hidden predictions. You can then choose your own photo or replace it with `dist\samples\chelsea.png`. Model predictions can contain mistakes or duplicates. The score is not an accuracy guarantee.
-
-## Run the tests
-
-```powershell
-.\.venv\Scripts\python.exe -m pytest
-```
-
-Tests start and stop their own local servers and use headless Chrome. You do not need to start `serve.py` first. Controlled UI tests are separate from tests marked `inference`, which use the actual local model. See [verification and release assessment](docs/VERIFICATION.md) for results and limitations.
-
-The static-package integration check also uses the real model, but serves the prepared website through an ordinary local static server. It does not establish that a public URL has been deployed.
-
-If your first terminal is still running the app, open a second PowerShell window in this project directory for tests, or stop that server with Ctrl+C first.
-
-For a shorter run while learning one part:
-
-```powershell
-# Application behavior with controlled model responses; not AI accuracy evidence.
-.\.venv\Scripts\python.exe -m pytest -m "not inference"
-
-# Actual model execution on three public sample photos.
-.\.venv\Scripts\python.exe -m pytest -m inference
-```
-
-## Environment setup
-
-Python 3.12 and Chrome are the target environment. An initial internet connection is needed for Python packages, the Chrome driver, the browser AI runtime, model files and public sample photos. Downloads have recorded sources. No paid API is required.
+Start in the cloned repository directory. Python 3.12 and Chrome are the target environment. An initial internet connection is needed for Python packages, the Chrome driver, the browser AI runtime, model files and public sample photos. Downloads have recorded sources. No paid API is required.
 
 ```powershell
 py -3.12 -m venv .venv
@@ -74,8 +37,45 @@ The direct dependencies are listed in `requirements.txt`; `requirements-lock.txt
 
 If the app cannot prepare detection because an asset is missing, run the asset preparation again and use Try again in the app. Normal prepared-app inference uses local assets; Selenium may need network access again if Chrome updates and its matching driver is not cached.
 
+## Run locally
+
+From the repository directory in PowerShell, after setup:
+
+```powershell
+.\.venv\Scripts\python.exe serve.py
+```
+
+Open `http://127.0.0.1:8765` in Chrome. Keep that terminal open while using the app; stop the server with Ctrl+C. The application binds only to this computer. You do not need to activate the virtual environment.
+
+If port 8765 is already in use, run `serve.py --port 8766` and open `http://127.0.0.1:8766` instead.
+
+For a first demonstration, click **Try sample**, select the cup result, and move **Minimum model score** from 0.50 to 0.80. Click **Save result** to download the photo with its visible boxes, labels and scores. Lower the filter again to restore hidden predictions. You can then choose your own photo or replace it with `dist\samples\chelsea.png`. Model predictions can contain mistakes or duplicates. The score is not an accuracy guarantee.
+
+## Run the tests
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest
+```
+
+Tests start and stop their own local servers and use headless Chrome. You do not need to start `serve.py` first. Controlled UI tests are separate from tests marked `inference`, which use the actual local model. See [verification and release assessment](docs/VERIFICATION.md) for results and limitations.
+
+The inference group contains three photo regression cases and one static-package integration case. The photo cases assert visible labels/scores and selected-box coordinates/rendered geometry against earlier pinned-model outputs; this is regression evidence, not an accuracy benchmark. The static-package integration check also uses the real model, but serves the prepared website through an ordinary local static server. It does not establish that a public URL has been deployed.
+
+If your first terminal is still running the app, open a second PowerShell window in this project directory for tests, or stop that server with Ctrl+C first.
+
+For a shorter run while learning one part:
+
+```powershell
+# Non-model application, server, package and harness checks; not AI accuracy evidence.
+.\.venv\Scripts\python.exe -m pytest -m "not inference"
+
+# Actual model execution on three photos and the static-package workflow.
+.\.venv\Scripts\python.exe -m pytest -m inference
+```
+
 ## Read next
 
+- [Current local handoff and demonstration](docs/LOCAL_HANDOFF.md)
 - [Correctness review and regression fixes](docs/SOURCE_REVIEW.md)
 - [Public demo preparation and upload guide](docs/PUBLIC_DEMO.md)
 - [System-design companion PDF](docs/system-design/Object_Lens_System_Design.pdf) and [editable Word document](docs/system-design/Object_Lens_System_Design.docx), both with clickable contents

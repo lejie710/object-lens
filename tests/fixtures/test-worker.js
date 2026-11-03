@@ -21,6 +21,32 @@ const samplePredictions = {
   ],
 };
 
+// Deliberately malformed component responses. These never describe real-model output.
+function invalidPredictions(kind) {
+  const prediction = { ...samplePredictions.normal[0], box: { ...samplePredictions.normal[0].box } };
+  switch (kind) {
+    case 'not-array': return { predictions: [prediction] };
+    case 'null-item': return [samplePredictions.normal[1], null];
+    case 'missing-box': delete prediction.box; break;
+    case 'missing-coordinate': delete prediction.box.xmax; break;
+    case 'string-coordinate': prediction.box.xmin = '0.1'; break;
+    case 'nonfinite-coordinate': prediction.box.ymax = Infinity; break;
+    case 'missing-score': delete prediction.score; break;
+    case 'string-score': prediction.score = '0.97'; break;
+    case 'nonfinite-score': prediction.score = NaN; break;
+    case 'negative-score': prediction.score = -0.1; break;
+    case 'excess-score': prediction.score = 1.1; break;
+    case 'reversed-box': prediction.box.xmin = 0.8; break;
+    case 'zero-area-box': prediction.box.ymax = prediction.box.ymin; break;
+    case 'outside-box': prediction.box.xmin = 1.1; prediction.box.xmax = 1.4; break;
+    default: throw new Error(`Unknown controlled invalid response: ${kind}`);
+  }
+  // A valid entry before the malformed one must not leak as a partial result.
+  return [samplePredictions.normal[1], prediction];
+}
+
+const attemptedFiles = new Set();
+
 self.onmessage = ({ data }) => {
   if (data.type === 'load') {
     self.postMessage({ type: 'ready' });
@@ -38,6 +64,16 @@ self.onmessage = ({ data }) => {
       return;
     }
     let predictions = samplePredictions.normal;
+    const invalidCase = /^invalid-result-(.+)\.png$/.exec(filename);
+    if (invalidCase) predictions = invalidPredictions(invalidCase[1]);
+    if (filename === 'invalid-once.png' && !attemptedFiles.has(filename)) {
+      predictions = [null];
+      attemptedFiles.add(filename);
+    }
+    if (filename === 'clamped-box.png') {
+      predictions = [{ label: 'laptop', score: 0.97,
+        box: { xmin: -0.1, ymin: -0.2, xmax: 1.2, ymax: 0.85 } }];
+    }
     if (filename.includes('dog')) predictions = samplePredictions.dog;
     if (filename.includes('car')) predictions = samplePredictions.car;
     if (filename.includes('score-boundary')) predictions = samplePredictions.boundary;
