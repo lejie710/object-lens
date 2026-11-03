@@ -64,13 +64,15 @@ The JavaScript library is kept on a pinned version compatible with the original 
 
 ## Data flow
 
-1. The user selects a JPEG or PNG. The app validates format, size and dimensions before inference.
+1. The user selects a JPEG or PNG, or uses Try sample to load the existing coffee photo. The app validates format, size and dimensions before inference.
 2. The image is displayed, with any previous detections removed.
 3. A background worker runs the model and returns labels, model scores and normalized box coordinates.
 4. The app accepts results only for the currently selected image, then renders boxes and matching list entries.
 5. Selecting a list entry highlights the corresponding box. Clear removes the current image and invalidates any outstanding result.
 
 After successful inference, the app keeps validated predictions for that image. The minimum-score control redraws this cached set without invoking the model again. Each prediction keeps its identity and color when others are hidden. If the selected prediction is filtered out, the first visible prediction becomes selected. A new image or Clear resets the minimum to 0.50 and invalidates cached results.
+
+Try sample reserves a new image revision before requesting the local photo. Clear or a newer selection invalidates that revision and cancels its pending fetch, so a late sample cannot overwrite the current workspace. A 15-second fetch deadline produces a recoverable sample-loading message. Sample loading uses the same image validation and inference path as file selection; there are no prerecorded sample answers in the normal application.
 
 Clearing or replacing an image does not promise interruption of CPU work already underway. It prevents that old work from changing the visible result. There is no hosted inference API.
 
@@ -89,6 +91,7 @@ The list is titled "Detections" and the completion message counts "predictions".
 | AC5 | An empty prediction set is distinct from an inference failure. A valid image can be processed after an input or inference error. |
 | AC6 | Keyboard controls have visible focus, updates are announced accessibly and the layout remains usable at a narrow viewport. |
 | AC7 | A keyboard-accessible minimum-score filter from 0.50 to 1.00 includes predictions whose underlying score is at least the selected minimum. Boxes, list and visible/total counts agree. Lowering the minimum restores hidden predictions without rerunning inference; filter-empty and model-empty states have different explanations. |
+| AC8 | Try sample loads the existing coffee photo through the real application path. Missing, unreadable or unresponsive sample data is recoverable. A delayed response cannot undo Clear or replace a newer selected image. |
 
 The model's fixed inference threshold is 0.5. A separate display filter starts at 0.50, moves in steps of 0.01 and cannot recover lower-score predictions discarded by inference. Comparisons use the underlying model score, while visible scores are rounded to two decimal places. The displayed value is a model score, not a measured accuracy percentage. Supported classes come from the model; unrecognized objects do not imply an application defect.
 

@@ -3,12 +3,14 @@ const MAX_BYTES = 10 * 1024 * 1024;
 const MAX_PIXELS = 16_000_000;
 const LOAD_TIMEOUT_MS = 120_000;
 const INFERENCE_TIMEOUT_MS = 90_000;
+const SAMPLE_TIMEOUT_MS = 15_000;
 const CONTROLLED_TIMEOUT_MS = 4_000;
 const DEFAULT_MINIMUM_SCORE = 0.5;
 const COLORS = ['#285bd4', '#008078', '#a36b00', '#9251a5', '#bb503b', '#547832'];
 const byId = (id) => document.getElementById(id);
 const elements = {
   fileInput: byId('file-input'), choose: byId('choose-image'), clear: byId('clear-image'),
+  trySample: byId('try-sample'),
   filename: byId('filename'), dimensions: byId('image-dimensions'),
   empty: byId('empty-state'), stage: byId('image-stage'), preview: byId('image-preview'),
   boxes: byId('box-layer'), results: byId('results-list'), count: byId('result-count'),
@@ -31,6 +33,7 @@ let loadTimer = null;
 let inferenceTimer = null;
 let currentPredictions = null;
 let selectedPredictionId = null;
+let sampleRequest = null;
 
 function setState(state, text) {
   document.documentElement.dataset.state = state;
@@ -116,6 +119,7 @@ function removeImage() {
 
 function clearWorkspace() {
   revision += 1;
+  cancelSampleLoad();
   removeImage();
   clearError();
   elements.fileInput.value = '';
@@ -176,13 +180,70 @@ function checkDimensions({ width, height }) {
   if (width * height > MAX_PIXELS) throw new Error('This image exceeds 16 megapixels. Resize it and try again.');
 }
 
-async function selectFile(file) {
-  if (!file) return;
+function finishSampleLoad(request) {
+  clearTimeout(request.timer);
+  if (sampleRequest !== request) return;
+  sampleRequest = null;
+  elements.trySample.disabled = false;
+  elements.trySample.textContent = 'Try sample';
+}
+
+function cancelSampleLoad() {
+  if (!sampleRequest) return;
+  const request = sampleRequest;
+  finishSampleLoad(request);
+  request.controller.abort();
+}
+
+function beginImageSelection() {
   const id = ++revision;
+  cancelSampleLoad();
   clearError();
   removeImage();
   elements.clear.disabled = false;
   elements.resultsEmpty.textContent = 'Your image is being prepared.';
+  setState('loading', 'Reading image…');
+  return id;
+}
+
+async function trySample() {
+  if (sampleRequest) return;
+  // Reserve the image revision before fetch, so a late sample cannot replace a newer choice.
+  const id = beginImageSelection();
+  const request = { id, controller: new AbortController(), timer: null, timedOut: false };
+  sampleRequest = request;
+  elements.trySample.disabled = true;
+  elements.trySample.textContent = 'Loading sample…';
+  elements.resultsEmpty.textContent = 'The sample image is being prepared.';
+  setState('loading', 'Loading sample…');
+  request.timer = setTimeout(() => {
+    if (sampleRequest !== request) return;
+    request.timedOut = true;
+    request.controller.abort();
+  }, SAMPLE_TIMEOUT_MS);
+  try {
+    const response = await fetch('./samples/coffee.png', { signal: request.controller.signal, cache: 'no-store' });
+    if (!response.ok) throw new Error(`Sample request returned ${response.status}.`);
+    const blob = await response.blob();
+    if (id !== revision || sampleRequest !== request) return;
+    finishSampleLoad(request);
+    // The sample uses the same validation, decoding and inference path as a selected file.
+    await selectFile(new File([blob], 'coffee.png', { type: blob.type || 'image/png' }), id);
+  } catch (error) {
+    if (id !== revision || sampleRequest !== request) return;
+    console.error('Object Lens sample loading:', error);
+    showError(request.timedOut
+      ? 'The sample took too long to load. Try sample again or choose an image.'
+      : 'The sample image could not be loaded. Try sample again or choose an image.');
+  } finally {
+    finishSampleLoad(request);
+  }
+}
+
+async function selectFile(file, reservedId) {
+  if (!file) return;
+  const id = reservedId ?? beginImageSelection();
+  if (id !== revision) return;
   setState('loading', 'Reading image…');
   try {
     if (file.size > MAX_BYTES) throw new Error('This image exceeds 10 MiB. Choose a smaller JPEG or PNG.');
@@ -358,7 +419,7 @@ function onWorkerMessage({ data }) {
     modelReady = true;
     modelFailed = false;
     if (pendingImage) startPendingInference();
-    else if (!currentImage && elements.errorNotice.hidden) setState('ready', 'Ready to choose an image');
+    else if (!currentImage && !sampleRequest && elements.errorNotice.hidden) setState('ready', 'Ready to choose an image');
     return;
   }
   if (data.type === 'result' || (data.type === 'error' && data.stage === 'infer')) {
@@ -411,6 +472,7 @@ function createWorker() {
 }
 
 elements.choose.addEventListener('click', () => elements.fileInput.click());
+elements.trySample.addEventListener('click', trySample);
 elements.fileInput.addEventListener('change', () => {
   const file = elements.fileInput.files[0];
   elements.fileInput.value = '';
