@@ -109,6 +109,13 @@ def test_real_model_detects_reviewed_object(browser, real_url, filename, expecte
     # Selecting the highest-score matching row avoids depending on prediction order.
     matching_rows = [row for row in rows if row.get_attribute("data-label") == expected_label]
     selected_row = max(matching_rows, key=lambda row: float(row.get_attribute("data-score")))
+    # The page's own metadata is not an independent oracle: compare the visible text of
+    # the selected row with the earlier recorded output of the same pinned model.
+    assert selected_row.find_element(By.CSS_SELECTOR, ".object-name").text == reference["label"]
+    visible_score = float(selected_row.find_element(By.CSS_SELECTOR, ".object-score").text)
+    assert visible_score == pytest.approx(reference["score"], abs=0.01), (
+        f"Visible score regression: {visible_score} vs reference {reference['score']}"
+    )
     selected_row.click()
     prediction_id = selected_row.get_attribute("data-prediction-id")
     selected_box = browser.find_element(By.CSS_SELECTOR, f'.detection-box[data-prediction-id="{prediction_id}"]')

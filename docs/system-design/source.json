@@ -5,24 +5,24 @@
     "subtitle": "System design and software quality",
     "audience": "Tan Le Jie",
     "language": "en",
-    "edition": "2.0",
+    "edition": "2.1",
     "status": "verified",
     "date": "3 November 2026",
-    "documented_commit": "74d108f plus source hashes in the evidence record",
-    "evidence_revision": "docs/evidence/followup-verification.json",
+    "documented_commit": "17f2b9a plus source hashes in the evidence record",
+    "evidence_revision": "docs/evidence/loading-followup-verification.json",
     "source_repository": "object-lens",
     "source_visibility": "private",
     "outputs": [
       "Object_Lens_System_Design.docx",
       "Object_Lens_System_Design.pdf"
     ],
-    "evidence_policy": "The current follow-up suite determines this local assessment. Historical 26-, 48-, 59- and 72-case records retain their dates and are not added together.",
+    "evidence_policy": "The current loading follow-up suite determines this local assessment. Historical 26-, 48-, 59-, 72- and 93-case records retain their dates and are not added together.",
     "content_authority": "source.json",
     "pending_items": [],
     "reviewed_source_sha256": {
       "asset-lock.json": "9304dd88602a161c3ac1e580fa559e01a22f285c57573bf77d708b0c1af58216",
       "credits-lock.json": "095633d230a4a2300a3bd612b15eb76baf7253561b4df7713ea6c397f584fe2f",
-      "dist/app.js": "d9996cf27eb7d084a8b401671f04f4d1f64f45bf2414fcace4f756619234c831",
+      "dist/app.js": "a1a3e41e312462191ee85ecd8f02eba983f1e0b3e91e2c9410e85b8cd75d2c65",
       "dist/credits.html": "38673103e5133b79e0c53e949d4b65dd42485d164f46b56c968a230a714bd6c0",
       "dist/index.html": "d4b6944c8c2bce55a69903173d7fc6c009bddc49170ec3a461075ffa07d774bd",
       "dist/png-export.js": "cb7171cec270e245a78f70a8f56cd62a921157825458a3aeb97ac8b513948c41",
@@ -35,14 +35,14 @@
       "requirements.txt": "e22547340f95f8327dc5669a31f0a74d55f54748ce6374388918a4b9e1d47ba6",
       "serve.py": "fbee47676ed615440f51eb4dad47c211c49c03a2afdc233e51683b719d4caedb",
       "tests/conftest.py": "ca815de5bc4af6372b63447de6ba397785693122995d1da3e806cd72a71b092b",
-      "tests/fixtures/test-worker.js": "ca9cd4c394f47a6d48ac97ecd0eb909a1f2c1c666db87a74ec14fb4103b81b9b",
+      "tests/fixtures/test-worker.js": "496cb40f8e383d7bdaf370783f7cd499886d4f14aaaf14383df036841a10a477",
       "tests/test_export.py": "1c62dabda67959a142319d46c5f46f5a6bdc45354346ceca058f29f04f8f3707",
       "tests/test_filter.py": "e6bf885555bce350e039f5adadc42dfcfc8b8dfefd416700296abbe7791801c7",
       "tests/test_harness_cleanup.py": "07ccefdd44a45495281019c2a90316f4f7193f1f7bf611dc000e9c45539bc301",
-      "tests/test_inference.py": "0eb6bc7fca60ef7aee095900a36222ec98720e50a15291d18c6551fa805ef5d8",
+      "tests/test_inference.py": "41f3d151ceb763d782221ef86ccee8d2cf7ee7c0c35ae9acb11525f807f37da8",
       "tests/test_loading.py": "f31ae1624eedced851f0614b77d5ae1d85abc6f03a85cc69da52d50efce3516b",
       "tests/test_public_package.py": "18c405e97a6a9b09dd43ca546064208cba83a210f53b8a945d12bf497ff5d2f1",
-      "tests/test_recovery.py": "16e15b3219251745db0f09a32d282b90e574e75da6ceb96f935d4d40fc671549",
+      "tests/test_recovery.py": "7b99c70ed00d56131ed5ea176b1cdaee1299913b8e640aca6f066c70efed8225",
       "tests/test_sample.py": "66e21ae95ae7fa36156844e732c3606c8006d207de8ad73e0c7344f8948074df",
       "tests/test_server.py": "6dbff96615d244a590363e8c340e665e00d6aa71be65e5b7e6278edd0ca34ce9",
       "tests/test_startup.py": "1c54f0a9ec3ee7dd2b666a98aa85df623c030a1b8d0e03b2c62c83d197d0f1ec",
@@ -53,25 +53,27 @@
       "tools/capture_demo.py": "2314f9d3803ded341e66303456dec5c323a9f4dcc4a8f0a17d7a934509af8e67",
       "tools/capture_review.py": "0ff79a91c28abf51527f2d21a519026e22b5519f42569351a5ef61dcad2d0acb",
       "tools/check_public_demo.py": "17d8109d864634def9653b02020bbf9d259d06a5ef111377b06bb59aa52c812a",
-      "tools/check_recovery_comparison.py": "a5e7f7c1cb765c347e282455bc7c0feccfb1e492310f96a8829ee569bea965c1",
-      "tools/check_review_sensitivity.py": "868d5734e5dfba4b99a6ed002e5cf5ae602d88a9ee6a079c9b394e587916949e",
+      "tools/check_recovery_comparison.py": "2bc34925b09a8edb323f60c4dea4405d7b64ee47e7ce466dcb1fdb72d4647106",
+      "tools/check_review_sensitivity.py": "15697695439adf56cfbb532d9cc760f0e4efa4ad8eca176b16bd72a7db812479",
       "tools/collect_evidence.py": "c439610662e85f17baf66ad046556288e93da8217fdcc6fd6356282de5576168",
       "tools/download_samples.py": "2d9c0a95fc4a8613e58d399e2e3fbedd6d4acb2e4c3489a2c7d5cd6f66f7dae9",
       "tools/fetch_upstream.py": "6517139f8f7feb670461a606b2bf90bc9bf835d9bfdcf50956685c6d1cbc4b14",
       "tools/prepare_assets.py": "8733667b051c6de9b25d742c4c29476df9177d4b88486ac96bd685a0d6d6dc2c",
-      "tools/record_verification.py": "8deeb9a262a6cdf0f0cf21d322c76e9f017c6cb9734b3d3fa39e4675566e9d44",
-      "docs/system-design/build_document.py": "8c3d887fac6e64ccbc0346d02b44f310a818aad31b1666378336561a1d63d528",
-      "docs/system-design/export_document.ps1": "4f5eac4b28948b1925a9471565c6388b7de7b8bfa240004b475e73d5c7847a5a",
-      "docs/system-design/verify_document_navigation.py": "413bbc73f7a9f4505d5661f19043ec4effebd8c03288bb2473d59098fca3b204",
-      "docs/system-design/verify_document_content.py": "3d2844974e9284847ff1e45b274ed2a7fc0ab3472e9c3bb811869bba3b6810e7"
+      "tools/record_verification.py": "8deeb9a262a6cdf0f0cf21d322c76e9f017c6cb9734b3d3fa39e4675566e9d44"
     },
     "evidence_sha256": {
       "docs/evidence/followup-verification.json": "82b5ea34d1ec9d12f810e5dd88e66b7feb7371f8043701a82db000acc5a1570d",
+      "docs/evidence/loading-followup-verification.json": "4121abe8b0526d4e357a6607665eb78fc82c02ae7769b8fcf84e890513c21eb3",
       "docs/evidence/followup-full-suite.xml": "f269bfe9b7f708d97495d041b3666c8bf3fed143222cc3fab59c818e71924414",
+      "docs/evidence/loading-followup-full-suite.xml": "8feca661b22d8b64d3eea95644a1991cc7f746c67e575309de25a74e59941661",
       "docs/evidence/followup-sensitivity.json": "46fdfd2ded3b2717348f0eb18a7942781be7ec506815679f60fe1ab1c3f1fd3c",
+      "docs/evidence/loading-followup-sensitivity.json": "49b994f5b35d8c07cc40839ba64efd44d03e9f21e976e855bc4468b34cf4ff17",
       "docs/evidence/followup-rendered-review.json": "4f404e7f59a400a8c62bb221612526ec970a180134ffa6e9255f9fdbebd239c9",
+      "docs/evidence/loading-followup-rendered-review.json": "fed67c7a8dd08d6724aa6d882683c48f1830051f06351f16bac0a71c75f8434b",
       "docs/evidence/followup-recovery-comparison.json": "523bf6cdb55f48d8ab42c297692984164ea3a293ef20394de5c9f67ea53b43d1",
+      "docs/evidence/loading-followup-recovery-comparison.json": "ff90a2eb7c9469422ac0c811a5af0ad721f4a7625af80d1d1856f7150b60b31d",
       "docs/evidence/followup-package.json": "c94b19092328000bc79a9178dd15e55a4213d299c97d7d4ea24e859c2f073fed",
+      "docs/evidence/loading-followup-package.json": "bd3d3ee4cbfe606ee9d3590b33afccba3a73df44df17666450c4d0e2738ce2c8",
       "docs/evidence/model-observations.json": "2fc47a23ea4d948ec2558c479e9b7802d2012406ff32c977c3a23f635efcdd17",
       "docs/evidence/viewport-before-fix.xml": "45b7b5bb258a685f30057f868f86caf3cda5f357a8eb3a2d6026f0326b09fa9f",
       "docs/evidence/extension-demo.json": "615fe81c42445ad5b7c93a119801ec9f84ea56a255a4dbc00a1e67cc11fbb360",
@@ -80,10 +82,11 @@
       "docs/evidence/public-prep-full-suite.xml": "4cb86214a0ca91c236fa8fb21936cbee2920981b602ce2bdf91a865411876e5a",
       "docs/evidence/extension-full-suite.xml": "7161e88ffaa99703d9070e7f0c218cba93249b8e1c2b082e792224bb7a85a257",
       "docs/evidence/stability-summary.json": "07c63ee5a77d7e2339e680eabe13b24b0d166d648d882974519ac001622e9b70",
-      "docs/screenshots/review-followup/desktop.png": "4d86d92f4dcd5f84c5ee1c7f36256f4f5995bf2dae852d77d16717e85bc1ec5e",
-      "docs/screenshots/review-followup/export.png": "a74cbc0fb02034136299010a9fcc2c2f22241fb0aa8ba38cdf70ab4f7fb57482"
+      "docs/screenshots/loading-followup/desktop.png": "4d86d92f4dcd5f84c5ee1c7f36256f4f5995bf2dae852d77d16717e85bc1ec5e",
+      "docs/screenshots/loading-followup/export.png": "a74cbc0fb02034136299010a9fcc2c2f22241fb0aa8ba38cdf70ab4f7fb57482",
+      "docs/evidence/loading-followup-slow-transfer.json": "1ad89463c0b59489fc879afee262112d404fbfc5542915f883e80617e25471ea"
     },
-    "base_commit": "74d108f70c0bea8ca09b2d5bdd3bb974023d523f"
+    "base_commit": "17f2b9a5e2ded7fa8c7954d748f825ba33f5d8a7"
   },
   "cover": [
     {
@@ -102,7 +105,7 @@
     },
     {
       "type": "paragraph",
-      "text": "This edition refreshes the current application, the review follow-up and the evidence needed for a bounded local release. It explains stage-specific recovery, visible-output assertions and box-position regression. The exact tested source is identified by file hashes; public website upload remains parked. Passing these checks does not establish general object-recognition accuracy.",
+      "text": "This edition refreshes the current application after the loading follow-up and the evidence needed for a bounded local release. It explains stage-specific recovery, a loading deadline that tolerates slow but steady connections, visible-output assertions and box-position regression. The exact tested source is identified by file hashes; public website upload remains parked. Passing these checks does not establish general object-recognition accuracy.",
       "sources": [],
       "status": "source_verified"
     }
@@ -141,8 +144,8 @@
         {
           "type": "figure",
           "id": "app-overview",
-          "path": "../screenshots/review-followup/desktop.png",
-          "caption": "Figure 1  Current application after real inference on the public coffee sample, captured during the 3 November review follow-up. The selected prediction links its visible row to its box; credits remain available.",
+          "path": "../screenshots/loading-followup/desktop.png",
+          "caption": "Figure 1  Current application after real inference on the public coffee sample, captured during the 3 November loading follow-up. The selected prediction links its visible row to its box; credits remain available.",
           "alt": "Actual application screenshot showing the image, prediction boxes, result list, minimum score, Try sample and Save result controls.",
           "status": "verified_actual_capture"
         },
@@ -463,7 +466,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Model loading has a 120-second watchdog and inference a 90-second watchdog. The failed worker is terminated. Loading-timeout feedback describes model preparation, while inference-timeout feedback describes image analysis. Clear removes the photo and replaces the earlier explanation with a generic detector-unavailable message offering restart. It does not claim readiness or reclassify the prior failure as startup failure. Retry or a new valid image recreates the worker.",
+          "text": "Model transfer fails only after 45 seconds without a loading event, so a slow but steady connection can finish the 43 MB download. Once the model file finishes, runtime initialization has a fixed 120-second deadline, and inference has 90 seconds. The failed worker is terminated. A stalled transfer asks the user to check the connection, an initialization timeout says the model took too long to start, and an inference timeout describes image analysis. Clear removes the photo and replaces the earlier explanation with a generic detector-unavailable message offering restart. It does not claim readiness or reclassify the prior failure as startup failure. Retry or a new valid image recreates the worker.",
           "sources": [
             "dist/app.js",
             "tests/test_recovery.py"
@@ -472,7 +475,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Normal controlled-worker loading retains the production 120-second deadline. Dedicated loading-timeout tests accelerate only that timer in their isolated browser; controlled inference uses a four-second deadline. A simulated failure proves that recovery works under the chosen condition, not that the real model was observed hanging.",
+          "text": "Normal controlled-worker loading retains the production deadlines. Dedicated loading tests accelerate only the 45-second stall and 120-second initialization timers in their isolated browser, and check a stalled transfer, a slow steady transfer that must not time out, and an initialization hang. Controlled inference uses a four-second deadline. A simulated failure proves that recovery works under the chosen condition, not that the real model was observed hanging.",
           "sources": [],
           "status": "source_verified"
         },
@@ -506,7 +509,7 @@
     },
     {
       "id": "features",
-      "title": "Filtering samples and PNG output",
+      "title": "Filtering, samples and PNG output",
       "blocks": [
         {
           "type": "heading",
@@ -620,8 +623,8 @@
         {
           "type": "figure",
           "id": "png-output",
-          "path": "../screenshots/review-followup/export.png",
-          "caption": "Figure 4  Actual PNG saved during the current review follow-up from the coffee sample at minimum score 0.80. It contains the photo and three visible prediction annotations, without application controls.",
+          "path": "../screenshots/loading-followup/export.png",
+          "caption": "Figure 4  Actual PNG saved during the current loading follow-up from the coffee sample at minimum score 0.80. It contains the photo and three visible prediction annotations, without application controls.",
           "alt": "Actual saved PNG showing the photo with aligned visible prediction boxes, labels and scores, without application controls or a summary strip.",
           "status": "verified_actual_capture"
         },
@@ -635,7 +638,7 @@
     },
     {
       "id": "automation",
-      "title": "Testing with Python pytest and Selenium",
+      "title": "Testing with Python, pytest and Selenium",
       "blocks": [
         {
           "type": "heading",
@@ -839,7 +842,11 @@
             "tests/test_filter.py",
             "tests/test_sample.py",
             "tests/test_export.py",
-            "tests/test_inference.py"
+            "tests/test_inference.py",
+            "tests/test_recovery.py",
+            "tests/test_startup.py",
+            "tests/test_loading.py",
+            "tests/test_public_package.py"
           ]
         },
         {
@@ -981,7 +988,7 @@
         },
         {
           "type": "table",
-          "caption": "Narrow viewport before and after the correction",
+          "caption": "Table 7  Narrow viewport before and after the correction",
           "columns": [
             "Measurement",
             "Before",
@@ -1092,6 +1099,30 @@
         {
           "type": "heading",
           "level": 2,
+          "text": "A slow connection that could never finish"
+        },
+        {
+          "type": "paragraph",
+          "text": "An independent audit paced only the 43 MB model response at 2.5 Mbps on loopback. The fixed 120-second loading deadline fired with 86 percent received, and Try again restarted the transfer from zero. A steady connection below about 2.9 Mbps could therefore never load the detector, although the public-demo note said slow connections could recover by retrying.",
+          "sources": [
+            "docs/SOURCE_REVIEW.md",
+            "docs/evidence/loading-followup-slow-transfer.json"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "paragraph",
+          "text": "The deadline was protecting against a dead connection, not a slow one, so it now measures a stall. Each loading event restarts a 45-second window, and runtime initialization after the model file finishes keeps its own 120-second limit. Controlled tests cover a stalled transfer, a slow steady transfer and an initialization hang. The same paced transfer then completed and the detector became ready at 139.6 seconds. This was an observed defect, not an injected fault.",
+          "sources": [
+            "dist/app.js",
+            "tests/test_recovery.py",
+            "docs/evidence/loading-followup-slow-transfer.json"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "heading",
+          "level": 2,
           "text": "Current recovery wording and assertion gaps"
         },
         {
@@ -1105,9 +1136,9 @@
         },
         {
           "type": "paragraph",
-          "text": "Fresh disposable-copy experiments validate the strengthened visible-text and geometry assertions. A shared six-case clean baseline passes first, followed by four fresh deliberate-fault copies. The records retain each source change and its intended failing assertion. A deliberate source fault demonstrates sensitivity to that specific mistake; it is not a production incident or a broad mutation-testing score.",
+          "text": "Fresh disposable-copy experiments validate the strengthened assertions. A shared 11-case clean baseline passes first, followed by nine deliberate-fault copies: blank names or scores, displaced boxes, removed announcement settings, a fixed load deadline, an extended initialization deadline, accepted blank labels and consistently scaled scores. The records retain each source change and its intended failing assertion. A deliberate source fault demonstrates sensitivity to that specific mistake; it is not a production incident or a broad mutation-testing score.",
           "sources": [
-            "docs/evidence/followup-sensitivity.json"
+            "docs/evidence/loading-followup-sensitivity.json"
           ],
           "status": "source_verified"
         }
@@ -1119,13 +1150,13 @@
       "blocks": [
         {
           "type": "paragraph",
-          "text": "The current review follow-up was executed on 3 November 2026. Its exact commands, environment, source hashes and selected evidence are recorded in followup-verification.json. The starting commit is 74d108f; the final file hashes identify the later tested changes. Checkpoints overlap and are never added together.",
+          "text": "The current loading follow-up was executed on 3 November 2026. Its exact commands, environment, source hashes and selected evidence are recorded in loading-followup-verification.json. The starting commit is 17f2b9a; the recorded file hashes identify the tested changes. Checkpoints overlap and are never added together.",
           "sources": [],
           "status": "source_verified"
         },
         {
           "type": "table",
-          "caption": "Table 7  Current and historical execution records",
+          "caption": "Table 8  Current and historical execution records",
           "columns": [
             "Check",
             "Observed result",
@@ -1134,23 +1165,33 @@
           "rows": [
             [
               "Current combined suite",
-              "93 passed; 0 failures/errors/skips; 648.509 s JUnit",
-              "89 non-model and 4 actual-model cases; followup-full-suite.xml"
+              "98 passed; 0 failures/errors/skips; 783.414 s JUnit",
+              "94 non-model and 4 actual-model cases; loading-followup-full-suite.xml"
             ],
             [
               "Current deliberate faults",
-              "6 clean passes; 7 intended failures across 4 faults",
-              "followup-sensitivity.json; selected faults in disposable copies"
+              "11 clean passes; 15 intended failures across 9 faults",
+              "loading-followup-sensitivity.json; selected faults in disposable copies"
             ],
             [
               "Current rendered review",
               "12 captures inspected; 320/390/768/1440 px layouts fit",
-              "followup-rendered-review.json; real coffee workflow and labelled controlled recovery capture"
+              "loading-followup-rendered-review.json; real coffee workflow and labelled controlled recovery capture"
             ],
             [
               "Current static package",
-              "23 entries verified; 34,572,254 bytes in ZIP",
-              "followup-package.json; prepared locally, not deployed"
+              "23 entries verified; 34,572,573 bytes in ZIP",
+              "loading-followup-package.json; prepared locally, not deployed"
+            ],
+            [
+              "Slow-transfer probe",
+              "2.5 Mbps: ready at 139.6 s; previous source failed at 121 s",
+              "loading-followup-slow-transfer.json; loopback pacing, one run each"
+            ],
+            [
+              "Preceding review follow-up",
+              "93 passed; 648.509 s",
+              "Historical 3 November source; followup-full-suite.xml"
             ],
             [
               "Preceding correctness review",
@@ -1181,9 +1222,9 @@
         },
         {
           "type": "paragraph",
-          "text": "The before/after recovery comparison ran the same three controlled wording checks against the earlier source and the current source: three expected pre-Clear failures in 26.732 seconds, followed by three passes in 27.644 seconds. Only the passing current checks continue through Clear, unavailable feedback, Retry and a valid new image. The baseline Clear behavior is not independently reached by those failed checks.",
+          "text": "The before/after recovery comparison ran the same three controlled wording checks against the 74d108f source and the current source: three expected pre-Clear failures in 27.061 seconds, followed by three passes in 28.254 seconds. Only the passing current checks continue through Clear, unavailable feedback, Retry and a valid new image. The baseline Clear behavior is not independently reached by those failed checks.",
           "sources": [
-            "docs/evidence/followup-recovery-comparison.json"
+            "docs/evidence/loading-followup-recovery-comparison.json"
           ],
           "status": "source_verified"
         },
@@ -1201,7 +1242,7 @@
         },
         {
           "type": "paragraph",
-          "text": "The three real-photo box references are earlier pinned-model outputs, not independent annotations. Scores remain model scores, duplicate predictions are still possible and the filter only changes the displayed set. Malformed-response and timeout cases use deliberate controlled failures. Announcement checks establish configured DOM behavior, not actual screen-reader output.",
+          "text": "The three real-photo box references are earlier pinned-model outputs, not independent annotations. Scores remain model scores, duplicate predictions are still possible and the filter only changes the displayed set. Malformed-response and timeout cases use deliberate controlled failures. The slow-transfer probe paced one response on loopback; it is not an Internet speed measurement. Announcement checks establish configured DOM behavior, not actual screen-reader output.",
           "sources": [],
           "status": "source_verified"
         },
@@ -1212,13 +1253,13 @@
         },
         {
           "type": "paragraph",
-          "text": "The current combined result is 93 passed, 0 failures/errors/skips; 648.509 seconds of JUnit suite time (89 non-model and 4 real-model cases). Together with the targeted failure/recovery checks, deliberate-fault sensitivity and current rendered review, it supports the agreed local learning and demonstration workflow. The refreshed book and static ZIP are local deliverables. Website upload remains parked and no public URL has been verified.",
+          "text": "The current combined result is 98 passed, 0 failures/errors/skips; 783.414 seconds of JUnit suite time (94 non-model and 4 real-model cases). A paced 2.5 Mbps model transfer that the previous source could not complete now reaches ready. Together with the targeted failure/recovery checks, deliberate-fault sensitivity and current rendered review, it supports the agreed local learning and demonstration workflow. The refreshed book and static ZIP are local deliverables. Website upload remains parked and no public URL has been verified.",
           "sources": [],
           "status": "source_verified"
         },
         {
           "type": "paragraph",
-          "text": "Other browsers/devices, Safari/iOS, hosted CI, public deployment, a general accuracy dataset, GPU/NPU execution, semiconductor inspection and production scale remain outside the evidence. The old one-hour session does not requalify the current revision. Repository content also cannot prove the owner's personal understanding or unaided authorship.",
+          "text": "Other browsers/devices, Safari/iOS, hosted CI, public deployment, a general accuracy dataset, GPU/NPU execution, semiconductor inspection and production scale remain outside the evidence. The old one-hour session does not requalify the current revision. Retry still restarts the model download from the beginning. Repository content also cannot prove the owner's personal understanding or unaided authorship.",
           "sources": [],
           "status": "source_verified"
         }
@@ -1272,7 +1313,7 @@
         },
         {
           "type": "table",
-          "caption": "Table 8  Where to look",
+          "caption": "Table 9  Where to look",
           "columns": [
             "Location",
             "Purpose"
@@ -1374,7 +1415,7 @@
       "blocks": [
         {
           "type": "table",
-          "caption": "Table 9  Terms in this application",
+          "caption": "Table 10  Terms in this application",
           "columns": [
             "Term",
             "Meaning"
@@ -1450,7 +1491,7 @@
         },
         {
           "type": "table",
-          "caption": "Table 10  Source index",
+          "caption": "Table 11  Source index",
           "columns": [
             "Subject",
             "Source"
@@ -1478,7 +1519,7 @@
             ],
             [
               "Verification records",
-              "docs/VERIFICATION.md; followup-verification.json; followup-sensitivity.json; historical records remain dated"
+              "docs/VERIFICATION.md; loading-followup-verification.json; loading-followup-sensitivity.json; historical records remain dated"
             ],
             [
               "Reproducible current evidence",

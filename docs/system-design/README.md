@@ -1,10 +1,10 @@
 # Object Lens system design
 
-Read the [PDF companion](Object_Lens_System_Design.pdf) or the [editable Word edition](Object_Lens_System_Design.docx). Both contain clickable contents titles and page numbers, plus links back to the contents. Edition 2 is the 3 November 2026 review follow-up. Its starting source is `74d108f`; final implementation/test hashes in `source.json` and [followup-verification.json](../evidence/followup-verification.json) identify the tested changes. The older book remains available in Git history.
+Read the [PDF companion](Object_Lens_System_Design.pdf) or the [editable Word edition](Object_Lens_System_Design.docx). Both contain clickable contents titles and page numbers, plus links back to the contents. Edition 2.1 is the 3 November 2026 loading follow-up. Its starting source is `17f2b9a`; implementation/test hashes in `source.json` and [loading-followup-verification.json](../evidence/loading-followup-verification.json) identify the tested changes. Earlier editions remain available in Git history.
 
-Begin with the scope and technology responsibilities, then follow the architecture, image-replacement sequence and testing diagrams. The current edition explains configuration/loading feedback, stage-specific timeout and Clear recovery, malformed output validation, visible result assertions, box-position regression and the static-package boundary. The worked size-limit test connects requirements to automation; the failure chapter distinguishes observed defects from deliberate fault experiments.
+Begin with the scope and technology responsibilities, then follow the architecture, image-replacement sequence and testing diagrams. The current edition explains configuration/loading feedback, a model-loading deadline based on stalls rather than elapsed time, stage-specific timeout and Clear recovery, malformed output validation, visible result assertions, box-position regression and the static-package boundary. The worked size-limit test connects requirements to automation; the failure chapter distinguishes observed defects, including the slow-connection loading defect, from deliberate fault experiments.
 
-The current release assessment is based on the current follow-up execution. Earlier 26-, 48-, 59- and 72-case milestones retain their historical scope. Reference boxes are previous outputs of the pinned model, not independent ground truth. Announcement checks inspect page content and configuration, not actual screen-reader behavior. Website upload remains parked.
+The current release assessment is based on the current follow-up execution. Earlier 26-, 48-, 59-, 72- and 93-case milestones retain their historical scope. Reference boxes are previous outputs of the pinned model, not independent ground truth. Announcement checks inspect page content and configuration, not actual screen-reader behavior. Website upload remains parked.
 
 ## Sources and generated files
 
@@ -13,7 +13,7 @@ The current release assessment is based on the current follow-up execution. Earl
 | `source.json` | Authoritative prose, tables, captions, code excerpts, source commit and evidence hashes |
 | `diagrams/*.html` | Authoritative editable diagrams, with self-contained inline SVG |
 | `diagrams/*.svg` and `diagrams/*.png` | Generated diagram exports used by the document |
-| `../screenshots/review-followup/desktop.png` and `../screenshots/review-followup/export.png` | Shared actual application and PNG-output captures |
+| `../screenshots/loading-followup/desktop.png` and `../screenshots/loading-followup/export.png` | Shared actual application and PNG-output captures |
 | `build_document.py` | Builds the Word document from the JSON and declared image assets |
 | `export_document.ps1` | Exports through a hidden, task-owned Word instance and records actual heading pages |
 | `verify_document_navigation.py` | Checks Word anchors, PDF link destinations, printed contents pages and heading locations |
@@ -28,7 +28,7 @@ Save authoring text as UTF-8 with LF line endings, matching the repository's Git
 
 ## Rebuilding in the existing authoring environment
 
-Reading these documents and running Object Lens require no document-authoring package installation. The application `.venv` is for the app's Python tests. Document production uses the existing Codex document runtime, including `python-docx`, `lxml`, `pypdf` and a PDF renderer, plus the already installed Word application on the recorded Windows environment. Resolve the current bundled Python path through Codex's workspace dependency loader and use it as `$documentPython` below.
+Reading these documents and running Object Lens require no document-authoring package installation. The application `.venv` is for the app's Python tests. Document production needs a Python with `python-docx`, `lxml`, `pypdf` and `pypdfium2`, plus the installed Word application on the recorded Windows environment. Edition 2.1 was built with the system Python 3.12.10 (python-docx 1.2.0, lxml 6.1.1, pypdf 6.13.2, pypdfium2 5.12.1); earlier editions used the Codex document runtime. Use whichever such Python is available as `$documentPython` below.
 
 From the repository root, rebuild the Word file with the existing verified page map:
 
@@ -50,12 +50,12 @@ The export helper requires an empty newly created Word instance, keeps it hidden
 
 After any content or layout change, render and inspect every final PDF page at readable scale. Check text, tables, figures, captions, page numbering and the link audit. Keep page PNGs and intermediate conversion records under ignored QA directories. Update the source/evidence hashes only after verifying the final bytes and actual results. The book records the starting commit plus final content hashes to avoid a circular claim about the commit that will contain the generated book.
 
-The packaged `render_docx.py` was attempted for this edition but cannot find LibreOffice `soffice.exe` on this Windows host. The existing hidden Word export supplies the PDF instead. This fallback changes no Office security or execution-policy setting. Render and check the final artifacts with the bundled runtime:
+LibreOffice `soffice.exe` is not installed on this Windows host, so the hidden Word export supplies the PDF. Edition 2.1 fixed that export script's cleanup: Windows PowerShell 5.1 needs `[ref]` for Word's by-reference `Close` and `Quit` arguments, and a failed close no longer skips quitting the task-owned instance. This fallback changes no Office security or execution-policy setting. Render and check the final artifacts with the bundled runtime:
 
 ```powershell
-& $documentPython docs/system-design/verify_document_content.py --bundle-version 26.1026.10807 --word-state .local/document-planning/word-pages.json.state.json --render-dir artifacts/document-qa/followup-pages
+& $documentPython docs/system-design/verify_document_content.py --bundle-version system-python-3.12.10 --word-state .local/document-planning/word-pages.json.state.json --render-dir artifacts/document-qa/followup-pages
 ```
 
 Open every resulting page image and inspect text, tables, figures, captions and page edges. Only after completing that visual review, run the checker with `--visual-reviewed-all` to record it. That flag records the reviewer's completed inspection; the program cannot establish visual quality by itself.
 
-Use the bundle version actually reported by the dependency loader if rebuilding in a newer environment. The checker records the running Python and package versions, and the export state supplies the actual Word and PowerShell versions.
+Pass an identifier for the document runtime actually used, such as a dependency-loader bundle version or `system-python-3.12.10`. The checker records the running Python and package versions, and the export state supplies the actual Word and PowerShell versions.

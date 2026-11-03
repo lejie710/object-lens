@@ -279,7 +279,7 @@ class CompanionBuilder:
 
         header = section.header.paragraphs[0]
         header.style = document.styles["Small"]
-        add_text(header, str(self.source["metadata"]["title"]) + "  System design and software quality")
+        add_text(header, str(self.source["metadata"]["title"]) + " · System design and software quality")
         footer = section.footer.paragraphs[0]
         footer.style = document.styles["Small"]
         footer.paragraph_format.tab_stops.add_tab_stop(self.available_width, WD_TAB_ALIGNMENT.RIGHT)

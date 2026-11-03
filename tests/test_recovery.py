@@ -14,6 +14,86 @@ from serve import AppHandler
 from test_ui import assert_no_visible_image, result_labels, upload, wait_state
 
 
+MODEL_FILE = "onnx/model_quantized.onnx"
+
+
+def model_progress(loaded):
+    return f"self.postMessage({{type: 'progress', status: 'progress', file: '{MODEL_FILE}', loaded: {loaded}, total: 100}});"
+
+
+MODEL_DONE = f"self.postMessage({{type: 'progress', status: 'done', file: '{MODEL_FILE}'}});"
+
+# Each first worker is a deliberate component simulation; retry gets the ordinary controlled worker.
+FIRST_WORKERS = {
+    # No loading event at all: the transfer watchdog must fire.
+    "load-timeout": "self.onmessage = () => {};",
+    # Two loading events, then silence: a stalled transfer.
+    "load-stall": f"""
+        self.onmessage = ({{data}}) => {{
+            if (data.type !== 'load') return;
+            {model_progress(10)}
+            setTimeout(() => {{ {model_progress(20)} }}, 300);
+        }};
+    """,
+    # Slow but steady transfer lasting longer than several stall windows, then ready.
+    "slow-progress": f"""
+        self.onmessage = ({{data}}) => {{
+            if (data.type === 'infer') {{
+                self.postMessage({{type: 'result', id: data.id, predictions: [
+                    {{label: 'car', score: 0.94, box: {{xmin: 0.2, ymin: 0.3, xmax: 0.7, ymax: 0.8}}}}]}});
+                return;
+            }}
+            if (data.type !== 'load') return;
+            let loaded = 0;
+            const timer = setInterval(() => {{
+                loaded += 5;
+                self.postMessage({{type: 'progress', status: 'progress', file: '{MODEL_FILE}', loaded, total: 100}});
+                if (loaded >= 100) {{
+                    clearInterval(timer);
+                    {MODEL_DONE}
+                    self.postMessage({{type: 'ready'}});
+                }}
+            }}, 250);
+        }};
+    """,
+    # The model file finishes, then runtime initialization never reports ready.
+    "init-hang": f"""
+        self.onmessage = ({{data}}) => {{
+            if (data.type !== 'load') return;
+            {model_progress(100)}
+            {MODEL_DONE}
+            setInterval(() => self.postMessage({{type: 'progress', status: 'done', file: 'config.json'}}), 300);
+        }};
+    """,
+    "infer-crash": """
+        self.onmessage = ({data}) => {
+            if (data.type === 'load') self.postMessage({type: 'ready'});
+            if (data.type === 'infer') throw new Error('Controlled worker crash.');
+        };
+    """,
+}
+
+# Accelerate only the production loading deadlines in an isolated page. This exercises
+# their callbacks and recovery wiring, not elapsed production time.
+ACCELERATED_LOAD_DEADLINES = """
+    const originalSetTimeout = window.setTimeout.bind(window);
+    window.recoveryLoadDeadlines = [];
+    const accelerated = {45000: 1500, 120000: 2500};
+    window.setTimeout = (callback, delay, ...args) => {
+        if (delay in accelerated) {
+            window.recoveryLoadDeadlines.push(delay);
+            return originalSetTimeout(callback, accelerated[delay], ...args);
+        }
+        return originalSetTimeout(callback, delay, ...args);
+    };
+"""
+
+
+def open_with_accelerated_loading(browser, url):
+    browser.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {"source": ACCELERATED_LOAD_DEADLINES})
+    browser.get(url)
+
+
 @pytest.fixture
 def recovery_server():
     """Only the first worker is broken; retry receives the ordinary controlled worker."""
@@ -24,12 +104,7 @@ def recovery_server():
             if urlsplit(self.path).path == "/test-worker.js":
                 control.requests += 1
                 if control.requests == 1:
-                    script = (b"self.onmessage = () => {};" if control.mode == "load-timeout" else b"""
-                        self.onmessage = ({data}) => {
-                            if (data.type === 'load') self.postMessage({type: 'ready'});
-                            if (data.type === 'infer') throw new Error('Controlled worker crash.');
-                        };
-                    """)
+                    script = FIRST_WORKERS[control.mode].encode()
                     self.send_response(200)
                     self.send_header("Content-Type", "text/javascript")
                     self.send_header("Content-Length", str(len(script)))
@@ -85,29 +160,56 @@ def clear_and_restart(browser, make_image):
 def test_model_load_timeout_clear_and_retry_describe_detector_availability(
     browser, recovery_server, make_image,
 ):
-    # Accelerate only the production 120-second load deadline in this isolated page.
-    # This exercises its callback and recovery wiring, not elapsed production time.
-    # Ordinary controlled loading tests retain the full production load deadline.
-    browser.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {"source": """
-        const originalSetTimeout = window.setTimeout.bind(window);
-        window.recoveryLoadDeadlines = [];
-        window.setTimeout = (callback, delay, ...args) => {
-            if (delay === 120000) {
-                window.recoveryLoadDeadlines.push(delay);
-                return originalSetTimeout(callback, 2500, ...args);
-            }
-            return originalSetTimeout(callback, delay, ...args);
-        };
-    """})
-    browser.get(recovery_server.url)
+    # Ordinary controlled loading tests retain the full production load deadlines.
+    open_with_accelerated_loading(browser, recovery_server.url)
     upload(browser, make_image("car.png"))
     wait_state(browser, "error")
     message = browser.find_element(By.ID, "error-message").text.lower()
-    assert "model" in message and "too long" in message and "load" in message
+    assert "model" in message and "stopped loading" in message and "connection" in message
     assert "another image" not in message
-    assert browser.execute_script("return window.recoveryLoadDeadlines") == [120000]
+    assert browser.execute_script("return window.recoveryLoadDeadlines") == [45000]
     assert browser.find_element(By.ID, "image-preview").is_displayed()
     assert_no_results(browser)
+    clear_and_restart(browser, make_image)
+    assert recovery_server.requests == 2
+
+
+def test_stalled_model_transfer_times_out_after_its_last_progress(browser, recovery_server, make_image):
+    recovery_server.mode = "load-stall"
+    open_with_accelerated_loading(browser, recovery_server.url)
+    wait_state(browser, "error")
+    message = browser.find_element(By.ID, "error-message").text.lower()
+    assert "stopped loading" in message and "connection" in message and "try again" in message
+    # The initial deadline plus one extension per progress event; initialization never started.
+    assert browser.execute_script("return window.recoveryLoadDeadlines") == [45000, 45000, 45000]
+    assert not browser.find_element(By.ID, "model-loading").is_displayed()
+    clear_and_restart(browser, make_image)
+    assert recovery_server.requests == 2
+
+
+def test_slow_steady_model_transfer_is_not_timed_out(browser, recovery_server, make_image):
+    # About five seconds of steady progress spans more than three accelerated stall windows.
+    recovery_server.mode = "slow-progress"
+    open_with_accelerated_loading(browser, recovery_server.url)
+    wait_state(browser, "ready", timeout=20)
+    deadlines = browser.execute_script("return window.recoveryLoadDeadlines")
+    assert deadlines.count(45000) == 21 and deadlines[-1] == 120000
+    assert not browser.find_element(By.ID, "error-notice").is_displayed()
+    upload(browser, make_image("car.png"))
+    wait_state(browser, "complete")
+    assert result_labels(browser) == ["car"]
+    assert recovery_server.requests == 1
+
+
+def test_model_initialization_has_its_own_deadline(browser, recovery_server, make_image):
+    recovery_server.mode = "init-hang"
+    open_with_accelerated_loading(browser, recovery_server.url)
+    wait_state(browser, "error")
+    message = browser.find_element(By.ID, "error-message").text.lower()
+    assert "too long to start" in message and "try again" in message
+    assert "connection" not in message
+    # Later settings-file events must not extend the initialization deadline.
+    assert browser.execute_script("return window.recoveryLoadDeadlines") == [45000, 45000, 120000]
     clear_and_restart(browser, make_image)
     assert recovery_server.requests == 2
 
@@ -139,7 +241,7 @@ def test_worker_crash_during_inference_is_not_described_as_startup_failure(
 
 
 @pytest.mark.parametrize("kind", [
-    "not-array", "null-item", "missing-box", "missing-coordinate", "string-coordinate",
+    "not-array", "null-item", "empty-label", "blank-label", "missing-box", "missing-coordinate", "string-coordinate",
     "nonfinite-coordinate", "missing-score", "string-score", "nonfinite-score",
     "negative-score", "excess-score", "reversed-box", "zero-area-box", "outside-box",
 ])

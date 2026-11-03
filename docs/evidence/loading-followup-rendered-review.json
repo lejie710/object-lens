@@ -1,0 +1,355 @@
+{
+  "created_at_utc": "2026-11-03T15:32:27+00:00",
+  "source_sha256": {
+    "asset-lock.json": "9304dd88602a161c3ac1e580fa559e01a22f285c57573bf77d708b0c1af58216",
+    "credits-lock.json": "095633d230a4a2300a3bd612b15eb76baf7253561b4df7713ea6c397f584fe2f",
+    "dist/app.js": "a1a3e41e312462191ee85ecd8f02eba983f1e0b3e91e2c9410e85b8cd75d2c65",
+    "dist/credits.html": "38673103e5133b79e0c53e949d4b65dd42485d164f46b56c968a230a714bd6c0",
+    "dist/index.html": "d4b6944c8c2bce55a69903173d7fc6c009bddc49170ec3a461075ffa07d774bd",
+    "dist/png-export.js": "cb7171cec270e245a78f70a8f56cd62a921157825458a3aeb97ac8b513948c41",
+    "dist/runtime-config.json": "80c98bfac072ba06f97197da8758f21bf1f8988a75b5302001b0eb22787d5d77",
+    "dist/style.css": "e4a1a8e3590fe79720ae588d53bee72f1d3e76c1e3118c75b6faffb5d0a41aa6",
+    "dist/worker.js": "a791a655630ad942a784fc0d769c9b1123812b5e0491a0e23ca17ed800c6377d",
+    "docs/evidence/model-observations.json": "2fc47a23ea4d948ec2558c479e9b7802d2012406ff32c977c3a23f635efcdd17",
+    "pytest.ini": "5ee196e2a6c29c1c03f7e84a994bf274451c39c3ccf8d4e46c6cddb6d7216399",
+    "requirements-lock.txt": "ca55ce2a97df508ac3ab5ec0ab1c6ae8bd9cf7f636a93759d12031e96998bae5",
+    "requirements.txt": "e22547340f95f8327dc5669a31f0a74d55f54748ce6374388918a4b9e1d47ba6",
+    "serve.py": "fbee47676ed615440f51eb4dad47c211c49c03a2afdc233e51683b719d4caedb",
+    "tests/conftest.py": "ca815de5bc4af6372b63447de6ba397785693122995d1da3e806cd72a71b092b",
+    "tests/fixtures/test-worker.js": "496cb40f8e383d7bdaf370783f7cd499886d4f14aaaf14383df036841a10a477",
+    "tests/test_export.py": "1c62dabda67959a142319d46c5f46f5a6bdc45354346ceca058f29f04f8f3707",
+    "tests/test_filter.py": "e6bf885555bce350e039f5adadc42dfcfc8b8dfefd416700296abbe7791801c7",
+    "tests/test_harness_cleanup.py": "07ccefdd44a45495281019c2a90316f4f7193f1f7bf611dc000e9c45539bc301",
+    "tests/test_inference.py": "41f3d151ceb763d782221ef86ccee8d2cf7ee7c0c35ae9acb11525f807f37da8",
+    "tests/test_loading.py": "f31ae1624eedced851f0614b77d5ae1d85abc6f03a85cc69da52d50efce3516b",
+    "tests/test_public_package.py": "18c405e97a6a9b09dd43ca546064208cba83a210f53b8a945d12bf497ff5d2f1",
+    "tests/test_recovery.py": "7b99c70ed00d56131ed5ea176b1cdaee1299913b8e640aca6f066c70efed8225",
+    "tests/test_sample.py": "66e21ae95ae7fa36156844e732c3606c8006d207de8ad73e0c7344f8948074df",
+    "tests/test_server.py": "6dbff96615d244a590363e8c340e665e00d6aa71be65e5b7e6278edd0ca34ce9",
+    "tests/test_startup.py": "1c54f0a9ec3ee7dd2b666a98aa85df623c030a1b8d0e03b2c62c83d197d0f1ec",
+    "tests/test_ui.py": "513bed45e14ccdb47dc4012548ba1a69b22568f9cfec13aa446e6bea822334d6",
+    "tools/browser_check.py": "73c6355674fa3396a48e5768a50fcfd3050b1ed83a16fee5051f150bb1c9bfb7",
+    "tools/build_baseline.py": "7df1b3bed0b1a35cb6f84b654027c4d39a72b7f3b6ba9c0f3b77f657f9fb995f",
+    "tools/build_public_demo.py": "ac4eb8b129d4dd2ef754ce8e50a7e039905a6120e3d382da8b8c3663f8716702",
+    "tools/capture_demo.py": "2314f9d3803ded341e66303456dec5c323a9f4dcc4a8f0a17d7a934509af8e67",
+    "tools/capture_review.py": "0ff79a91c28abf51527f2d21a519026e22b5519f42569351a5ef61dcad2d0acb",
+    "tools/check_public_demo.py": "17d8109d864634def9653b02020bbf9d259d06a5ef111377b06bb59aa52c812a",
+    "tools/check_recovery_comparison.py": "2bc34925b09a8edb323f60c4dea4405d7b64ee47e7ce466dcb1fdb72d4647106",
+    "tools/check_review_sensitivity.py": "15697695439adf56cfbb532d9cc760f0e4efa4ad8eca176b16bd72a7db812479",
+    "tools/collect_evidence.py": "c439610662e85f17baf66ad046556288e93da8217fdcc6fd6356282de5576168",
+    "tools/download_samples.py": "2d9c0a95fc4a8613e58d399e2e3fbedd6d4acb2e4c3489a2c7d5cd6f66f7dae9",
+    "tools/fetch_upstream.py": "6517139f8f7feb670461a606b2bf90bc9bf835d9bfdcf50956685c6d1cbc4b14",
+    "tools/prepare_assets.py": "8733667b051c6de9b25d742c4c29476df9177d4b88486ac96bd685a0d6d6dc2c",
+    "tools/record_verification.py": "8deeb9a262a6cdf0f0cf21d322c76e9f017c6cb9734b3d3fa39e4675566e9d44"
+  },
+  "captures": [
+    {
+      "file": "empty.png",
+      "sha256": "d68f6446e8190e018292d80b827a19c30bd7e356065c5ffbc9d007030c20f6a9",
+      "evidence_type": "real application",
+      "description": "Ready workspace after real model startup.",
+      "state": "ready",
+      "status": "Ready to choose an image",
+      "error": ""
+    },
+    {
+      "file": "desktop.png",
+      "sha256": "4d86d92f4dcd5f84c5ee1c7f36256f4f5995bf2dae852d77d16717e85bc1ec5e",
+      "evidence_type": "real model inference",
+      "description": "Coffee sample at 0.50 with the cup selected; all predictions remain visible.",
+      "state": "complete",
+      "status": "Detection complete. Showing 4 of 4 predictions.",
+      "error": ""
+    },
+    {
+      "file": "filtered.png",
+      "sha256": "790b146eaa3200448cfddfe011e25bb67cac0552b58028ed692f36ea8035b525",
+      "evidence_type": "real model inference",
+      "description": "The 0.80 display filter keeps existing predictions without rerunning the model.",
+      "state": "complete",
+      "status": "Detection complete. Showing 3 of 4 predictions.",
+      "error": ""
+    },
+    {
+      "file": "export.png",
+      "sha256": "a74cbc0fb02034136299010a9fcc2c2f22241fb0aa8ba38cdf70ab4f7fb57482",
+      "evidence_type": "real annotated PNG export",
+      "description": "Downloaded original-resolution coffee PNG at minimum score 0.80.",
+      "download_name": "coffee-object-lens-min-0.80.png"
+    },
+    {
+      "file": "filtered-empty.png",
+      "sha256": "5a459335ca7537f57cb07723502dff1e873ffc994182f083f2d74bec7cd4c9ad",
+      "evidence_type": "real model inference",
+      "description": "At 1.00 the display filter hides all predictions and disables export.",
+      "state": "filtered-empty",
+      "status": "Detection complete. Showing 0 of 4 predictions. Lower the minimum score to see predictions.",
+      "error": ""
+    },
+    {
+      "file": "width-320.png",
+      "sha256": "246a301149bc5112e74083b9f6a0520d01a1e5f7a68f417d8bb5382aee80ae8c",
+      "evidence_type": "real model inference",
+      "description": "Full page at 320 CSS pixels; viewport emulation is not a mobile-device test.",
+      "state": "complete",
+      "status": "Detection complete. Showing 3 of 4 predictions.",
+      "error": ""
+    },
+    {
+      "file": "width-390.png",
+      "sha256": "71876fc568442762a00abd1536a7851404d434336361b1bd8969f69a763c9888",
+      "evidence_type": "real model inference",
+      "description": "Full page at 390 CSS pixels; viewport emulation is not a mobile-device test.",
+      "state": "complete",
+      "status": "Detection complete. Showing 3 of 4 predictions.",
+      "error": ""
+    },
+    {
+      "file": "width-768.png",
+      "sha256": "8e2792ffd13b8ff91b41cf6fa2f51165279fb75d5ea75ab3bbfad5fccbe08106",
+      "evidence_type": "real model inference",
+      "description": "Full page at 768 CSS pixels; viewport emulation is not a mobile-device test.",
+      "state": "complete",
+      "status": "Detection complete. Showing 3 of 4 predictions.",
+      "error": ""
+    },
+    {
+      "file": "width-1440.png",
+      "sha256": "4e7d4e5c20d5c5c9a1c30d2b8b3f25337ab2b5df661d61f5e83becec9eceb60d",
+      "evidence_type": "real model inference",
+      "description": "Full page at 1440 CSS pixels; viewport emulation is not a mobile-device test.",
+      "state": "complete",
+      "status": "Detection complete. Showing 3 of 4 predictions.",
+      "error": ""
+    },
+    {
+      "file": "error.png",
+      "sha256": "437fc94ce86bc21e72fcb4acf7ba0cd9d1dd50ce7cacf9f900966ee08893c07b",
+      "evidence_type": "real application with deliberately invalid input",
+      "description": "Unsupported file feedback explains accepted formats and the next action.",
+      "state": "error",
+      "status": "Action needed",
+      "error": "Choose a JPEG or PNG image. Other file formats are not supported."
+    },
+    {
+      "file": "timeout.png",
+      "sha256": "61223e6e4cbb7c5711221b75c5df4962dbd61db818b83621ec43a3a92d6cded6",
+      "evidence_type": "controlled worker failure",
+      "description": "Simulated nonresponding inference triggers the controlled four-second deadline.",
+      "state": "error",
+      "status": "Action needed",
+      "error": "Image analysis took too long. Try again or choose another image."
+    },
+    {
+      "file": "timeout-cleared.png",
+      "sha256": "b50722f37b4945d6fc0775e9bae4f8f54506a79e46e5eb6c73a45a2770ada577",
+      "evidence_type": "controlled worker failure",
+      "description": "Clear removes the image but truthfully keeps the stopped detector unavailable with retry.",
+      "state": "error",
+      "status": "Action needed",
+      "error": "Object detection is unavailable. Try again to restart the detector."
+    }
+  ],
+  "viewports": [
+    {
+      "content": 305,
+      "controls": [
+        {
+          "id": "choose-image",
+          "left": 14,
+          "right": 138.125,
+          "width": 124.125
+        },
+        {
+          "id": "try-sample",
+          "left": 148.125,
+          "right": 250.703125,
+          "width": 102.578125
+        },
+        {
+          "id": "clear-image",
+          "left": 14,
+          "right": 80.28125,
+          "width": 66.28125
+        },
+        {
+          "id": "save-result",
+          "left": 90.28125,
+          "right": 192.921875,
+          "width": 102.640625
+        },
+        {
+          "id": "minimum-score",
+          "left": 37,
+          "right": 268,
+          "width": 231
+        }
+      ],
+      "usable": 305,
+      "width": 320
+    },
+    {
+      "content": 375,
+      "controls": [
+        {
+          "id": "choose-image",
+          "left": 14,
+          "right": 138.125,
+          "width": 124.125
+        },
+        {
+          "id": "try-sample",
+          "left": 148.125,
+          "right": 250.703125,
+          "width": 102.578125
+        },
+        {
+          "id": "clear-image",
+          "left": 260.703125,
+          "right": 326.984375,
+          "width": 66.28125
+        },
+        {
+          "id": "save-result",
+          "left": 14,
+          "right": 116.640625,
+          "width": 102.640625
+        },
+        {
+          "id": "minimum-score",
+          "left": 37,
+          "right": 338,
+          "width": 301
+        }
+      ],
+      "usable": 375,
+      "width": 390
+    },
+    {
+      "content": 768,
+      "controls": [
+        {
+          "id": "choose-image",
+          "left": 308.375,
+          "right": 434.5,
+          "width": 126.125
+        },
+        {
+          "id": "try-sample",
+          "left": 444.5,
+          "right": 549.078125,
+          "width": 104.578125
+        },
+        {
+          "id": "clear-image",
+          "left": 559.078125,
+          "right": 627.359375,
+          "width": 68.28125
+        },
+        {
+          "id": "save-result",
+          "left": 637.359375,
+          "right": 742,
+          "width": 104.640625
+        },
+        {
+          "id": "minimum-score",
+          "left": 500,
+          "right": 725,
+          "width": 225
+        }
+      ],
+      "usable": 768,
+      "width": 768
+    },
+    {
+      "content": 1440,
+      "controls": [
+        {
+          "id": "choose-image",
+          "left": 970.375,
+          "right": 1096.5,
+          "width": 126.125
+        },
+        {
+          "id": "try-sample",
+          "left": 1106.5,
+          "right": 1211.078125,
+          "width": 104.578125
+        },
+        {
+          "id": "clear-image",
+          "left": 1221.078125,
+          "right": 1289.359375,
+          "width": 68.28125
+        },
+        {
+          "id": "save-result",
+          "left": 1299.359375,
+          "right": 1404,
+          "width": 104.640625
+        },
+        {
+          "id": "minimum-score",
+          "left": 1118,
+          "right": 1381,
+          "width": 263
+        }
+      ],
+      "usable": 1440,
+      "width": 1440
+    }
+  ],
+  "passed": true,
+  "limits": "Rendered content and configuration on local Chrome/Windows; no actual screen-reader, accuracy or deployment claim.",
+  "browser_version": "156.0.8078.80",
+  "driver_version": "156.0.8078.80",
+  "sample_ui_seconds": 8.933,
+  "predictions": [
+    {
+      "label": "spoon",
+      "displayed_score": "0.67",
+      "score": 0.6670341491699219
+    },
+    {
+      "label": "dining table",
+      "displayed_score": "0.99",
+      "score": 0.991251528263092
+    },
+    {
+      "label": "cup",
+      "displayed_score": "1.00",
+      "score": 0.997867226600647
+    },
+    {
+      "label": "spoon",
+      "displayed_score": "0.93",
+      "score": 0.9270511269569397
+    }
+  ],
+  "real_console": [],
+  "external_http_requests": [],
+  "controlled_retry_recovered": true,
+  "sources_unchanged_during_capture": true,
+  "visual_review": {
+    "reviewer": "Primary implementation agent",
+    "method": "Opened the desktop, 320-pixel and exported PNG captures individually and the other nine on contact sheets at readable scale after headless browser capture.",
+    "files": [
+      "empty.png",
+      "desktop.png",
+      "filtered.png",
+      "export.png",
+      "filtered-empty.png",
+      "width-320.png",
+      "width-390.png",
+      "width-768.png",
+      "width-1440.png",
+      "error.png",
+      "timeout.png",
+      "timeout-cleared.png"
+    ],
+    "result": "All 12 captures readable. No clipping, overlap or missing control text observed. The controlled timeout/Clear states keep unavailable/retry feedback visible.",
+    "limits": "Visual inspection and automated viewport measurements do not establish actual screen-reader behavior or mobile-device compatibility. The loading watchdog change has no visible state at normal transfer speed; its messages are covered by controlled tests rather than captures."
+  },
+  "source_snapshot_note": "Hashes preserve the exact capture-time source snapshot, which matches the integrated loading-followup verification record."
+}

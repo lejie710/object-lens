@@ -31,6 +31,8 @@ function invalidPredictions(kind) {
     case 'missing-coordinate': delete prediction.box.xmax; break;
     case 'string-coordinate': prediction.box.xmin = '0.1'; break;
     case 'nonfinite-coordinate': prediction.box.ymax = Infinity; break;
+    case 'empty-label': prediction.label = ''; break;
+    case 'blank-label': prediction.label = '   '; break;
     case 'missing-score': delete prediction.score; break;
     case 'string-score': prediction.score = '0.97'; break;
     case 'nonfinite-score': prediction.score = NaN; break;

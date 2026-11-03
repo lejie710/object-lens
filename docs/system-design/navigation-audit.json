@@ -1,15 +1,15 @@
 {
   "docx": "Object_Lens_System_Design.docx",
   "pdf": "Object_Lens_System_Design.pdf",
-  "docx_sha256": "36e69b95aa721ae7442614af08a02ec14932a47874ad75298f0ca39789259abc",
-  "pdf_sha256": "d9a0219878baab25e06fc16ba77147aa01fd1aa386b0dbf9f81ea67f9cdaf9bc",
-  "pdf_pages": 21,
-  "word_pages": 21,
+  "docx_sha256": "07a02f53548e8c906470c9e1004f63edfc9f466addab64753b03d1a0c70bef33",
+  "pdf_sha256": "a048b739175445a9c2b4e875af8cf855faa23e2c27cf8d75eeca7e006c233938",
+  "pdf_pages": 22,
+  "word_pages": 22,
   "contents_page": 2,
-  "heading_count": 35,
-  "docx_bookmarks": 37,
-  "docx_internal_links": 80,
-  "pdf_contents_links": 70,
+  "heading_count": 36,
+  "docx_bookmarks": 38,
+  "docx_internal_links": 82,
+  "pdf_contents_links": 72,
   "pdf_back_to_contents_links": 10,
   "pdf_external_links": 4,
   "placeholder_pages_allowed": false,
@@ -96,17 +96,17 @@
     },
     {
       "bookmark": "OL_features",
-      "title": "Filtering samples and PNG output",
-      "page": 8,
-      "printed_page": "8",
+      "title": "Filtering, samples and PNG output",
+      "page": 9,
+      "printed_page": "9",
       "heading_text_present_on_target_page": true,
       "docx_title_and_page_anchors_match": true
     },
     {
       "bookmark": "OL_features__Minimum_model_score",
       "title": "Minimum model score",
-      "page": 8,
-      "printed_page": "8",
+      "page": 9,
+      "printed_page": "9",
       "heading_text_present_on_target_page": true,
       "docx_title_and_page_anchors_match": true
     },
@@ -128,7 +128,7 @@
     },
     {
       "bookmark": "OL_automation",
-      "title": "Testing with Python pytest and Selenium",
+      "title": "Testing with Python, pytest and Selenium",
       "page": 11,
       "printed_page": "11",
       "heading_text_present_on_target_page": true,
@@ -223,6 +223,14 @@
       "docx_title_and_page_anchors_match": true
     },
     {
+      "bookmark": "OL_investigation__A_slow_conne_94ca6672",
+      "title": "A slow connection that could never finish",
+      "page": 17,
+      "printed_page": "17",
+      "heading_text_present_on_target_page": true,
+      "docx_title_and_page_anchors_match": true
+    },
+    {
       "bookmark": "OL_investigation__Current_reco_e6d6d428",
       "title": "Current recovery wording and assertion gaps",
       "page": 17,
@@ -241,24 +249,24 @@
     {
       "bookmark": "OL_verification__Release_decision",
       "title": "Release decision",
-      "page": 18,
-      "printed_page": "18",
+      "page": 19,
+      "printed_page": "19",
       "heading_text_present_on_target_page": true,
       "docx_title_and_page_anchors_match": true
     },
     {
       "bookmark": "OL_operation",
       "title": "Running and maintaining the project",
-      "page": 18,
-      "printed_page": "18",
+      "page": 19,
+      "printed_page": "19",
       "heading_text_present_on_target_page": true,
       "docx_title_and_page_anchors_match": true
     },
     {
       "bookmark": "OL_operation__Use_the_application",
       "title": "Use the application",
-      "page": 18,
-      "printed_page": "18",
+      "page": 19,
+      "printed_page": "19",
       "heading_text_present_on_target_page": true,
       "docx_title_and_page_anchors_match": true
     },
@@ -273,8 +281,8 @@
     {
       "bookmark": "OL_operation__Make_a_bounded_change",
       "title": "Make a bounded change",
-      "page": 19,
-      "printed_page": "19",
+      "page": 20,
+      "printed_page": "20",
       "heading_text_present_on_target_page": true,
       "docx_title_and_page_anchors_match": true
     },
@@ -289,8 +297,8 @@
     {
       "bookmark": "OL_reference",
       "title": "Terms and source references",
-      "page": 20,
-      "printed_page": "20",
+      "page": 21,
+      "printed_page": "21",
       "heading_text_present_on_target_page": true,
       "docx_title_and_page_anchors_match": true
     }

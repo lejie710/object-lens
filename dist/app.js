@@ -4,7 +4,10 @@ import { createAnnotatedPng, resultFilename } from './png-export.js';
 const MAX_BYTES = 10 * 1024 * 1024;
 const MAX_PIXELS = 16_000_000;
 const CONFIG_TIMEOUT_MS = 15_000;
-const LOAD_TIMEOUT_MS = 120_000;
+// Model transfer fails only after a stall, so a slow but steady connection can finish.
+// Runtime initialization after the transfer has no progress events and keeps a fixed limit.
+const LOAD_STALL_MS = 45_000;
+const INITIALIZE_TIMEOUT_MS = 120_000;
 const INFERENCE_TIMEOUT_MS = 90_000;
 const SAMPLE_TIMEOUT_MS = 15_000;
 const CONTROLLED_TIMEOUT_MS = 4_000;
@@ -39,6 +42,7 @@ let configReady = false;
 let configRequest = null;
 let preparingImageId = null;
 let loadTimer = null;
+let loadInitializing = false;
 let inferenceTimer = null;
 let currentPredictions = null;
 let selectedPredictionId = null;
@@ -218,12 +222,32 @@ function failWorker(message) {
   showError(message, { retry: true });
 }
 
+const TIMEOUT_MESSAGES = {
+  'load-stall': 'The detection model stopped loading. Check your connection, then try again or reload the page.',
+  initialize: 'The detection model took too long to start. Try again or reload the page.',
+  infer: 'Image analysis took too long. Try again or choose another image.',
+};
+
 function workerTimedOut(instance, stage) {
   if (instance !== worker) return;
   console.error(`Object Lens ${stage} timed out.`);
-  failWorker(stage === 'load'
-    ? 'The detection model took too long to load. Try again or reload the page.'
-    : 'Image analysis took too long. Try again or choose another image.');
+  failWorker(TIMEOUT_MESSAGES[stage]);
+}
+
+function armLoadWatchdog(instance, stage, delay) {
+  clearTimeout(loadTimer);
+  loadTimer = setTimeout(() => workerTimedOut(instance, stage), delay);
+}
+
+// Any loading event proves the transfer is alive; finishing the model file starts initialization.
+function extendLoadWatchdog(data) {
+  if (modelReady || loadTimer === null || loadInitializing) return;
+  if (data.status === 'done' && typeof data.file === 'string' && /\.onnx$/i.test(data.file)) {
+    loadInitializing = true;
+    armLoadWatchdog(worker, 'initialize', INITIALIZE_TIMEOUT_MS);
+  } else {
+    armLoadWatchdog(worker, 'load-stall', LOAD_STALL_MS);
+  }
 }
 
 function removeImage() {
@@ -556,6 +580,7 @@ function renderFilteredResults() {
 
 function onWorkerMessage({ data }) {
   if (data.type === 'progress') {
+    extendLoadWatchdog(data);
     updateModelLoading(data);
     return;
   }
@@ -618,8 +643,9 @@ function createWorker() {
     if (elements.errorNotice.hidden && preparingImageId === null) {
       setState('loading', 'Preparing object detection…');
     }
-    // Controlled startup progress tests use the same deadline as the real model.
-    loadTimer = setTimeout(() => workerTimedOut(instance, 'load'), LOAD_TIMEOUT_MS);
+    // Controlled startup progress tests use the same deadlines as the real model.
+    loadInitializing = false;
+    armLoadWatchdog(instance, 'load-stall', LOAD_STALL_MS);
     instance.postMessage({ type: 'load' });
   } catch (error) {
     console.error('Object Lens worker creation:', error);

@@ -118,7 +118,7 @@ def main():
         "created_at_utc": datetime.now(timezone.utc).isoformat(),
         "evidenceType": "Controlled before/after recovery regression checks; no real-model fault",
         "baselineRef": baseline_ref,
-        "loadDeadline": "Only the isolated test page's 120000ms callback is accelerated to 2500ms",
+        "loadDeadline": "Only the isolated test page's 45000ms stall and 120000ms initialization callbacks are accelerated",
         "baselineLimit": "The baseline fails at pre-Clear timeout/crash wording assertions. "
                          "These failures do not independently reproduce its Clear wording; "
                          "current passing checks continue through Clear and successful recovery.",

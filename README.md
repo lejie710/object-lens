@@ -4,7 +4,7 @@ A small local web application for exploring pretrained object detection, with Py
 
 Developed with assistance from AI tools.
 
-[![Object Lens running real detection on a public sample photo](docs/screenshots/review-followup/desktop.png)](docs/screenshots/review-followup/desktop.png)
+[![Object Lens running real detection on a public sample photo](docs/screenshots/loading-followup/desktop.png)](docs/screenshots/loading-followup/desktop.png)
 
 The source is currently kept private. Screenshots below are actual application captures, and the relative image links remain suitable for a future repository README.
 
@@ -14,7 +14,7 @@ Choose a photo or try the sample, inspect predicted labels and boxes, highlight 
 
 ## Screenshots
 
-Open the [desktop result](docs/screenshots/review-followup/desktop.png), [filtered result](docs/screenshots/review-followup/filtered.png), [exported PNG](docs/screenshots/review-followup/export.png), [empty state](docs/screenshots/review-followup/empty.png) or [narrow layout](docs/screenshots/review-followup/width-390.png) at full resolution. These 3 November review-follow-up captures use the current application and real model on the public coffee sample. The empty view is captured before selection; the exported PNG contains the actual retained predictions. Older captures remain historical evidence in their original paths. The earlier generated design concept is a separate planning reference, not execution evidence.
+Open the [desktop result](docs/screenshots/loading-followup/desktop.png), [filtered result](docs/screenshots/loading-followup/filtered.png), [exported PNG](docs/screenshots/loading-followup/export.png), [empty state](docs/screenshots/loading-followup/empty.png) or [narrow layout](docs/screenshots/loading-followup/width-390.png) at full resolution. These 3 November loading-follow-up captures use the current application and real model on the public coffee sample. The empty view is captured before selection; the exported PNG contains the actual retained predictions. Older captures remain historical evidence in their original paths. The earlier generated design concept is a separate planning reference, not execution evidence.
 
 ## First setup
 

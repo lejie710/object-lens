@@ -94,11 +94,17 @@ The review also found a missing recovery path for a worker that never replies. T
 
 The extension's rendered review found a real narrow-layout defect. At a 320-pixel window width, the vertical scrollbar left only 305 pixels of usable width. A fixed 320-pixel body therefore overflowed, while a test using the full window width incorrectly passed. The corrected test uses the document's client width; it failed before the CSS fix and passes afterward. This is an example of improving both the application and the rule used to judge its output.
 
+A later audit found a timing defect that no earlier test exercised. The model-loading deadline counted 120 seconds from worker start and ignored progress. With the 43 MB model paced at 2.5 Mbps on loopback, 86% had arrived when the deadline fired, and Try again restarted the download from zero, so a steady connection below about 2.9 Mbps could never finish. The fix measures a stall instead: each loading event restarts a 45-second window, and runtime initialization after the transfer keeps its own 120-second limit. Three controlled tests now cover a stalled transfer, a slow steady transfer that must not time out, and an initialization hang. The lesson is to ask what a timeout is really protecting against. Here it protects against a dead connection, not a slow one.
+
 ## 6. A small exercise with an answer
 
 Suppose the model score is 0.7999, the visible score is 0.80 and the filter minimum is 0.80. Should the prediction remain visible, and what should a test inspect?
 
 Answer: it should be hidden, because filtering compares the unrounded 0.7999 with 0.80. A display assertion separately checks that the score is formatted as 0.80 before filtering. These are different requirements: rounding is presentation, while inclusion uses the original model value. The existing `test_filter.py` boundary case is an executable example.
+
+A second exercise: a visitor's connection delivers one progress event every 10 seconds for six minutes, then the model finishes and initialization takes 30 seconds. Does loading succeed? What changes if the connection then drops completely for a minute before the model finishes?
+
+Answer: the first case succeeds. Each event arrives well inside the 45-second stall window, so the transfer watchdog keeps restarting, and 30 seconds of initialization is inside its 120-second limit. In the second case the stall window expires 45 seconds after the last event and the app reports that the model stopped loading. `test_slow_steady_model_transfer_is_not_timed_out` and `test_stalled_model_transfer_times_out_after_its_last_progress` in `tests/test_recovery.py` exercise both shapes with accelerated timers. To see one fail, change `extendLoadWatchdog` in `dist/app.js` to return immediately, run those two tests, then restore the file with `git checkout -- dist/app.js`.
 
 ## 7. A useful release explanation
 

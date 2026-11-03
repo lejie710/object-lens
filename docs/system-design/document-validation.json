@@ -1,16 +1,16 @@
 {
   "date": "3 November 2026",
-  "documented_source": "74d108f plus source hashes in the evidence record",
-  "base_commit": "74d108f70c0bea8ca09b2d5bdd3bb974023d523f",
-  "source_sha256": "b96d17c9e9fd3c6d284727c97b70a628f162234ebe070b9c220490df6dac47da",
-  "docx_sha256": "36e69b95aa721ae7442614af08a02ec14932a47874ad75298f0ca39789259abc",
-  "pdf_sha256": "d9a0219878baab25e06fc16ba77147aa01fd1aa386b0dbf9f81ea67f9cdaf9bc",
-  "page_count": 21,
-  "contents_heading_targets": 35,
-  "pdf_contents_links": 70,
+  "documented_source": "17f2b9a plus source hashes in the evidence record",
+  "base_commit": "17f2b9a5e2ded7fa8c7954d748f825ba33f5d8a7",
+  "source_sha256": "1d217cca28598c6fcf827321ef83dad04af206bfcda6cd921ac5c44fe4fc919a",
+  "docx_sha256": "07a02f53548e8c906470c9e1004f63edfc9f466addab64753b03d1a0c70bef33",
+  "pdf_sha256": "a048b739175445a9c2b4e875af8cf855faa23e2c27cf8d75eeca7e006c233938",
+  "page_count": 22,
+  "contents_heading_targets": 36,
+  "pdf_contents_links": 72,
   "pdf_back_to_contents_links": 10,
   "navigation_audit": "navigation-audit.json",
-  "navigation_audit_sha256": "64c4368c3ba0e536acba01ceaa029b55d54c81e1dfe2dacfbbcd904eeaccd4c7",
+  "navigation_audit_sha256": "5a43c8eef52ef5b0c0460c7e104296a4f8ecbc7e982d32aa2722964b2514c53b",
   "visual_review": {
     "pages": [
       1,
@@ -33,139 +33,21 @@
       18,
       19,
       20,
-      21
+      21,
+      22
     ],
     "render_scale": 1.5,
     "render_backend": "Microsoft Word direct PDF export and bundled pypdfium2 rasterization",
     "all_pages_reviewed": true,
-    "finding": "No clipping, overlap, missing glyph or unreadable figure text observed.",
-    "authoring_review": "Document authoring agent opened every page at readable scale, then re-inspected all five pages changed by the final wording/citation refinement.",
-    "independent_review": [
-      {
-        "reviewer": "Runtime review agent",
-        "pages": [
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7,
-          8,
-          9,
-          10
-        ],
-        "final_changed_pages_reinspected": [
-          2,
-          9,
-          10
-        ],
-        "result": "No remaining clipping, overlap, orphan citation, detached caption or unreadable figure/table text observed."
-      },
-      {
-        "reviewer": "Primary reviewing agent",
-        "pages": [
-          11,
-          12,
-          13,
-          14,
-          15,
-          16,
-          17,
-          18,
-          19,
-          20,
-          21
-        ],
-        "final_changed_pages_reinspected": [
-          11,
-          13
-        ],
-        "result": "No remaining clipping, overlap, table defect or factual finding observed."
-      }
-    ],
-    "final_refinement_pixel_comparison": {
-      "changed_and_reinspected_pages": [
-        2,
-        9,
-        10,
-        11,
-        13
-      ],
-      "pixel_identical_to_previously_inspected_pages": [
-        1,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        12,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21
-      ],
-      "before_page_png_sha256": {
-        "page-1.png": "caf45a748fbc847c75142660e8c95be2dee7effeb52475d7c9b4d28b44f01c23",
-        "page-10.png": "5e3e936fb1645a805cdcb5cb852212ca2e89dc158dfcc7b4b8fe6a07fa9f37ed",
-        "page-11.png": "a0526767829801869f7360a71d6c2788e4ec7f2c06b91dfc8f589116d9d1b3ae",
-        "page-12.png": "49eaa49d47892abae0e7f79c721fbd658b0632396e41bd8757996618e5b0f0c2",
-        "page-13.png": "2b28c68cc1d216810d7372b78da33eb659ddae6daf7eb9bb0e574958a81b7ae1",
-        "page-14.png": "df42c7745847fc245e1f33f19aa67fcdb38c06aa817fdaed938f0c3a895fe860",
-        "page-15.png": "0db9071af1520189a27b9380757526957b56e0ea44cfa63b26b52241da7ca833",
-        "page-16.png": "663b36dc8fc8465275821e63592ff78e96f4ee3f7c02c70d2d9c91f2dadc07f2",
-        "page-17.png": "c1090126ddbc4c9937a3084ae996257137c9d96f3cc72d970f201e001780021f",
-        "page-18.png": "161f7d43e3b89c2c0fae068bb03cfe149e1fe82a15b0748301c53dae41683499",
-        "page-19.png": "4986547a6b61b8b78fa5462687c62c328158ba97a221314a933f7b47204ad0b3",
-        "page-2.png": "43e31ae70f474ba61405bff55c9cd5cf90c5f4522a07432725a0c04a4fe86897",
-        "page-20.png": "6f5b10b845f7a19ccfd9d91610bb525b9ea86a15a450d8c76eeea0e9e854bf95",
-        "page-21.png": "8df584e555d93c69224a5e1a0fb20f0c8cd673b96942cb6b45c71f312793defb",
-        "page-3.png": "43ec91ae68ff097e877e15965f9868cec748995cf55d2884796bafe3305d4cc0",
-        "page-4.png": "44df514934d39e0e7dc2410c623105847b15f34a1f70bedab31d5279c5f7814e",
-        "page-5.png": "8bf0987450042dade0529d62058c92cff0223d1433bcfe5ce88d7c376c5f3dd3",
-        "page-6.png": "a956592c121f3df583567f5aa487bf3cbeef27a684fca81acf5381ca36112753",
-        "page-7.png": "40b07aa8a1bc6f4b6d99f8346111abf52141e44539906efc58f344fdaff2bdb3",
-        "page-8.png": "942ecdf3e1c53bf36fd15cf9ec86299da8bf83ba00f1a0f5969394bffc4e24ae",
-        "page-9.png": "259a3faace294ed33d2fb521529f8ae86c5a97aa679caf6dec6ae3f5a89c630d"
-      },
-      "final_page_png_sha256": {
-        "page-1.png": "caf45a748fbc847c75142660e8c95be2dee7effeb52475d7c9b4d28b44f01c23",
-        "page-2.png": "d2a7a56c12c8c8a8ffef2ed2c5dd774876c69c6088766b756dfdf18ab0f49146",
-        "page-3.png": "43ec91ae68ff097e877e15965f9868cec748995cf55d2884796bafe3305d4cc0",
-        "page-4.png": "44df514934d39e0e7dc2410c623105847b15f34a1f70bedab31d5279c5f7814e",
-        "page-5.png": "8bf0987450042dade0529d62058c92cff0223d1433bcfe5ce88d7c376c5f3dd3",
-        "page-6.png": "a956592c121f3df583567f5aa487bf3cbeef27a684fca81acf5381ca36112753",
-        "page-7.png": "40b07aa8a1bc6f4b6d99f8346111abf52141e44539906efc58f344fdaff2bdb3",
-        "page-8.png": "942ecdf3e1c53bf36fd15cf9ec86299da8bf83ba00f1a0f5969394bffc4e24ae",
-        "page-9.png": "89ec0c368b0c0b8aa981ae832dc389aa23cfad0108d7b9c9b4300d51db5a6139",
-        "page-10.png": "9e6d879b13fed45dbfbe97d656b8b6eb36674432edffd7f8ff9287871545b58f",
-        "page-11.png": "845e6299ad0563e62506b17bff6660df1080213c216634ee822a3f5d415404fb",
-        "page-12.png": "49eaa49d47892abae0e7f79c721fbd658b0632396e41bd8757996618e5b0f0c2",
-        "page-13.png": "ec8c0ce67ba14315dab6c6c5121bbdf8890acfe5eb30b654095fb97c04fa37f2",
-        "page-14.png": "df42c7745847fc245e1f33f19aa67fcdb38c06aa817fdaed938f0c3a895fe860",
-        "page-15.png": "0db9071af1520189a27b9380757526957b56e0ea44cfa63b26b52241da7ca833",
-        "page-16.png": "663b36dc8fc8465275821e63592ff78e96f4ee3f7c02c70d2d9c91f2dadc07f2",
-        "page-17.png": "c1090126ddbc4c9937a3084ae996257137c9d96f3cc72d970f201e001780021f",
-        "page-18.png": "161f7d43e3b89c2c0fae068bb03cfe149e1fe82a15b0748301c53dae41683499",
-        "page-19.png": "4986547a6b61b8b78fa5462687c62c328158ba97a221314a933f7b47204ad0b3",
-        "page-20.png": "6f5b10b845f7a19ccfd9d91610bb525b9ea86a15a450d8c76eeea0e9e854bf95",
-        "page-21.png": "8df584e555d93c69224a5e1a0fb20f0c8cd673b96942cb6b45c71f312793defb"
-      },
-      "purpose": "Reuse inspection only when final page pixels are byte-identical; all changed pages were reopened by the authoring and independent reviewing agents."
-    }
+    "finding": "No clipping, overlap, missing glyph or unreadable figure text observed."
   },
   "render_environment": {
-    "bundle_version": "26.1026.10807",
-    "python_version": "3.12.14",
+    "bundle_version": "system-python-3.12.10",
+    "python_version": "3.12.10",
     "python_packages": {
       "python-docx": "1.2.0",
-      "pypdf": "6.10.0",
-      "pypdfium2": "5.14.0",
+      "pypdf": "6.13.2",
+      "pypdfium2": "5.12.1",
       "lxml": "6.1.1"
     },
     "word_export_state": {
@@ -174,15 +56,15 @@
       "protected_view_count": 0,
       "word_version": "16.0",
       "apartment": "STA",
-      "powershell_version": "7.6.5",
-      "existing_execution_policy": "RemoteSigned"
+      "powershell_version": "5.1.26100.9711",
+      "existing_execution_policy": "Bypass"
     },
-    "packaged_render_docx": "Attempted; LibreOffice soffice.exe is unavailable on this Windows host.",
+    "packaged_render_docx": "Not used: LibreOffice soffice.exe is not installed on this Windows host.",
     "fallback": "Existing hidden task-owned Word COM direct export, without field refresh or security-setting changes; pypdfium2 renders the resulting PDF."
   },
   "source_checks": {
-    "reviewed_source_sha256": 44,
-    "evidence_sha256": 16,
+    "reviewed_source_sha256": 40,
+    "evidence_sha256": 23,
     "code_excerpts_verified": 2,
     "figure_assets_found": 5,
     "pdf_text_bad_characters": 0

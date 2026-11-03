@@ -25,6 +25,13 @@ VISIBLE = "tests/test_ui.py::test_predictions_and_boxes_match_the_current_image"
 ROUNDING = "tests/test_ui.py::test_visible_scores_round_without_changing_the_underlying_values"
 ANNOUNCEMENTS = "tests/test_ui.py::test_status_and_error_announcement_configuration_follows_visible_states"
 GEOMETRY = "tests/test_inference.py"
+RECOVERY = "tests/test_recovery.py::"
+SLOW_LOAD = RECOVERY + "test_slow_steady_model_transfer_is_not_timed_out"
+STALLED_LOAD = RECOVERY + "test_stalled_model_transfer_times_out_after_its_last_progress"
+INITIALIZATION = RECOVERY + "test_model_initialization_has_its_own_deadline"
+MALFORMED = RECOVERY + "test_malformed_result_is_rejected_without_partial_detections_and_recovers"
+BLANK_LABELS = [MALFORMED + "[empty-label]", MALFORMED + "[blank-label]"]
+CLEAN_CONTROLS = [VISIBLE, ROUNDING, ANNOUNCEMENTS, GEOMETRY, SLOW_LOAD, STALLED_LOAD, INITIALIZATION, *BLANK_LABELS]
 MUTATIONS = (
     {
         "name": "blank-visible-labels", "path": "dist/app.js",
@@ -55,6 +62,36 @@ MUTATIONS = (
         "tests": [ANNOUNCEMENTS], "expected_failures": 1,
         "reason_fragment": "Missing status role",
         "purpose": "Remove status/live-region/alert declarations while retaining visible page content.",
+    },
+    {
+        "name": "fixed-load-deadline", "path": "dist/app.js",
+        "replacements": [("  if (modelReady || loadTimer === null || loadInitializing) return;", "  return;")],
+        "tests": [SLOW_LOAD], "expected_failures": 1,
+        "reason_fragment": "Observed state: 'error'",
+        "purpose": "Restore a fixed transfer deadline that ignores loading progress, as before the stall watchdog.",
+    },
+    {
+        "name": "initialization-extended-by-later-events", "path": "dist/app.js",
+        "replacements": [("  if (modelReady || loadTimer === null || loadInitializing) return;",
+                          "  if (modelReady || loadTimer === null) return;")],
+        "tests": [INITIALIZATION], "expected_failures": 1,
+        "reason_fragment": "Observed state: 'loading'",
+        "purpose": "Let settings-file events keep extending the deadline after the model file has finished.",
+    },
+    {
+        "name": "accepted-blank-labels", "path": "dist/app.js",
+        "replacements": [("!label.trim() ||", "")],
+        "tests": BLANK_LABELS, "expected_failures": 2,
+        "reason_fragment": "Observed state: 'complete'",
+        "purpose": "Remove the blank-label rejection while keeping every other prediction check.",
+    },
+    {
+        "name": "consistently-scaled-scores", "path": "dist/app.js",
+        "replacements": [("    return { id: index, label, score, box: bounds, color",
+                          "    return { id: index, label, score: score * 0.95, box: bounds, color")],
+        "tests": [GEOMETRY], "expected_failures": 3,
+        "reason_fragment": "Visible score regression",
+        "purpose": "Scale every score before rendering so visible text and data attributes still agree with each other.",
     },
 )
 
@@ -184,7 +221,7 @@ def main():
                     original_sha256 = sha256(target)
                     target.write_text(mutated, encoding="utf-8", newline="\n")
                 result = execute_case(name, destination,
-                                      mutation["tests"] if mutation else [VISIBLE, ROUNDING, ANNOUNCEMENTS, GEOMETRY], output)
+                                      mutation["tests"] if mutation else CLEAN_CONTROLS, output)
                 if mutation:
                     result["mutation"] = {"path": mutation["path"], "purpose": mutation["purpose"],
                                           "replacements": details, "original_sha256": original_sha256,
@@ -197,7 +234,7 @@ def main():
                     )
                 else:
                     result["expected_outcome_verified"] = result["exit_code"] == 0 and result["counts"] == {
-                        "passed": 6, "failed": 0, "error": 0, "skipped": 0}
+                        "passed": 11, "failed": 0, "error": 0, "skipped": 0}
                 report["runs"].append(result)
                 print(f"{name}: {result['counts']} expected={result['expected_outcome_verified']}", flush=True)
                 if not result["expected_outcome_verified"]:

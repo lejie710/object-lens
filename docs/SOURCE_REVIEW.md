@@ -1,6 +1,19 @@
 # Correctness reviews and regression fixes
 
-The current follow-up on 3 November 2026 continues the reviewed `74d108f` source. It corrects stage-specific timeout/Clear wording and strengthens assertions for visible labels/scores, real-model box positions, malformed responses and announcement configuration. [The current verification assessment](VERIFICATION.md) and [followup-verification.json](evidence/followup-verification.json) identify the new execution and source hashes. The earlier review below remains a historical record.
+Three review passes are recorded here, newest first. The loading follow-up corrects a slow-connection loading defect and an untested label rule found by an independent audit of `17f2b9a`. The review follow-up before it continued `74d108f`, corrected stage-specific timeout/Clear wording and strengthened assertions for visible labels/scores, real-model box positions, malformed responses and announcement configuration. [The current verification assessment](VERIFICATION.md) and [loading-followup-verification.json](evidence/loading-followup-verification.json) identify the current execution and source hashes. The earlier sections remain historical records.
+
+## Loading follow-up
+
+An independent audit of `17f2b9a` on 3 November 2026 reproduced the 93-case suite and the recorded fault and recovery checks, then looked for remaining gaps. It found one observed defect and one untested rule; both are corrected here.
+
+| Finding | Before | Correction and observed check |
+| --- | --- | --- |
+| Slow connections could never load the model | The model-load deadline counted 120 seconds from worker start and ignored progress. With only the 43 MB model response paced at 2.5 Mbps on loopback, 37.4 MB (86%) had arrived when the deadline fired. Try again restarted the transfer from zero, so a steady connection below about 2.9 Mbps could not succeed by retrying. `PUBLIC_DEMO.md` said very slow connections "can require retry" | Transfer now fails only after 45 seconds without a loading event; each event restarts the window. Runtime initialization after the model file finishes keeps its own fixed 120-second deadline that later settings-file events cannot extend. Stage-specific messages distinguish a stalled transfer from slow initialization. Controlled tests cover a stalled transfer, a slow steady transfer that must not time out and an initialization hang, each followed by Clear and recovery where relevant |
+| The blank-label check had no test | Deleting `!label.trim()` from `renderResults` left all 44 recovery and UI tests passing | Empty and whitespace-only labels are added to the malformed-response cases; deleting the check fails both |
+
+The audit also replaced one self-referential assertion. The real-model tests compared visible text with the page's own `data-*` attributes, so a fault that changed both consistently could pass. The selected row's visible label and score are now compared with the earlier recorded output of the same pinned model, with a 0.01 score tolerance. A deliberately scaled score fails all three photo cases.
+
+Each new check has a deliberate fault in `tools/check_review_sensitivity.py`, alongside the four earlier faults. The paced-transfer observation came from an audit probe on loopback. Repeated against the corrected package, the same 2.5 Mbps transfer completed and the detector became ready at 139.6 seconds. [loading-followup-slow-transfer.json](evidence/loading-followup-slow-transfer.json) records both runs and the probe source. It is one run per condition on loopback, not an Internet speed measurement. Cosmetic book corrections and the retained limits are recorded in the verification assessment.
 
 ## Review follow-up
 
@@ -53,6 +66,6 @@ The selected records and source hashes are in `docs/evidence/source-review-verif
 
 No blocking finding remains from this bounded review of the agreed local workflow. This does not prove every possible input, browser, operating-system behavior or third-party dependency correct. Chrome on the recorded Windows environment remains the verified target; wider browser/device support, general recognition accuracy and hosted behavior remain unqualified.
 
-The optional transfer-rate checker still respects the app's 120-second model-load deadline. A sufficiently low requested rate is therefore a negative loading scenario, not an expectation that every positive rate must complete successfully. The recorded 10 Mbps model-only simulation remains limited to that scenario.
+When this review was recorded, the optional transfer-rate checker respected the app's former fixed 120-second model-load deadline, so a sufficiently low requested rate was a negative loading scenario. The second follow-up replaced that deadline with a stall window; the checker's own 120-second readiness wait remains a separate limit of that helper. The recorded 10 Mbps model-only simulation remains limited to that scenario.
 
 The corrected deployment package supersedes the earlier prepared ZIP, but upload remains paused. An independent reviewer should inspect this branch and the retained evidence before making additional release claims. Any next changes should address a demonstrated defect or a necessary clarification within the frozen scope.

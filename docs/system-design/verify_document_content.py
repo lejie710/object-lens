@@ -28,7 +28,7 @@ def main() -> None:
     parser.add_argument('--render-dir', type=Path)
     parser.add_argument('--scale', type=float, default=1.5)
     parser.add_argument('--bundle-version', required=True,
-                        help='Version reported by the workspace dependency loader for this run.')
+                        help='Document runtime identifier for this run, for example a dependency-loader bundle version or system-python.')
     parser.add_argument('--word-state', type=Path,
                         help='The .state.json emitted by the matching hidden Word export.')
     parser.add_argument('--visual-reviewed-all', action='store_true',
@@ -115,7 +115,7 @@ def main() -> None:
             'python_packages': {name: importlib.metadata.version(name)
                                 for name in ('python-docx', 'pypdf', 'pypdfium2', 'lxml')},
             'word_export_state': word_state,
-            'packaged_render_docx': 'Attempted; LibreOffice soffice.exe is unavailable on this Windows host.',
+            'packaged_render_docx': 'Not used: LibreOffice soffice.exe is not installed on this Windows host.',
             'fallback': 'Existing hidden task-owned Word COM direct export, without field refresh or security-setting changes; pypdfium2 renders the resulting PDF.',
         },
         'source_checks': {**checks, 'code_excerpts_verified': excerpts,

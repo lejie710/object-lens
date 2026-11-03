@@ -137,12 +137,15 @@ catch {
     throw
 }
 finally {
+    # Word's interop declares SaveChanges by reference; Windows PowerShell 5.1 needs [ref].
+    # A failed Close must not skip quitting the task-owned instance.
     if ($null -ne $ownedDocument) {
-        try { $ownedDocument.Close(0) }
+        try { $ownedDocument.Close([ref]0) }
+        catch { Write-Warning ('Closing the task-owned document failed: ' + $_.Exception.Message) }
         finally { [void][System.Runtime.InteropServices.Marshal]::FinalReleaseComObject($ownedDocument) }
     }
     if ($null -ne $wordInstance) {
-        try { if ($ownsInstance) { $wordInstance.Quit(0) } }
+        try { if ($ownsInstance) { $wordInstance.Quit([ref]0) } }
         finally { [void][System.Runtime.InteropServices.Marshal]::FinalReleaseComObject($wordInstance) }
     }
     [GC]::Collect()

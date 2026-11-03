@@ -6,11 +6,17 @@ Selected text files use UTF-8 with LF line endings to match Git checkout. Raw-ru
 
 | File | What it establishes |
 | --- | --- |
-| `followup-verification.json` and `followup-full-suite.xml` | Current review-follow-up suite, environment, exact commands, source hashes and retained-record provenance |
-| `followup-sensitivity.json` | Reproducible deliberate source faults in disposable copies, with passing controls and expected assertion failures |
+| `loading-followup-verification.json` and `loading-followup-full-suite.xml` | Current 98-case loading-follow-up suite, environment, exact commands, source hashes and retained-record provenance |
+| `loading-followup-sensitivity.json` | Nine deliberate source faults in disposable copies, including the fixed load deadline, extended initialization, accepted blank labels and consistently scaled scores, with an 11-case passing control |
+| `loading-followup-recovery-comparison.json` | The three recovery wording checks rerun against `74d108f` and the current source |
+| `loading-followup-rendered-review.json` | Current real-model captures, viewport measurements and labelled controlled timeout/Clear captures in `docs/screenshots/loading-followup` |
+| `loading-followup-package.json` | Rebuilt local static package identity and integrity; no deployment |
+| `loading-followup-slow-transfer.json` | Audit probe at 2.5 Mbps on loopback: the previous source failed at 86% received and restarted from zero; the corrected package reached ready at 139.6 seconds. Includes the probe source |
+| `followup-verification.json` and `followup-full-suite.xml` | Historical 93-case review-follow-up suite, environment, exact commands, source hashes and retained-record provenance |
+| `followup-sensitivity.json` | Historical four-fault run: reproducible deliberate source faults in disposable copies, with passing controls and expected assertion failures |
 | `followup-recovery-comparison.json` | Three pre-Clear wording failures against the earlier source and three current passes that continue through Clear/Retry/recovery; controlled faults |
-| `followup-rendered-review.json` | Current real-model app/export captures, viewport observations and explicitly controlled error/recovery captures |
-| `followup-package.json` | Rebuilt local static package identity and verification; no deployment |
+| `followup-rendered-review.json` | Historical real-model app/export captures, viewport observations and explicitly controlled error/recovery captures |
+| `followup-package.json` | Historical rebuilt local static package identity and verification; no deployment |
 | `source-review-verification.json` and `review-full-suite.xml` | Historical corrected 72-case local gate, reviewed source hashes and limits; the suite used temporary files outside a Git checkout |
 | `review-startup-before.xml` and `review-startup-after.xml` | Five startup regressions failed before correction and passed afterward; the full suite also includes the additional worker-retry preparation case |
 | `review-package-before.xml` and `review-package-after.xml` | Reproduced outside-checkout provenance failure and successful browser-free package checks after correction |
