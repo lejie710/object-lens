@@ -5,3 +5,4 @@
 *.onnx binary
 *.wasm binary
 baseline/upstream/* -text
+dist/licenses/* -text

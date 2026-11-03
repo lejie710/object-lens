@@ -4,7 +4,7 @@
 
 Object Lens is a small local browser application for trying object detection on a photo. Its intended user is a developer, QA engineer or learner exploring a pretrained detector. This is a practical way to explore Python, pytest, Selenium and an AI-enabled web interface. It is not a semiconductor defect detector or an established commercial product.
 
-The approved scope is one page, one image at a time, one fixed model and Chrome on Windows. The interface follows the approved design concept: a light background, large photograph, compact results list and essential controls. No accounts, history, cloud hosting, camera, video, batch processing, training, model picker or GPU tuning are included.
+The approved application scope is one image at a time, one fixed model and Chrome on Windows. The interface follows the approved design concept: a light background, large photograph, compact results list and essential controls. Public static hosting was approved on 3 November 2026, with repository privacy retained; its preparation and actual deployment status are recorded in [Public demo preparation](PUBLIC_DEMO.md). No accounts, image history, hosted inference service, camera, video, batch processing, training, model picker or GPU tuning are included.
 
 ## Two ways to use this project
 
@@ -57,6 +57,7 @@ The longer worked example and a small optional test edit are in [the learning gu
 | Transformers.js 2.17.2 | Object-detection inference with a quantized DETR model |
 | ONNX Runtime Web 1.14.0 | CPU/WASM execution underneath Transformers.js |
 | Python standard HTTP server | Serves local application/model files on 127.0.0.1 |
+| Static deployment package | Supplies the same browser app, normal-mode configuration, pinned assets and public credits without requiring the custom Python routes |
 | Python test code | Defines test actions and assertions about expected behavior |
 | pytest | Discovers and runs tests, manages fixtures and reports their outcomes |
 | Selenium | Controls the test browser and reads the page for assertions |
@@ -83,6 +84,8 @@ Clearing or replacing an image does not promise interruption of CPU work already
 
 A nonresponding worker has a bounded recovery path: model loading times out after 120 seconds and inference after 90 seconds. The worker is terminated, a clear error appears and Retry or a new valid image can recreate it. Controlled tests use a four-second deadline to exercise this path without waiting for a real model outage.
 
+Startup feedback is independent of the main application status. Worker events identify model transfer and runtime initialization; received bytes are displayed only for a valid finite total. Finishing the transfer does not mark the model ready. An actual ready response hides the notice, and a failure or retry retires or resets it. Progress must not overwrite an input error, sample-loading state or a newer worker's state.
+
 The list is titled "Detections" and the completion message counts "predictions". A real sample produced duplicate spoon detections; the count therefore must not be interpreted as a verified count of distinct physical objects.
 
 ## Acceptance criteria
@@ -98,6 +101,8 @@ The list is titled "Detections" and the completion message counts "predictions".
 | AC7 | A keyboard-accessible minimum-score filter from 0.50 to 1.00 includes predictions whose underlying score is at least the selected minimum. Boxes, list and visible/total counts agree. Lowering the minimum restores hidden predictions without rerunning inference; filter-empty and model-empty states have different explanations. |
 | AC8 | Try sample loads the existing coffee photo through the real application path. Missing, unreadable or unresponsive sample data is recoverable. A delayed response cannot undo Clear or replace a newer selected image. |
 | AC9 | Save result initiates a PNG download containing only the current filtered predictions at the decoded photo's original dimensions. It is unavailable without visible predictions. Encoding failure or timeout preserves the usable result, and a pending export cannot download after Clear, image replacement or filter change. |
+| AC10 | Startup feedback distinguishes model download from runtime readiness, handles unknown progress, preserves existing input errors and ignores retired-worker updates. |
+| AC11 | The public package contains only the approved app/configuration, verified model/runtime files, public sample and licence notices. It uses testMode false, excludes private/test materials and runs through ordinary static file serving. |
 
 The model's fixed inference threshold is 0.5. A separate display filter starts at 0.50, moves in steps of 0.01 and cannot recover lower-score predictions discarded by inference. Comparisons use the underlying model score, while visible scores are rounded to two decimal places. The displayed value is a model score, not a measured accuracy percentage. Supported classes come from the model; unrecognized objects do not imply an application defect.
 
@@ -111,10 +116,12 @@ Failures are investigated using reproduction steps, assertions, screenshots and 
 
 ## Delivery boundary
 
-The design and evidence will be updated to match the implementation. The user should be able to launch the app, run the suite, explain a representative test and adjust a small existing test after the final walkthrough. Development does not include teaching exercises or optional features. Publication remains a separate decision.
+The design and evidence stay versioned with the implementation. The user should be able to launch the app, run the suite, explain a representative test and adjust a small existing test after the final walkthrough. Development does not include teaching exercises or optional features. Public-demo preparation was approved on 3 November; verification of an actual hosted URL is an additional release step after the owner uploads the prepared package.
 
 ## Sharing boundary
 
-The current decision is to keep the source code private. A LinkedIn learning update can use actual app screenshots or a short demonstration without a public repository or a hosted app. The README retains real screenshots with relative image links so the same documentation remains usable if repository sharing is chosen later. No publication or deployment is authorized by this documentation update.
+The GitHub repository, tests and private design documents remain private. The owner has approved a public app and understands that visitors receive and can inspect its frontend files and model/runtime assets. A LinkedIn learning update can use actual screenshots, a short demonstration and, once verified, the public app link. The README retains real screenshots with relative image links.
 
 A prospective showcase should describe this as an AI-assisted learning project around a pretrained detector and Python browser automation. Credit the upstream example and distinguish application tests, actual inference, deliberately simulated failures and observed model mistakes. Do not claim that the model was trained here or that a local address such as `127.0.0.1` is a public demo link.
+
+The public ZIP is created from an explicit allowlist, not the entire checkout. Its normal-mode configuration and dependency hashes are verified before packaging. The public URL and hosted execution evidence remain unestablished until the owner uploads the reviewed package and the deployed version is checked.

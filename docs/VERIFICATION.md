@@ -1,8 +1,16 @@
 # Verification and release assessment
 
-Status: ready for the extended local learning/evaluation workflow, including filtering, Try sample and PNG export, based on the checks below on 2 November 2026. No blocking defect remains in that scope. This is not a production-recognition, hardware-validation or general-accuracy claim.
+Status on 3 November 2026: the application and deliberate static website package are ready for owner upload, based on local verification. Public deployment and verification of a hosted URL have not occurred. This is not a production-recognition, hardware-validation or general-accuracy claim.
 
-## Final extension results
+## Static website preparation results
+
+The current full suite passed **59 cases**, with zero failures, errors or skips, in **441.33 seconds**: 55 non-inference application/server/package checks and four actual-model cases. The focused startup/package run passed 11 cases in 52.46 seconds. The new real case serves the generated package using only `SimpleHTTPRequestHandler`; it verifies normal configuration, absent private/test routes, actual sample inference, filtering and a downloaded 600 by 400 PNG.
+
+An additional review paced only the model response at a simulated 10 Mbps on loopback. All 43,102,531 model bytes arrived in 34.493 seconds (observed 9.997 Mbps), with detector readiness at 36.776 seconds in that run. This is a controlled local transfer observation, not a real Internet benchmark. Model-byte progress was visible before readiness. App layouts at 320/390/768/1440 pixels and the credits page at 320/1440 pixels fit their usable widths; screenshots and keyboard focus were inspected. The captured browser console was empty.
+
+Evidence: `docs/evidence/public-prep-full-suite.xml`, `public-prep-focused-suite.xml`, `public-prep-review.json` and `public-prep-verification.json`. The package and its source/notice checksums are described in [Public demo preparation](PUBLIC_DEMO.md). The 2 November results below retain their original version scope and are not relabelled as current or hosted runs.
+
+## 2 November extension results
 
 | Check | Observed result | Evidence |
 | --- | --- | --- |

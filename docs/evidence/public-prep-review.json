@@ -1,0 +1,1950 @@
+{
+  "evidence_type": "Local static-package QA with real model inference",
+  "simulation": "Only the ONNX response body is paced on loopback; other assets are unpaced.",
+  "limits": "Not an Internet speed benchmark, hosted deployment check or general accuracy measurement.",
+  "target_model_mbps": 10.0,
+  "model_transfers": [
+    {
+      "path": "/assets/models/Xenova/detr-resnet-50/onnx/model_quantized.onnx",
+      "bytes": 43102531,
+      "expected_bytes": 43102531,
+      "complete": true,
+      "elapsed_seconds": 34.493,
+      "observed_mbps": 9.997
+    }
+  ],
+  "loading_observations": [
+    {
+      "detail": "You can choose an image while this loads.",
+      "phase": "preparing",
+      "progress": null,
+      "stage": "Loading detection files\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 0.529
+    },
+    {
+      "detail": "0.1 of 43.1 MB received (0%).",
+      "phase": "downloading",
+      "progress": "0.1520467556765982",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 0.738
+    },
+    {
+      "detail": "0.3 of 43.1 MB received (0%).",
+      "phase": "downloading",
+      "progress": "0.760233778382991",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 0.948
+    },
+    {
+      "detail": "0.6 of 43.1 MB received (1%).",
+      "phase": "downloading",
+      "progress": "1.3684208010893837",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 1.156
+    },
+    {
+      "detail": "0.9 of 43.1 MB received (1%).",
+      "phase": "downloading",
+      "progress": "1.9766078237957767",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 1.364
+    },
+    {
+      "detail": "1.1 of 43.1 MB received (2%).",
+      "phase": "downloading",
+      "progress": "2.5847948465021693",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 1.57
+    },
+    {
+      "detail": "1.3 of 43.1 MB received (3%).",
+      "phase": "downloading",
+      "progress": "3.040935113531964",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 1.777
+    },
+    {
+      "detail": "1.6 of 43.1 MB received (3%).",
+      "phase": "downloading",
+      "progress": "3.6491221362383572",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 1.983
+    },
+    {
+      "detail": "1.8 of 43.1 MB received (4%).",
+      "phase": "downloading",
+      "progress": "4.25730915894475",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 2.195
+    },
+    {
+      "detail": "2.2 of 43.1 MB received (5%).",
+      "phase": "downloading",
+      "progress": "5.017542937327741",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 2.405
+    },
+    {
+      "detail": "2.4 of 43.1 MB received (5%).",
+      "phase": "downloading",
+      "progress": "5.473683204357535",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 2.613
+    },
+    {
+      "detail": "2.6 of 43.1 MB received (6%).",
+      "phase": "downloading",
+      "progress": "6.081870227063928",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 2.821
+    },
+    {
+      "detail": "2.9 of 43.1 MB received (6%).",
+      "phase": "downloading",
+      "progress": "6.69005724977032",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 3.029
+    },
+    {
+      "detail": "3.1 of 43.1 MB received (7%).",
+      "phase": "downloading",
+      "progress": "7.2982442724767145",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 3.237
+    },
+    {
+      "detail": "3.4 of 43.1 MB received (7%).",
+      "phase": "downloading",
+      "progress": "7.906431295183107",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 3.444
+    },
+    {
+      "detail": "3.7 of 43.1 MB received (8%).",
+      "phase": "downloading",
+      "progress": "8.5146183178895",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 3.652
+    },
+    {
+      "detail": "3.9 of 43.1 MB received (9%).",
+      "phase": "downloading",
+      "progress": "9.122805340595892",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 3.858
+    },
+    {
+      "detail": "4.2 of 43.1 MB received (9%).",
+      "phase": "downloading",
+      "progress": "9.730992363302285",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 4.085
+    },
+    {
+      "detail": "4.5 of 43.1 MB received (10%).",
+      "phase": "downloading",
+      "progress": "10.339179386008677",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 4.295
+    },
+    {
+      "detail": "4.8 of 43.1 MB received (11%).",
+      "phase": "downloading",
+      "progress": "11.09941316439167",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 4.506
+    },
+    {
+      "detail": "5.0 of 43.1 MB received (11%).",
+      "phase": "downloading",
+      "progress": "11.555553431421464",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 4.717
+    },
+    {
+      "detail": "5.3 of 43.1 MB received (12%).",
+      "phase": "downloading",
+      "progress": "12.315787209804455",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 4.932
+    },
+    {
+      "detail": "5.6 of 43.1 MB received (12%).",
+      "phase": "downloading",
+      "progress": "12.923974232510846",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 5.142
+    },
+    {
+      "detail": "5.8 of 43.1 MB received (13%).",
+      "phase": "downloading",
+      "progress": "13.53216125521724",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 5.349
+    },
+    {
+      "detail": "6.0 of 43.1 MB received (13%).",
+      "phase": "downloading",
+      "progress": "13.988301522247035",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 5.557
+    },
+    {
+      "detail": "6.4 of 43.1 MB received (14%).",
+      "phase": "downloading",
+      "progress": "14.748535300630024",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 5.765
+    },
+    {
+      "detail": "6.6 of 43.1 MB received (15%).",
+      "phase": "downloading",
+      "progress": "15.356722323336419",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 5.975
+    },
+    {
+      "detail": "6.8 of 43.1 MB received (15%).",
+      "phase": "downloading",
+      "progress": "15.812862590366214",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 6.181
+    },
+    {
+      "detail": "7.1 of 43.1 MB received (16%).",
+      "phase": "downloading",
+      "progress": "16.573096368749205",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 6.392
+    },
+    {
+      "detail": "7.3 of 43.1 MB received (17%).",
+      "phase": "downloading",
+      "progress": "17.029236635779",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 6.6
+    },
+    {
+      "detail": "7.6 of 43.1 MB received (17%).",
+      "phase": "downloading",
+      "progress": "17.63742365848539",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 6.808
+    },
+    {
+      "detail": "7.9 of 43.1 MB received (18%).",
+      "phase": "downloading",
+      "progress": "18.397657436868382",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 7.016
+    },
+    {
+      "detail": "8.1 of 43.1 MB received (18%).",
+      "phase": "downloading",
+      "progress": "18.853797703898177",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 7.222
+    },
+    {
+      "detail": "8.4 of 43.1 MB received (19%).",
+      "phase": "downloading",
+      "progress": "19.46198472660457",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 7.429
+    },
+    {
+      "detail": "8.7 of 43.1 MB received (20%).",
+      "phase": "downloading",
+      "progress": "20.070171749310965",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 7.639
+    },
+    {
+      "detail": "9.0 of 43.1 MB received (20%).",
+      "phase": "downloading",
+      "progress": "20.982452283370552",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 7.923
+    },
+    {
+      "detail": "9.3 of 43.1 MB received (21%).",
+      "phase": "downloading",
+      "progress": "21.590639306076945",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 8.13
+    },
+    {
+      "detail": "9.6 of 43.1 MB received (22%).",
+      "phase": "downloading",
+      "progress": "22.19882632878334",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 8.339
+    },
+    {
+      "detail": "9.8 of 43.1 MB received (22%).",
+      "phase": "downloading",
+      "progress": "22.80701335148973",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 8.544
+    },
+    {
+      "detail": "10.0 of 43.1 MB received (23%).",
+      "phase": "downloading",
+      "progress": "23.263153618519524",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 8.752
+    },
+    {
+      "detail": "10.4 of 43.1 MB received (24%).",
+      "phase": "downloading",
+      "progress": "24.023387396902514",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 8.959
+    },
+    {
+      "detail": "10.6 of 43.1 MB received (24%).",
+      "phase": "downloading",
+      "progress": "24.63157441960891",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 9.168
+    },
+    {
+      "detail": "10.8 of 43.1 MB received (25%).",
+      "phase": "downloading",
+      "progress": "25.0877146866387",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 9.374
+    },
+    {
+      "detail": "11.1 of 43.1 MB received (25%).",
+      "phase": "downloading",
+      "progress": "25.695901709345097",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 9.58
+    },
+    {
+      "detail": "11.3 of 43.1 MB received (26%).",
+      "phase": "downloading",
+      "progress": "26.30408873205149",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 9.788
+    },
+    {
+      "detail": "11.6 of 43.1 MB received (26%).",
+      "phase": "downloading",
+      "progress": "26.912275754757882",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 9.997
+    },
+    {
+      "detail": "11.9 of 43.1 MB received (27%).",
+      "phase": "downloading",
+      "progress": "27.520462777464278",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 10.206
+    },
+    {
+      "detail": "12.1 of 43.1 MB received (28%).",
+      "phase": "downloading",
+      "progress": "28.12864980017067",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 10.413
+    },
+    {
+      "detail": "12.4 of 43.1 MB received (28%).",
+      "phase": "downloading",
+      "progress": "28.73683682287706",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 10.621
+    },
+    {
+      "detail": "12.6 of 43.1 MB received (29%).",
+      "phase": "downloading",
+      "progress": "29.34502384558345",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 10.839
+    },
+    {
+      "detail": "12.9 of 43.1 MB received (29%).",
+      "phase": "downloading",
+      "progress": "29.953210868289847",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 11.049
+    },
+    {
+      "detail": "13.2 of 43.1 MB received (30%).",
+      "phase": "downloading",
+      "progress": "30.56139789099624",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 11.265
+    },
+    {
+      "detail": "13.5 of 43.1 MB received (31%).",
+      "phase": "downloading",
+      "progress": "31.32163166937923",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 11.477
+    },
+    {
+      "detail": "13.7 of 43.1 MB received (31%).",
+      "phase": "downloading",
+      "progress": "31.77777193640902",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 11.686
+    },
+    {
+      "detail": "14.0 of 43.1 MB received (32%).",
+      "phase": "downloading",
+      "progress": "32.53800571479202",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 11.895
+    },
+    {
+      "detail": "14.2 of 43.1 MB received (32%).",
+      "phase": "downloading",
+      "progress": "32.99414598182181",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 12.102
+    },
+    {
+      "detail": "14.5 of 43.1 MB received (33%).",
+      "phase": "downloading",
+      "progress": "33.6023330045282",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 12.311
+    },
+    {
+      "detail": "14.7 of 43.1 MB received (34%).",
+      "phase": "downloading",
+      "progress": "34.2105200272346",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 12.518
+    },
+    {
+      "detail": "15.0 of 43.1 MB received (34%).",
+      "phase": "downloading",
+      "progress": "34.81870704994099",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 12.726
+    },
+    {
+      "detail": "15.3 of 43.1 MB received (35%).",
+      "phase": "downloading",
+      "progress": "35.42689407264738",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 12.932
+    },
+    {
+      "detail": "15.5 of 43.1 MB received (36%).",
+      "phase": "downloading",
+      "progress": "36.035081095353775",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 13.14
+    },
+    {
+      "detail": "15.8 of 43.1 MB received (36%).",
+      "phase": "downloading",
+      "progress": "36.64326811806017",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 13.347
+    },
+    {
+      "detail": "16.1 of 43.1 MB received (37%).",
+      "phase": "downloading",
+      "progress": "37.25145514076656",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 13.555
+    },
+    {
+      "detail": "16.3 of 43.1 MB received (37%).",
+      "phase": "downloading",
+      "progress": "37.85964216347295",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 13.763
+    },
+    {
+      "detail": "16.6 of 43.1 MB received (38%).",
+      "phase": "downloading",
+      "progress": "38.467829186179344",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 13.971
+    },
+    {
+      "detail": "16.8 of 43.1 MB received (39%).",
+      "phase": "downloading",
+      "progress": "39.07601620888574",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 14.179
+    },
+    {
+      "detail": "17.1 of 43.1 MB received (39%).",
+      "phase": "downloading",
+      "progress": "39.68420323159213",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 14.388
+    },
+    {
+      "detail": "17.4 of 43.1 MB received (40%).",
+      "phase": "downloading",
+      "progress": "40.292390254298525",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 14.596
+    },
+    {
+      "detail": "17.6 of 43.1 MB received (40%).",
+      "phase": "downloading",
+      "progress": "40.90057727700492",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 14.804
+    },
+    {
+      "detail": "17.9 of 43.1 MB received (41%).",
+      "phase": "downloading",
+      "progress": "41.50876429971131",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 15.012
+    },
+    {
+      "detail": "18.2 of 43.1 MB received (42%).",
+      "phase": "downloading",
+      "progress": "42.1169513224177",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 15.219
+    },
+    {
+      "detail": "18.4 of 43.1 MB received (42%).",
+      "phase": "downloading",
+      "progress": "42.725138345124094",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 15.428
+    },
+    {
+      "detail": "18.7 of 43.1 MB received (43%).",
+      "phase": "downloading",
+      "progress": "43.33332536783049",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 15.636
+    },
+    {
+      "detail": "18.9 of 43.1 MB received (43%).",
+      "phase": "downloading",
+      "progress": "43.94151239053688",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 15.844
+    },
+    {
+      "detail": "19.2 of 43.1 MB received (44%).",
+      "phase": "downloading",
+      "progress": "44.549699413243275",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 16.051
+    },
+    {
+      "detail": "19.5 of 43.1 MB received (45%).",
+      "phase": "downloading",
+      "progress": "45.15788643594967",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 16.259
+    },
+    {
+      "detail": "19.7 of 43.1 MB received (45%).",
+      "phase": "downloading",
+      "progress": "45.76607345865606",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 16.466
+    },
+    {
+      "detail": "20.0 of 43.1 MB received (46%).",
+      "phase": "downloading",
+      "progress": "46.37426048136245",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 16.675
+    },
+    {
+      "detail": "20.3 of 43.1 MB received (46%).",
+      "phase": "downloading",
+      "progress": "46.982447504068844",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 16.882
+    },
+    {
+      "detail": "20.5 of 43.1 MB received (47%).",
+      "phase": "downloading",
+      "progress": "47.59063452677524",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 17.09
+    },
+    {
+      "detail": "20.7 of 43.1 MB received (48%).",
+      "phase": "downloading",
+      "progress": "48.04677479380503",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 17.298
+    },
+    {
+      "detail": "21.0 of 43.1 MB received (48%).",
+      "phase": "downloading",
+      "progress": "48.654961816511424",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 17.506
+    },
+    {
+      "detail": "21.3 of 43.1 MB received (49%).",
+      "phase": "downloading",
+      "progress": "49.41519559489442",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 17.715
+    },
+    {
+      "detail": "21.5 of 43.1 MB received (49%).",
+      "phase": "downloading",
+      "progress": "49.87133586192421",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 17.923
+    },
+    {
+      "detail": "21.8 of 43.1 MB received (50%).",
+      "phase": "downloading",
+      "progress": "50.4795228846306",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 18.131
+    },
+    {
+      "detail": "22.0 of 43.1 MB received (51%).",
+      "phase": "downloading",
+      "progress": "51.087709907337",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 18.339
+    },
+    {
+      "detail": "22.3 of 43.1 MB received (51%).",
+      "phase": "downloading",
+      "progress": "51.69589693004338",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 18.547
+    },
+    {
+      "detail": "22.5 of 43.1 MB received (52%).",
+      "phase": "downloading",
+      "progress": "52.30408395274978",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 18.754
+    },
+    {
+      "detail": "22.8 of 43.1 MB received (52%).",
+      "phase": "downloading",
+      "progress": "52.912270975456174",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 18.971
+    },
+    {
+      "detail": "23.1 of 43.1 MB received (53%).",
+      "phase": "downloading",
+      "progress": "53.614893287821076",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 19.191
+    },
+    {
+      "detail": "23.4 of 43.1 MB received (54%).",
+      "phase": "downloading",
+      "progress": "54.28069177654555",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 19.404
+    },
+    {
+      "detail": "23.7 of 43.1 MB received (54%).",
+      "phase": "downloading",
+      "progress": "54.88887879925195",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 19.615
+    },
+    {
+      "detail": "23.9 of 43.1 MB received (55%).",
+      "phase": "downloading",
+      "progress": "55.497065821958344",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 19.825
+    },
+    {
+      "detail": "24.2 of 43.1 MB received (56%).",
+      "phase": "downloading",
+      "progress": "56.10525284466473",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 20.034
+    },
+    {
+      "detail": "24.4 of 43.1 MB received (56%).",
+      "phase": "downloading",
+      "progress": "56.71343986737113",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 20.242
+    },
+    {
+      "detail": "24.7 of 43.1 MB received (57%).",
+      "phase": "downloading",
+      "progress": "57.321626890077525",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 20.45
+    },
+    {
+      "detail": "25.0 of 43.1 MB received (57%).",
+      "phase": "downloading",
+      "progress": "57.929813912783914",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 20.659
+    },
+    {
+      "detail": "25.2 of 43.1 MB received (58%).",
+      "phase": "downloading",
+      "progress": "58.53800093549031",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 20.866
+    },
+    {
+      "detail": "25.5 of 43.1 MB received (59%).",
+      "phase": "downloading",
+      "progress": "59.146187958196705",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 21.073
+    },
+    {
+      "detail": "25.7 of 43.1 MB received (59%).",
+      "phase": "downloading",
+      "progress": "59.6023282252265",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 21.28
+    },
+    {
+      "detail": "26.0 of 43.1 MB received (60%).",
+      "phase": "downloading",
+      "progress": "60.36256200360949",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 21.487
+    },
+    {
+      "detail": "26.2 of 43.1 MB received (60%).",
+      "phase": "downloading",
+      "progress": "60.81870227063928",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 21.695
+    },
+    {
+      "detail": "26.5 of 43.1 MB received (61%).",
+      "phase": "downloading",
+      "progress": "61.426889293345674",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 21.903
+    },
+    {
+      "detail": "26.7 of 43.1 MB received (62%).",
+      "phase": "downloading",
+      "progress": "62.03507631605206",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 22.112
+    },
+    {
+      "detail": "27.0 of 43.1 MB received (62%).",
+      "phase": "downloading",
+      "progress": "62.64326333875846",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 22.319
+    },
+    {
+      "detail": "27.3 of 43.1 MB received (63%).",
+      "phase": "downloading",
+      "progress": "63.251450361464855",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 22.527
+    },
+    {
+      "detail": "27.5 of 43.1 MB received (63%).",
+      "phase": "downloading",
+      "progress": "63.85963738417124",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 22.734
+    },
+    {
+      "detail": "27.8 of 43.1 MB received (64%).",
+      "phase": "downloading",
+      "progress": "64.46782440687764",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 22.942
+    },
+    {
+      "detail": "28.0 of 43.1 MB received (65%).",
+      "phase": "downloading",
+      "progress": "65.07601142958404",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 23.15
+    },
+    {
+      "detail": "28.3 of 43.1 MB received (65%).",
+      "phase": "downloading",
+      "progress": "65.68419845229042",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 23.359
+    },
+    {
+      "detail": "28.6 of 43.1 MB received (66%).",
+      "phase": "downloading",
+      "progress": "66.29238547499682",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 23.567
+    },
+    {
+      "detail": "28.8 of 43.1 MB received (66%).",
+      "phase": "downloading",
+      "progress": "66.90057249770321",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 23.774
+    },
+    {
+      "detail": "29.1 of 43.1 MB received (67%).",
+      "phase": "downloading",
+      "progress": "67.5087595204096",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 23.982
+    },
+    {
+      "detail": "29.4 of 43.1 MB received (68%).",
+      "phase": "downloading",
+      "progress": "68.116946543116",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 24.19
+    },
+    {
+      "detail": "29.6 of 43.1 MB received (68%).",
+      "phase": "downloading",
+      "progress": "68.72513356582239",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 24.395
+    },
+    {
+      "detail": "29.9 of 43.1 MB received (69%).",
+      "phase": "downloading",
+      "progress": "69.33332058852878",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 24.603
+    },
+    {
+      "detail": "30.1 of 43.1 MB received (69%).",
+      "phase": "downloading",
+      "progress": "69.94150761123518",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 24.811
+    },
+    {
+      "detail": "30.4 of 43.1 MB received (70%).",
+      "phase": "downloading",
+      "progress": "70.54969463394156",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 25.018
+    },
+    {
+      "detail": "30.7 of 43.1 MB received (71%).",
+      "phase": "downloading",
+      "progress": "71.15788165664796",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 25.225
+    },
+    {
+      "detail": "30.9 of 43.1 MB received (71%).",
+      "phase": "downloading",
+      "progress": "71.76606867935436",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 25.431
+    },
+    {
+      "detail": "31.2 of 43.1 MB received (72%).",
+      "phase": "downloading",
+      "progress": "72.37425570206074",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 25.641
+    },
+    {
+      "detail": "31.4 of 43.1 MB received (72%).",
+      "phase": "downloading",
+      "progress": "72.83039596909055",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 25.847
+    },
+    {
+      "detail": "31.7 of 43.1 MB received (73%).",
+      "phase": "downloading",
+      "progress": "73.59062974747353",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 26.055
+    },
+    {
+      "detail": "31.9 of 43.1 MB received (74%).",
+      "phase": "downloading",
+      "progress": "74.04677001450332",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 26.262
+    },
+    {
+      "detail": "32.2 of 43.1 MB received (74%).",
+      "phase": "downloading",
+      "progress": "74.65495703720971",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 26.469
+    },
+    {
+      "detail": "32.4 of 43.1 MB received (75%).",
+      "phase": "downloading",
+      "progress": "75.26314405991612",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 26.676
+    },
+    {
+      "detail": "32.7 of 43.1 MB received (75%).",
+      "phase": "downloading",
+      "progress": "75.8713310826225",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 26.883
+    },
+    {
+      "detail": "33.0 of 43.1 MB received (76%).",
+      "phase": "downloading",
+      "progress": "76.47951810532889",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 27.091
+    },
+    {
+      "detail": "33.2 of 43.1 MB received (77%).",
+      "phase": "downloading",
+      "progress": "77.08770512803528",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 27.298
+    },
+    {
+      "detail": "33.5 of 43.1 MB received (77%).",
+      "phase": "downloading",
+      "progress": "77.69589215074168",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 27.505
+    },
+    {
+      "detail": "33.8 of 43.1 MB received (78%).",
+      "phase": "downloading",
+      "progress": "78.30407917344807",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 27.713
+    },
+    {
+      "detail": "34.0 of 43.1 MB received (78%).",
+      "phase": "downloading",
+      "progress": "78.91226619615446",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 27.922
+    },
+    {
+      "detail": "34.3 of 43.1 MB received (79%).",
+      "phase": "downloading",
+      "progress": "79.52045321886087",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 28.144
+    },
+    {
+      "detail": "34.5 of 43.1 MB received (80%).",
+      "phase": "downloading",
+      "progress": "80.12864024156725",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 28.355
+    },
+    {
+      "detail": "34.8 of 43.1 MB received (80%).",
+      "phase": "downloading",
+      "progress": "80.73682726427364",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 28.57
+    },
+    {
+      "detail": "35.1 of 43.1 MB received (81%).",
+      "phase": "downloading",
+      "progress": "81.49706104265664",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 28.778
+    },
+    {
+      "detail": "35.3 of 43.1 MB received (81%).",
+      "phase": "downloading",
+      "progress": "81.95320130968643",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 28.984
+    },
+    {
+      "detail": "35.6 of 43.1 MB received (82%).",
+      "phase": "downloading",
+      "progress": "82.56138833239282",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 29.191
+    },
+    {
+      "detail": "35.8 of 43.1 MB received (83%).",
+      "phase": "downloading",
+      "progress": "83.16957535509921",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 29.398
+    },
+    {
+      "detail": "36.1 of 43.1 MB received (83%).",
+      "phase": "downloading",
+      "progress": "83.77776237780562",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 29.607
+    },
+    {
+      "detail": "36.4 of 43.1 MB received (84%).",
+      "phase": "downloading",
+      "progress": "84.385949400512",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 29.814
+    },
+    {
+      "detail": "36.6 of 43.1 MB received (84%).",
+      "phase": "downloading",
+      "progress": "84.9941364232184",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 30.022
+    },
+    {
+      "detail": "36.9 of 43.1 MB received (85%).",
+      "phase": "downloading",
+      "progress": "85.60232344592478",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 30.227
+    },
+    {
+      "detail": "37.2 of 43.1 MB received (86%).",
+      "phase": "downloading",
+      "progress": "86.21051046863118",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 30.436
+    },
+    {
+      "detail": "37.4 of 43.1 MB received (86%).",
+      "phase": "downloading",
+      "progress": "86.81869749133757",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 30.644
+    },
+    {
+      "detail": "37.7 of 43.1 MB received (87%).",
+      "phase": "downloading",
+      "progress": "87.42688451404396",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 30.851
+    },
+    {
+      "detail": "37.9 of 43.1 MB received (88%).",
+      "phase": "downloading",
+      "progress": "88.03507153675037",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 31.057
+    },
+    {
+      "detail": "38.2 of 43.1 MB received (88%).",
+      "phase": "downloading",
+      "progress": "88.64325855945675",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 31.265
+    },
+    {
+      "detail": "38.5 of 43.1 MB received (89%).",
+      "phase": "downloading",
+      "progress": "89.25144558216314",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 31.471
+    },
+    {
+      "detail": "38.7 of 43.1 MB received (89%).",
+      "phase": "downloading",
+      "progress": "89.85963260486953",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 31.678
+    },
+    {
+      "detail": "39.0 of 43.1 MB received (90%).",
+      "phase": "downloading",
+      "progress": "90.46781962757593",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 31.885
+    },
+    {
+      "detail": "39.3 of 43.1 MB received (91%).",
+      "phase": "downloading",
+      "progress": "91.07600665028232",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 32.092
+    },
+    {
+      "detail": "39.5 of 43.1 MB received (91%).",
+      "phase": "downloading",
+      "progress": "91.68419367298871",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 32.299
+    },
+    {
+      "detail": "39.8 of 43.1 MB received (92%).",
+      "phase": "downloading",
+      "progress": "92.29238069569512",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 32.507
+    },
+    {
+      "detail": "40.0 of 43.1 MB received (92%).",
+      "phase": "downloading",
+      "progress": "92.9005677184015",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 32.713
+    },
+    {
+      "detail": "40.2 of 43.1 MB received (93%).",
+      "phase": "downloading",
+      "progress": "93.3567079854313",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 32.919
+    },
+    {
+      "detail": "40.6 of 43.1 MB received (94%).",
+      "phase": "downloading",
+      "progress": "94.11694176381428",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 33.129
+    },
+    {
+      "detail": "40.8 of 43.1 MB received (94%).",
+      "phase": "downloading",
+      "progress": "94.57308203084408",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 33.337
+    },
+    {
+      "detail": "41.0 of 43.1 MB received (95%).",
+      "phase": "downloading",
+      "progress": "95.18126905355048",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 33.543
+    },
+    {
+      "detail": "41.3 of 43.1 MB received (95%).",
+      "phase": "downloading",
+      "progress": "95.78945607625687",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 33.75
+    },
+    {
+      "detail": "41.5 of 43.1 MB received (96%).",
+      "phase": "downloading",
+      "progress": "96.39764309896326",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 33.958
+    },
+    {
+      "detail": "41.8 of 43.1 MB received (97%).",
+      "phase": "downloading",
+      "progress": "97.00583012166966",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 34.166
+    },
+    {
+      "detail": "42.1 of 43.1 MB received (97%).",
+      "phase": "downloading",
+      "progress": "97.61401714437604",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 34.374
+    },
+    {
+      "detail": "42.3 of 43.1 MB received (98%).",
+      "phase": "downloading",
+      "progress": "98.22220416708244",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 34.58
+    },
+    {
+      "detail": "42.7 of 43.1 MB received (98%).",
+      "phase": "downloading",
+      "progress": "98.98243794546543",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 34.847
+    },
+    {
+      "detail": "43.0 of 43.1 MB received (99%).",
+      "phase": "downloading",
+      "progress": "99.74267172384842",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 35.071
+    },
+    {
+      "detail": "43.1 of 43.1 MB received (100%).",
+      "phase": "downloading",
+      "progress": "100",
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 35.291
+    },
+    {
+      "detail": "Model received. Loading and initializing the browser runtime.",
+      "phase": "initializing",
+      "progress": null,
+      "stage": "Starting the detector\u2026",
+      "state": "loading",
+      "visible": true,
+      "elapsed_seconds": 35.521
+    },
+    {
+      "detail": "Model received. Loading and initializing the browser runtime.",
+      "phase": "initializing",
+      "progress": null,
+      "stage": "Starting the detector\u2026",
+      "state": "ready",
+      "visible": false,
+      "elapsed_seconds": 36.776
+    }
+  ],
+  "app_viewports": [
+    {
+      "content": 305,
+      "controls": [
+        {
+          "id": "choose-image",
+          "left": 14,
+          "right": 138.125,
+          "width": 124.125
+        },
+        {
+          "id": "try-sample",
+          "left": 148.125,
+          "right": 250.703125,
+          "width": 102.578125
+        },
+        {
+          "id": "clear-image",
+          "left": 14,
+          "right": 80.28125,
+          "width": 66.28125
+        },
+        {
+          "id": "save-result",
+          "left": 90.28125,
+          "right": 192.921875,
+          "width": 102.640625
+        },
+        {
+          "id": "minimum-score",
+          "left": 37,
+          "right": 268,
+          "width": 231
+        }
+      ],
+      "usable": 305,
+      "width": 320
+    },
+    {
+      "content": 375,
+      "controls": [
+        {
+          "id": "choose-image",
+          "left": 14,
+          "right": 138.125,
+          "width": 124.125
+        },
+        {
+          "id": "try-sample",
+          "left": 148.125,
+          "right": 250.703125,
+          "width": 102.578125
+        },
+        {
+          "id": "clear-image",
+          "left": 260.703125,
+          "right": 326.984375,
+          "width": 66.28125
+        },
+        {
+          "id": "save-result",
+          "left": 14,
+          "right": 116.640625,
+          "width": 102.640625
+        },
+        {
+          "id": "minimum-score",
+          "left": 37,
+          "right": 338,
+          "width": 301
+        }
+      ],
+      "usable": 375,
+      "width": 390
+    },
+    {
+      "content": 768,
+      "controls": [
+        {
+          "id": "choose-image",
+          "left": 308.375,
+          "right": 434.5,
+          "width": 126.125
+        },
+        {
+          "id": "try-sample",
+          "left": 444.5,
+          "right": 549.078125,
+          "width": 104.578125
+        },
+        {
+          "id": "clear-image",
+          "left": 559.078125,
+          "right": 627.359375,
+          "width": 68.28125
+        },
+        {
+          "id": "save-result",
+          "left": 637.359375,
+          "right": 742,
+          "width": 104.640625
+        },
+        {
+          "id": "minimum-score",
+          "left": 500,
+          "right": 725,
+          "width": 225
+        }
+      ],
+      "usable": 768,
+      "width": 768
+    },
+    {
+      "content": 1440,
+      "controls": [
+        {
+          "id": "choose-image",
+          "left": 970.375,
+          "right": 1096.5,
+          "width": 126.125
+        },
+        {
+          "id": "try-sample",
+          "left": 1106.5,
+          "right": 1211.078125,
+          "width": 104.578125
+        },
+        {
+          "id": "clear-image",
+          "left": 1221.078125,
+          "right": 1289.359375,
+          "width": 68.28125
+        },
+        {
+          "id": "save-result",
+          "left": 1299.359375,
+          "right": 1404,
+          "width": 104.640625
+        },
+        {
+          "id": "minimum-score",
+          "left": 1118,
+          "right": 1381,
+          "width": 263
+        }
+      ],
+      "usable": 1440,
+      "width": 1440
+    }
+  ],
+  "credits_viewports": [
+    {
+      "content": 1425,
+      "controls": [],
+      "usable": 1425,
+      "width": 1440
+    },
+    {
+      "content": 305,
+      "controls": [],
+      "usable": 305,
+      "width": 320
+    }
+  ],
+  "passed": true,
+  "browser_version": "156.0.8078.74",
+  "loading_capture": {
+    "detail": "8.7 of 43.1 MB received (20%).",
+    "phase": "downloading",
+    "progress": "20.070171749310965",
+    "stage": "Loading detection model\u2026",
+    "state": "loading",
+    "visible": true
+  },
+  "cold_ready_seconds": 36.776,
+  "predictions": [
+    {
+      "label": "spoon",
+      "score": 0.6670341491699219
+    },
+    {
+      "label": "dining table",
+      "score": 0.991251528263092
+    },
+    {
+      "label": "cup",
+      "score": 0.997867226600647
+    },
+    {
+      "label": "spoon",
+      "score": 0.9270511269569397
+    }
+  ],
+  "filtered_predictions": [
+    {
+      "label": "dining table",
+      "score": 0.991251528263092
+    },
+    {
+      "label": "cup",
+      "score": 0.997867226600647
+    },
+    {
+      "label": "spoon",
+      "score": 0.9270511269569397
+    }
+  ],
+  "export": "downloads/coffee-object-lens-min-0.80.png",
+  "local_credit_links": [
+    {
+      "url_path": "/",
+      "method": "HEAD",
+      "status": 200
+    },
+    {
+      "url_path": "/licenses/detr-LICENSE.txt",
+      "method": "HEAD",
+      "status": 200
+    },
+    {
+      "url_path": "/licenses/detr-resnet-50-model-card.md",
+      "method": "HEAD",
+      "status": 200
+    },
+    {
+      "url_path": "/licenses/huggingface-jinja-0.2.2-LICENSE.txt",
+      "method": "HEAD",
+      "status": 200
+    },
+    {
+      "url_path": "/licenses/object-lens-LICENSE.txt",
+      "method": "HEAD",
+      "status": 200
+    },
+    {
+      "url_path": "/licenses/onnxruntime-1.14.0-ThirdPartyNotices.txt",
+      "method": "HEAD",
+      "status": 200
+    },
+    {
+      "url_path": "/licenses/onnxruntime-web-1.14.0-LICENSE.txt",
+      "method": "HEAD",
+      "status": 200
+    },
+    {
+      "url_path": "/licenses/transformers-js-2.17.2-LICENSE.txt",
+      "method": "HEAD",
+      "status": 200
+    },
+    {
+      "url_path": "/licenses/upstream-example-LICENSE.txt",
+      "method": "HEAD",
+      "status": 200
+    },
+    {
+      "url_path": "/licenses/xenova-detr-resnet-50-model-card.md",
+      "method": "HEAD",
+      "status": 200
+    }
+  ],
+  "credits_keyboard_focus": [
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "Skip to main content",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "Object Lens",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "Back to the app",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "Existing project license: Apache-2.0",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "Original example",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "Example license",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "Apache-2.0 license",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "Versioned source",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "MIT license",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "MIT license",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "Upstream third-party notices",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "Versioned source",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "DETR license",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "Base-model card",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "Conversion model card",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "Pinned ONNX conversion",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "Photo attribution",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "Pinned photo source",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "CC0",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "Return to Object Lens",
+      "visible": true,
+      "width": 3
+    },
+    {
+      "outline": "solid",
+      "tag": "A",
+      "text": "Skip to main content",
+      "visible": true,
+      "width": 3
+    }
+  ],
+  "console": [],
+  "package_content_id": "a8981fa53c0dd2cbfa72cc831cb406d639255f3c68674d897d6025defb981bc4"
+}
