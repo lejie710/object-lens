@@ -11,7 +11,7 @@
 | Recorded full suite | **102 passed, 0 failures/errors/skips** (98 controlled, 4 real-model), 774.316 s of JUnit suite time on Windows 11, Chrome 156.0.8078.80, Python 3.12.10, pytest 9.0.3 and Selenium 4.40.0 | [release-verification.json](evidence/release-verification.json), [release-full-suite.xml](evidence/release-full-suite.xml) |
 | Core rules broken on purpose | A 30-case clean control passes; each of 16 deliberate faults fails its intended tests (28 intended failures); 1 equivalent fault passes as expected. Every core rule has at least one test that fails when the rule is broken | [release-sensitivity.json](evidence/release-sensitivity.json), [Core rules broken on purpose](#core-rules-broken-on-purpose) |
 | Model loading at 2.5 Mbps | A fixed 120-second deadline (`17f2b9a`) failed at 121 s with 37.4 of 43.1 MB (86%) received; stall-based loading received every byte and reached ready at 140.6 s | [branch-review-slow-transfer.json](evidence/branch-review-slow-transfer.json) |
-| Fresh clone following the README | Pending: run against this commit and recorded in the next commit | [fresh-clone-run.json](evidence/fresh-clone-run.json) |
+| Fresh clone following the README | Passed on commit `0dc7e80`: every README setup step exited 0, the usage example showed 4 predictions at 0.50 and 3 at 0.80 and saved a 600 x 400 PNG, and the full suite reported 102 passed in 702.94 s (Windows 11, Python 3.12.10, Chrome 156.0.8078.80) | [fresh-clone-run.json](evidence/fresh-clone-run.json) |
 
 The release record identifies the tested files by their source hashes. The slow-transfer probe ran against a package whose loading, inference, filter, sample and export code is identical to the release source; the two differ only in `dist/credits.html`. Acceptance examples mapped to named tests are in [DESIGN.md](DESIGN.md#acceptance-examples); the ranked risks and the test mix are in [DESIGN.md](DESIGN.md#risks-and-test-mix). Every confirmed defect, with the test that prevents it, is in [Defects and corrections](SOURCE_REVIEW.md). Each evidence file is described in the [evidence index](evidence/README.md).
 
@@ -120,7 +120,7 @@ Conclusion: every core rule the question depends on has at least one test that f
 
 ## Fresh-clone run
 
-Pending: run against this commit and recorded in the next commit.
+Passed on commit `0dc7e80`: every README setup step exited 0, the usage example showed 4 predictions at 0.50 and 3 at 0.80 and saved a 600 x 400 PNG, and the full suite reported 102 passed in 702.94 s (Windows 11, Python 3.12.10, Chrome 156.0.8078.80). After the summary line, pytest's exit-time cleanup of its default temporary folder printed an ignored PermissionError for a stale link left by an earlier run on the same machine; the exit code and every result were unaffected.
 
 The run clones the repository into a new, empty folder and follows the README exactly: the first-setup steps, the smallest usage example and the test command. The operating system and runtime versions it ran on are recorded in [fresh-clone-run.json](evidence/fresh-clone-run.json).
 
