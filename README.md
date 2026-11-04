@@ -1,24 +1,89 @@
 # Object Lens
 
-A small local web application for exploring pretrained object detection, with Python, pytest and Selenium tests for its behavior.
+Object Lens is a small browser app that runs a pretrained DETR object detector on your photo, entirely on your own machine. It comes with a Python, pytest and Selenium suite aimed at specific risks: stale results, broken recovery, misplaced boxes and loading failures.
 
-Developed with assistance from AI tools.
+| Real detection on the sample photo | Score filter applied | Controlled analysis timeout |
+| --- | --- | --- |
+| [![Detections on the public coffee sample photo](docs/screenshots/review-followup/desktop.png)](docs/screenshots/review-followup/desktop.png) | [![Predictions hidden by the minimum score filter](docs/screenshots/review-followup/filtered.png)](docs/screenshots/review-followup/filtered.png) | [![Image analysis timeout raised by a controlled test worker](docs/screenshots/review-followup/timeout.png)](docs/screenshots/review-followup/timeout.png) |
 
-[![Object Lens running real detection on a public sample photo](docs/screenshots/review-followup/desktop.png)](docs/screenshots/review-followup/desktop.png)
+The first two screenshots show the real model running on the public coffee sample. The third shows an image-analysis timeout that a test triggers on purpose with a controlled worker. It is not a model result. The screenshot after Clear shows the workspace emptied, with a prompt to restart the detector with Try again ([timeout-cleared.png](docs/screenshots/review-followup/timeout-cleared.png)).
 
-The source is currently kept private. Screenshots below are actual application captures, and the relative image links remain suitable for a future repository README.
+## What the app does
 
-## What it does
+You choose a photo or click **Try sample**. The app shows the predicted labels and boxes, and you can select one to highlight it. A minimum model score slider (0.50 to 1.00) hides or restores predictions. **Save result** downloads the photo with its visible boxes at the original dimensions. Filtering and saving reuse the existing result, so the model does not run again.
 
-Choose a photo or try the sample, inspect predicted labels and boxes, highlight a result, and adjust the minimum model score to hide or restore predictions. Save the visible predictions as an annotated PNG at the photo's original dimensions. Filtering and saving use the existing result, without running the model again. Object Lens focuses on a readable interface and reliable state handling. It adapts Hugging Face's educational object-detection example and uses a pretrained model; it does not train a model or detect semiconductor manufacturing defects.
+The model runs in a web worker using Transformers.js 2.17.2 and ONNX Runtime Web on the CPU (WASM). A small Python server only serves the files. Object Lens adapts Hugging Face's object-detection example and uses a pretrained model as it is. It does not train a model.
 
-## Screenshots
+## How it is tested
 
-Open the [desktop result](docs/screenshots/review-followup/desktop.png), [filtered result](docs/screenshots/review-followup/filtered.png), [exported PNG](docs/screenshots/review-followup/export.png), [empty state](docs/screenshots/review-followup/empty.png) or [narrow layout](docs/screenshots/review-followup/width-390.png) at full resolution. These captures were taken on 3 November and recaptured byte-for-byte identically from the current application on 4 November; they use the current application and real model on the public coffee sample. The empty view is captured before selection; the exported PNG contains the actual retained predictions. Older captures remain historical evidence in their original paths. The earlier generated design concept is a separate planning reference, not execution evidence.
+**Recorded full run: 102 passed, with 0 failures, errors or skips.** That is 98 controlled cases and 4 real-model cases, taking 780.398 s of JUnit suite time. The run used Windows, Chrome 156.0.8078.80, Python 3.12.10, pytest 9.0.3 and Selenium 4.40.0. Records: [summary](docs/evidence/branch-review-verification.json) and [JUnit XML](docs/evidence/branch-review-full-suite.xml).
+
+The tests use two kinds of check, and each answers a different question:
+
+- **Controlled tests (98)** swap the model for a scripted test worker. It returns exact predictions, empty results, malformed responses, hangs and stalls on demand. The tests check app state, race conditions and recovery against fixture values that were defined separately from the app.
+- **Real-model tests (4, marked `inference`)** run the actual pinned model. Three of them use three public photos and compare each visible row's label and score, and the position of the target object's box, with earlier recorded output from the same model. That catches regressions. It does not prove the predictions are correct. The fourth runs the sample, filter and export workflow through the static package.
+
+| Test module | Cases | What it protects |
+| --- | ---: | --- |
+| `test_recovery.py` | 26 | Deadlines, telling a stalled model download from a slow but steady one, rejecting a malformed result as a whole, and recovery through Clear and Try again |
+| `test_ui.py` | 25 | Boxes and list match the current image, stale results cannot repaint after the image is replaced or cleared, file size and pixel limits, focus, announcement settings, narrow layout |
+| `test_public_package.py` | 11 | The static package contains only allowlisted files and runs on an ordinary static server (1 case uses the real model) |
+| `test_export.py` | 8 | The downloaded PNG has the original dimensions and only the visible predictions, and a pending export cannot download after Clear |
+| `test_filter.py` | 7 | The score filter keeps boxes, list and counts in agreement and restores hidden predictions without rerunning the model |
+| `test_sample.py` | 7 | Try sample uses the real app path, and missing or slow sample data can be recovered from |
+| `test_startup.py` | 6 | Startup races and held configuration responses, using real local HTTP |
+| `test_loading.py` | 5 | Startup feedback for configuration, download, unknown progress and readiness |
+| `test_inference.py` | 3 | Real model on three photos: visible labels and scores, and box position compared with earlier recorded output |
+| `test_harness_cleanup.py` | 3 | The test harness still closes the browser when timeout setup fails or when it cannot save failure evidence |
+| `test_server.py` | 1 | The normal server cannot serve controlled test predictions |
+
+The tests are organised around eleven risk-based acceptance criteria, AC1 to AC11, in [DESIGN.md](docs/DESIGN.md). The table linking each criterion to its evidence is in [VERIFICATION.md](docs/VERIFICATION.md).
+
+### Do the tests catch real faults?
+
+[`tools/check_review_sensitivity.py`](tools/check_review_sensitivity.py) copies the app into throwaway folders and plants one deliberate fault in each copy. It never changes the checkout itself. A **13-case clean control** passes first. Each of the **11 faults** then makes its targeted assertions fail, giving **17 intended failures** in total. Record: [branch-review-sensitivity.json](docs/evidence/branch-review-sensitivity.json).
+
+| Fault planted | Caught by | Failures |
+| --- | --- | ---: |
+| Visible labels blanked | `test_ui.py` | 1 |
+| Visible scores blanked, numeric metadata kept | `test_ui.py` | 2 |
+| Rendered boxes moved out of position | `test_inference.py` | 3 |
+| Status, live-region and alert settings removed | `test_ui.py` | 1 |
+| Fixed load deadline that ignores progress | `test_recovery.py` | 1 |
+| Later settings-file events keep extending initialization | `test_recovery.py` | 1 |
+| Blank-label rejection removed | `test_recovery.py` | 2 |
+| Every score scaled by 0.95 | `test_inference.py` | 3 |
+| Every score forced to 1.0 | `test_inference.py` | 1 |
+| Completed download still timed by the stall window | `test_recovery.py` | 1 |
+| A cleared hang reported as an analysis failure | `test_recovery.py` | 1 |
+
+The two score faults also change the page's own data attributes, so among the real-model checks only the comparison with the recorded output catches them. This shows that the selected checks detect the selected faults. It is not a mutation score.
+
+### One defect, end to end: the model could not load on a slow connection
+
+| Step | What happened |
+| --- | --- |
+| Symptom | A probe throttled only the 43.1 MB model download to 2.5 Mbps on loopback. After 121 s the app showed "The detection model took too long to load", with 37.4 of 43.1 MB received (86%). Try again restarted the download from zero, so at this speed retrying could never succeed. |
+| Cause | Model loading had one fixed 120 s deadline, counted from worker start. It ignored download progress, so a slow but steady download was treated the same as a dead one. |
+| Fix | The download now fails only after 45 s with no loading event, and each event restarts that 45 s window. Once all the bytes have arrived, model start-up gets its own fixed 120 s deadline, which later events cannot extend. The error messages now say which stage stalled. |
+| Verification | Under the same 2.5 Mbps probe, the current package received every byte and reached ready at 140.6 s ([branch-review-slow-transfer.json](docs/evidence/branch-review-slow-transfer.json)). Controlled tests cover a stalled download, a slow steady download that must not time out, and a hung start-up. Three of the planted faults above now guard this behaviour. |
+
+Each condition was run once, on loopback. That is not a measurement of Internet speed. The full write-up of every confirmed finding is in [SOURCE_REVIEW.md](docs/SOURCE_REVIEW.md).
+
+### What is not claimed
+
+- Only the recorded Windows and Chrome environment was checked. There is no CI yet, no deployed URL, and no testing on other browsers or mobile.
+- The real-model checks compare against earlier output from the same pinned model. Nothing here measures accuracy, precision or recall.
+- The announcement tests inspect how the page is configured. Nobody has tested it with an actual screen reader, and there is no accessibility certification.
+- A single full run does not measure a flake rate. Try again still restarts the model download from the beginning, so a connection that keeps stalling for 45 s cannot load the detector.
+
+The full release assessment is in [VERIFICATION.md](docs/VERIFICATION.md).
+
+![Runtime flow: page, worker, model and test harness](docs/diagrams/object-lens-runtime-flow.png)
 
 ## First setup
 
-Start in the cloned repository directory. Python 3.12 and Chrome are the target environment. An initial internet connection is needed for Python packages, the Chrome driver, the browser AI runtime, model files and public sample photos. Downloads have recorded sources. No paid API is required.
+Start in the folder where you cloned the repository. The target environment is Python 3.12 with Chrome. The first setup needs internet access to download the Python packages, the Chrome driver, the browser runtime, the model files and the public sample photos. No paid API is needed.
 
 ```powershell
 py -3.12 -m venv .venv
@@ -28,74 +93,74 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe tools/browser_check.py
 ```
 
-The direct dependencies are listed in `requirements.txt`; `requirements-lock.txt` records the full tested Python environment. The model/runtime files live in `dist/assets` and are excluded from Git. Their pinned sources and SHA-256 hashes are recorded in `asset-lock.json`. Verify prepared assets without downloading:
+`requirements.txt` lists the direct dependencies, and `requirements-lock.txt` records the full tested environment. The model and runtime files go into `dist/assets`, which is kept out of Git. Their pinned sources and SHA-256 hashes are in `asset-lock.json`. To check the prepared files without downloading anything:
 
 ```powershell
 .\.venv\Scripts\python.exe tools/prepare_assets.py --verify-only
 .\.venv\Scripts\python.exe tools/download_samples.py --verify
 ```
 
-If the app cannot prepare detection because an asset is missing, run the asset preparation again and use Try again in the app. Normal prepared-app inference uses local assets; Selenium may need network access again if Chrome updates and its matching driver is not cached.
+If the app reports a missing file, run the asset preparation step again, then click **Try again** in the app.
 
 ## Run locally
-
-From the repository directory in PowerShell, after setup:
 
 ```powershell
 .\.venv\Scripts\python.exe serve.py
 ```
 
-Open `http://127.0.0.1:8765` in Chrome. Keep that terminal open while using the app; stop the server with Ctrl+C. The application binds only to this computer. You do not need to activate the virtual environment.
+Open `http://127.0.0.1:8765` in Chrome. The server is reachable only from this computer, and Ctrl+C stops it. If port 8765 is already in use, run `serve.py --port 8766` and open port 8766 instead.
 
-If port 8765 is already in use, run `serve.py --port 8766` and open `http://127.0.0.1:8766` instead.
-
-For a first demonstration, click **Try sample**, select the cup result, and move **Minimum model score** from 0.50 to 0.80. Click **Save result** to download the photo with its visible boxes, labels and scores. Lower the filter again to restore hidden predictions. You can then choose your own photo or replace it with `dist\samples\chelsea.png`. Model predictions can contain mistakes or duplicates. The score is not an accuracy guarantee.
+To try it: click **Try sample**, select the cup, move **Minimum model score** from 0.50 to 0.80, and click **Save result**. Then lower the filter again to bring the hidden predictions back. Predictions can include mistakes or duplicates, and a score does not guarantee the prediction is right.
 
 ## Run the tests
 
+The tests start and stop their own local servers and use headless Chrome, so `serve.py` does not need to be running.
+
 ```powershell
+# Full suite
 .\.venv\Scripts\python.exe -m pytest
-```
 
-Tests start and stop their own local servers and use headless Chrome. You do not need to start `serve.py` first. Controlled UI tests are separate from tests marked `inference`, which use the actual local model. See [verification and release assessment](docs/VERIFICATION.md) for results and limitations.
-
-The inference group contains three photo regression cases and one static-package integration case. The photo cases assert visible labels/scores and selected-box coordinates/rendered geometry against earlier pinned-model outputs; this is regression evidence, not an accuracy benchmark. The static-package integration check also uses the real model, but serves the prepared website through an ordinary local static server. It does not establish that a public URL has been deployed.
-
-If your first terminal is still running the app, open a second PowerShell window in this project directory for tests, or stop that server with Ctrl+C first.
-
-For a shorter run while learning one part:
-
-```powershell
-# Non-model application, server, package and harness checks; not AI accuracy evidence.
+# Controlled app, server, package and harness checks; not evidence about the model
 .\.venv\Scripts\python.exe -m pytest -m "not inference"
 
-# Actual model execution on three photos and the static-package workflow.
+# Real model: three photo regression checks plus the static-package workflow
 .\.venv\Scripts\python.exe -m pytest -m inference
 ```
+
+The static-package test serves the prepared site from an ordinary local static server. It does not mean the app has been deployed to a public URL.
+
+![Testing workflow](docs/system-design/diagrams/testing-workflow.png)
+
+## More screenshots
+
+[Empty state](docs/screenshots/review-followup/empty.png), [filter hides every prediction](docs/screenshots/review-followup/filtered-empty.png), [exported PNG](docs/screenshots/review-followup/export.png), [input error](docs/screenshots/review-followup/error.png), [timeout after Clear](docs/screenshots/review-followup/timeout-cleared.png), and the layout at widths of [320](docs/screenshots/review-followup/width-320.png), [390](docs/screenshots/review-followup/width-390.png), [768](docs/screenshots/review-followup/width-768.png) and [1440](docs/screenshots/review-followup/width-1440.png) px. The input error comes from the real app with a deliberately unsupported file. The two timeout screens come from the controlled test worker.
 
 ## Read next
 
 - [Design and acceptance criteria](docs/DESIGN.md)
-- [A short guide to the stack and one test](docs/LEARNING.md)
 - [Verification and release assessment](docs/VERIFICATION.md)
-- [Correctness reviews and regression fixes](docs/SOURCE_REVIEW.md)
-- [System-design companion PDF](docs/system-design/Object_Lens_System_Design.pdf) and [editable Word document](docs/system-design/Object_Lens_System_Design.docx), both with clickable contents
-- [Public demo preparation and upload guide](docs/PUBLIC_DEMO.md)
-- [Image sources and expected visible objects](docs/IMAGE_SOURCES.md)
-- [The original upstream example](baseline/upstream/README.md)
-- [Attribution and baseline interpretation](NOTICE.md)
-- [Approved design concept and its provenance](docs/design/README.md)
-- [Maintainer handoff notes](docs/LOCAL_HANDOFF.md)
-
-The core automation language is Python. Selenium operates the browser; pytest executes the tests and reports assertions. JavaScript remains the application language.
+- [Defects found and how they were fixed](docs/SOURCE_REVIEW.md)
+- [Short guide to the stack and one test](docs/LEARNING.md)
+- [Evidence index](docs/evidence/README.md)
+- [System design PDF](docs/system-design/Object_Lens_System_Design.pdf), with diagrams of the [runtime architecture](docs/system-design/diagrams/runtime-architecture.png) and the [image sequence](docs/system-design/diagrams/image-sequence.png)
+- [Image sources and the objects expected in each photo](docs/IMAGE_SOURCES.md)
 
 ## Which folders matter
 
 | Folder | Purpose |
 | --- | --- |
-| `dist` | The maintained application and its prepared local assets |
-| `tests` | The Python checks to read and modify while learning |
-| `docs` | Design, learning notes and verification evidence |
-| `tools` | Small setup and evidence-collection helpers |
-| `baseline` | Preserved upstream source for attribution and comparison |
-| `.venv`, `.local`, `artifacts` | Generated environment, driver/verification copies and raw outputs; not additional applications to maintain |
+| `dist` | The app and its prepared local assets |
+| `tests` | The pytest and Selenium suite, plus the controlled worker fixture |
+| `tools` | Helpers for setup, packaging, collecting evidence and checking fault sensitivity |
+| `docs` | Design, verification evidence, screenshots and diagrams |
+| `baseline` | The original upstream example, kept for attribution and comparison |
+| `.venv`, `.local`, `artifacts` | Generated locally and ignored by Git: the Python environment, the driver cache and local verification copies, and raw test outputs; not part of the app |
+
+## Credits and licences
+
+- Adapted from Hugging Face's Transformers.js vanilla JavaScript object-detection tutorial (Apache-2.0). The original is kept in [`baseline/upstream`](baseline/upstream/README.md), and its revision and checksums are in `baseline/source.json`.
+- Model: [facebook/detr-resnet-50](https://huggingface.co/facebook/detr-resnet-50) (the model card states Apache-2.0), used through the browser-compatible conversion [Xenova/detr-resnet-50](https://huggingface.co/Xenova/detr-resnet-50) at the revision pinned in `asset-lock.json`.
+- Runtime: [Transformers.js](https://github.com/huggingface/transformers.js) 2.17.2 (Apache-2.0), [ONNX Runtime Web](https://github.com/microsoft/onnxruntime) 1.14.0 (MIT) and [@huggingface/jinja](https://www.npmjs.com/package/@huggingface/jinja) 0.2.2 (MIT).
+- Sample photos: unchanged copies from scikit-image v0.25.2. Each is public domain or CC0, and the creators are credited in [IMAGE_SOURCES.md](docs/IMAGE_SOURCES.md).
+
+[NOTICE.md](NOTICE.md) has the full attribution. The project is licensed under the [Apache License 2.0](LICENSE).
