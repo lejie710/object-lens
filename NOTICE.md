@@ -17,8 +17,8 @@ Prepared model/runtime assets are excluded from Git but included in the delibera
 
 ## Baseline interpretation
 
-The preserved upstream source currently imports Transformers.js 3.2.1. The runnable comparison at `/baseline/` uses the same pinned Transformers.js 2.17.2, WASM runtime and model files as Object Lens. It removes a remote upload icon and adds a visible adaptation caption. Those changes are produced by `tools/build_baseline.py`.
+The preserved upstream source imports Transformers.js 3.2.1. The runnable comparison at `/baseline/` uses the same pinned Transformers.js 2.17.2, WASM runtime and model files as Object Lens. It removes a remote upload icon and adds a visible adaptation caption. Those changes are produced by `tools/build_baseline.py`.
 
 This controlled comparison isolates application behavior with common inference settings. It is not testing the unmodified upstream release or establishing a regression across runtime versions. The new result list and selection behavior have their own requirements; they are not compared as if they existed upstream.
 
-The approved UI concept in `docs/design/approved-concept.png` is AI-generated design imagery. Its objects, boxes and scores are illustrative, not inference evidence.
+The UI concept in `docs/design/approved-concept.png` is AI-generated design imagery. Its objects, boxes and scores are illustrative, not inference evidence.

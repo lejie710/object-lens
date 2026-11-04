@@ -1,4 +1,4 @@
-"""Compare three recovery checks against old and current app.js in disposable copies.
+"""Compare three recovery checks against app.js at a reference commit and the working copy, in disposable copies.
 
 Uses installed pytest/Selenium and the repository's cached browser driver offline.
 Only app.js differs between copies. No model is loaded and no tracked file is changed.

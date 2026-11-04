@@ -1,22 +1,22 @@
-# Public demo preparation
+# Public demo package
 
-Status on 3 November 2026: the owner parked upload after the computer could not complete it. No successful public deployment or verified live URL is recorded. The static package has been rebuilt after the branch review for local inspection. [The current verification record](evidence/branch-review-verification.json) identifies the source and [the package record](evidence/branch-review-package.json) identifies the archive. [The correctness reviews](SOURCE_REVIEW.md) distinguish the earlier startup fixes, the assertion/recovery work and the slow-connection loading fix.
+Status: no public deployment or verified live URL exists. The static package can be built and inspected locally. [The verification record](evidence/release-verification.json) identifies the tested source and [the package record](evidence/release-package.json) identifies the archive. [Defects and corrections](SOURCE_REVIEW.md) lists the startup, recovery and slow-connection loading defects and the tests that prevent them.
 
-## Approved sharing boundary
+## What the public package exposes
 
-The public demo may be visited without repository access. The GitHub repository remains private. Visitors necessarily receive the browser application's HTML, CSS, JavaScript, model and runtime files; those delivered files can be inspected. Private design documents, tests, repository history, environments and raw evidence are not part of the public package.
+Once published, the demo can be visited without repository access. The GitHub repository is private. Visitors necessarily receive the browser application's HTML, CSS, JavaScript, model and runtime files; those delivered files can be inspected. Private design documents, tests, repository history, environments and raw evidence are not part of the public package.
 
-The application processes selected photos in the visitor's browser. Its requests obtain the website, model/runtime files and optional public coffee sample; it does not upload the selected photo for inference. The hosting provider still handles ordinary website requests. The browser may cache downloaded runtime/model assets. Selected photo data and predictions are held by the active page/worker; the app has no saved-photo history or persistent photo-storage feature. Clearing the page removes its current image state, not browser-cached model files. The public credits page explains this distinction and the model's limits.
+The application processes selected photos in the visitor's browser. Its requests obtain the website, model/runtime files and optional public coffee sample; it does not upload the selected photo for inference. The hosting provider still handles ordinary website requests. The browser may cache downloaded runtime/model assets. Selected photo data and predictions are held by the active page/worker; the app has no saved-photo history or persistent photo-storage feature. Clearing the page removes its current image state, not browser-cached model files. The public credits page explains that the selected photo stays in the browser while the website's files are still requested, and states that labels, boxes and scores are predictions that can be wrong.
 
 ## Prepared website
 
-The package has 23 allowlisted files: seven application/configuration files, six pinned model/runtime files, one public sample and nine licence/provenance texts. Each build's manifest records its exact byte counts, content identity and ZIP hash; the current ZIP is approximately 34.6 MB. The archive contains `index.html` at its root. Host it at the site root: worker asset URLs begin with `/assets`, so deployment under a URL subdirectory is not supported by this version. It excludes `docs`, `tests`, `.git`, `.venv`, `.local`, `artifacts` and the comparison baseline.
+The package has 23 allowlisted files: seven application/configuration files, six pinned model/runtime files, one public sample and nine licence/provenance texts. Each build's manifest records its exact byte counts, content identity and ZIP hash; the ZIP is approximately 34.6 MB. The archive contains `index.html` at its root. Host it at the site root: worker asset URLs begin with `/assets`, so deployment under a URL subdirectory is not supported by this version. It excludes `docs`, `tests`, `.git`, `.venv`, `.local`, `artifacts` and the comparison baseline.
 
-Normal static hosting reads `runtime-config.json` from the package with `testMode` set to the JSON boolean `false`. The local Python server still generates this response itself, allowing explicitly controlled tests to use their separate mode. The uploaded site needs no Python service, database or paid inference API.
+Normal static hosting reads `runtime-config.json` from the package with `testMode` set to the JSON boolean `false`. The local Python server generates this response itself, allowing explicitly controlled tests to use their separate mode. The uploaded site needs no Python service, database or paid inference API.
 
 The loading notice distinguishes model transfer from runtime initialization. A model progress value of 100 does not claim that the detector is ready. When a host omits Content-Length, Transformers.js 2.17.2 reports the bytes received so far as the total; the page then shows megabytes received with an indeterminate bar rather than a false percentage. Errors remain separate, and an old worker cannot update a newer worker's loading state. Loading and inference timeout messages identify the failed stage. Clear after a stopped worker preserves an unavailable/retry state rather than claiming readiness. Model transfer is bounded by a 45-second stall window rather than total elapsed time, so a slow but steady connection can complete the download. Once every byte of a known-size transfer has arrived, runtime initialization, including the library's local Cache Storage write, keeps a fixed 120-second deadline, and inference keeps 90 seconds. Retry starts the model download again from the beginning; a connection that repeatedly stalls for 45 seconds still cannot load the detector.
 
-Configuration now has its own 15-second request/body deadline before worker startup. Retry fetches it again without losing the selected image. Background readiness preserves existing input errors and unfinished file preparation.
+Configuration has its own 15-second request/body deadline before worker startup. Retry fetches it again without losing the selected image. Background readiness preserves existing input errors and unfinished file preparation.
 
 `credits-lock.json` records the source, byte count and SHA-256 of each distributed licence/model-card file. Their original bytes are preserved. The package also verifies all six runtime/model files against `asset-lock.json` and the coffee image against its independently pinned hash.
 
@@ -40,23 +40,13 @@ For an isolated static-server review, pass the actual generated `site` path:
 
 This helper uses a fresh headless Chrome profile. It paces only the model response on loopback, then checks real inference, filtering, PNG download, usable viewport widths, local credit links and keyboard focus. The simulated transfer is not Internet performance or proof of a deployed website.
 
-## Preparation verification before the correctness review
+## Verification
 
-- Full local suite: **59 passed**, zero failures/errors/skips, in **441.33 seconds**. This consists of 55 non-inference application/server/package checks and four actual-model cases.
-- Focused loading/package suite: 11 passed in 52.46 seconds.
-- Ordinary static-server integration: real coffee detection, score filtering and a downloaded 600 by 400 PNG passed without the custom Python routes. Private and controlled-test routes returned 404.
-- Simulated model transfer: all 43,102,531 bytes arrived in 34.493 seconds, approximately 9.997 Mbps against the selected 10 Mbps pacing. Initial readiness was observed at 36.776 seconds in that local run; other assets were not paced.
-- Rendered app review: 320, 390, 768 and 1440 CSS-pixel layouts fit the usable document width. Credits were inspected at desktop and 320 pixels; their local links returned HTTP 200 and keyboard focus remained visible.
+Package identity and archive integrity are in [the package record](evidence/release-package.json). The ordinary static-server run (real sample detection, filtering and PNG export without the custom Python routes) is `tests/test_public_package.py::test_packaged_site_runs_real_sample_filter_and_export_on_an_ordinary_static_server`, part of the suite recorded in [the verification assessment](VERIFICATION.md). The isolated static-server observations from `tools/check_public_demo.py` (viewports, credits links, keyboard focus, paced transfer) are in [public-prep-review.json](evidence/public-prep-review.json) and cover an earlier package version. These are local results from Chrome on one Windows laptop. Other browsers and devices, public connectivity, hosting access configuration, provider quotas and real Internet performance have not been qualified. No general model-accuracy claim is made. Older package and static-server records are listed in the [evidence index](evidence/README.md).
 
-These are local preparation results. Chrome on one Windows laptop was exercised. Other browsers/devices, public connectivity, hosting access configuration, provider quotas and real Internet performance have not been qualified. No general model-accuracy claim is made. Earlier 48-case and one-hour records retain their original source/version scope.
+## Publishing procedure (on hold)
 
-The later combined correctness-review suite passed 72 cases in 531.363 seconds of JUnit time (531.53 seconds by the runner), including four actual-model cases and the static-package workflow, with its temporary files outside any Git repository. That is also now a historical checkpoint; use [the verification assessment](VERIFICATION.md) for the current follow-up result. The earlier loading screenshots and paced-transfer figures above remain observations of the preceding preparation version.
-
-The [preparation verification record](evidence/public-prep-verification.json) binds source files and retained evidence. See the actual [model-loading capture](screenshots/public-prep/model-loading.png), [preparation-version app](screenshots/public-prep/app-1440.png) and [credits page](screenshots/public-prep/credits-1440.png).
-
-## Parked owner publication procedure
-
-The earlier preparation selected a personal Vercel Drop workflow and referenced the free Hobby plan. Upload is parked: the steps below preserve that procedure and are not an instruction to resume it during this follow-up. Provider terms, account eligibility and current limits must be checked again if publication resumes. No paid plan or domain purchase is part of the current scope.
+Publication is on hold until the owner decides to publish; no deployment has been made. These steps use Vercel Drop on the free Hobby plan. Check the provider's current terms, account eligibility and limits before publishing. No paid plan or domain is needed.
 
 1. Sign in to Vercel and open [Vercel Drop](https://vercel.com/drop).
 2. Upload the prepared `Object_Lens_Public_Demo.zip`, or the contents of its `site` directory. Select the personal Hobby account/team and a project name.
@@ -65,10 +55,10 @@ The earlier preparation selected a personal Vercel Drop workflow and referenced 
 
 A dropped project is not automatically connected to Git. Merging or pushing a later branch does not update this website by itself. To update it, rebuild the package and upload it to the existing project. Git-connected automatic deployments are a separate optional change.
 
-Sources recorded during the earlier 3 November preparation: [Vercel Drop](https://vercel.com/docs/drop), [Hobby plan and usage limits](https://vercel.com/docs/plans/hobby). Account eligibility, availability of a particular project name and remaining usage allowance depend on the owner's account.
+Provider documentation: [Vercel Drop](https://vercel.com/docs/drop), [Hobby plan and usage limits](https://vercel.com/docs/plans/hobby). Account eligibility, availability of a particular project name and remaining usage allowance depend on the owner's account.
 
 ## Still required after publication
 
-Verify the actual HTTPS production address from a fresh signed-out browser. Confirm that it opens the app rather than an authentication page; observe a fresh model load; run Try sample and a selected public photo; exercise filtering, PNG download and recovery; check the visible layout and console; and verify that private documents and test routes are absent. Record the actual URL, date, build identity, observations and remaining limits separately from the local results above.
+Verify the actual HTTPS production address from a fresh signed-out browser. Confirm that it opens the app rather than an authentication page; observe a fresh model load; run Try sample and a selected public photo; exercise filtering, PNG download and recovery; check the visible layout and console; and verify that private documents and test routes are absent. Record the actual URL, date, build identity, observations and remaining limits in a separate evidence record from the local results above.
 
-After those checks, update the README's live-demo link and the design's hosting record. The refreshed Word/PDF companion includes the current local implementation and static-package boundary. It does not substitute for hosted evidence.
+A hosted URL is added to the README only after these checks pass. The [system design companion](system-design/README.md) covers the local implementation and the static-package boundary; it is not hosted evidence.

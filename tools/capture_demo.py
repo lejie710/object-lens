@@ -1,4 +1,4 @@
-"""Capture the finished extension in isolated headless Chrome using the real model."""
+"""Capture the app in isolated headless Chrome using the real model."""
 import json
 import os
 import sys
@@ -53,7 +53,7 @@ def main():
     server = make_server(port=0)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
-    report = {'evidence_type': 'real model demonstration and rendered review',
+    report = {'evidence_type': 'real model demonstration and rendered layout check',
               'limits': 'One Windows laptop and Chrome; not a general accuracy or performance benchmark.',
               'viewports': []}
     driver = None

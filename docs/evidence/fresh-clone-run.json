@@ -1,0 +1,111 @@
+{
+  "evidence_type": "fresh clone into a new empty folder, following the README exactly",
+  "run_date_utc": "2026-11-04",
+  "cloned_commit": "0dc7e80ca3605c099c46bf25020463e1678b1490",
+  "clone": "git clone --branch docs/apply-delivery-rules --single-branch <local repository> <new folder>/object-lens",
+  "environment": {
+    "os": "Windows-11-10.0.26100-SP0",
+    "python": "3.12.10",
+    "pytest": "9.0.3",
+    "selenium": "4.40.0",
+    "browser": "Chrome 156.0.8078.80",
+    "driver": "ChromeDriver 156.0.8078.80",
+    "shell": "Windows PowerShell 5.1"
+  },
+  "steps": [
+    {
+      "step": "setup-venv",
+      "readme_command": "py -3.12 -m venv .venv",
+      "exit_code": 0,
+      "seconds": 11
+    },
+    {
+      "step": "setup-pip",
+      "readme_command": ".\\.venv\\Scripts\\python.exe -m pip install -r requirements-lock.txt",
+      "exit_code": 0,
+      "seconds": 24.9
+    },
+    {
+      "step": "setup-assets",
+      "readme_command": ".\\.venv\\Scripts\\python.exe tools/prepare_assets.py",
+      "exit_code": 0,
+      "seconds": 17.7
+    },
+    {
+      "step": "setup-samples",
+      "readme_command": ".\\.venv\\Scripts\\python.exe tools/download_samples.py",
+      "exit_code": 0,
+      "seconds": 0.5
+    },
+    {
+      "step": "setup-browser-check",
+      "readme_command": ".\\.venv\\Scripts\\python.exe tools/browser_check.py",
+      "exit_code": 0,
+      "seconds": 12.7
+    },
+    {
+      "step": "verify-assets",
+      "readme_command": ".\\.venv\\Scripts\\python.exe tools/prepare_assets.py --verify-only",
+      "exit_code": 0,
+      "seconds": 0.6
+    },
+    {
+      "step": "verify-samples",
+      "readme_command": ".\\.venv\\Scripts\\python.exe tools/download_samples.py --verify",
+      "exit_code": 0,
+      "seconds": 0.5
+    },
+    {
+      "step": "usage-example",
+      "readme_command": ".\\.venv\\Scripts\\python.exe serve.py, then the README 'To try it' steps in headless Chrome",
+      "exit_code": 0,
+      "seconds": 24.5
+    },
+    {
+      "step": "test-full-suite",
+      "readme_command": ".\\.venv\\Scripts\\python.exe -m pytest",
+      "exit_code": 0,
+      "seconds": 705.2
+    }
+  ],
+  "observations": {
+    "assets": "prepare_assets.py downloaded the pinned runtime and model files (model_quantized.onnx 43,102,531 bytes) and verified every SHA-256 in asset-lock.json.",
+    "samples": "The five sample photos are part of the repository; download_samples.py verified their SHA-256 values (1,750,810 bytes).",
+    "browser_check": "Chrome and ChromeDriver 156.0.8078.80 started headless.",
+    "usage_example": {
+      "sample_seconds": 8.4,
+      "predictions_at_minimum_0_50": [
+        "spoon",
+        "dining table",
+        "cup",
+        "spoon"
+      ],
+      "predictions_at_minimum_0_80": [
+        "dining table",
+        "cup",
+        "spoon"
+      ],
+      "cup_selected": true,
+      "saved_png": {
+        "name": "coffee-object-lens-min-0.80.png",
+        "width": 600,
+        "height": 400
+      },
+      "predictions_after_lowering_the_minimum": [
+        "spoon",
+        "dining table",
+        "cup",
+        "spoon"
+      ],
+      "passed": true
+    },
+    "full_suite": "102 passed in 702.94s (0:11:42); pytest exit code 0.",
+    "after_summary_warning": "After the summary line, pytest's exit-time cleanup of its default temporary root printed 'Exception ignored in atexit callback' with PermissionError for a stale pytest-current link left in the user's temporary folder by an earlier run on this machine. It did not change the exit code or any test result.",
+    "working_tree_after_run": "git status --short was empty: the run created only ignored files."
+  },
+  "matches_readme": "Setup, the smallest usage example and the full test command ran as written. The suite result matches the README's 102 passed.",
+  "limits": [
+    "One Windows laptop that had run the project before; the user-level pip and Selenium caches may have been warm, so download timing is not a cold-machine measurement.",
+    "The usage example was driven in headless Chrome instead of a person clicking in a visible window."
+  ]
+}

@@ -1,6 +1,6 @@
 # Diagram source checks
 
-These editable diagrams describe the Object Lens system documented by source.json. Their component and message claims were first reconciled on 2 November 2026 and rechecked against the review follow-up on 3 November. The diagrams remain schematic: configuration/recovery and the new assertion detail are explained in the current companion prose. All labels and operational qualifications remain inside each SVG so they survive export.
+These editable diagrams describe the Object Lens system documented by source.json. Their component and message claims match the source files listed under Source fidelity. The diagrams are schematic: configuration/recovery and assertion detail are explained in the companion prose. All labels and operational qualifications remain inside each SVG so they survive export.
 
 ## Files and display size
 
@@ -19,7 +19,7 @@ The three self-contained HTML files are the authoritative editable diagram sourc
 - `dist/app.js`: `selectFile` decodes locally; `startPendingInference` permits one active request and the latest pending image; `onWorkerMessage` clears the matching active request, accepts predictions only when their ID matches the current revision, and starts the next pending request. Replacement does not terminate the worker. `renderResults` validates/cache predictions; `renderFilteredResults` applies the minimum to the original scores and stable IDs.
 - `tests/conftest.py`: pytest fixtures start isolated local servers and headless Chrome; Selenium operates that browser; failed checks capture a screenshot, page HTML, browser console and test context; fixtures close owned resources.
 - `tests/fixtures/test-worker.js`: deliberately simulated predictions, delays and failures. The controlled path is not model-inference evidence.
-- `tests/test_inference.py`: actual local model checks on public photographs, prediction observations and screenshots, visible label/score expectations, selected-coordinate regression and measured rendered geometry. The testing figure summarizes the real path and selected labels; it is not a complete assertion inventory. Reference boxes come from earlier pinned-model output rather than independent annotations. These checks do not establish general accuracy.
+- `tests/test_inference.py`: actual local model checks on public photographs, prediction observations and screenshots, visible label/score expectations, selected-coordinate regression and measured rendered geometry. The testing figure summarizes the real path and selected labels; it is not a complete assertion inventory. Reference boxes come from recorded pinned-model output rather than independent annotations. These checks do not establish general accuracy.
 
 ## PNG export implementation
 
@@ -32,21 +32,13 @@ The Canvas PNG export node and optional-export note match dist/png-export.js and
 - The testing figure describes browser tests. Its final note identifies server-only Python checks separately, so the figure does not imply that every test launches Chrome.
 - The model/inference path and the controlled worker path are visibly separate. They merge only at the common assertion/reporting/evidence workflow.
 - No application/UI screen is simulated by these figures. They are architecture and behavior illustrations, not execution evidence.
+- The runtime and sequence diagrams match the worker, image-revision guards, filtered-result cache and canvas export in `app.js` and `png-export.js`, including the main-thread canvas, current-result snapshot and stale-export guard. The sequence shows one successful replacement, not failure or retry states. The runtime figure describes the local Python serving path; the companion explains that the static package supplies the same browser files through an ordinary static server.
+- The testing figure is an overview of browser checks. The suite also contains non-browser server/package and mocked cleanup checks. Assertion details not drawn include visible labels/scores, selected real-model coordinates and rendered geometry, malformed output, timeout/Clear recovery and announcement configuration. The figure does not claim those checks establish accuracy or screen-reader behavior.
 
-## Historical diagram-generation checks
+## Diagram export checks
 
-- `self_check.py --offline`: passed for all three HTML files.
-- `export_svg.py --system-fonts`: succeeded for all three, producing separate SVG files.
-- Referenced optional `verify-geometry.py`: not present in the installed skill scripts, so that check could not run. No package or helper was downloaded.
+- `self_check.py --offline` and `export_svg.py --system-fonts` passed for all three files; the optional `verify-geometry.py` check was not available and did not run.
 - Static source review: orthogonal arrows, distinct fan-out ports, accessible title/description IDs, all explanatory notes inside SVG, and no external resources.
-- Browser PNG rendering completed at twice the logical SVG dimensions. All three actual PNG exports were visually inspected for legibility and source semantics.
-- Current app.js and png-export.js were checked against the diagrams, including the main-thread canvas, current-result snapshot and stale-export guard.
-- Final Word/PDF integration was visually reviewed at the actual document size. The original edition's 19 pages were inspected by both the document authoring agent and the independent reviewing agent, including diagram pages 5, 7 and 11. The tall figures use up to eight inches of page height to preserve readable labels.
-
-## Current edition reconciliation
-
-On 3 November 2026 the unchanged runtime and sequence diagrams were checked against the current worker, image-revision guards, filtered-result cache and canvas export. The runtime figure describes the local Python serving path; the companion explicitly explains that the prepared static package can supply the same browser files through an ordinary static server. The sequence depicts one successful replacement, not failure/retry states.
-
-The testing figure remains an overview of browser checks. The current suite also contains non-browser server/package and mocked cleanup checks. New assertion details include visible labels/scores, selected real-model coordinates and rendered geometry, malformed output, timeout/Clear recovery and announcement configuration. The figure does not claim those checks establish accuracy or screen-reader behavior.
-
-The diagrams contain no stale pass count or application commit. Their original HTML/SVG/PNG exports are preserved. Current all-page layout and navigation results, including diagram pages, are recorded in `../document-validation.json`; the historical 19-page result above is not the current edition's page count.
+- Browser PNG rendering at twice the logical SVG dimensions. All three PNG exports were visually inspected for legibility and source semantics.
+- Diagram pages are checked at the actual document size; page layout and navigation results, including diagram pages, are recorded in `../document-validation.json`. The tall figures use up to eight inches of page height to preserve readable labels.
+- The diagrams contain no pass count or application commit.

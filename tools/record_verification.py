@@ -84,7 +84,7 @@ def pytest_collection_finish(session):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--retain-prefix", help="New docs/evidence prefix, for example followup")
+    parser.add_argument("--retain-prefix", help="New docs/evidence prefix, for example verification")
     args = parser.parse_args()
     if args.retain_prefix and (not args.retain_prefix.replace("-", "").isalnum()):
         parser.error("Use only letters, digits and hyphens for the evidence prefix")

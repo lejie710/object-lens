@@ -1,6 +1,6 @@
 {
-  "source_sha256": "f9ff47bc727180174fb12bcd737754f24a856414a4de61607881f30bd878e454",
-  "docx_sha256": "6303e2a6d54495a60ce237cb3aac397b494752e7f9e1a6628f22586bc083d9b7",
+  "source_sha256": "1e3636dc915a42315c5e2e2ef17b2691ad7ead5be1b01fbdaee6f17ac47912be",
+  "docx_sha256": "94a001a5eb1d420e06b1693e7eb7f6440c53d7543853b7dcc4abdffd6f451e89",
   "toc_mode": "static",
   "toc_depth": 2,
   "field_refresh_required": false,
@@ -16,10 +16,26 @@
       "section_index": 0
     },
     {
+      "title": "The question",
+      "level": 2,
+      "key": "scope__The question",
+      "block_index": 1,
+      "bookmark": "OL_scope__The_question",
+      "section_index": 0
+    },
+    {
+      "title": "Non-goals and rabbit holes",
+      "level": 2,
+      "key": "scope__Non-goals and rabbit holes",
+      "block_index": 10,
+      "bookmark": "OL_scope__Non_goals_and_rabbit_holes",
+      "section_index": 0
+    },
+    {
       "title": "Objectives and completion",
       "level": 2,
       "key": "scope__Objectives and completion",
-      "block_index": 6,
+      "block_index": 15,
       "bookmark": "OL_scope__Objectives_and_completion",
       "section_index": 0
     },
@@ -45,6 +61,14 @@
       "key": "architecture__Configuration and loading feedback",
       "block_index": 8,
       "bookmark": "OL_architecture__Configuration_50e06636",
+      "section_index": 1
+    },
+    {
+      "title": "Design decisions",
+      "level": 2,
+      "key": "architecture__Design decisions",
+      "block_index": 13,
+      "bookmark": "OL_architecture__Design_decisions",
       "section_index": 1
     },
     {
@@ -160,10 +184,26 @@
       "section_index": 5
     },
     {
+      "title": "Ranked risks",
+      "level": 2,
+      "key": "test-design__Ranked risks",
+      "block_index": 4,
+      "bookmark": "OL_test_design__Ranked_risks",
+      "section_index": 5
+    },
+    {
+      "title": "Test mix",
+      "level": 2,
+      "key": "test-design__Test mix",
+      "block_index": 7,
+      "bookmark": "OL_test_design__Test_mix",
+      "section_index": 5
+    },
+    {
       "title": "Choosing useful cases",
       "level": 2,
       "key": "test-design__Choosing useful cases",
-      "block_index": 3,
+      "block_index": 10,
       "bookmark": "OL_test_design__Choosing_useful_cases",
       "section_index": 5
     },
@@ -171,7 +211,7 @@
       "title": "Visible results and box regression",
       "level": 2,
       "key": "test-design__Visible results and box regression",
-      "block_index": 9,
+      "block_index": 16,
       "bookmark": "OL_test_design__Visible_result_1f3ec1d4",
       "section_index": 5
     },
@@ -219,24 +259,24 @@
       "title": "A slow connection that could never finish",
       "level": 2,
       "key": "investigation__A slow connection that could never finish",
-      "block_index": 16,
+      "block_index": 17,
       "bookmark": "OL_investigation__A_slow_conne_94ca6672",
       "section_index": 6
     },
     {
-      "title": "Findings from a multi-agent review",
+      "title": "Cache write, missing Content-Length and Clear during analysis",
       "level": 2,
-      "key": "investigation__Findings from a multi-agent review",
-      "block_index": 19,
-      "bookmark": "OL_investigation__Findings_fro_9b046580",
+      "key": "investigation__Cache write, missing Content-Length and Clear during analysis",
+      "block_index": 21,
+      "bookmark": "OL_investigation__Cache_write__606acc8b",
       "section_index": 6
     },
     {
-      "title": "Current recovery wording and assertion gaps",
+      "title": "Stage-specific recovery wording",
       "level": 2,
-      "key": "investigation__Current recovery wording and assertion gaps",
-      "block_index": 22,
-      "bookmark": "OL_investigation__Current_reco_e6d6d428",
+      "key": "investigation__Stage-specific recovery wording",
+      "block_index": 24,
+      "bookmark": "OL_investigation__Stage_specif_f748b623",
       "section_index": 6
     },
     {
@@ -248,10 +288,26 @@
       "section_index": 7
     },
     {
+      "title": "Earlier recorded runs",
+      "level": 2,
+      "key": "verification__Earlier recorded runs",
+      "block_index": 3,
+      "bookmark": "OL_verification__Earlier_recorded_runs",
+      "section_index": 7
+    },
+    {
+      "title": "Core rules broken on purpose",
+      "level": 2,
+      "key": "verification__Core rules broken on purpose",
+      "block_index": 11,
+      "bookmark": "OL_verification__Core_rules_br_30fccd39",
+      "section_index": 7
+    },
+    {
       "title": "Release decision",
       "level": 2,
       "key": "verification__Release decision",
-      "block_index": 6,
+      "block_index": 16,
       "bookmark": "OL_verification__Release_decision",
       "section_index": 7
     },
@@ -296,6 +352,14 @@
       "section_index": 8
     },
     {
+      "title": "Interview story (draft)",
+      "level": 2,
+      "key": "operation__Interview story (draft)",
+      "block_index": 16,
+      "bookmark": "OL_operation__Interview_story__draft_",
+      "section_index": 8
+    },
+    {
       "title": "Terms and source references",
       "level": 1,
       "key": "reference",
@@ -305,7 +369,7 @@
     }
   ],
   "figure_count": 5,
-  "table_count": 11,
+  "table_count": 19,
   "assets": [
     {
       "declared_path": "../screenshots/review-followup/desktop.png",

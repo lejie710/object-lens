@@ -5,25 +5,25 @@
     "subtitle": "System design and software quality",
     "audience": "Tan Le Jie",
     "language": "en",
-    "edition": "2.2",
+    "edition": "2.3",
     "status": "verified",
-    "date": "4 November 2026",
-    "documented_commit": "f1a19a9 plus source hashes in the evidence record",
-    "evidence_revision": "docs/evidence/branch-review-verification.json",
+    "date": "",
+    "documented_commit": "be34c5e plus source hashes in the evidence record",
+    "evidence_revision": "docs/evidence/release-verification.json",
     "source_repository": "object-lens",
     "source_visibility": "private",
     "outputs": [
       "Object_Lens_System_Design.docx",
       "Object_Lens_System_Design.pdf"
     ],
-    "evidence_policy": "The current branch-review suite determines this local assessment. Historical 26-, 48-, 59-, 72-, 93- and 98-case records retain their dates and are not added together.",
+    "evidence_policy": "The recorded full suite in release-verification.json determines this assessment. Records of earlier commits are listed by commit hash and are never added to it.",
     "content_authority": "source.json",
     "pending_items": [],
     "reviewed_source_sha256": {
       "asset-lock.json": "9304dd88602a161c3ac1e580fa559e01a22f285c57573bf77d708b0c1af58216",
       "credits-lock.json": "095633d230a4a2300a3bd612b15eb76baf7253561b4df7713ea6c397f584fe2f",
       "dist/app.js": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
-      "dist/credits.html": "38673103e5133b79e0c53e949d4b65dd42485d164f46b56c968a230a714bd6c0",
+      "dist/credits.html": "69d9c14ed1a2781085fb6e56b3fb75ac66dbb947173925284fb1960e7670a4ae",
       "dist/index.html": "d4b6944c8c2bce55a69903173d7fc6c009bddc49170ec3a461075ffa07d774bd",
       "dist/png-export.js": "cb7171cec270e245a78f70a8f56cd62a921157825458a3aeb97ac8b513948c41",
       "dist/runtime-config.json": "80c98bfac072ba06f97197da8758f21bf1f8988a75b5302001b0eb22787d5d77",
@@ -49,46 +49,43 @@
       "tests/test_ui.py": "513bed45e14ccdb47dc4012548ba1a69b22568f9cfec13aa446e6bea822334d6",
       "tools/browser_check.py": "73c6355674fa3396a48e5768a50fcfd3050b1ed83a16fee5051f150bb1c9bfb7",
       "tools/build_baseline.py": "7df1b3bed0b1a35cb6f84b654027c4d39a72b7f3b6ba9c0f3b77f657f9fb995f",
-      "tools/build_public_demo.py": "290b05258a5503a3e1cf316e46071057ba78e632992401969773fe2de862c8da",
-      "tools/capture_demo.py": "2314f9d3803ded341e66303456dec5c323a9f4dcc4a8f0a17d7a934509af8e67",
+      "tools/build_public_demo.py": "634b05ca1119776ff337e20ff3ce0a483f9f98d7fc14514c988a84b53e891ce6",
+      "tools/capture_demo.py": "ad053eb75838f81ee2180ba6fe20fb9d26188adf5ab719c67a5a7f33331ca7bf",
       "tools/capture_review.py": "0ff79a91c28abf51527f2d21a519026e22b5519f42569351a5ef61dcad2d0acb",
       "tools/check_public_demo.py": "17d8109d864634def9653b02020bbf9d259d06a5ef111377b06bb59aa52c812a",
-      "tools/check_recovery_comparison.py": "2bc34925b09a8edb323f60c4dea4405d7b64ee47e7ce466dcb1fdb72d4647106",
-      "tools/check_review_sensitivity.py": "17b3110bbe20496c60100abe981ba01f89b037cf6025cfc3c45c72f44ca921d4",
-      "tools/collect_evidence.py": "c439610662e85f17baf66ad046556288e93da8217fdcc6fd6356282de5576168",
+      "tools/check_recovery_comparison.py": "ad92bb657da19b006a2685b460c06aa0889331dc91dabeaf84cec2cc0e698d9e",
+      "tools/check_review_sensitivity.py": "40f6ab987570eef46cc13b09bdfd97a304f1d13b98a432c2590134f2dd98d4ca",
+      "tools/collect_evidence.py": "9bb8ed26c79fe2e6776b0d91bf1c45d9d5975c11ec38205d1f9716546712d3a6",
       "tools/download_samples.py": "2d9c0a95fc4a8613e58d399e2e3fbedd6d4acb2e4c3489a2c7d5cd6f66f7dae9",
       "tools/fetch_upstream.py": "6517139f8f7feb670461a606b2bf90bc9bf835d9bfdcf50956685c6d1cbc4b14",
       "tools/prepare_assets.py": "8733667b051c6de9b25d742c4c29476df9177d4b88486ac96bd685a0d6d6dc2c",
-      "tools/record_verification.py": "4eea09f251ff74d6cbca3151fb40032679daecbeb909485fd0d9d397e0c9d5f0"
+      "tools/record_verification.py": "7c4c88f4cda88faa0bc35562a224b7a88e2477feed6a9b1ae0eaf058915c140b"
     },
     "evidence_sha256": {
-      "docs/evidence/followup-verification.json": "82b5ea34d1ec9d12f810e5dd88e66b7feb7371f8043701a82db000acc5a1570d",
-      "docs/evidence/branch-review-verification.json": "37eb81b337e70c42712a6734a1910c6df249a327b690afa87befb22a4dc98d35",
-      "docs/evidence/followup-full-suite.xml": "f269bfe9b7f708d97495d041b3666c8bf3fed143222cc3fab59c818e71924414",
-      "docs/evidence/branch-review-full-suite.xml": "54d1d31a1f170cfe81824437839a755ef4c51efbc4936dec2e88a7712b6a7c7c",
-      "docs/evidence/followup-sensitivity.json": "46fdfd2ded3b2717348f0eb18a7942781be7ec506815679f60fe1ab1c3f1fd3c",
-      "docs/evidence/branch-review-sensitivity.json": "a54110200664a714173c52be9494f914f72cf92cf4691631e259874a21425c53",
-      "docs/evidence/followup-rendered-review.json": "4f404e7f59a400a8c62bb221612526ec970a180134ffa6e9255f9fdbebd239c9",
-      "docs/evidence/branch-review-rendered-review.json": "c8dc57c7b96b4c799d452e7c578e3e42d8165e620315d0ccc6f79991c552427b",
-      "docs/evidence/followup-recovery-comparison.json": "523bf6cdb55f48d8ab42c297692984164ea3a293ef20394de5c9f67ea53b43d1",
+      "docs/evidence/release-verification.json": "12c81d0774335342a726d735aef6cfced837649f182e8783c8598d59e0db5eef",
+      "docs/evidence/release-full-suite.xml": "53a55984718e7f2b8f79b3a07c43aa24ec4f1a58251f3a2809c5511f396d8d5e",
+      "docs/evidence/release-sensitivity.json": "38da1c553e02699b654024d57081e23ae4167433ad0fe500778a5d88d10fb4f2",
+      "docs/evidence/release-rendered-review.json": "53b592a80b5e12897f035a75006ce240395717d610134ff241a01eb7744241d2",
+      "docs/evidence/release-package.json": "129507a83b99d4bcda70babd79ac06f783e43fd2ec0f042d84d8b2f78f63054a",
+      "docs/evidence/branch-review-slow-transfer.json": "09e575987ad6c4b29ac1df951d8fcb946b5de1628d50c8bbdd8d30bb4e8dba10",
       "docs/evidence/branch-review-recovery-comparison.json": "0ae5d2dba29197fa8a2c75abc4c4bf03241e6becd5b1a608abba4494ecf5126c",
-      "docs/evidence/followup-package.json": "c94b19092328000bc79a9178dd15e55a4213d299c97d7d4ea24e859c2f073fed",
-      "docs/evidence/branch-review-package.json": "beaa620e25d3f1fe6e89c77eb56278cc8f3db5b539c2ca9d480a0cfe84d065cf",
-      "docs/evidence/model-observations.json": "2fc47a23ea4d948ec2558c479e9b7802d2012406ff32c977c3a23f635efcdd17",
-      "docs/evidence/viewport-before-fix.xml": "45b7b5bb258a685f30057f868f86caf3cda5f357a8eb3a2d6026f0326b09fa9f",
-      "docs/evidence/extension-demo.json": "615fe81c42445ad5b7c93a119801ec9f84ea56a255a4dbc00a1e67cc11fbb360",
-      "docs/evidence/extension-first-full-suite.xml": "b3e59ee17b826aae4e51adbb3830140038dbf94e01e56b8d7ac339f7f1958d72",
+      "docs/evidence/branch-review-full-suite.xml": "54d1d31a1f170cfe81824437839a755ef4c51efbc4936dec2e88a7712b6a7c7c",
+      "docs/evidence/branch-review-sensitivity.json": "a54110200664a714173c52be9494f914f72cf92cf4691631e259874a21425c53",
+      "docs/evidence/loading-followup-full-suite.xml": "8feca661b22d8b64d3eea95644a1991cc7f746c67e575309de25a74e59941661",
+      "docs/evidence/followup-full-suite.xml": "f269bfe9b7f708d97495d041b3666c8bf3fed143222cc3fab59c818e71924414",
       "docs/evidence/review-full-suite.xml": "9acaa63a83cfb379eff4ccc8e751b79d155be65ad7aa352db2facadf39571c1e",
       "docs/evidence/public-prep-full-suite.xml": "4cb86214a0ca91c236fa8fb21936cbee2920981b602ce2bdf91a865411876e5a",
       "docs/evidence/extension-full-suite.xml": "7161e88ffaa99703d9070e7f0c218cba93249b8e1c2b082e792224bb7a85a257",
+      "docs/evidence/extension-first-full-suite.xml": "b3e59ee17b826aae4e51adbb3830140038dbf94e01e56b8d7ac339f7f1958d72",
+      "docs/evidence/extension-verification.json": "22d2686c537f880297facef85f7dca8748976902d1e9930f177fa4a1e0786f22",
+      "docs/evidence/extension-demo.json": "615fe81c42445ad5b7c93a119801ec9f84ea56a255a4dbc00a1e67cc11fbb360",
+      "docs/evidence/viewport-before-fix.xml": "45b7b5bb258a685f30057f868f86caf3cda5f357a8eb3a2d6026f0326b09fa9f",
+      "docs/evidence/model-observations.json": "2fc47a23ea4d948ec2558c479e9b7802d2012406ff32c977c3a23f635efcdd17",
       "docs/evidence/stability-summary.json": "07c63ee5a77d7e2339e680eabe13b24b0d166d648d882974519ac001622e9b70",
       "docs/screenshots/review-followup/desktop.png": "4d86d92f4dcd5f84c5ee1c7f36256f4f5995bf2dae852d77d16717e85bc1ec5e",
-      "docs/screenshots/review-followup/export.png": "a74cbc0fb02034136299010a9fcc2c2f22241fb0aa8ba38cdf70ab4f7fb57482",
-      "docs/evidence/branch-review-slow-transfer.json": "09e575987ad6c4b29ac1df951d8fcb946b5de1628d50c8bbdd8d30bb4e8dba10",
-      "docs/evidence/loading-followup-verification.json": "4121abe8b0526d4e357a6607665eb78fc82c02ae7769b8fcf84e890513c21eb3",
-      "docs/evidence/audit-17f2b9a-full-suite.xml": "1398f4a1cec7bf91d5fc69246d9d1230313143ba5a623d7bb66bd49abeee3ff2"
+      "docs/screenshots/review-followup/export.png": "a74cbc0fb02034136299010a9fcc2c2f22241fb0aa8ba38cdf70ab4f7fb57482"
     },
-    "base_commit": "f1a19a9c6ae7555cae8f9e69b616ef79fd8232c7"
+    "base_commit": "be34c5ed875e1a15e33cde43356f939c16f93332"
   },
   "cover": [
     {
@@ -107,7 +104,7 @@
     },
     {
       "type": "paragraph",
-      "text": "This edition refreshes the current application after the branch review and the evidence needed for a bounded local release. It explains stage-specific recovery, a loading deadline that tolerates slow but steady connections, visible-output assertions and box-position regression. The exact tested source is identified by file hashes; public website upload remains parked. Passing these checks does not establish general object-recognition accuracy.",
+      "text": "This document covers the application and the evidence for a bounded local release: the question it answers, stage-specific recovery, a loading deadline that tolerates slow but steady connections, visible-output assertions and box-position regression. The tested source is identified by file hashes. No public website deployment is included. Passing these checks does not establish general object-recognition accuracy.",
       "sources": [],
       "status": "source_verified"
     }
@@ -115,7 +112,7 @@
   "reading_route": [
     {
       "type": "paragraph",
-      "text": "Start with scope and architecture, then follow image processing and the separate testing path. Verification records the current result and its limits. Figures are explanatory diagrams; screenshots are actual captures. Controlled failures, deliberate source faults and real model observations are identified separately.",
+      "text": "Start with the question and scope, then architecture, image processing and the separate testing path. Verification records the result and its limits. Figures are explanatory diagrams; screenshots are actual captures. Controlled failures, deliberate source faults and real model observations are identified separately.",
       "sources": [],
       "status": "source_verified"
     }
@@ -132,8 +129,43 @@
           "status": "ready"
         },
         {
+          "type": "heading",
+          "level": 2,
+          "text": "The question"
+        },
+        {
           "type": "paragraph",
-          "text": "The source repository remains private. A static public package is prepared locally from an explicit allowlist, but website upload is parked and there is no verified public URL. A local server, source publication and deployment are separate operations.",
+          "text": "When someone tries a browser object detector on their own photos, switching images quickly, on a slow connection, or when the model returns something broken, can the page show results that belong to a different photo, misplace boxes, or get stuck with no way to recover?",
+          "sources": [
+            "docs/DESIGN.md"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "paragraph",
+          "text": "Measure: a controlled test for each of those failures, every core rule the answer depends on caught when broken on purpose, and a model download throttled to 2.5 Mbps compared with a fixed loading deadline and with stall-based loading.",
+          "sources": [],
+          "status": "source_verified"
+        },
+        {
+          "type": "paragraph",
+          "text": "Result: each failure has a controlled test, the suite has 102 tests, and every core rule made at least one test fail when it was broken on purpose (see Core rules broken on purpose in Verification and release assessment). At 2.5 Mbps, a fixed 120-second deadline failed at 121 s with 86 percent of the model received; the stall-based loading reached ready at 140.6 s.",
+          "sources": [
+            "docs/evidence/release-verification.json",
+            "docs/evidence/release-sensitivity.json",
+            "docs/evidence/branch-review-slow-transfer.json"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "paragraph",
+          "text": "Scope the answer holds for: Windows with Chrome, one image at a time, the pinned model (Transformers.js 2.17.2 with a quantized DETR model), synthetic test images and small public photos. Failure cases use a controlled test worker; four tests run the real model. The answer says nothing about how accurate the model is.",
+          "sources": [],
+          "status": "source_verified"
+        },
+        {
+          "type": "paragraph",
+          "text": "The source repository is private. A static public package is prepared locally from an explicit allowlist, but it is not deployed and there is no verified public URL. A local server, source publication and deployment are separate operations.",
           "sources": [],
           "status": "source_verified"
         },
@@ -147,7 +179,7 @@
           "type": "figure",
           "id": "app-overview",
           "path": "../screenshots/review-followup/desktop.png",
-          "caption": "Figure 1  Current application after real inference on the public coffee sample, captured on 3 November 2026; the 4 November recapture was identical. The selected prediction links its visible row to its box; credits remain available.",
+          "caption": "Figure 1  Application after real inference on the public coffee sample. The selected prediction links its visible row to its box; credits remain available.",
           "alt": "Actual application screenshot showing the image, prediction boxes, result list, minimum score, Try sample and Save result controls.",
           "status": "verified_actual_capture"
         },
@@ -193,10 +225,83 @@
           ]
         },
         {
+          "type": "heading",
+          "level": 2,
+          "text": "Non-goals and rabbit holes"
+        },
+        {
           "type": "paragraph",
-          "text": "Accounts, databases, camera/video processing, model training, a model picker and additional AI services are outside this version. The purpose is to explore a working AI-enabled interface and software test automation without maintaining a larger service.",
+          "text": "Each non-goal has a reason. The application also has no camera, video, batch processing, model picker or GPU tuning; these follow from the one-image, one-model scope.",
+          "sources": [
+            "docs/DESIGN.md"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "table",
+          "caption": "Table 2  Non-goals",
+          "columns": [
+            "Non-goal",
+            "Reason"
+          ],
+          "rows": [
+            [
+              "Model training or accuracy evaluation",
+              "The tests check how the app handles model output, not whether the model is accurate."
+            ],
+            [
+              "Accounts, upload records or image history",
+              "One image at a time, and photos never leave the browser, so nothing needs storing."
+            ],
+            [
+              "Hosted inference API or cloud deployment",
+              "The model runs locally in the user's browser."
+            ],
+            [
+              "Other browsers and mobile",
+              "Verified only on Windows with Chrome; the scope is kept small enough to test thoroughly."
+            ],
+            [
+              "Resumable model download",
+              "Try again restarts from zero; resuming would require changing the underlying library."
+            ]
+          ],
+          "widths": [
+            2.2,
+            3.9
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "A rabbit hole is a piece of work that could absorb the project without answering the question. Each one below was removed by a decision recorded under Design decisions in the architecture chapter.",
           "sources": [],
-          "status": "ready"
+          "status": "source_verified"
+        },
+        {
+          "type": "table",
+          "caption": "Table 3  Rabbit holes",
+          "columns": [
+            "Rabbit hole",
+            "Decision that removed it"
+          ],
+          "rows": [
+            [
+              "Upgrading to Transformers.js v3",
+              "Stay pinned at 2.17.2 (D1)."
+            ],
+            [
+              "Hand-made ground-truth boxes for the real-model checks",
+              "Compare with the pinned model's own recorded output and call it regression, not accuracy (D2)."
+            ],
+            [
+              "Making a slow-network download reliable",
+              "A stall watchdog that asks \"is it still moving?\" instead of a fixed deadline, with no resume (D3)."
+            ]
+          ],
+          "widths": [
+            2.4,
+            3.7
+          ]
         },
         {
           "type": "heading",
@@ -211,7 +316,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Completion requires the agreed features to work together, relevant tests and UI checks to pass, an actual PNG export to match the visible predictions, and this document to describe the final source. Source publication and online deployment remain separate decisions.",
+          "text": "Completion requires the features in docs/DESIGN.md to work together, relevant tests and UI checks to pass, an actual PNG export to match the visible predictions, and this document to describe the tested source. Source publication and online deployment are separate decisions.",
           "sources": [],
           "status": "ready"
         }
@@ -229,7 +334,7 @@
         },
         {
           "type": "table",
-          "caption": "Table 2  Technology responsibilities",
+          "caption": "Table 4  Technology responsibilities",
           "columns": [
             "Component",
             "What it does",
@@ -305,7 +410,7 @@
         },
         {
           "type": "paragraph",
-          "text": "The recorded base uses Transformers.js 2.17.2 and ONNX Runtime Web 1.14.0 with a quantized Xenova/detr-resnet-50 model. Exact sources, model revision, file sizes and SHA-256 hashes are recorded in asset-lock.json. The version pins make the tested setup reproducible; they do not mean that these are the newest releases.",
+          "text": "The application uses Transformers.js 2.17.2 and ONNX Runtime Web 1.14.0 with a quantized Xenova/detr-resnet-50 model. Exact sources, model revision, file sizes and SHA-256 hashes are recorded in asset-lock.json. The version pins make the tested setup reproducible; they do not mean that these are the newest releases.",
           "sources": [],
           "status": "ready"
         },
@@ -359,6 +464,58 @@
             "docs/PUBLIC_DEMO.md"
           ],
           "status": "source_verified"
+        },
+        {
+          "type": "page_break"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Design decisions"
+        },
+        {
+          "type": "paragraph",
+          "text": "Three decisions shape the application and its tests. Each records the context, the option chosen, the alternatives weighed and the cost accepted.",
+          "sources": [
+            "docs/DESIGN.md"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "table",
+          "caption": "Table 5  Design decisions",
+          "columns": [
+            "Decision",
+            "Context and choice",
+            "Alternatives weighed",
+            "Cost accepted"
+          ],
+          "rows": [
+            [
+              "D1 Run a pinned model in the browser",
+              "Detection on the user's own photos without accounts or a server that stores images. Transformers.js 2.17.2 runs a local quantized DETR model in a Web Worker, pinned to that version.",
+              "A hosted inference API, which sends photos off the device; upgrading to Transformers.js v3, which changes the API used by the original example.",
+              "CPU-only analysis of about 8 to 14 seconds per image, a 43 MB first download and an older library."
+            ],
+            [
+              "D2 Controlled worker for most tests, real model for a few",
+              "The important risks are timing, stalls, crashes and malformed output, which the real model cannot produce on demand. 98 tests run without the real model; 4 run it.",
+              "Testing everything against the real model, which is slow and cannot create most failure cases reproducibly.",
+              "Most tests never run the model, so model-side problems rely on the 4 real-model tests and manual observation."
+            ],
+            [
+              "D3 Judge model loading by stalls, not total time",
+              "A fixed total deadline failed a steady 2.5 Mbps download at 86 percent. Loading fails only after 45 seconds without progress; initialization after the transfer has its own 120-second deadline.",
+              "A longer fixed deadline such as 300 seconds; a resumable download, which needs changes to the underlying library.",
+              "Try again restarts the download from zero, and a real disconnect takes 45 seconds to report."
+            ]
+          ],
+          "widths": [
+            1.2,
+            2.0,
+            1.5,
+            1.4
+          ]
         }
       ]
     },
@@ -385,7 +542,7 @@
         },
         {
           "type": "code",
-          "caption": "Excerpt 1  Real inference call from the final worker",
+          "caption": "Excerpt 1  Real inference call in the worker",
           "text": "const predictions = await detector(data.image, { threshold: 0.5, percentage: true });",
           "source": {
             "file": "dist/worker.js",
@@ -395,7 +552,7 @@
         },
         {
           "type": "table",
-          "caption": "Table 3  One prediction",
+          "caption": "Table 6  One prediction",
           "columns": [
             "Field",
             "Meaning",
@@ -532,7 +689,7 @@
         },
         {
           "type": "paragraph",
-          "text": "In the recorded base coffee run, one spoon prediction scored about 0.67 and another about 0.93. A display minimum of 0.80 would hide the first and retain the second. This is a concrete filtering example, not evidence that the retained prediction is necessarily correct.",
+          "text": "In the recorded coffee observation (model-observations.json), one spoon prediction scored about 0.67 and another about 0.93. A display minimum of 0.80 would hide the first and retain the second. This is a concrete filtering example, not evidence that the retained prediction is necessarily correct.",
           "sources": [],
           "status": "ready"
         },
@@ -626,7 +783,7 @@
           "type": "figure",
           "id": "png-output",
           "path": "../screenshots/review-followup/export.png",
-          "caption": "Figure 4  Actual PNG saved on 3 November 2026, and recaptured identically on 4 November, from the coffee sample at minimum score 0.80. It contains the photo and three visible prediction annotations, without application controls.",
+          "caption": "Figure 4  Actual PNG saved from the coffee sample at minimum score 0.80. It contains the photo and three visible prediction annotations, without application controls.",
           "alt": "Actual saved PNG showing the photo with aligned visible prediction boxes, labels and scores, without application controls or a summary strip.",
           "status": "verified_actual_capture"
         },
@@ -649,7 +806,7 @@
         },
         {
           "type": "table",
-          "caption": "Table 4  Application and test commands",
+          "caption": "Table 7  Application and test commands",
           "columns": [
             "Command from the project folder",
             "What it does",
@@ -771,91 +928,237 @@
         },
         {
           "type": "table",
-          "caption": "Table 5  Acceptance criteria and check locations",
+          "caption": "Table 8  Acceptance examples and named tests",
           "columns": [
-            "ID",
-            "Acceptance criterion",
-            "Representative checks"
+            "Criterion",
+            "Given / When / Then",
+            "Named tests"
           ],
           "rows": [
             [
-              "AC1",
-              "Accept valid JPEG/PNG within byte and pixel limits; reject invalid input usefully",
-              "test_ui.py: test_file_size_boundary, pixel boundary, invalid/truncated content and JPEG orientation"
+              "AC1 Input limits",
+              "Given a valid PNG of exactly 10 MiB, when the user selects it, then it is analysed; given one byte more, then an error names the 10 MiB limit and no predictions appear. 4000 by 4000 pixels is analysed; 4001 by 4000 is rejected.",
+              "tests/test_ui.py::\ntest_file_size_boundary\ntests/test_ui.py::\ntest_decoded_pixel_boundary\ntests/test_ui.py::\ntest_invalid_input_is_rejected_and_valid_input_recovers\ntests/test_ui.py::\ntest_truncated_png_body_is_rejected_and_recovers"
             ],
             [
-              "AC2",
-              "The current image has one matching row for each displayed box",
-              "test_ui.py: visible names/scores, identity and geometry; test_inference.py: three selected-box regressions"
+              "AC2 Results match the current image",
+              "Given a photo for which the model returns laptop (0.97) and cup (0.91), when analysis completes, then the list shows exactly \"laptop 0.97\" and \"cup 0.91\", each with one labelled box at the returned coordinates within 2 CSS pixels.",
+              "tests/test_ui.py::\ntest_predictions_and_boxes_match_the_current_image\ntests/test_ui.py::\ntest_jpeg_exif_orientation_preserves_display_and_box_alignment\ntests/test_inference.py::\ntest_real_model_detects_reviewed_object"
             ],
             [
-              "AC3",
-              "Selection highlights its matching box; Clear removes current content",
-              "test_ui.py: result selection, replacement and keyboard Clear"
+              "AC3 Selection and Clear",
+              "Given laptop and cup results, when the user selects cup, then only the cup box is highlighted; when the user activates Clear with the keyboard, then the image, boxes and list are removed.",
+              "tests/test_ui.py::\ntest_selecting_a_result_highlights_its_box\ntests/test_ui.py::\ntest_clear_is_reachable_and_usable_with_keyboard"
             ],
             [
-              "AC4",
-              "Older results cannot repaint a replacement image or cleared view",
-              "test_ui.py: delayed result replacement and Clear; test_sample.py: late fetch after Clear/upload"
+              "AC4 An old result cannot repaint",
+              "Given a dog photo still being analysed, when the user selects a car photo, then \"dog\" never appears; when the user presses Clear instead, then the workspace stays empty.",
+              "tests/test_ui.py::\ntest_replacing_a_processing_image_discards_the_old_result\ntests/test_ui.py::\ntest_clearing_a_processing_image_prevents_late_repaint"
             ],
             [
-              "AC5",
-              "Invalid input, empty results and inference failure remain distinct and recoverable",
-              "test_recovery.py: malformed output, loading/inference failure, Clear and successful retry"
+              "AC5 Failures are visible and recoverable",
+              "Given an analysis that fails, returns malformed output, never answers or crashes the worker, when it ends, then the page says what failed with Try again and shows no partial predictions, and the next valid image or Try again recovers. An empty result is not an error.",
+              "tests/test_ui.py::\ntest_empty_predictions_are_not_an_error\ntests/test_ui.py::\ntest_nonresponding_worker_times_out_and_retries_the_latest_image\ntests/test_recovery.py::\ntest_malformed_result_is_rejected_without_partial_detections_and_recovers\ntests/test_recovery.py::\ntest_inference_timeout_clear_and_retry_describe_detector_availability"
             ],
             [
-              "AC6",
-              "Keyboard controls, narrow layout and configured status/error announcements remain usable",
-              "test_ui.py: viewport, visible error content, roles and live-region settings; keyboard checks"
+              "AC6 Keyboard, announcements and narrow screens",
+              "Given a completed result, when the user tabs through the page, then Clear, Try sample and the minimum-score control are reachable and usable; at 320 or 390 CSS pixels the page does not scroll sideways.",
+              "tests/test_ui.py::\ntest_clear_is_reachable_and_usable_with_keyboard\ntests/test_ui.py::\ntest_status_and_error_announcement_configuration_follows_visible_states\ntests/test_ui.py::\ntest_narrow_layout_preserves_results_and_does_not_overflow\ntests/test_sample.py::\ntest_try_sample_is_keyboard_reachable_and_activates_with_enter\ntests/test_filter.py::\ntest_minimum_score_has_accessible_label_and_keyboard_controls"
             ],
             [
-              "AC7",
-              "The filter consistently selects retained current predictions using raw scores",
-              "test_filter.py: raw-score boundary, restore without inference, duplicate/stable identity, selection, reset, errors and keyboard"
+              "AC7 Score filter",
+              "Given spoon (0.7999), cup (0.80) and bottle (0.95), when the minimum is set to 0.80, then cup and bottle remain in the list and the boxes; when it returns to 0.50, then all three return without a second inference request.",
+              "tests/test_filter.py::\ntest_exact_minimum_filters_underlying_scores_and_restores_without_inference\ntests/test_filter.py::\ntest_filter_preserves_result_identity_color_and_surviving_selection"
             ],
             [
-              "AC8",
-              "Try sample follows ordinary image validation and inference",
-              "test_sample.py: fetch/decode failure, timeout, replacement and keyboard; test_inference.py: real coffee through Try sample"
+              "AC8 Try sample",
+              "Given a held sample response, when the user presses Clear or selects car.png before it arrives, then after the response is released the workspace stays empty or keeps showing car.",
+              "tests/test_sample.py::\ntest_late_sample_response_cannot_override_a_later_user_action\ntests/test_sample.py::\ntest_sample_fetch_or_decode_failure_can_be_retried"
             ],
             [
-              "AC9",
-              "PNG output contains the current visible annotations at oriented resolution",
-              "test_export.py: orientation, retained/excluded pixels, failed/late encoding and recovery"
+              "AC9 PNG export",
+              "Given a 640 by 480 photo filtered at 0.80, when the user presses Save result, then the PNG is 640 by 480 with the cup box and no pixels of the hidden spoon box; when Clear, a new image or a filter change happens during encoding, then nothing downloads.",
+              "tests/test_export.py::\ntest_downloaded_png_contains_only_filtered_boxes_at_original_dimensions\ntests/test_export.py::\ntest_changed_result_cancels_a_png_still_being_encoded"
             ],
             [
-              "AC10",
-              "Startup is bounded and preserves the correct current state",
-              "test_startup.py, test_loading.py and test_recovery.py: configuration deadline, progress including the no-Content-Length shape, stall, completed-transfer and initialization deadlines, preparation and retired workers"
+              "AC10 Startup and model loading",
+              "Given a transfer that keeps reporting progress for longer than several stall windows, when it finishes, then it is not timed out; given a transfer that stops reporting progress, then the page reports the stall 45 seconds after the last event and asks the user to check the connection.",
+              "tests/test_recovery.py::\ntest_slow_steady_model_transfer_is_not_timed_out\ntests/test_recovery.py::\ntest_stalled_model_transfer_times_out_after_its_last_progress\ntests/test_recovery.py::\ntest_model_initialization_has_its_own_deadline"
             ],
             [
-              "AC11",
-              "The package exposes only approved public files and runs with an ordinary static server",
-              "test_public_package.py: allowlist, hashes, privacy/provenance and actual model/export"
+              "AC11 Public package",
+              "Given the built package on an ordinary static server, when the user tries the sample, filters at 0.80 and saves, then the real model returns a cup and the PNG is 600 by 400. The ZIP contains exactly the manifest files.",
+              "tests/test_public_package.py::\ntest_public_zip_exactly_matches_manifest_and_excludes_private_material\ntests/test_public_package.py::\ntest_packaged_site_runs_real_sample_filter_and_export_on_an_ordinary_static_server\ntests/test_server.py::\ntest_controlled_worker_requires_explicit_test_mode"
             ]
           ],
           "widths": [
-            0.5,
-            2.85,
-            2.75
+            1.2,
+            2.1,
+            2.8
           ],
           "sources": [
-            "tests/test_ui.py",
-            "tests/test_filter.py",
-            "tests/test_sample.py",
-            "tests/test_export.py",
-            "tests/test_inference.py",
-            "tests/test_recovery.py",
-            "tests/test_startup.py",
-            "tests/test_loading.py",
-            "tests/test_public_package.py"
+            "docs/DESIGN.md"
           ]
         },
         {
           "type": "paragraph",
-          "text": "The check locations identify assertions in the documented source. The execution record in Verification and release assessment identifies which checks actually ran. Controlled fixture passes establish the specified application behavior, while actual-model runs supply a different and limited form of evidence.",
+          "text": "Each row is one concrete example of its criterion, with the tests that check it. docs/DESIGN.md gives every example in full, the complete test list for each criterion and the part of the question it answers; AC3, AC6, AC7 and AC11 are supporting criteria that keep the app usable. The three tests in tests/test_harness_cleanup.py check the test harness itself and map to no criterion.",
+          "sources": [
+            "docs/DESIGN.md"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "paragraph",
+          "text": "The named tests identify assertions in the documented source. The execution record in Verification and release assessment identifies which checks actually ran. Controlled fixture passes establish the specified application behavior, while actual-model runs supply a different and limited form of evidence.",
           "sources": [],
           "status": "source_verified"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Ranked risks"
+        },
+        {
+          "type": "paragraph",
+          "text": "The failures most likely to hurt the intended user are ranked below, most important first, with the tests that cover them. The last three rows are known risks that are not tested, with the reason.",
+          "sources": [
+            "docs/DESIGN.md"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "table",
+          "caption": "Table 9  Ranked risks and covering tests",
+          "columns": [
+            "Rank",
+            "Risk",
+            "Likelihood and impact",
+            "Covering test"
+          ],
+          "rows": [
+            [
+              "1",
+              "An old photo's result is shown on a new photo",
+              "Likely: analysis takes 8 to 14 seconds. High: the user trusts labels that belong to another photo.",
+              "tests/test_ui.py::\ntest_replacing_a_processing_image_discards_the_old_result\ntests/test_ui.py::\ntest_clearing_a_processing_image_prevents_late_repaint"
+            ],
+            [
+              "2",
+              "The model never finishes loading on a slow connection",
+              "Fairly likely: the model is a 43 MB download. High: the app is unusable.",
+              "tests/test_recovery.py::\ntest_slow_steady_model_transfer_is_not_timed_out\ntests/test_recovery.py::\ntest_stalled_model_transfer_times_out_after_its_last_progress\nthe 2.5 Mbps probe in branch-review-slow-transfer.json"
+            ],
+            [
+              "3",
+              "The page hangs or the detector crashes with no way to recover",
+              "Moderate. High: the user has to reload and may lose the photo.",
+              "tests/test_recovery.py::\ntest_inference_timeout_clear_and_retry_describe_detector_availability\ntests/test_ui.py::\ntest_nonresponding_worker_times_out_and_retries_the_latest_image"
+            ],
+            [
+              "4",
+              "Boxes are drawn in the wrong place",
+              "Low: the model is pinned. Medium to high: a correct label points at the wrong object.",
+              "tests/test_inference.py::\ntest_real_model_detects_reviewed_object\ntests/test_recovery.py::\ntest_partially_outside_box_is_clamped_to_the_rendered_image"
+            ],
+            [
+              "5",
+              "Broken model output is shown as a result",
+              "Low. High: nonsense appears as a real detection.",
+              "tests/test_recovery.py::\ntest_malformed_result_is_rejected_without_partial_detections_and_recovers (16 cases)"
+            ],
+            [
+              "6",
+              "A valid photo is rejected, or an oversized photo freezes the tab",
+              "Moderate. Medium.",
+              "tests/test_ui.py::\ntest_file_size_boundary\ntests/test_ui.py::\ntest_decoded_pixel_boundary"
+            ],
+            [
+              "7",
+              "The exported PNG differs from what is on screen",
+              "Moderate. Medium: the saved file misrepresents the result.",
+              "tests/test_export.py::\ntest_downloaded_png_contains_only_filtered_boxes_at_original_dimensions\ntests/test_export.py::\ntest_changed_result_cancels_a_png_still_being_encoded"
+            ],
+            [
+              "-",
+              "Repeated 45-second stalls on a poor connection",
+              "Not rated",
+              "Not tested, because resuming a download is a non-goal; each Try again restarts the download from zero."
+            ],
+            [
+              "-",
+              "Other browsers and mobile",
+              "Not rated",
+              "Not tested, because only Windows with Chrome is in scope."
+            ],
+            [
+              "-",
+              "Large real phone photos with EXIF rotation",
+              "Not rated",
+              "Not tested, because only synthetic images and small public photos are used; EXIF rotation is tested on a small synthetic JPEG."
+            ]
+          ],
+          "widths": [
+            0.55,
+            1.4,
+            1.3,
+            2.85
+          ]
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Test mix"
+        },
+        {
+          "type": "paragraph",
+          "text": "Each layer exists because of the risks it can reach. The counts are the cases collected in the recorded full suite.",
+          "sources": [
+            "docs/DESIGN.md",
+            "docs/evidence/release-full-suite.xml"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "table",
+          "caption": "Table 10  Test mix with actual counts",
+          "columns": [
+            "Layer",
+            "Why this layer",
+            "Tests"
+          ],
+          "rows": [
+            [
+              "Unit (browser-free Python)",
+              "The public package must not ship test mode, private files or changed assets, must take git provenance only from its own repository, and the harness must not leave browsers running; none needs a browser. 3 in test_harness_cleanup.py, 10 in test_public_package.py.",
+              "13"
+            ],
+            [
+              "Integration",
+              "A normal server must never serve the controlled test worker, otherwise fabricated predictions could be presented as model results (test_server.py).",
+              "1"
+            ],
+            [
+              "Browser end-to-end with the controlled worker",
+              "Risks 1, 2, 3, 5, 6 and 7 need exact timing, stalls, crashes and malformed output on demand. 25 in test_ui.py, 26 in test_recovery.py, 8 in test_export.py, 7 in test_filter.py, 7 in test_sample.py, 6 in test_startup.py, 5 in test_loading.py.",
+              "84"
+            ],
+            [
+              "Real-model end-to-end",
+              "Risk 4 and the real inference path need the actual model; each run is slow, so there are few. 3 in test_inference.py, 1 in test_public_package.py.",
+              "4"
+            ],
+            [
+              "Total",
+              "",
+              "102"
+            ]
+          ],
+          "widths": [
+            1.45,
+            3.95,
+            0.7
+          ]
         },
         {
           "type": "heading",
@@ -904,7 +1207,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Reading only data attributes can miss an empty visible label. The strengthened checks inspect rendered names in result rows and corresponding box labels, and formatted scores in result rows. Deliberately blanking that text in a disposable copy must fail the assertions even if data-label and data-score remain correct.",
+          "text": "Reading only data attributes can miss an empty visible label. The checks inspect rendered names in result rows and corresponding box labels, and formatted scores in result rows. Deliberately blanking that text in a disposable copy must fail the assertions even if data-label and data-score remain correct.",
           "sources": [
             "tests/test_ui.py",
             "tests/test_inference.py",
@@ -941,7 +1244,7 @@
         },
         {
           "type": "table",
-          "caption": "Table 6  Evidence to retain",
+          "caption": "Table 11  Evidence to retain",
           "columns": [
             "Evidence",
             "Question it helps answer"
@@ -968,7 +1271,7 @@
               "Which implementation and browser/runtime were exercised"
             ],
             [
-              "Follow-up result",
+              "Rerun after the fix",
               "Whether the proposed fix addressed the original reproduction"
             ]
           ],
@@ -984,13 +1287,13 @@
         },
         {
           "type": "paragraph",
-          "text": "The extension review found a genuine layout defect at a 320 CSS-pixel viewport. A vertical scrollbar left 305 pixels available to the document, but the body still had a 320-pixel minimum width. The page overflowed horizontally. The preserved failing test reports the comparison 320 <= 305 + 1 as false.",
+          "text": "A genuine layout defect occurred at a 320 CSS-pixel viewport. A vertical scrollbar left 305 pixels available to the document, but the body still had a 320-pixel minimum width. The page overflowed horizontally. The preserved failing test reports the comparison 320 <= 305 + 1 as false.",
           "sources": [],
           "status": "source_verified"
         },
         {
           "type": "table",
-          "caption": "Table 7  Narrow viewport before and after the correction",
+          "caption": "Table 12  Narrow viewport before and after the correction",
           "columns": [
             "Measurement",
             "Before",
@@ -1032,7 +1335,7 @@
         },
         {
           "type": "paragraph",
-          "text": "Changing the body's min-width from 320px to 0 lets the responsive layout use the actual available width. A subsequent real-model capture measured content and available widths of 305 and 305 at 320, and 375 and 375 at 390. The 768- and 1440-pixel layouts also fit their available widths. This finding combines an application fix with a stronger test measurement; it was not an injected source fault.",
+          "text": "Changing the body's min-width from 320px to 0 lets the responsive layout use the actual available width. A real-model capture of the corrected layout measured content and available widths of 305 and 305 at 320, and 375 and 375 at 390. The 768- and 1440-pixel layouts also fit their available widths. This finding combines an application fix with a stronger test measurement; it was not an injected source fault.",
           "sources": [
             "docs/evidence/viewport-before-fix.xml",
             "dist/style.css",
@@ -1048,9 +1351,11 @@
         },
         {
           "type": "paragraph",
-          "text": "The base verification included an isolated experiment that disabled the current-image revision guard. A delayed result for an earlier image could then appear on a replacement image, and the corresponding test detected it. This demonstrates that the check can expose that chosen fault. The fault was deliberately introduced in an isolated copy; it was not a naturally discovered production incident.",
-          "sources": [],
-          "status": "ready"
+          "text": "The sensitivity run disables the current-image revision guard in a disposable copy: the condition data.id === revision && currentImage?.id === revision becomes true. A delayed result for an earlier image can then appear on a replacement image, and tests/test_ui.py::test_replacing_a_processing_image_discards_the_old_result[slow-car.png] and tests/test_ui.py::test_clearing_a_processing_image_prevents_late_repaint fail. This demonstrates that the checks can expose that chosen fault. The fault is introduced deliberately in an isolated copy; it is not a naturally discovered production incident.",
+          "sources": [
+            "docs/evidence/release-sensitivity.json"
+          ],
+          "status": "source_verified"
         },
         {
           "type": "paragraph",
@@ -1065,7 +1370,7 @@
         },
         {
           "type": "paragraph",
-          "text": "The real base coffee run included duplicate spoon predictions, while another sample produced incorrect and duplicate labels. Those observations describe model behavior. If the application accurately renders the returned data, an incorrect model label is not by itself proof that the rendering code is broken.",
+          "text": "The real coffee run included duplicate spoon predictions, while another sample produced incorrect and duplicate labels. Those observations describe model behavior. If the application accurately renders the returned data, an incorrect model label is not by itself proof that the rendering code is broken.",
           "sources": [],
           "status": "ready"
         },
@@ -1082,7 +1387,7 @@
         },
         {
           "type": "paragraph",
-          "text": "The first combined extension run recorded 47 passes and one failure. The failure occurred when a timeout test expected an empty download folder but found downloads.htm.crdownload. The retained investigation identified a non-PNG CRX3 container holding model data. The producing process or component was not established, so the finding does not prove that Object Lens generated that file.",
+          "text": "One full-suite run (extension-first-full-suite.xml) recorded 47 passes and one failure. The failure occurred when a timeout test expected an empty download folder but found downloads.htm.crdownload. The retained investigation identified a non-PNG CRX3 container holding model data. The producing process or component was not established, so the finding does not prove that Object Lens generated that file.",
           "sources": [
             "docs/evidence/extension-first-full-suite.xml",
             "docs/evidence/extension-verification.json"
@@ -1091,12 +1396,15 @@
         },
         {
           "type": "paragraph",
-          "text": "The strict assertion was retained. The isolated test browser was then configured to resolve only localhost and 127.0.0.1 because its application and model assets are served locally. This change is confined to the test browser and does not alter the computer's network or security settings. The subsequent complete rerun passed all 48 cases.",
+          "text": "The strict assertion was retained. The isolated test browser is configured to resolve only localhost and 127.0.0.1 because its application and model assets are served locally. This setting is confined to the test browser and does not alter the computer's network or security settings. A complete rerun with that setting passed all 48 cases.",
           "sources": [
             "tests/conftest.py",
             "docs/evidence/extension-full-suite.xml"
           ],
           "status": "source_verified"
+        },
+        {
+          "type": "page_break"
         },
         {
           "type": "heading",
@@ -1105,31 +1413,69 @@
         },
         {
           "type": "paragraph",
-          "text": "An AI-assisted audit paced only the 43 MB model response at 2.5 Mbps on loopback. The fixed 120-second loading deadline fired with 86 percent received, and Try again restarted the transfer from zero. A steady connection below about 2.9 Mbps could therefore never load the detector, although the public-demo note said slow connections could recover by retrying.",
+          "text": "This defect is shown in the five parts used for every defect in docs/SOURCE_REVIEW.md: what failed, how it was detected, its impact, the cause in the system and the test that prevents it.",
           "sources": [
-            "docs/SOURCE_REVIEW.md",
-            "docs/evidence/branch-review-slow-transfer.json"
+            "README.md",
+            "docs/SOURCE_REVIEW.md"
           ],
           "status": "source_verified"
         },
         {
-          "type": "paragraph",
-          "text": "The deadline was protecting against a dead connection, not a slow one, so it now measures a stall. Each loading event restarts a 45-second window, and runtime initialization after the model's last byte keeps its own 120-second limit. Controlled tests cover a stalled transfer, a slow steady transfer and an initialization hang. The same paced transfer then completed and the detector became ready, at 139.6 seconds after the first fix and 140.6 seconds on the current source. This was an observed defect, not an injected fault.",
+          "type": "table",
+          "caption": "Table 13  The slow-connection defect in five parts",
+          "columns": [
+            "Part",
+            "Detail"
+          ],
+          "rows": [
+            [
+              "What failed",
+              "With only the 43.1 MB model download throttled to 2.5 Mbps on loopback, the app showed \"The detection model took too long to load\" after 121 s, with 37.4 of 43.1 MB received (86 percent)."
+            ],
+            [
+              "How it was detected",
+              "An independent review ran a paced loopback probe at 2.5 Mbps against the package (branch-review-slow-transfer.json)."
+            ],
+            [
+              "Impact",
+              "Try again restarted the download from zero, so at this speed retrying could never succeed and the detector could not be used. A steady connection below about 2.9 Mbps could never load the model."
+            ],
+            [
+              "Cause in the system",
+              "Model loading had one fixed 120 s deadline, counted from worker start. It ignored download progress, so a slow but steady download was treated the same as a dead one."
+            ],
+            [
+              "Test that prevents it",
+              "Download stalls and slow but steady downloads: the download fails only after 45 s with no loading event, and each event restarts that window.\ntests/test_recovery.py::\ntest_slow_steady_model_transfer_is_not_timed_out\ntests/test_recovery.py::\ntest_stalled_model_transfer_times_out_after_its_last_progress\nStart-up after the last byte has its own fixed 120 s deadline, which later events cannot extend.\ntests/test_recovery.py::\ntest_model_initialization_has_its_own_deadline\ntests/test_recovery.py::\ntest_completed_transfer_starts_initialization_before_the_done_event"
+            ]
+          ],
+          "widths": [
+            1.45,
+            4.65
+          ],
           "sources": [
+            "docs/evidence/branch-review-slow-transfer.json",
             "dist/app.js",
-            "tests/test_recovery.py",
-            "docs/evidence/branch-review-slow-transfer.json"
+            "tests/test_recovery.py"
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The deadline was protecting against a dead connection, not a slow one, so loading measures a stall rather than total time. Under the same 2.5 Mbps probe, the package received every byte and reached ready at 140.6 s. Each condition ran once, on loopback; that is not a measurement of Internet speed. Three of the deliberate faults in release-sensitivity.json guard this behavior: a fixed load deadline, initialization extended by later events, and a completed transfer left under the stall window. This was an observed defect, not an injected fault.",
+          "sources": [
+            "docs/evidence/branch-review-slow-transfer.json",
+            "docs/evidence/release-sensitivity.json"
           ],
           "status": "source_verified"
         },
         {
           "type": "heading",
           "level": 2,
-          "text": "Findings from a multi-agent review"
+          "text": "Cache write, missing Content-Length and Clear during analysis"
         },
         {
           "type": "paragraph",
-          "text": "Before publication, a multi-agent review gave six reviewers one area each and required every finding to survive three independent attempts to refute it. It found no new defect in the slow-connection fix, but it confirmed real gaps. The library writes the downloaded model to Cache Storage before reporting done, so that local write still ran under the connection-stall window. Without a Content-Length header the library reports the bytes received as the total, so the page would have shown 100 percent during the whole transfer. After Clear, a hung analysis of the removed image still produced an analysis failure on an empty workspace.",
+          "text": "Three related behaviours each have a test. The library writes the downloaded model to Cache Storage before reporting done, so that local write ran under the connection-stall window; once every byte of a known-size transfer has arrived, the initialization deadline applies instead (tests/test_recovery.py::test_completed_transfer_starts_initialization_before_the_done_event). Without a Content-Length header the library reports the bytes received as the total, so the page showed 100 percent during the whole transfer; the page shows megabytes received with an indeterminate bar (tests/test_loading.py::test_missing_content_length_shape_stays_indeterminate). After Clear, a hung analysis of the removed image produced an analysis failure on an empty workspace; the detector restarts quietly (tests/test_recovery.py::test_clear_during_a_hung_analysis_restarts_quietly).",
           "sources": [
             "docs/SOURCE_REVIEW.md"
           ],
@@ -1137,21 +1483,21 @@
         },
         {
           "type": "paragraph",
-          "text": "It also found weaknesses in the evidence itself: miscounted deliberate faults, a score check that tolerated every score forced to 1.0, startup tests that could not see a premature real worker, and local paths in retained evidence. Each correction has a test or a deliberate fault where behavior changed. The lesson is that a review of the tests and their documentation finds different problems from a review of the application.",
+          "text": "The evidence checks also catch miscounted deliberate faults, a score check that tolerated every score forced to 1.0, startup tests blind to a premature real worker, and local paths in retained evidence. Each behavior change has a test or a deliberate fault.",
           "sources": [
             "docs/SOURCE_REVIEW.md",
-            "docs/evidence/branch-review-sensitivity.json"
+            "docs/evidence/release-sensitivity.json"
           ],
           "status": "source_verified"
         },
         {
           "type": "heading",
           "level": 2,
-          "text": "Current recovery wording and assertion gaps"
+          "text": "Stage-specific recovery wording"
         },
         {
           "type": "paragraph",
-          "text": "The preceding timeout callback used an image-detection explanation while the model was still loading. Clear then described any failed worker as a startup failure. The follow-up separates the failure stages and preserves a truthful unavailable state until retry succeeds. Controlled reproductions check the visible explanation, absence of old results and subsequent recovery.",
+          "text": "Failure explanations are tied to the stage that failed: a loading timeout never uses an image-analysis explanation, and Clear does not relabel a failed worker as a startup failure. A truthful unavailable state remains until retry succeeds. Controlled reproductions check the visible explanation, absence of old results and subsequent recovery (tests/test_recovery.py::test_model_load_timeout_clear_and_retry_describe_detector_availability, tests/test_recovery.py::test_inference_timeout_clear_and_retry_describe_detector_availability, tests/test_recovery.py::test_worker_crash_during_inference_is_not_described_as_startup_failure).",
           "sources": [
             "docs/SOURCE_REVIEW.md",
             "tests/test_recovery.py"
@@ -1160,9 +1506,9 @@
         },
         {
           "type": "paragraph",
-          "text": "Fresh disposable-copy experiments validate the strengthened assertions. A shared 13-case clean control passes first, followed by 11 deliberate-fault copies and 17 intended failures: blank names or scores, displaced boxes, removed announcement settings, a fixed load deadline, an extended initialization deadline, accepted blank labels, scores scaled by 0.95, scores forced to 1.0, a completed transfer left under the stall window and a cleared hang reported as an analysis failure. The records retain each source change and its intended failing assertion. A deliberate source fault demonstrates sensitivity to that specific mistake; it is not a production incident or a broad mutation-testing score.",
+          "text": "Disposable-copy experiments validate the assertions. Besides the five core-rule faults in Verification and release assessment, eleven deliberate faults account for 17 of the 28 intended failures: blank visible names, blank visible scores, displaced boxes, removed announcement settings, a fixed load deadline, an extended initialization deadline, accepted blank labels, scores scaled by 0.95, scores forced to 1.0, a completed transfer left under the stall window and a cleared hang reported as an analysis failure. The record retains each source change and its intended failing assertion. A deliberate source fault demonstrates sensitivity to that specific mistake; it is not a production incident or a broad mutation-testing score.",
           "sources": [
-            "docs/evidence/branch-review-sensitivity.json"
+            "docs/evidence/release-sensitivity.json"
           ],
           "status": "source_verified"
         }
@@ -1174,13 +1520,16 @@
       "blocks": [
         {
           "type": "paragraph",
-          "text": "The current branch review was executed on 4 November 2026. Its exact commands, environment, source hashes and selected evidence are recorded in branch-review-verification.json. The starting commit is f1a19a9; the recorded file hashes identify the tested changes. Checkpoints overlap and are never added together.",
-          "sources": [],
+          "text": "The recorded full suite passed: 102 passed, with 0 failures, errors or skips (98 controlled and 4 real-model cases), in 774.316 seconds of JUnit suite time. The run's commands, environment, source hashes and selected evidence are recorded in release-verification.json. The base commit is be34c5e; the recorded file hashes identify the tested files. Records of earlier commits overlap and are never added to this result.",
+          "sources": [
+            "docs/evidence/release-verification.json",
+            "docs/evidence/release-full-suite.xml"
+          ],
           "status": "source_verified"
         },
         {
           "type": "table",
-          "caption": "Table 8  Current and historical execution records",
+          "caption": "Table 14  Execution records",
           "columns": [
             "Check",
             "Observed result",
@@ -1188,59 +1537,29 @@
           ],
           "rows": [
             [
-              "Current combined suite",
-              "102 passed; 0 failures/errors/skips; 780.398 s JUnit",
-              "98 non-model and 4 actual-model cases; branch-review-full-suite.xml"
+              "Full suite",
+              "102 passed; 0 failures/errors/skips; 774.316 s JUnit",
+              "98 controlled and 4 real-model cases; release-full-suite.xml"
             ],
             [
-              "Current deliberate faults",
-              "13 clean passes; 17 intended failures across 11 faults",
-              "branch-review-sensitivity.json; selected faults in disposable copies"
+              "Deliberate faults",
+              "30-case clean control passed; 16 faults, 28 intended failures; 1 equivalent fault passed as expected",
+              "release-sensitivity.json; faults planted in disposable copies"
             ],
             [
-              "Current rendered review",
-              "12 captures inspected; 320/390/768/1440 px layouts fit",
-              "branch-review-rendered-review.json; byte-identical to the retained capture set"
+              "Rendered review",
+              "12 captures; 320/390/768/1440 px layouts fit",
+              "release-rendered-review.json"
             ],
             [
-              "Current static package",
-              "23 entries verified; 34,572,941 bytes in ZIP",
-              "branch-review-package.json; prepared locally, not deployed"
+              "Static package",
+              "23 entries verified; 34,572,913 bytes in ZIP",
+              "release-package.json; prepared locally, not deployed"
             ],
             [
               "Slow-transfer probe",
               "2.5 Mbps: ready at 140.6 s; fixed-deadline source failed at 121 s",
-              "branch-review-slow-transfer.json; loopback pacing, one run each"
-            ],
-            [
-              "Loading follow-up",
-              "98 passed; 783.414 s",
-              "Historical f1a19a9 source; loading-followup-full-suite.xml"
-            ],
-            [
-              "Preceding review follow-up",
-              "93 passed; 648.509 s",
-              "Historical 3 November source; followup-full-suite.xml"
-            ],
-            [
-              "Preceding correctness review",
-              "72 passed; 531.363 s JUnit",
-              "Historical 3 November source; review-full-suite.xml"
-            ],
-            [
-              "Public preparation",
-              "59 passed; 441.33 s",
-              "Historical 3 November preparation; public-prep-full-suite.xml"
-            ],
-            [
-              "Combined extension",
-              "48 passed; 418.62 s",
-              "Historical 2 November extension; extension-full-suite.xml"
-            ],
-            [
-              "Base repeated use",
-              "320 cycles; 3615.927 s",
-              "Historical base only; no current flake-rate or memory-leak claim"
+              "branch-review-slow-transfer.json; loopback pacing, one run each; the fixed-deadline run used 17f2b9a, and the corrected package's loading code is identical to the release source"
             ]
           ],
           "widths": [
@@ -1251,7 +1570,75 @@
         },
         {
           "type": "paragraph",
-          "text": "The before/after recovery comparison ran the same three controlled wording checks against the 74d108f source and the current source: three expected pre-Clear failures in 26.952 seconds, followed by three passes in 26.040 seconds. Only the passing current checks continue through Clear, unavailable feedback, Retry and a valid new image. The baseline Clear behavior is not independently reached by those failed checks.",
+          "text": "A fresh clone of the repository, followed through the README setup, usage example and test command, is recorded in docs/evidence/fresh-clone-run.json.",
+          "sources": [],
+          "status": "source_verified"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Earlier recorded runs"
+        },
+        {
+          "type": "paragraph",
+          "text": "Each record covers the source it names, keyed by commit hash. Counts overlap and are never added to the result above. Run dates stay inside the evidence files; docs/VERIFICATION.md lists every record.",
+          "sources": [],
+          "status": "source_verified"
+        },
+        {
+          "type": "table",
+          "caption": "Table 15  Earlier recorded runs",
+          "columns": [
+            "Source commit",
+            "Recorded result",
+            "Evidence"
+          ],
+          "rows": [
+            [
+              "764fb9d",
+              "102 passed; 780.398 s JUnit. Sensitivity: 13-case control, 11 faults, 17 intended failures",
+              "branch-review-full-suite.xml; branch-review-sensitivity.json"
+            ],
+            [
+              "f1a19a9",
+              "98 passed; 783.414 s JUnit",
+              "loading-followup-full-suite.xml"
+            ],
+            [
+              "17f2b9a",
+              "93 passed; 648.509 s JUnit",
+              "followup-full-suite.xml"
+            ],
+            [
+              "74d108f",
+              "72 passed; 531.363 s JUnit",
+              "review-full-suite.xml"
+            ],
+            [
+              "3ac9422",
+              "59 passed; 441.33 s runner",
+              "public-prep-full-suite.xml"
+            ],
+            [
+              "781d9b7",
+              "48 passed; 418.62 s runner",
+              "extension-full-suite.xml"
+            ],
+            [
+              "615f5c0 application files except dist/style.css",
+              "Repeated real-model use: 320 cycles in 3615.927 s; no observed failure",
+              "stability-summary.json; earlier source, not requalified; no flake-rate or memory-leak claim"
+            ]
+          ],
+          "widths": [
+            1.55,
+            2.4,
+            2.15
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "The before/after recovery comparison ran the same three controlled wording checks against app.js from 74d108f and from 764fb9d, whose app.js is identical to the release source: three expected pre-Clear failures in 26.952 seconds, followed by three passes in 26.040 seconds. Only the passing checks on the fixed source continue through Clear, unavailable feedback, Retry and a valid new image. The baseline Clear behavior is not independently reached by those failed checks.",
           "sources": [
             "docs/evidence/branch-review-recovery-comparison.json"
           ],
@@ -1259,13 +1646,15 @@
         },
         {
           "type": "paragraph",
-          "text": "The recorded current environment is Python 3.12.10, pytest 9.0.3, Selenium 4.40.0, Chrome 156.0.8078.80 and ChromeDriver 156.0.8078.80. This was one Windows laptop with headless Chrome and prepared local assets. Workstation load was not controlled, so timing is an observation rather than a performance promise.",
-          "sources": [],
+          "text": "The recorded environment is Windows 11, Python 3.12.10, pytest 9.0.3, Selenium 4.40.0, Chrome 156.0.8078.80 and ChromeDriver 156.0.8078.80. This was one Windows laptop with headless Chrome and prepared local assets. Workstation load was not controlled, so timing is an observation rather than a performance promise.",
+          "sources": [
+            "docs/evidence/release-verification.json"
+          ],
           "status": "source_verified"
         },
         {
           "type": "paragraph",
-          "text": "Source and evidence hashes bind observations to inspectable bytes. Selected JUnit copies remove the machine hostname; the raw hashes and redaction are retained in the manifest. New scripts for sensitivity, before/after recovery comparison, rendered capture and verification recording are tracked under tools. Historical helpers that existed only in ignored artifacts are not claimed to have been reconstructed.",
+          "text": "Source and evidence hashes bind observations to inspectable bytes. Selected JUnit copies remove the machine hostname; the raw hashes and redaction are retained in the manifest. Scripts for sensitivity, before/after recovery comparison, rendered capture and verification recording are under tools.",
           "sources": [],
           "status": "source_verified"
         },
@@ -1276,19 +1665,89 @@
           "status": "source_verified"
         },
         {
+          "type": "page_break"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Core rules broken on purpose"
+        },
+        {
+          "type": "paragraph",
+          "text": "tools/check_review_sensitivity.py copies the application into disposable folders and plants one deliberate fault in each copy; the checkout is never changed. In release-sensitivity.json a 30-case clean control passes, then each of 16 deliberate faults fails its intended tests, 28 intended failures in total. Five of the faults each break one core rule the question depends on.",
+          "sources": [
+            "tools/check_review_sensitivity.py",
+            "docs/evidence/release-sensitivity.json"
+          ],
+          "status": "source_verified"
+        },
+        {
+          "type": "table",
+          "caption": "Table 16  Core rules broken on purpose",
+          "columns": [
+            "Core rule",
+            "Deliberate change",
+            "Test that failed"
+          ],
+          "rows": [
+            [
+              "A file of exactly 10 MiB is accepted",
+              "file.size > MAX_BYTES becomes >=",
+              "tests/test_ui.py::\ntest_file_size_boundary[10485760-complete] (the 10 MiB + 1 byte case still passes)"
+            ],
+            [
+              "The filter keeps a score equal to the minimum",
+              "score >= minimum becomes >",
+              "3 of 7 in tests/test_filter.py:\ntest_exact_minimum_filters_underlying_scores_and_restores_without_inference\ntest_filter_preserves_result_identity_color_and_surviving_selection\ntest_hidden_predictions_can_be_restored_and_differ_from_no_model_predictions"
+            ],
+            [
+              "An old image's result cannot repaint a newer image or a cleared workspace",
+              "the guard data.id === revision && currentImage?.id === revision becomes true",
+              "tests/test_ui.py::\ntest_replacing_a_processing_image_discards_the_old_result[slow-car.png]\ntests/test_ui.py::\ntest_clearing_a_processing_image_prevents_late_repaint"
+            ],
+            [
+              "An outdated export cannot download",
+              "the check after PNG encoding (if (token !== exportRevision || snapshot.id !== revision) return;) removed",
+              "all 3 cases of tests/test_export.py::\ntest_changed_result_cancels_a_png_still_being_encoded"
+            ],
+            [
+              "A late sample cannot replace a newer image or undo Clear",
+              "all three defences removed: the fetch abort in cancelSampleLoad, the check after the download, and the reserved revision passed to selectFile",
+              "both cases of tests/test_sample.py::\ntest_late_sample_response_cannot_override_a_later_user_action"
+            ]
+          ],
+          "widths": [
+            1.3,
+            1.6,
+            3.2
+          ]
+        },
+        {
+          "type": "paragraph",
+          "text": "One more fault is recorded as an equivalent fault: a change to the source that alters no observable behavior. Removing only the check after the sample download changes nothing observable, because the fetch abort and the reserved revision still stop the late sample, so its 2 cases are expected to pass, and they do. That is why the late-sample fault removes all three defences.",
+          "sources": [],
+          "status": "source_verified"
+        },
+        {
+          "type": "paragraph",
+          "text": "Conclusion: every core rule the question depends on has at least one test that fails when the rule is broken. The other 11 faults account for the remaining 17 intended failures (see Stage-specific recovery wording in Failure investigation). These results show that the selected checks detect the selected faults; they are not a mutation score or a test-completeness proof.",
+          "sources": [],
+          "status": "source_verified"
+        },
+        {
           "type": "heading",
           "level": 2,
           "text": "Release decision"
         },
         {
           "type": "paragraph",
-          "text": "The current combined result is 102 passed, 0 failures/errors/skips; 780.398 seconds of JUnit suite time (98 non-model and 4 real-model cases). A paced 2.5 Mbps model transfer that the fixed-deadline source could not complete reaches ready. Together with the targeted failure/recovery checks, deliberate-fault sensitivity and current rendered review, it supports the agreed local learning and demonstration workflow. The refreshed book and static ZIP are local deliverables. Website upload remains parked and no public URL has been verified.",
+          "text": "The recorded result is 102 passed, 0 failures/errors/skips; 774.316 seconds of JUnit suite time (98 controlled and 4 real-model cases). A paced 2.5 Mbps model transfer that the fixed-deadline source could not complete reaches ready. Together with the targeted failure/recovery checks, deliberate-fault sensitivity and rendered review, it supports the local learning and demonstration workflow defined in docs/DESIGN.md. This document and the static ZIP are local deliverables. No website deployment or public URL is included.",
           "sources": [],
           "status": "source_verified"
         },
         {
           "type": "paragraph",
-          "text": "Other browsers/devices, Safari/iOS, hosted CI, public deployment, a general accuracy dataset, GPU/NPU execution, semiconductor inspection and production scale remain outside the evidence. The old one-hour session does not requalify the current revision. Retry still restarts the model download from the beginning. Repository content also cannot prove the owner's personal understanding or unaided authorship.",
+          "text": "Other browsers/devices, Safari/iOS, hosted CI, public deployment, a general accuracy dataset, GPU/NPU execution, semiconductor inspection and production scale remain outside the evidence. The one-hour repeated-use run (stability-summary.json) used an earlier source and does not qualify the tested one. Three known risks are not tested: repeated 45-second stalls, because Try again restarts the model download from the beginning; other browsers and mobile; and large real phone photos with EXIF rotation, because only synthetic images and small public photos are used. Repository content also cannot prove the owner's personal understanding or unaided authorship.",
           "sources": [],
           "status": "source_verified"
         }
@@ -1342,7 +1801,7 @@
         },
         {
           "type": "table",
-          "caption": "Table 9  Where to look",
+          "caption": "Table 17  Where to look",
           "columns": [
             "Location",
             "Purpose"
@@ -1358,11 +1817,15 @@
             ],
             [
               "docs/DESIGN.md",
-              "Concise design and acceptance criteria"
+              "The question, non-goals, acceptance examples, ranked risks and design decisions"
             ],
             [
               "docs/VERIFICATION.md and docs/evidence",
               "Recorded results and selected evidence"
+            ],
+            [
+              "docs/SOURCE_REVIEW.md",
+              "Defects and corrections, each in five parts"
             ],
             [
               "tools and asset-lock.json",
@@ -1428,13 +1891,48 @@
         },
         {
           "type": "paragraph",
-          "text": "The current public package has an exact allowlist: application files, normal-mode configuration, six pinned runtime/model assets, the public coffee sample and license/provenance texts. Tests, documents, environments and Git history are excluded. An ordinary static-server integration test verifies the package locally. Source publication through GitHub Desktop and website deployment remain separate owner actions.",
+          "text": "The public package has an exact allowlist: application files, normal-mode configuration, six pinned runtime/model assets, the public coffee sample and license/provenance texts. Tests, documents, environments and Git history are excluded. An ordinary static-server integration test verifies the package locally. Source publication and website deployment are outside this package.",
           "sources": [
             "tools/build_public_demo.py",
             "tests/test_public_package.py",
             "docs/PUBLIC_DEMO.md"
           ],
           "status": "source_verified"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Interview story (draft)"
+        },
+        {
+          "type": "paragraph",
+          "text": "This is a draft. The owner revises it after studying the project, so that every sentence describes something the owner understands and can explain. It uses the Situation, Task, Action, Result shape.",
+          "sources": [],
+          "status": "ready"
+        },
+        {
+          "type": "paragraph",
+          "text": "Situation: Someone trying a browser object detector on their own photos can be misled: switching photos quickly, a slow connection, or a broken model response can show results for the wrong photo or leave the page stuck.",
+          "sources": [],
+          "status": "ready"
+        },
+        {
+          "type": "paragraph",
+          "text": "Task: I set out to show, with evidence, whether a small detection app could prevent those failures.",
+          "sources": [],
+          "status": "ready"
+        },
+        {
+          "type": "paragraph",
+          "text": "Action: I defined the scope and the question, and decided which review findings to fix. AI coding agents implemented the app and most of the tests, and I directed independent reviews of their work. One review throttled the model download to 2.5 Mbps and found that loading failed at 86% every time. I chose to bound loading by stalls instead of total time. I also had five core rules deliberately broken in throwaway copies, to prove the tests would catch them.",
+          "sources": [],
+          "status": "ready"
+        },
+        {
+          "type": "paragraph",
+          "text": "Result: The same 2.5 Mbps download now completes, ready at 140.6 s instead of failing at 121 s. The suite has 102 tests, and every deliberately broken core rule was caught. The lesson: ask what a timeout really protects against. Here it was a dead connection, not a slow one.",
+          "sources": [],
+          "status": "ready"
         }
       ]
     },
@@ -1444,7 +1942,7 @@
       "blocks": [
         {
           "type": "table",
-          "caption": "Table 10  Terms in this application",
+          "caption": "Table 18  Terms in this application",
           "columns": [
             "Term",
             "Meaning"
@@ -1495,6 +1993,14 @@
               "Previously correct behavior becoming incorrect after a change"
             ],
             [
+              "Deliberate fault",
+              "A small change planted in a disposable copy to check that a test fails when a rule breaks"
+            ],
+            [
+              "Equivalent fault",
+              "A deliberate change that alters no observable behavior, so no test is expected to fail"
+            ],
+            [
               "Stale response",
               "A result belonging to an earlier image or operation"
             ],
@@ -1520,14 +2026,14 @@
         },
         {
           "type": "table",
-          "caption": "Table 11  Source index",
+          "caption": "Table 19  Source index",
           "columns": [
             "Subject",
             "Source"
           ],
           "rows": [
             [
-              "Approved scope and acceptance criteria",
+              "Question, scope, acceptance examples, risks and decisions",
               "docs/DESIGN.md"
             ],
             [
@@ -1548,10 +2054,14 @@
             ],
             [
               "Verification records",
-              "docs/VERIFICATION.md; branch-review-verification.json; branch-review-sensitivity.json; historical records remain dated"
+              "docs/VERIFICATION.md; release-verification.json; release-sensitivity.json"
             ],
             [
-              "Reproducible current evidence",
+              "Defects and corrections",
+              "docs/SOURCE_REVIEW.md"
+            ],
+            [
+              "Reproducible evidence",
               "tools/check_review_sensitivity.py, check_recovery_comparison.py, capture_review.py and record_verification.py"
             ],
             [
