@@ -52,7 +52,7 @@
       "source": "artifacts/extension-first-full-suite.xml",
       "sha256": "0867293841ea40e0f3b29f40ec10d230656cca73deb4aa5932932236ef49d570",
       "selected": "docs/evidence/extension-first-full-suite.xml",
-      "redaction": "Removed hostname attributes only.",
+      "redaction": "Removed hostname attributes only. Selected copy also replaces local absolute path prefixes with <repository>, <workspace> or <user-home> placeholders (3 November 2026); test outcomes, counts and messages are otherwise unchanged. The raw-record hash refers to the unredacted original under artifacts.",
       "tests": 48,
       "failures": 1,
       "errors": 0,

@@ -1,0 +1,149 @@
+{
+  "date": "2026-11-03",
+  "reviewed_base_commit": "9a60886",
+  "reviewed_base_implementation": "3ac9422",
+  "status": "All confirmed findings corrected; local regression gate passed. Website upload remains parked.",
+  "final_result": {
+    "passed": 72,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "pytest_seconds": 531.53,
+    "non_inference_cases": 68,
+    "real_inference_cases": 4
+  },
+  "temporary_directory_scope": "Full suite ran in a new task-owned directory outside any Git checkout.",
+  "source_sha256": {
+    "dist/app.js": "0ae2a27aca500d67a95b052ce91dd871492fee6072d43b253db9e0607863e26c",
+    "dist/png-export.js": "cb7171cec270e245a78f70a8f56cd62a921157825458a3aeb97ac8b513948c41",
+    "dist/worker.js": "a791a655630ad942a784fc0d769c9b1123812b5e0491a0e23ca17ed800c6377d",
+    "dist/credits.html": "38673103e5133b79e0c53e949d4b65dd42485d164f46b56c968a230a714bd6c0",
+    "dist/index.html": "d4b6944c8c2bce55a69903173d7fc6c009bddc49170ec3a461075ffa07d774bd",
+    "dist/style.css": "e4a1a8e3590fe79720ae588d53bee72f1d3e76c1e3118c75b6faffb5d0a41aa6",
+    "dist/runtime-config.json": "80c98bfac072ba06f97197da8758f21bf1f8988a75b5302001b0eb22787d5d77",
+    "serve.py": "fbee47676ed615440f51eb4dad47c211c49c03a2afdc233e51683b719d4caedb",
+    "tools/browser_check.py": "73c6355674fa3396a48e5768a50fcfd3050b1ed83a16fee5051f150bb1c9bfb7",
+    "tools/build_baseline.py": "7df1b3bed0b1a35cb6f84b654027c4d39a72b7f3b6ba9c0f3b77f657f9fb995f",
+    "tools/build_public_demo.py": "ac4eb8b129d4dd2ef754ce8e50a7e039905a6120e3d382da8b8c3663f8716702",
+    "tools/capture_demo.py": "2314f9d3803ded341e66303456dec5c323a9f4dcc4a8f0a17d7a934509af8e67",
+    "tools/check_public_demo.py": "17d8109d864634def9653b02020bbf9d259d06a5ef111377b06bb59aa52c812a",
+    "tools/collect_evidence.py": "c439610662e85f17baf66ad046556288e93da8217fdcc6fd6356282de5576168",
+    "tools/download_samples.py": "2d9c0a95fc4a8613e58d399e2e3fbedd6d4acb2e4c3489a2c7d5cd6f66f7dae9",
+    "tools/fetch_upstream.py": "6517139f8f7feb670461a606b2bf90bc9bf835d9bfdcf50956685c6d1cbc4b14",
+    "tools/prepare_assets.py": "8733667b051c6de9b25d742c4c29476df9177d4b88486ac96bd685a0d6d6dc2c",
+    "tests/conftest.py": "ca815de5bc4af6372b63447de6ba397785693122995d1da3e806cd72a71b092b",
+    "tests/test_export.py": "1c62dabda67959a142319d46c5f46f5a6bdc45354346ceca058f29f04f8f3707",
+    "tests/test_filter.py": "e6bf885555bce350e039f5adadc42dfcfc8b8dfefd416700296abbe7791801c7",
+    "tests/test_harness_cleanup.py": "07ccefdd44a45495281019c2a90316f4f7193f1f7bf611dc000e9c45539bc301",
+    "tests/test_inference.py": "7c85025133aca57e60bc72fabf499321830b814954d33abefaf32064fde5b7f7",
+    "tests/test_loading.py": "f31ae1624eedced851f0614b77d5ae1d85abc6f03a85cc69da52d50efce3516b",
+    "tests/test_public_package.py": "18c405e97a6a9b09dd43ca546064208cba83a210f53b8a945d12bf497ff5d2f1",
+    "tests/test_sample.py": "66e21ae95ae7fa36156844e732c3606c8006d207de8ad73e0c7344f8948074df",
+    "tests/test_server.py": "6dbff96615d244a590363e8c340e665e00d6aa71be65e5b7e6278edd0ca34ce9",
+    "tests/test_startup.py": "1c54f0a9ec3ee7dd2b666a98aa85df623c030a1b8d0e03b2c62c83d197d0f1ec",
+    "tests/test_ui.py": "5a388f29f6ad8d1c1566a12fe6eaa512681bb5bc03df329b39e2c439704cc5b6",
+    "tests/fixtures/test-worker.js": "b27b6b0540bfc4693d7719025ee269d75828e8c6c1439e8e8f47cd2a744a080c",
+    "docs/system-design/build_document.py": "86b1b6c70c027c5af5e7528ebaa177f9cdf4fd03956986cad53e011e92583180",
+    "docs/system-design/verify_document_navigation.py": "413bbc73f7a9f4505d5661f19043ec4effebd8c03288bb2473d59098fca3b204",
+    "docs/system-design/export_document.ps1": "1824e8fba83fb5ada8a2e1456f37e3ebf37500efa0c153b509f0b90ab7acd1ee",
+    "asset-lock.json": "9304dd88602a161c3ac1e580fa559e01a22f285c57573bf77d708b0c1af58216",
+    "credits-lock.json": "095633d230a4a2300a3bd612b15eb76baf7253561b4df7713ea6c397f584fe2f"
+  },
+  "evidence": [
+    {
+      "source": "artifacts/source-review/startup-before.xml",
+      "source_sha256": "e1e72bce36c95fbd87898f41d639b34eb6055d9bb2a9b3abeeb25bedc7c2f83c",
+      "selected": "docs/evidence/review-startup-before.xml",
+      "redaction": "Removed hostname attributes; selected XML uses UTF-8/LF. Selected copy also replaces local absolute path prefixes with <repository>, <workspace> or <user-home> placeholders (3 November 2026); test outcomes, counts and messages are otherwise unchanged. The raw-record hash refers to the unredacted original under artifacts.",
+      "tests": 5,
+      "failures": 5,
+      "errors": 0
+    },
+    {
+      "source": "artifacts/source-review/startup-after.xml",
+      "source_sha256": "bcdfe7112833a30b959d70e9e240fa09b17a0d558e385356aff0a7d90dbb3ca5",
+      "selected": "docs/evidence/review-startup-after.xml",
+      "redaction": "Removed hostname attributes; selected XML uses UTF-8/LF.",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "source": "artifacts/source-review/package-before.xml",
+      "source_sha256": "d62b3818ac12f043bba4aa3b44c692d6b85f643cea693261ffa4eedc8f25c464",
+      "selected": "docs/evidence/review-package-before.xml",
+      "redaction": "Removed hostname attributes; selected XML uses UTF-8/LF. Selected copy also replaces local absolute path prefixes with <repository>, <workspace> or <user-home> placeholders (3 November 2026); test outcomes, counts and messages are otherwise unchanged. The raw-record hash refers to the unredacted original under artifacts.",
+      "tests": 1,
+      "failures": 1,
+      "errors": 0
+    },
+    {
+      "source": "artifacts/source-review/package-after.xml",
+      "source_sha256": "9d4aad60a32dd8df3592bc6043841467a9d8eb97ec82707ff8134433c7abce85",
+      "selected": "docs/evidence/review-package-after.xml",
+      "redaction": "Removed hostname attributes; selected XML uses UTF-8/LF.",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "source": "artifacts/source-review/full-suite.xml",
+      "source_sha256": "a75bcc43519432714aa03f4621e973247a4fe681f61ff0c146644caa49918450",
+      "selected": "docs/evidence/review-full-suite.xml",
+      "redaction": "Removed hostname attributes; selected XML uses UTF-8/LF.",
+      "tests": 72,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "source": ".local/source-review/harness-cleanup-suite.xml",
+      "source_sha256": "771ec1b809b2cd502a75b0533814079fe51d53efa4a4a655239e0d0a4242229c",
+      "selected": "docs/evidence/review-harness-cleanup.xml",
+      "redaction": "Removed hostname attributes; selected XML uses UTF-8/LF.",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0
+    },
+    {
+      "source": ".local/source-review/navigation-original.json",
+      "source_sha256": "ac00f08c80d5d3e6fa3a373aca9b030e89fd2643f8ca94c9ffa87ba5a8d71f4c",
+      "selected": "docs/evidence/review-navigation-original.json",
+      "transformation": "JSON serialized with UTF-8/LF."
+    },
+    {
+      "source": ".local/source-review/navigation-missing-return-link.json",
+      "source_sha256": "6a5a0e099308507b7a5ee8e10db8d5eac672a0030c2e90a19611959e9b0df69b",
+      "selected": "docs/evidence/review-navigation-negative.json",
+      "transformation": "JSON serialized with UTF-8/LF."
+    },
+    {
+      "source": ".local/source-review/navigation-prior-rules-missing-return-link.json",
+      "source_sha256": "bb0acc2c5514cb7baabdc4c5a2933479e1318bcc1fbb9a7d5a482716ace0af83",
+      "selected": "docs/evidence/review-navigation-prior-rules.json",
+      "transformation": "JSON serialized with UTF-8/LF."
+    }
+  ],
+  "dependency_integrity": {
+    "runtime_and_model_files": 6,
+    "notice_and_model_card_files": 9,
+    "preserved_upstream_files": 5,
+    "result": "All locked bytes and hashes matched during the source audit."
+  },
+  "document_check": {
+    "pages": 19,
+    "headings": 31,
+    "contents_links": 62,
+    "return_links": 10,
+    "original_passed": true,
+    "negative_copy_return_links": 9,
+    "updated_checker_rejects_negative_copy": true,
+    "prior_rules_accepted_negative_copy": true,
+    "original_pdf_sha256": "a47cfc56e819595ebbbc21b6cb0315d3d402a19881b823303213401177af2be5"
+  },
+  "limits": [
+    "Local Chrome/Windows evidence only; no verified public URL.",
+    "Four actual-model cases do not establish general recognition accuracy.",
+    "Dependency checksum verification is not a manual review of every vendor implementation.",
+    "Opus has not performed this review."
+  ]
+}

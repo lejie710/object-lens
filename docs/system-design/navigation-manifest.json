@@ -1,6 +1,6 @@
 {
-  "source_sha256": "a8df9f4baa432548046dd7e1a1fc16a666bdfcad58ba381bd85ae73e0ff1d483",
-  "docx_sha256": "9f17263e4f3f7b5acc09b915ed69947cff77c4088df887abbc1a00802ebca813",
+  "source_sha256": "f9ff47bc727180174fb12bcd737754f24a856414a4de61607881f30bd878e454",
+  "docx_sha256": "6303e2a6d54495a60ce237cb3aac397b494752e7f9e1a6628f22586bc083d9b7",
   "toc_mode": "static",
   "toc_depth": 2,
   "field_refresh_required": false,
@@ -19,7 +19,7 @@
       "title": "Objectives and completion",
       "level": 2,
       "key": "scope__Objectives and completion",
-      "block_index": 5,
+      "block_index": 6,
       "bookmark": "OL_scope__Objectives_and_completion",
       "section_index": 0
     },
@@ -37,6 +37,14 @@
       "key": "architecture__Server and worker boundaries",
       "block_index": 5,
       "bookmark": "OL_architecture__Server_and_wo_dfc08b9d",
+      "section_index": 1
+    },
+    {
+      "title": "Configuration and loading feedback",
+      "level": 2,
+      "key": "architecture__Configuration and loading feedback",
+      "block_index": 8,
+      "bookmark": "OL_architecture__Configuration_50e06636",
       "section_index": 1
     },
     {
@@ -72,7 +80,15 @@
       "section_index": 2
     },
     {
-      "title": "Filtering samples and PNG output",
+      "title": "Reject invalid model output",
+      "level": 2,
+      "key": "image-flow__Reject invalid model output",
+      "block_index": 14,
+      "bookmark": "OL_image_flow__Reject_invalid__aa77ce83",
+      "section_index": 2
+    },
+    {
+      "title": "Filtering, samples and PNG output",
       "level": 1,
       "key": "features",
       "block_index": null,
@@ -104,7 +120,7 @@
       "section_index": 3
     },
     {
-      "title": "Testing with Python pytest and Selenium",
+      "title": "Testing with Python, pytest and Selenium",
       "level": 1,
       "key": "automation",
       "block_index": null,
@@ -152,6 +168,14 @@
       "section_index": 5
     },
     {
+      "title": "Visible results and box regression",
+      "level": 2,
+      "key": "test-design__Visible results and box regression",
+      "block_index": 9,
+      "bookmark": "OL_test_design__Visible_result_1f3ec1d4",
+      "section_index": 5
+    },
+    {
       "title": "Failure investigation",
       "level": 1,
       "key": "investigation",
@@ -189,6 +213,30 @@
       "key": "investigation__An unexpected file in a download check",
       "block_index": 13,
       "bookmark": "OL_investigation__An_unexpecte_99986ae6",
+      "section_index": 6
+    },
+    {
+      "title": "A slow connection that could never finish",
+      "level": 2,
+      "key": "investigation__A slow connection that could never finish",
+      "block_index": 16,
+      "bookmark": "OL_investigation__A_slow_conne_94ca6672",
+      "section_index": 6
+    },
+    {
+      "title": "Findings from a multi-agent review",
+      "level": 2,
+      "key": "investigation__Findings from a multi-agent review",
+      "block_index": 19,
+      "bookmark": "OL_investigation__Findings_fro_9b046580",
+      "section_index": 6
+    },
+    {
+      "title": "Current recovery wording and assertion gaps",
+      "level": 2,
+      "key": "investigation__Current recovery wording and assertion gaps",
+      "block_index": 22,
+      "bookmark": "OL_investigation__Current_reco_e6d6d428",
       "section_index": 6
     },
     {
@@ -260,8 +308,8 @@
   "table_count": 11,
   "assets": [
     {
-      "declared_path": "../screenshots/desktop.png",
-      "sha256": "62b969dabea77f654b46df8c3c03072f4b90057b7c11d9c66c4cdecfcedb0b52",
+      "declared_path": "../screenshots/review-followup/desktop.png",
+      "sha256": "4d86d92f4dcd5f84c5ee1c7f36256f4f5995bf2dae852d77d16717e85bc1ec5e",
       "pixels": [
         1424,
         849
@@ -284,7 +332,7 @@
       ]
     },
     {
-      "declared_path": "../screenshots/export.png",
+      "declared_path": "../screenshots/review-followup/export.png",
       "sha256": "a74cbc0fb02034136299010a9fcc2c2f22241fb0aa8ba38cdf70ab4f7fb57482",
       "pixels": [
         600,

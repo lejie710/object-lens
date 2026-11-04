@@ -1,0 +1,348 @@
+{
+  "started_at_utc": "2026-11-04T02:25:02+00:00",
+  "evidence_type": "Integrated local pytest run of the application and tests identified by source_sha256",
+  "base_commit": "f1a19a9c6ae7555cae8f9e69b616ef79fd8232c7",
+  "source_identity": "Base commit plus source_sha256 identifies the tested uncommitted changes; documentation is recorded separately.",
+  "source_sha256": {
+    "asset-lock.json": "9304dd88602a161c3ac1e580fa559e01a22f285c57573bf77d708b0c1af58216",
+    "credits-lock.json": "095633d230a4a2300a3bd612b15eb76baf7253561b4df7713ea6c397f584fe2f",
+    "dist/app.js": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+    "dist/credits.html": "38673103e5133b79e0c53e949d4b65dd42485d164f46b56c968a230a714bd6c0",
+    "dist/index.html": "d4b6944c8c2bce55a69903173d7fc6c009bddc49170ec3a461075ffa07d774bd",
+    "dist/png-export.js": "cb7171cec270e245a78f70a8f56cd62a921157825458a3aeb97ac8b513948c41",
+    "dist/runtime-config.json": "80c98bfac072ba06f97197da8758f21bf1f8988a75b5302001b0eb22787d5d77",
+    "dist/style.css": "e4a1a8e3590fe79720ae588d53bee72f1d3e76c1e3118c75b6faffb5d0a41aa6",
+    "dist/worker.js": "a791a655630ad942a784fc0d769c9b1123812b5e0491a0e23ca17ed800c6377d",
+    "docs/evidence/model-observations.json": "2fc47a23ea4d948ec2558c479e9b7802d2012406ff32c977c3a23f635efcdd17",
+    "pytest.ini": "5ee196e2a6c29c1c03f7e84a994bf274451c39c3ccf8d4e46c6cddb6d7216399",
+    "requirements-lock.txt": "ca55ce2a97df508ac3ab5ec0ab1c6ae8bd9cf7f636a93759d12031e96998bae5",
+    "requirements.txt": "e22547340f95f8327dc5669a31f0a74d55f54748ce6374388918a4b9e1d47ba6",
+    "serve.py": "fbee47676ed615440f51eb4dad47c211c49c03a2afdc233e51683b719d4caedb",
+    "tests/conftest.py": "ca815de5bc4af6372b63447de6ba397785693122995d1da3e806cd72a71b092b",
+    "tests/fixtures/test-worker.js": "496cb40f8e383d7bdaf370783f7cd499886d4f14aaaf14383df036841a10a477",
+    "tests/test_export.py": "1c62dabda67959a142319d46c5f46f5a6bdc45354346ceca058f29f04f8f3707",
+    "tests/test_filter.py": "e6bf885555bce350e039f5adadc42dfcfc8b8dfefd416700296abbe7791801c7",
+    "tests/test_harness_cleanup.py": "07ccefdd44a45495281019c2a90316f4f7193f1f7bf611dc000e9c45539bc301",
+    "tests/test_inference.py": "3e952f68923cd788c536a4d7642a8ead29a2c77b203b08f941e7adedd5bbfe3f",
+    "tests/test_loading.py": "6323685d108fbb6f39ecee6de50fedcd92bc099763fdbb2db4e75779627ec7ae",
+    "tests/test_public_package.py": "f424805a3780d8306defa2545d875766de3a1102164af10a63a84bd5b90ecfc3",
+    "tests/test_recovery.py": "cf098b855dca78ed7fd33a83e38310e4ce0bd35a3b15ed39d250c051553632cc",
+    "tests/test_sample.py": "66e21ae95ae7fa36156844e732c3606c8006d207de8ad73e0c7344f8948074df",
+    "tests/test_server.py": "6dbff96615d244a590363e8c340e665e00d6aa71be65e5b7e6278edd0ca34ce9",
+    "tests/test_startup.py": "e966309ee3f4a84691b64e1e6c94609d679a56a819d6bd1a91b46abbd1b51509",
+    "tests/test_ui.py": "513bed45e14ccdb47dc4012548ba1a69b22568f9cfec13aa446e6bea822334d6",
+    "tools/browser_check.py": "73c6355674fa3396a48e5768a50fcfd3050b1ed83a16fee5051f150bb1c9bfb7",
+    "tools/build_baseline.py": "7df1b3bed0b1a35cb6f84b654027c4d39a72b7f3b6ba9c0f3b77f657f9fb995f",
+    "tools/build_public_demo.py": "290b05258a5503a3e1cf316e46071057ba78e632992401969773fe2de862c8da",
+    "tools/capture_demo.py": "2314f9d3803ded341e66303456dec5c323a9f4dcc4a8f0a17d7a934509af8e67",
+    "tools/capture_review.py": "0ff79a91c28abf51527f2d21a519026e22b5519f42569351a5ef61dcad2d0acb",
+    "tools/check_public_demo.py": "17d8109d864634def9653b02020bbf9d259d06a5ef111377b06bb59aa52c812a",
+    "tools/check_recovery_comparison.py": "2bc34925b09a8edb323f60c4dea4405d7b64ee47e7ce466dcb1fdb72d4647106",
+    "tools/check_review_sensitivity.py": "17b3110bbe20496c60100abe981ba01f89b037cf6025cfc3c45c72f44ca921d4",
+    "tools/collect_evidence.py": "c439610662e85f17baf66ad046556288e93da8217fdcc6fd6356282de5576168",
+    "tools/download_samples.py": "2d9c0a95fc4a8613e58d399e2e3fbedd6d4acb2e4c3489a2c7d5cd6f66f7dae9",
+    "tools/fetch_upstream.py": "6517139f8f7feb670461a606b2bf90bc9bf835d9bfdcf50956685c6d1cbc4b14",
+    "tools/prepare_assets.py": "8733667b051c6de9b25d742c4c29476df9177d4b88486ac96bd685a0d6d6dc2c",
+    "tools/record_verification.py": "4eea09f251ff74d6cbca3151fb40032679daecbeb909485fd0d9d397e0c9d5f0"
+  },
+  "sources_unchanged_during_run": true,
+  "result": {
+    "tests": 102,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 102,
+    "real_model_cases": 4,
+    "other_cases": 98,
+    "pytest_seconds": 780.398,
+    "wall_seconds": 782.747,
+    "exit_code": 0
+  },
+  "environment": {
+    "python": "3.12.10",
+    "os": "Windows-11-10.0.26100-SP0",
+    "pytest": "9.0.3",
+    "selenium": "4.40.0",
+    "browsers": [
+      {
+        "browser": "chrome",
+        "browser_version": "156.0.8078.80",
+        "driver_version": "156.0.8078.80",
+        "browser_platform": "windows"
+      }
+    ]
+  },
+  "collection": {
+    "inference_node_ids": [
+      "tests/test_inference.py::test_real_model_detects_reviewed_object[astronaut.png-person]",
+      "tests/test_inference.py::test_real_model_detects_reviewed_object[coffee.png-cup]",
+      "tests/test_inference.py::test_real_model_detects_reviewed_object[chelsea.png-cat]",
+      "tests/test_public_package.py::test_packaged_site_runs_real_sample_filter_and_export_on_an_ordinary_static_server"
+    ],
+    "collected": 102
+  },
+  "required_real_cases_passed": true,
+  "real_sample_observations": [
+    {
+      "evidence_type": "real model inference",
+      "input": "astronaut.png",
+      "input_action": "Choose image file input",
+      "reviewed_expected_label": "person",
+      "state": "complete",
+      "observed_predictions": [
+        {
+          "label": "person",
+          "score": "0.999136209487915",
+          "displayed_text": "person\n1.00"
+        }
+      ],
+      "boxes": [
+        {
+          "label": "person",
+          "coordinates": {
+            "xmin": "0.021740049123764038",
+            "ymin": "0.02529287338256836",
+            "xmax": "0.7172735035419464",
+            "ymax": "0.9838593006134033"
+          },
+          "displayed_rectangle": {
+            "height": 537,
+            "width": 390,
+            "x": 284,
+            "y": 173.171875
+          }
+        }
+      ],
+      "image_rectangle": {
+        "height": 560,
+        "width": 560,
+        "x": 271.828125,
+        "y": 159
+      },
+      "regression_reference": {
+        "source": "docs/evidence/model-observations.json",
+        "prediction": {
+          "label": "person",
+          "score": 0.999136209487915,
+          "box": {
+            "xmin": 0.021740049123764038,
+            "ymin": 0.02529287338256836,
+            "xmax": 0.7172735035419464,
+            "ymax": 0.9838593006134033
+          }
+        }
+      },
+      "tolerances": {
+        "normalized_per_edge": 0.005,
+        "additional_layout_css_pixels": 2,
+        "note": "Rendered positions allow one edge tolerance; sizes allow two."
+      },
+      "browser_version": "156.0.8078.80",
+      "note": "Visible labels/scores and selected-box regression against prior pinned-model outputs; not localization accuracy, complete annotation, or a general accuracy estimate."
+    },
+    {
+      "evidence_type": "real model inference",
+      "input": "coffee.png",
+      "input_action": "Try sample button; ordinary local sample fetch",
+      "reviewed_expected_label": "cup",
+      "state": "complete",
+      "observed_predictions": [
+        {
+          "label": "spoon",
+          "score": "0.6670341491699219",
+          "displayed_text": "spoon\n0.67"
+        },
+        {
+          "label": "dining table",
+          "score": "0.991251528263092",
+          "displayed_text": "dining table\n0.99"
+        },
+        {
+          "label": "cup",
+          "score": "0.997867226600647",
+          "displayed_text": "cup\n1.00"
+        },
+        {
+          "label": "spoon",
+          "score": "0.9270511269569397",
+          "displayed_text": "spoon\n0.93"
+        }
+      ],
+      "boxes": [
+        {
+          "label": "spoon",
+          "coordinates": {
+            "xmin": "0.5333429127931595",
+            "ymin": "0.5370612442493439",
+            "xmax": "0.6761172264814377",
+            "ymax": "0.8318335711956024"
+          },
+          "displayed_rectangle": {
+            "height": 165,
+            "width": 120,
+            "x": 580.015625,
+            "y": 459.921875
+          }
+        },
+        {
+          "label": "dining table",
+          "coordinates": {
+            "xmin": "0",
+            "ymin": "0.0006619095802307129",
+            "xmax": "0.994640976190567",
+            "ymax": "0.9848046898841858"
+          },
+          "displayed_rectangle": {
+            "height": 551,
+            "width": 836,
+            "x": 131.75,
+            "y": 159.359375
+          }
+        },
+        {
+          "label": "cup",
+          "coordinates": {
+            "xmin": "0.28049442172050476",
+            "ymin": "0.03441202640533447",
+            "xmax": "0.6873231828212738",
+            "ymax": "0.7226728796958923"
+          },
+          "displayed_rectangle": {
+            "height": 386,
+            "width": 342,
+            "x": 367.5,
+            "y": 178.28125
+          }
+        },
+        {
+          "label": "spoon",
+          "coordinates": {
+            "xmin": "0.5379456281661987",
+            "ymin": "0.15333816409111023",
+            "xmax": "0.7107570171356201",
+            "ymax": "0.8263688385486603"
+          },
+          "displayed_rectangle": {
+            "height": 377,
+            "width": 145,
+            "x": 583.890625,
+            "y": 244.90625
+          }
+        }
+      ],
+      "image_rectangle": {
+        "height": 560,
+        "width": 841,
+        "x": 131.75,
+        "y": 159
+      },
+      "regression_reference": {
+        "source": "docs/evidence/model-observations.json",
+        "prediction": {
+          "label": "cup",
+          "score": 0.997867226600647,
+          "box": {
+            "xmin": 0.28049442172050476,
+            "ymin": 0.03441202640533447,
+            "xmax": 0.6873231828212738,
+            "ymax": 0.7226728796958923
+          }
+        }
+      },
+      "tolerances": {
+        "normalized_per_edge": 0.005,
+        "additional_layout_css_pixels": 2,
+        "note": "Rendered positions allow one edge tolerance; sizes allow two."
+      },
+      "browser_version": "156.0.8078.80",
+      "note": "Visible labels/scores and selected-box regression against prior pinned-model outputs; not localization accuracy, complete annotation, or a general accuracy estimate."
+    },
+    {
+      "evidence_type": "real model inference",
+      "input": "chelsea.png",
+      "input_action": "Choose image file input",
+      "reviewed_expected_label": "cat",
+      "state": "complete",
+      "observed_predictions": [
+        {
+          "label": "cat",
+          "score": "0.9979628324508667",
+          "displayed_text": "cat\n1.00"
+        }
+      ],
+      "boxes": [
+        {
+          "label": "cat",
+          "coordinates": {
+            "xmin": "0",
+            "ymin": "0.00043326616287231445",
+            "xmax": "0.9412459433078766",
+            "ymax": "0.9878460764884949"
+          },
+          "displayed_rectangle": {
+            "height": 553,
+            "width": 793,
+            "x": 130.8125,
+            "y": 159.234375
+          }
+        }
+      ],
+      "image_rectangle": {
+        "height": 560,
+        "width": 842,
+        "x": 130.8125,
+        "y": 159
+      },
+      "regression_reference": {
+        "source": "docs/evidence/model-observations.json",
+        "prediction": {
+          "label": "cat",
+          "score": 0.9979628324508667,
+          "box": {
+            "xmin": 0.0,
+            "ymin": 0.00043326616287231445,
+            "xmax": 0.9412459433078766,
+            "ymax": 0.9878460764884949
+          }
+        }
+      },
+      "tolerances": {
+        "normalized_per_edge": 0.005,
+        "additional_layout_css_pixels": 2,
+        "note": "Rendered positions allow one edge tolerance; sizes allow two."
+      },
+      "browser_version": "156.0.8078.80",
+      "note": "Visible labels/scores and selected-box regression against prior pinned-model outputs; not localization accuracy, complete annotation, or a general accuracy estimate."
+    }
+  ],
+  "command": ".venv\\Scripts\\python.exe tools/record_verification.py --retain-prefix branch-review",
+  "pytest_arguments": [
+    "-m",
+    "pytest",
+    "-p",
+    "tools.record_verification",
+    "--junitxml=<new-raw-directory>/full-suite.xml",
+    "--basetemp=<new-owned-temporary-directory>/cases"
+  ],
+  "repeat_note": "Choose a fresh retain prefix; existing evidence paths are never overwritten.",
+  "execution": {
+    "headless": true,
+    "browser_concurrency": 1,
+    "selenium_offline": true,
+    "pytest_temporary_directory_outside_git": true,
+    "inherited_pytest_addopts_ignored": true,
+    "inherited_pytest_plugins_ignored": true,
+    "raw_directory": "artifacts/verification/suite-l5t6afe3"
+  },
+  "raw_xml_sha256": "3bbf85d560eadf3e293c76edd1dcd5117bf74886cd1da3ef6064bdfa097d6531",
+  "retained_xml_transformation": "Remove hostname attributes only; serialize XML as UTF-8 with LF. Counts and test outcomes are unchanged.",
+  "limits": [
+    "One local Windows/Chrome environment; no remote CI or deployment validation.",
+    "Three selected-label and box-regression samples plus one real-model static-package smoke case are not an accuracy benchmark.",
+    "Non-model cases include controlled browser checks, server/package checks and harness cleanup checks.",
+    "One integrated execution is not a measured flake rate."
+  ],
+  "passed": true,
+  "retained_xml": "docs/evidence/branch-review-full-suite.xml",
+  "retained_xml_sha256": "54d1d31a1f170cfe81824437839a755ef4c51efbc4936dec2e88a7712b6a7c7c"
+}

@@ -105,6 +105,58 @@ def test_filter_preserves_result_identity_color_and_surviving_selection(app, mak
     assert result_identity(app, "bottle") == original_bottle
 
 
+def test_duplicate_labels_keep_distinct_identity_and_selection_through_filtering(app, make_image):
+    upload(app, make_image("duplicate-spoons.png"))
+    wait_state(app, "complete")
+
+    def snapshot():
+        return app.execute_script("""
+            const rows = [...document.querySelectorAll('.result-row')];
+            const boxes = [...document.querySelectorAll('.detection-box')];
+            const color = (element) =>
+                getComputedStyle(element).getPropertyValue('--object-color').trim();
+            return {
+                rows: rows.map((row) => ({id: row.dataset.predictionId,
+                    label: row.dataset.label, score: Number(row.dataset.score), color: color(row)})),
+                boxes: boxes.map((box) => ({id: box.dataset.predictionId, color: color(box),
+                    bounds: ['xmin', 'ymin', 'xmax', 'ymax'].map((key) => Number(box.dataset[key]))})),
+                selectedRows: rows.filter((row) => row.getAttribute('aria-pressed') === 'true')
+                    .map((row) => row.dataset.predictionId),
+                selectedBoxes: boxes.filter((box) => box.classList.contains('is-selected'))
+                    .map((box) => box.dataset.predictionId)
+            };
+        """)
+
+    original = snapshot()
+    assert [row["label"] for row in original["rows"]] == ["spoon", "spoon"]
+    assert [row["score"] for row in original["rows"]] == pytest.approx([0.7, 0.95])
+    identities = [row["id"] for row in original["rows"]]
+    assert all(identity for identity in identities) and len(set(identities)) == 2
+    assert [box["id"] for box in original["boxes"]] == identities
+    assert original["boxes"][0]["bounds"] == pytest.approx([0.1, 0.2, 0.25, 0.8])
+    assert original["boxes"][1]["bounds"] == pytest.approx([0.65, 0.15, 0.8, 0.9])
+    colors = [row["color"] for row in original["rows"]]
+    assert all(colors) and len(set(colors)) == 2
+    assert [box["color"] for box in original["boxes"]] == colors
+
+    selected_id = identities[1]
+    app.find_element(By.CSS_SELECTOR, f'.result-row[data-prediction-id="{selected_id}"]').click()
+    selected = snapshot()
+    assert selected["selectedRows"] == selected["selectedBoxes"] == [selected_id]
+
+    set_minimum(app, 0.80)
+    filtered = snapshot()
+    assert filtered["rows"] == [original["rows"][1]]
+    assert filtered["boxes"] == [original["boxes"][1]]
+    assert filtered["selectedRows"] == filtered["selectedBoxes"] == [selected_id]
+
+    set_minimum(app, 0.50)
+    restored = snapshot()
+    assert restored["rows"] == original["rows"]
+    assert restored["boxes"] == original["boxes"]
+    assert restored["selectedRows"] == restored["selectedBoxes"] == [selected_id]
+
+
 def test_hidden_predictions_can_be_restored_and_differ_from_no_model_predictions(app, make_image):
     upload(app, make_image("score-boundary.png"))
     wait_state(app, "complete")

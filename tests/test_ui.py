@@ -41,7 +41,35 @@ def wait_state(browser, expected, timeout=10):
 
 
 def result_labels(browser):
-    return [row.get_attribute("data-label") for row in browser.find_elements(By.CSS_SELECTOR, ".result-row")]
+    # Read what a person can see, rather than the application's internal metadata.
+    return [name.text for name in browser.find_elements(By.CSS_SELECTOR, ".result-row .object-name")]
+
+
+def assert_visible_result_text(browser, expected):
+    """Check independently supplied names and formatted scores in both visible views."""
+    rows = browser.find_elements(By.CSS_SELECTOR, ".result-row")
+    boxes = browser.find_elements(By.CSS_SELECTOR, ".detection-box")
+    assert len(rows) == len(boxes) == len(expected)
+    for row, box, (label, score_text) in zip(rows, boxes, expected):
+        name = row.find_element(By.CSS_SELECTOR, ".object-name")
+        score = row.find_element(By.CSS_SELECTOR, ".object-score")
+        tag = box.find_element(By.CSS_SELECTOR, ".box-label")
+        assert name.is_displayed() and name.text == label, "Visible detection name does not match"
+        assert score.is_displayed() and score.text == score_text, "Visible model score does not match"
+        assert tag.is_displayed() and tag.text == label, "Visible box label does not match"
+        assert row.get_attribute("data-label") == box.get_attribute("data-label") == label
+        accessible_name = row.get_attribute("aria-label")
+        assert label in accessible_name and score_text in accessible_name
+
+
+def assert_actionable_error(browser, *required_fragments):
+    """Require the reason and a usable next step, without fixing the entire sentence."""
+    error = browser.find_element(By.ID, "error-message")
+    assert error.is_displayed()
+    message = error.text.lower()
+    for fragment in required_fragments:
+        assert fragment.lower() in message, f"Missing useful error detail {fragment!r}: {message!r}"
+    assert browser.find_element(By.ID, "status").text.strip()
 
 
 def wait_for_inference(browser, filename):
@@ -74,6 +102,7 @@ def test_predictions_and_boxes_match_the_current_image(app, make_image):
     upload(app, make_image())
     wait_state(app, "complete")
     assert result_labels(app) == ["laptop", "cup"]
+    assert_visible_result_text(app, [("laptop", "0.97"), ("cup", "0.91")])
     boxes = app.find_elements(By.CSS_SELECTOR, ".detection-box")
     assert [box.get_attribute("data-label") for box in boxes] == ["laptop", "cup"]
     assert "2" in app.find_element(By.ID, "result-count").text
@@ -166,8 +195,7 @@ def test_empty_predictions_are_not_an_error(app, make_image):
 def test_processing_failure_is_visible_and_next_image_recovers(app, make_image):
     upload(app, make_image("fail.png"))
     wait_state(app, "error")
-    assert app.find_element(By.ID, "error-message").is_displayed()
-    assert app.find_element(By.ID, "error-message").text.strip()
+    assert_actionable_error(app, "could not", "try again")
     assert result_labels(app) == []
     upload(app, make_image("car.png"))
     wait_state(app, "complete")
@@ -198,7 +226,7 @@ def test_invalid_input_is_rejected_and_valid_input_recovers(app, make_image, tmp
     invalid.write_bytes(contents)
     upload(app, invalid)
     wait_state(app, "error")
-    assert app.find_element(By.ID, "error-message").is_displayed()
+    assert_actionable_error(app, "jpeg", "png", "choose", "not supported")
     assert result_labels(app) == []
     upload(app, make_image("car.png"))
     wait_state(app, "complete")
@@ -225,7 +253,7 @@ def test_file_size_boundary(app, make_image, size, expected_state):
     upload(app, make_image("size-boundary.png", total_bytes=size))
     wait_state(app, expected_state, timeout=20)
     if expected_state == "error":
-        assert app.find_element(By.ID, "error-message").is_displayed()
+        assert_actionable_error(app, "10 mib", "smaller", "jpeg", "png")
         assert result_labels(app) == []
     else:
         assert result_labels(app) == ["laptop", "cup"]
@@ -236,7 +264,7 @@ def test_decoded_pixel_boundary(app, make_image, width, expected_state):
     upload(app, make_image("pixel-boundary.png", width=width, height=4000))
     wait_state(app, expected_state, timeout=20)
     if expected_state == "error":
-        assert app.find_element(By.ID, "error-message").is_displayed()
+        assert_actionable_error(app, "16 megapixels", "resize", "try again")
         assert result_labels(app) == []
     else:
         assert result_labels(app) == ["laptop", "cup"]
@@ -301,6 +329,52 @@ def test_unicode_filename_and_reselecting_same_file(app, make_image):
     wait_state(app, "complete")
     assert app.find_element(By.ID, "filename").text == path.name
     assert result_labels(app) == ["laptop", "cup"]
+
+
+def test_visible_scores_round_without_changing_the_underlying_values(app, make_image):
+    upload(app, make_image("score-boundary.png"))
+    wait_state(app, "complete")
+    assert_visible_result_text(app, [("spoon", "0.80"), ("cup", "0.80"), ("bottle", "0.95")])
+    rows = app.find_elements(By.CSS_SELECTOR, ".result-row")
+    assert [float(row.get_attribute("data-score")) for row in rows] == [0.7999, 0.8, 0.95]
+
+
+def test_status_and_error_announcement_configuration_follows_visible_states(app, make_image, tmp_path):
+    # DOM content/configuration checks do not establish actual screen-reader behavior.
+    for element_id in ("status", "model-loading-stage", "export-message"):
+        region = app.find_element(By.ID, element_id)
+        assert region.get_attribute("role") == "status", f"Missing status role on {element_id}"
+        assert region.get_attribute("aria-live") == "polite", f"Missing polite live region on {element_id}"
+        assert region.get_attribute("aria-atomic") == "true", f"Missing atomic announcement on {element_id}"
+    error = app.find_element(By.ID, "error-message")
+    assert error.get_attribute("role") == "alert", "Missing alert role on error-message"
+    assert error.get_attribute("aria-live") in (None, "assertive")  # alert has implicit assertive behavior
+    assert "ready" in app.find_element(By.ID, "status").text.lower()
+    assert app.find_element(By.ID, "image-stage").get_attribute("aria-busy") == "false"
+
+    upload(app, make_image("slow-dog.png"))
+    wait_for_inference(app, "slow-dog.png")
+    assert app.find_element(By.ID, "image-stage").get_attribute("aria-busy") == "true"
+    wait_state(app, "complete")
+    status = app.find_element(By.ID, "status").text.lower()
+    assert "complete" in status and "1 of 1" in status
+    assert app.find_element(By.ID, "image-stage").get_attribute("aria-busy") == "false"
+
+    upload(app, make_image("empty.png"))
+    wait_state(app, "empty")
+    status = app.find_element(By.ID, "status").text.lower()
+    assert "complete" in status and "no predictions" in status
+    invalid = tmp_path / "unsupported.txt"
+    invalid.write_bytes(b"Deliberately unsupported input.")
+    upload(app, invalid)
+    wait_state(app, "error")
+    assert_actionable_error(app, "jpeg", "png", "choose")
+    assert "action" in app.find_element(By.ID, "status").text.lower()
+    assert app.find_element(By.ID, "image-stage").get_attribute("aria-busy") == "false"
+    app.find_element(By.ID, "clear-image").click()
+    wait_state(app, "ready")
+    assert not error.is_displayed()
+    assert "ready" in app.find_element(By.ID, "status").text.lower()
 
 
 def test_clear_is_reachable_and_usable_with_keyboard(app, make_image):

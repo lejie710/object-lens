@@ -1,0 +1,71 @@
+{
+  "evidence_type": "Audit probe: real model through the static package, only the ONNX response paced on loopback",
+  "created": "2026-11-03",
+  "target_model_mbps": 2.5,
+  "model_bytes": 43102531,
+  "before_fix": {
+    "application_source": "17f2b9a dist/app.js (fixed 120-second model-load deadline)",
+    "first_observation": {
+      "elapsed_seconds": 0.6,
+      "detail": "You can choose an image while this loads.",
+      "err": "",
+      "loadingHidden": false,
+      "stage": "Loading detection files\u2026",
+      "state": "loading"
+    },
+    "final_observation": {
+      "elapsed_seconds": 121.0,
+      "detail": "37.4 of 43.1 MB received (86%).",
+      "err": "The detection model took too long to load. Try again or reload the page.",
+      "loadingHidden": true,
+      "stage": "Loading detection model\u2026",
+      "state": "error"
+    },
+    "observations_recorded": 120,
+    "first_model_transfer": {
+      "bytes": 37486592,
+      "size": 43102531,
+      "aborted": true
+    },
+    "eight_seconds_after_try_again": {
+      "detail": "2.4 of 43.1 MB received (5%).",
+      "err": "",
+      "loadingHidden": false,
+      "stage": "Loading detection model\u2026",
+      "state": "loading",
+      "model_requests": 2,
+      "new_transfer_bytes": 2424832
+    }
+  },
+  "after_fix": {
+    "application_source": "Package content_id c2693e05257964147665ba5b244b48d4d65e8238ca69090d111414051986d22e (stall watchdog)",
+    "first_observation": {
+      "elapsed_seconds": 0.6,
+      "detail": "You can choose an image while this loads.",
+      "err": "",
+      "loadingHidden": false,
+      "stage": "Loading detection files\u2026",
+      "state": "loading"
+    },
+    "final_observation": {
+      "elapsed_seconds": 139.6,
+      "detail": "Model received. Loading and initializing the browser runtime.",
+      "err": "",
+      "loadingHidden": true,
+      "stage": "Starting the detector\u2026",
+      "state": "ready"
+    },
+    "observations_recorded": 139,
+    "first_model_transfer": {
+      "bytes": 43102531,
+      "size": 43102531
+    }
+  },
+  "interpretation": "Before the fix the deadline fired at 86% received and Try again restarted the transfer from zero. After the fix the same paced transfer completed and the detector became ready.",
+  "limits": [
+    "Loopback pacing of one response is not an Internet speed measurement.",
+    "Other assets were unpaced; one run per condition; not a flake-rate or performance claim.",
+    "The probe is an audit helper retained below for transparency, not a maintained repository tool."
+  ],
+  "probe_source": "\"\"\"Auditor probe: model paced at a fixed rate on loopback; observe load deadline and retry.\"\"\"\nimport glob, json, os, sys, threading, time\nfrom functools import partial\nfrom http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer\nfrom pathlib import Path\nfrom urllib.parse import urlsplit\nfrom selenium import webdriver\nfrom selenium.webdriver.common.by import By\nMBPS = float(sys.argv[1]) if len(sys.argv) > 1 else 2.5\nSITE = Path(glob.glob(r\"<owned local path>\")[0])\nMODEL = \"/assets/models/Xenova/detr-resnet-50/onnx/model_quantized.onnx\"\ntransfers = []; stop = threading.Event()\nclass H(SimpleHTTPRequestHandler):\n    def log_message(self, *a): pass\n    def do_GET(self):\n        if urlsplit(self.path).path != MODEL: return super().do_GET()\n        p = SITE / MODEL.lstrip(\"/\"); rec = {\"bytes\": 0, \"size\": p.stat().st_size, \"t0\": time.time()}; transfers.append(rec)\n        try:\n            self.send_response(200); self.send_header(\"Content-Type\", \"application/octet-stream\")\n            self.send_header(\"Content-Length\", str(rec[\"size\"])); self.send_header(\"Cache-Control\", \"no-store\"); self.end_headers()\n            st = time.perf_counter()\n            with p.open(\"rb\") as f:\n                while b := f.read(65536):\n                    due = st + (rec[\"bytes\"] + len(b)) / (MBPS * 125000)\n                    if stop.wait(max(0, due - time.perf_counter())): break\n                    self.wfile.write(b); rec[\"bytes\"] += len(b)\n        except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError): rec[\"aborted\"] = True\nsrv = ThreadingHTTPServer((\"127.0.0.1\", 0), partial(H, directory=str(SITE)))\nthreading.Thread(target=srv.serve_forever, daemon=True).start()\nos.environ.update(SE_CACHE_PATH=r\"<owned local path>\", SE_OFFLINE=\"true\", SE_AVOID_STATS=\"true\")\no = webdriver.ChromeOptions()\nfor f in [\"--headless=new\", \"--window-size=1440,1000\", \"--host-resolver-rules=MAP * ~NOTFOUND, EXCLUDE localhost, EXCLUDE 127.0.0.1\"]: o.add_argument(f)\nd = webdriver.Chrome(options=o)\ndef snap():\n    return d.execute_script(\"return {state: document.documentElement.dataset.state, err: document.getElementById('error-message').textContent, stage: document.getElementById('model-loading-stage').textContent, detail: document.getElementById('model-loading-detail').textContent, loadingHidden: document.getElementById('model-loading').hidden}\")\ntry:\n    t0 = time.time(); d.get(f\"http://127.0.0.1:{srv.server_port}\")\n    last = None\n    while time.time() - t0 < 240:\n        s = snap()\n        if s != last: print(f\"{time.time()-t0:6.1f}s\", json.dumps(s), flush=True); last = s\n        if s[\"state\"] in (\"error\", \"ready\"): break\n        time.sleep(1)\n    print(\"transfer1\", {k: v for k, v in transfers[0].items() if k != \"t0\"} if transfers else None)\n    if snap()[\"state\"] == \"error\":\n        d.find_element(By.ID, \"retry-detection\").click(); t1 = time.time(); time.sleep(8)\n        print(\"after retry +8s\", json.dumps(snap()), \"transfers\", len(transfers), \"new transfer bytes\", transfers[-1][\"bytes\"] if transfers else None)\nfinally:\n    stop.set(); d.quit(); srv.shutdown()\n"
+}

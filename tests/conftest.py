@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
 import re
 import struct
@@ -90,35 +91,45 @@ def browser(request):
     os.environ.setdefault("SE_CACHE_PATH", str(ROOT / ".local" / "selenium"))
     os.environ.setdefault("SE_AVOID_STATS", "true")
     driver = webdriver.Chrome(options=options)
-    driver.set_page_load_timeout(30)
-    driver.set_script_timeout(30)
-    yield driver
-    failed = any(
-        getattr(request.node, f"rep_{phase}", None)
-        and getattr(request.node, f"rep_{phase}").failed
-        for phase in ("setup", "call")
-    )
-    if failed:
-        name = re.sub(r"[^a-zA-Z0-9_.-]+", "_", request.node.nodeid)
-        timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S_%fZ")
-        target = ROOT / "artifacts" / "test-failures" / name / timestamp
-        target.mkdir(parents=True, exist_ok=True)
-        try:
-            driver.save_screenshot(str(target / "browser.png"))
-            (target / "page.html").write_text(driver.page_source, encoding="utf-8")
-            (target / "console.json").write_text(
-                json.dumps(driver.get_log("browser"), indent=2), encoding="utf-8"
-            )
-            (target / "context.json").write_text(
-                json.dumps({"url": driver.current_url, "title": driver.title,
-                            "test": request.node.nodeid,
-                            "evidence_type": "real inference" if "inference" in request.node.keywords
-                            else "controlled application test"}, indent=2),
-                encoding="utf-8",
-            )
-        except Exception as error:
-            (target / "capture-error.txt").write_text(str(error), encoding="utf-8")
-    driver.quit()
+    try:
+        driver.set_page_load_timeout(30)
+        driver.set_script_timeout(30)
+        yield driver
+        failed = any(
+            getattr(request.node, f"rep_{phase}", None)
+            and getattr(request.node, f"rep_{phase}").failed
+            for phase in ("setup", "call")
+        )
+        if failed:
+            name = re.sub(r"[^a-zA-Z0-9_.-]+", "_", request.node.nodeid)
+            timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S_%fZ")
+            target = ROOT / "artifacts" / "test-failures" / name / timestamp
+            try:
+                target.mkdir(parents=True, exist_ok=True)
+                driver.save_screenshot(str(target / "browser.png"))
+                (target / "page.html").write_text(driver.page_source, encoding="utf-8")
+                (target / "console.json").write_text(
+                    json.dumps(driver.get_log("browser"), indent=2), encoding="utf-8"
+                )
+                (target / "context.json").write_text(
+                    json.dumps({"url": driver.current_url, "title": driver.title,
+                                "test": request.node.nodeid,
+                                "evidence_type": "real inference" if "inference" in request.node.keywords
+                                else "controlled application test"}, indent=2),
+                    encoding="utf-8",
+                )
+            except Exception as error:
+                logging.getLogger(__name__).warning(
+                    "Could not capture failure evidence for %s: %s", request.node.nodeid, error
+                )
+                try:
+                    (target / "capture-error.txt").write_text(str(error), encoding="utf-8")
+                except Exception as capture_error:
+                    logging.getLogger(__name__).warning(
+                        "Could not write capture-error.txt for %s: %s", request.node.nodeid, capture_error
+                    )
+    finally:
+        driver.quit()
 
 
 @pytest.hookimpl(hookwrapper=True)

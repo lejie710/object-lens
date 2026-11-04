@@ -1,15 +1,16 @@
 {
-  "documented_application_commit": "781d9b75db1a3ebc9a200c238038b64aa108564a",
-  "date": "2026-11-02",
-  "source_sha256": "a8df9f4baa432548046dd7e1a1fc16a666bdfcad58ba381bd85ae73e0ff1d483",
-  "docx_sha256": "9f17263e4f3f7b5acc09b915ed69947cff77c4088df887abbc1a00802ebca813",
-  "pdf_sha256": "a47cfc56e819595ebbbc21b6cb0315d3d402a19881b823303213401177af2be5",
-  "page_count": 19,
-  "contents_heading_targets": 31,
-  "pdf_contents_links": 62,
+  "date": "4 November 2026",
+  "documented_source": "f1a19a9 plus source hashes in the evidence record",
+  "base_commit": "f1a19a9c6ae7555cae8f9e69b616ef79fd8232c7",
+  "source_sha256": "f9ff47bc727180174fb12bcd737754f24a856414a4de61607881f30bd878e454",
+  "docx_sha256": "6303e2a6d54495a60ce237cb3aac397b494752e7f9e1a6628f22586bc083d9b7",
+  "pdf_sha256": "42add4d777feb260677ad6c6f944ce7e4cb48fa8927706fe35739cfd84c3bf5e",
+  "page_count": 22,
+  "contents_heading_targets": 37,
+  "pdf_contents_links": 74,
   "pdf_back_to_contents_links": 10,
   "navigation_audit": "navigation-audit.json",
-  "navigation_audit_sha256": "ac00f08c80d5d3e6fa3a373aca9b030e89fd2643f8ca94c9ffa87ba5a8d71f4c",
+  "navigation_audit_sha256": "f183026fdee2a0a4cd92860a4ad6237bb50029da4ccdb73f43c25aa87582f58d",
   "visual_review": {
     "pages": [
       1,
@@ -30,32 +31,45 @@
       16,
       17,
       18,
-      19
+      19,
+      20,
+      21,
+      22
     ],
     "render_scale": 1.5,
-    "render_backend": "Microsoft Word direct PDF export and bundled pypdfium2 page rasterization",
-    "authoring_agent": "Every final page inspected at readable scale; no clipping, overlap, missing glyph or unreadable diagram label observed.",
-    "independent_review": "Primary reviewing agent independently inspected every final page 1 to 19 and reported all readable with no clipping or overlap.",
-    "diagram_pages": [
-      5,
-      7,
-      11
-    ],
-    "actual_capture_pages": [
-      3,
-      9
-    ]
+    "render_backend": "Microsoft Word direct PDF export and bundled pypdfium2 rasterization",
+    "all_pages_reviewed": true,
+    "finding": "No clipping, overlap, missing glyph or unreadable figure text observed."
+  },
+  "render_environment": {
+    "bundle_version": "system-python-3.12.10",
+    "python_version": "3.12.10",
+    "python_packages": {
+      "python-docx": "1.2.0",
+      "pypdf": "6.13.2",
+      "pypdfium2": "5.12.1",
+      "lxml": "6.1.1"
+    },
+    "word_export_state": {
+      "document_read_only": true,
+      "protection_type": -1,
+      "protected_view_count": 0,
+      "word_version": "16.0",
+      "apartment": "STA",
+      "powershell_version": "5.1.26100.9711",
+      "existing_execution_policy": "Bypass"
+    },
+    "packaged_render_docx": "Not used: LibreOffice soffice.exe is not installed on this Windows host.",
+    "fallback": "Existing hidden task-owned Word COM direct export, without field refresh or security-setting changes; pypdfium2 renders the resulting PDF."
   },
   "source_checks": {
-    "implementation_and_test_hashes_verified": 14,
-    "evidence_and_capture_hashes_verified": 10,
-    "code_excerpts_verified_against_source": 2,
+    "reviewed_source_sha256": 40,
+    "evidence_sha256": 25,
+    "code_excerpts_verified": 2,
     "figure_assets_found": 5,
-    "pending_or_draft_markers": 0,
-    "pdf_text_nul_or_replacement_characters": 0,
-    "python_helper_syntax": "passed"
+    "pdf_text_bad_characters": 0
   },
-  "scope": "Document content, structure, navigation and rendered-page verification. Application execution evidence remains in docs/evidence/extension-verification.json.",
-  "status": "passed",
-  "text_normalization": "Authoring and selected-evidence text uses UTF-8 with LF line endings, matching Git checkout. Evidence metadata hashes were refreshed. Rendered prose, figures, DOCX/PDF bytes and the completed visual/link reviews are unchanged; original raw-run hashes were preserved."
+  "scope": "Document content, navigation and layout. Application execution remains separately recorded in branch-review-verification.json.",
+  "problems": [],
+  "status": "passed"
 }

@@ -3,7 +3,11 @@ import { createAnnotatedPng, resultFilename } from './png-export.js';
 
 const MAX_BYTES = 10 * 1024 * 1024;
 const MAX_PIXELS = 16_000_000;
-const LOAD_TIMEOUT_MS = 120_000;
+const CONFIG_TIMEOUT_MS = 15_000;
+// Model transfer fails only after a stall, so a slow but steady connection can finish.
+// Runtime initialization after the transfer has no progress events and keeps a fixed limit.
+const LOAD_STALL_MS = 45_000;
+const INITIALIZE_TIMEOUT_MS = 120_000;
 const INFERENCE_TIMEOUT_MS = 90_000;
 const SAMPLE_TIMEOUT_MS = 15_000;
 const CONTROLLED_TIMEOUT_MS = 4_000;
@@ -34,7 +38,11 @@ let worker = null;
 let modelReady = false;
 let modelFailed = false;
 let testMode = false;
+let configReady = false;
+let configRequest = null;
+let preparingImageId = null;
 let loadTimer = null;
+let loadInitializing = false;
 let inferenceTimer = null;
 let currentPredictions = null;
 let selectedPredictionId = null;
@@ -43,10 +51,14 @@ let exportRevision = 0;
 let exportBusy = false;
 let modelFileStarted = false;
 let modelFileLoaded = false;
+// Transformers.js reports total = bytes received when a host omits Content-Length,
+// so a size is trusted only after an event shows fewer bytes than the total.
+let modelSizeKnown = false;
 
 function showModelLoading() {
   modelFileStarted = false;
   modelFileLoaded = false;
+  modelSizeKnown = false;
   elements.modelLoading.hidden = false;
   elements.modelLoading.dataset.phase = 'preparing';
   elements.modelLoadingStage.textContent = 'Loading detection files…';
@@ -57,8 +69,7 @@ function showModelLoading() {
 function updateModelLoading(data) {
   if (modelReady || modelFailed || elements.modelLoading.hidden) return;
   if (!['initiate', 'download', 'progress', 'done'].includes(data.status)) return;
-  const isModel = typeof data.file === 'string' && /\.onnx$/i.test(data.file);
-  if (!isModel) {
+  if (!isModelEvent(data)) {
     // Small settings files may finish after the model starts. Do not let their
     // individual progress replace the model's progress or initialization stage.
     if (modelFileStarted || modelFileLoaded) return;
@@ -79,11 +90,14 @@ function updateModelLoading(data) {
   modelFileStarted = true;
   elements.modelLoading.dataset.phase = 'downloading';
   elements.modelLoadingStage.textContent = 'Loading detection model…';
-  if (Number.isFinite(data.loaded) && Number.isFinite(data.total) && data.total > 0) {
+  if (modelSizeKnown && Number.isFinite(data.loaded) && Number.isFinite(data.total) && data.total > 0) {
     const received = Math.max(0, Math.min(data.loaded, data.total));
     const percentage = received / data.total * 100;
     elements.modelLoadingProgress.value = percentage;
     elements.modelLoadingDetail.textContent = `${(received / 1_000_000).toFixed(1)} of ${(data.total / 1_000_000).toFixed(1)} MB received (${Math.floor(percentage)}%).`;
+  } else if (Number.isFinite(data.loaded) && data.loaded >= 0) {
+    elements.modelLoadingProgress.removeAttribute('value');
+    elements.modelLoadingDetail.textContent = `${(data.loaded / 1_000_000).toFixed(1)} MB received. The total size is not available.`;
   } else {
     elements.modelLoadingProgress.removeAttribute('value');
     elements.modelLoadingDetail.textContent = 'Receiving the model. Download size is not available yet.';
@@ -214,13 +228,50 @@ function failWorker(message) {
   showError(message, { retry: true });
 }
 
-function workerTimedOut(instance) {
+const TIMEOUT_MESSAGES = {
+  'load-stall': 'The detection model stopped loading. Check your connection, then try again or reload the page.',
+  initialize: 'The detection model took too long to start. Try again or reload the page.',
+  infer: 'Image analysis took too long. Try again or choose another image.',
+};
+
+function workerTimedOut(instance, stage) {
   if (instance !== worker) return;
-  console.error('Object Lens worker timed out.');
-  failWorker('Detection took too long. Try again or choose another image.');
+  console.error(`Object Lens ${stage} timed out.`);
+  failWorker(TIMEOUT_MESSAGES[stage]);
+}
+
+function armLoadWatchdog(instance, stage, delay) {
+  clearTimeout(loadTimer);
+  loadTimer = setTimeout(() => workerTimedOut(instance, stage), delay);
+}
+
+function isModelEvent(data) {
+  return typeof data.file === 'string' && /\.onnx$/i.test(data.file);
+}
+
+function noteModelSize(data) {
+  if (isModelEvent(data) && data.status === 'progress' && Number.isFinite(data.loaded) &&
+      Number.isFinite(data.total) && data.loaded < data.total) {
+    modelSizeKnown = true;
+  }
+}
+
+// Any loading event proves the transfer is alive. The model's final bytes start initialization:
+// the library then writes the file to Cache Storage before its 'done' event, with no progress.
+function extendLoadWatchdog(data) {
+  if (modelReady || loadTimer === null || loadInitializing) return;
+  const transferComplete = isModelEvent(data) && data.status === 'progress' && modelSizeKnown &&
+    Number.isFinite(data.loaded) && data.loaded >= data.total;
+  if (transferComplete || (data.status === 'done' && isModelEvent(data))) {
+    loadInitializing = true;
+    armLoadWatchdog(worker, 'initialize', INITIALIZE_TIMEOUT_MS);
+  } else {
+    armLoadWatchdog(worker, 'load-stall', LOAD_STALL_MS);
+  }
 }
 
 function removeImage() {
+  preparingImageId = null;
   currentImage = null;
   pendingImage = null;
   elements.stage.hidden = true;
@@ -243,7 +294,7 @@ function clearWorkspace() {
   elements.clear.disabled = true;
   elements.resultsEmpty.textContent = 'Detections will appear here.';
   if (modelFailed) {
-    showError('Object detection could not start. Try again or reload the page.', { retry: true });
+    showError('Object detection is unavailable. Try again to restart the detector.', { retry: true });
   } else {
     setState(modelReady ? 'ready' : 'loading', modelReady ? 'Ready to choose an image' : 'Preparing object detection…');
   }
@@ -317,6 +368,7 @@ function beginImageSelection() {
   cancelSampleLoad();
   clearError();
   removeImage();
+  preparingImageId = id;
   elements.clear.disabled = false;
   elements.resultsEmpty.textContent = 'Your image is being prepared.';
   setState('loading', 'Reading image…');
@@ -354,6 +406,7 @@ async function trySample() {
       : 'The sample image could not be loaded. Try sample again or choose an image.');
   } finally {
     finishSampleLoad(request);
+    if (preparingImageId === id) preparingImageId = null;
   }
 }
 
@@ -379,6 +432,7 @@ async function selectFile(file, reservedId) {
     if (id !== revision) return;
     checkDimensions({ width: decoded.naturalWidth, height: decoded.naturalHeight });
     currentImage = { id, image, filename: file.name, width: decoded.naturalWidth, height: decoded.naturalHeight };
+    if (preparingImageId === id) preparingImageId = null;
     elements.preview.width = currentImage.width;
     elements.preview.height = currentImage.height;
     elements.preview.src = image;
@@ -391,8 +445,15 @@ async function selectFile(file, reservedId) {
     elements.dimensions.textContent = `${currentImage.width} × ${currentImage.height}`;
     elements.dimensions.hidden = false;
     pendingImage = currentImage;
-    if (modelFailed) {
+    if (!configReady) {
+      // A valid selection waits for configuration or retries a failed bootstrap.
+      clearError();
+      setState('loading', 'Preparing object detection…');
+      elements.resultsEmpty.textContent = 'Detections will appear when processing finishes.';
+      initialize();
+    } else if (modelFailed) {
       // A new valid image is also a recovery action after a failed worker.
+      clearError();
       createWorker();
     } else {
       const message = !modelReady ? 'Preparing object detection…'
@@ -404,6 +465,8 @@ async function selectFile(file, reservedId) {
   } catch (error) {
     if (id !== revision) return;
     showError(error.message);
+  } finally {
+    if (preparingImageId === id) preparingImageId = null;
   }
 }
 
@@ -417,7 +480,15 @@ function startPendingInference() {
   const instance = worker;
   clearTimeout(inferenceTimer);
   inferenceTimer = setTimeout(() => {
-    if (activeRequest === image.id) workerTimedOut(instance);
+    if (activeRequest !== image.id || instance !== worker) return;
+    if (!currentImage) {
+      // Clear already removed this image. Restart the stalled detector without
+      // reporting an analysis failure for an image that is no longer shown.
+      console.warn('Object Lens: restarting a detector that stopped responding after Clear.');
+      createWorker();
+      return;
+    }
+    workerTimedOut(instance, 'infer');
   }, testMode ? CONTROLLED_TIMEOUT_MS : INFERENCE_TIMEOUT_MS);
   try {
     instance.postMessage({ type: 'infer', id: image.id, image: image.image, filename: image.filename });
@@ -442,12 +513,17 @@ function selectResult(id) {
 function renderResults(predictions) {
   if (!Array.isArray(predictions)) throw new Error('The detector returned an unreadable result.');
   const clean = predictions.map((prediction, index) => {
-    const { label, score, box } = prediction;
-    if (typeof label !== 'string' || !label || !Number.isFinite(score) || score < 0 || score > 1 ||
-        !box || !['xmin', 'ymin', 'xmax', 'ymax'].every((key) => Number.isFinite(box[key]))) {
+    if (!prediction || typeof prediction !== 'object' || Array.isArray(prediction)) {
       throw new Error('The detector returned an unreadable result.');
     }
-    const bounds = Object.fromEntries(Object.entries(box).map(([key, value]) => [key, Math.max(0, Math.min(1, value))]));
+    const { label, score, box } = prediction;
+    if (typeof label !== 'string' || !label.trim() || !Number.isFinite(score) || score < 0 || score > 1 ||
+        !box || typeof box !== 'object' || Array.isArray(box) ||
+        !['xmin', 'ymin', 'xmax', 'ymax'].every((key) => Number.isFinite(box[key]))) {
+      throw new Error('The detector returned an unreadable result.');
+    }
+    const bounds = Object.fromEntries(['xmin', 'ymin', 'xmax', 'ymax']
+      .map((key) => [key, Math.max(0, Math.min(1, box[key]))]));
     if (bounds.xmax <= bounds.xmin || bounds.ymax <= bounds.ymin) throw new Error('The detector returned an invalid box.');
     return { id: index, label, score, box: bounds, color: COLORS[index % COLORS.length] };
   });
@@ -532,6 +608,8 @@ function renderFilteredResults() {
 
 function onWorkerMessage({ data }) {
   if (data.type === 'progress') {
+    noteModelSize(data);
+    extendLoadWatchdog(data);
     updateModelLoading(data);
     return;
   }
@@ -542,7 +620,9 @@ function onWorkerMessage({ data }) {
     modelFailed = false;
     elements.modelLoading.hidden = true;
     if (pendingImage) startPendingInference();
-    else if (!currentImage && !sampleRequest && elements.errorNotice.hidden) setState('ready', 'Ready to choose an image');
+    else if (!currentImage && !sampleRequest && preparingImageId === null && elements.errorNotice.hidden) {
+      setState('ready', 'Ready to choose an image');
+    }
     return;
   }
   if (data.type === 'result' || (data.type === 'error' && data.stage === 'infer')) {
@@ -556,7 +636,8 @@ function onWorkerMessage({ data }) {
           renderResults(data.predictions);
         } catch (error) {
           console.error('Object Lens result validation:', error);
-          showError('The result could not be displayed. Try again or choose another image.', { retry: true });
+          clearResults();
+          showError('The detector returned an invalid result. Try again or choose another image.', { retry: true });
         }
       } else {
         console.error('Object Lens inference:', data.message);
@@ -574,7 +655,6 @@ function onWorkerMessage({ data }) {
 
 function createWorker() {
   stopWorker();
-  clearError();
   modelFailed = false;
   showModelLoading();
   try {
@@ -584,10 +664,17 @@ function createWorker() {
     instance.onerror = (error) => {
       if (instance !== worker) return;
       console.error('Object Lens worker:', error.message);
-      failWorker('Object detection could not start. Try again or reload the page.');
+      failWorker(modelReady
+        ? 'Object detection stopped unexpectedly. Try again or choose another image.'
+        : 'Object detection could not start. Try again or reload the page.');
     };
-    setState('loading', 'Preparing object detection…');
-    loadTimer = setTimeout(() => workerTimedOut(instance), testMode ? CONTROLLED_TIMEOUT_MS : LOAD_TIMEOUT_MS);
+    // Background startup must not dismiss an input error or an active file read.
+    if (elements.errorNotice.hidden && preparingImageId === null) {
+      setState('loading', 'Preparing object detection…');
+    }
+    // Controlled startup progress tests use the same deadlines as the real model.
+    loadInitializing = false;
+    armLoadWatchdog(instance, 'load-stall', LOAD_STALL_MS);
     instance.postMessage({ type: 'load' });
   } catch (error) {
     console.error('Object Lens worker creation:', error);
@@ -607,29 +694,58 @@ elements.clear.addEventListener('click', clearWorkspace);
 elements.minimumScore.addEventListener('input', renderFilteredResults);
 elements.retry.addEventListener('click', () => {
   clearError();
+  if (preparingImageId !== null) {
+    setState('loading', sampleRequest ? 'Loading sample…' : 'Reading image…');
+  }
   if (currentImage) {
     currentImage = { ...currentImage, id: ++revision };
     pendingImage = currentImage;
     clearResults();
     elements.resultsEmpty.textContent = 'Detections will appear when processing finishes.';
   }
-  if (modelFailed || !worker) createWorker();
+  if (!configReady) {
+    if (preparingImageId === null) setState('loading', 'Preparing object detection…');
+    initialize();
+  } else if (modelFailed || !worker) createWorker();
   else startPendingInference();
 });
 
 async function initialize() {
+  if (configReady || configRequest) return;
+  const request = { controller: new AbortController(), timer: null, timedOut: false };
+  configRequest = request;
+  modelFailed = false;
+  showModelLoading();
+  if (elements.errorNotice.hidden && preparingImageId === null) {
+    setState('loading', 'Preparing object detection…');
+  }
+  request.timer = setTimeout(() => {
+    request.timedOut = true;
+    request.controller.abort();
+  }, CONFIG_TIMEOUT_MS);
   try {
-    const response = await fetch('./runtime-config.json', { cache: 'no-store' });
+    const response = await fetch('./runtime-config.json', {
+      cache: 'no-store', signal: request.controller.signal,
+    });
     if (!response.ok) throw new Error('Local application configuration is unavailable.');
     const config = await response.json();
-    testMode = config.testMode === true;
+    if (!config || typeof config.testMode !== 'boolean') {
+      throw new Error('Application configuration must specify a boolean testMode.');
+    }
+    configReady = true;
+    testMode = config.testMode;
     byId('test-mode-notice').hidden = !testMode;
     createWorker();
   } catch (error) {
     modelFailed = true;
     elements.modelLoading.hidden = true;
     console.error('Object Lens initialization:', error);
-    showError('Object detection could not start. Check your connection and reload the page.');
+    showError(request.timedOut
+      ? 'The app settings took too long to load. Try again or reload the page.'
+      : 'Object detection could not start. Check your connection and try again.', { retry: true });
+  } finally {
+    clearTimeout(request.timer);
+    if (configRequest === request) configRequest = null;
   }
 }
 

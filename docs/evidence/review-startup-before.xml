@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="5" time="73.298" timestamp="2026-11-03T14:33:17.251928+08:00"><testcase classname="tests.test_startup" name="test_configuration_completion_preserves_an_existing_input_error" time="6.626"><failure message="AssertionError: assert 'ready' == 'error'&#10;  &#10;  - error&#10;  + ready">browser = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session="7555932d47c3c42e426b2233102f5d07")&gt;
+startup_server = namespace(requests=1, worker_requests=1, hold_mode='headers', first_payload=b'{"testMode": true}', requested=&lt;threadin...1ea23f83560: set&gt;, sent=&lt;threading.Event at 0x1ea23f82330: set&gt;, requested_at=342722.921, url='http://127.0.0.1:63939')
+make_image = &lt;function make_image.&lt;locals&gt;.create at 0x000001EA23FE1080&gt;
+tmp_path = WindowsPath('&lt;repository&gt;/.local/pytest-startup-before-20261103/test_configuration_completion_0')
+
+    def test_configuration_completion_preserves_an_existing_input_error(
+        browser, startup_server, make_image, tmp_path,
+    ):
+        open_with_held_configuration(browser, startup_server)
+        invalid = tmp_path / "unsupported.txt"
+        invalid.write_bytes(b"Deliberately unsupported image input.")
+        upload(browser, invalid)
+        wait_state(browser, "error")
+        message = browser.find_element(By.ID, "error-message").text
+        assert message, "Invalid input did not provide an explanation"
+    
+        startup_server.release.set()
+        wait_for_worker_ready(browser)
+&gt;       assert browser.find_element(By.TAG_NAME, "html").get_attribute("data-state") == "error"
+E       AssertionError: assert 'ready' == 'error'
+E         
+E         - error
+E         + ready
+
+tests\test_startup.py:133: AssertionError</failure></testcase><testcase classname="tests.test_startup" name="test_worker_ready_preserves_in_progress_file_preparation" time="7.118"><failure message="AssertionError: assert 'ready' == 'loading'&#10;  &#10;  - loading&#10;  + ready">browser = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session="37887114585b42e0661b6b6805320c32")&gt;
+startup_server = namespace(requests=1, worker_requests=1, hold_mode='headers', first_payload=b'{"testMode": true}', requested=&lt;threadin...1ea240c4c50: set&gt;, sent=&lt;threading.Event at 0x1ea240c4dd0: set&gt;, requested_at=342730.562, url='http://127.0.0.1:62094')
+make_image = &lt;function make_image.&lt;locals&gt;.create at 0x000001EA240F4B80&gt;
+
+    def test_worker_ready_preserves_in_progress_file_preparation(browser, startup_server, make_image):
+        open_with_held_configuration(browser, startup_server)
+        browser.execute_script("""
+            window.startupOriginalArrayBuffer = File.prototype.arrayBuffer;
+            File.prototype.arrayBuffer = function(...args) {
+                if (this.name !== 'car.png') {
+                    return window.startupOriginalArrayBuffer.apply(this, args);
+                }
+                const file = this;
+                return new Promise((resolve, reject) =&gt; {
+                    window.startupReleaseRead = () =&gt;
+                        window.startupOriginalArrayBuffer.apply(file, args).then(resolve, reject);
+                });
+            };
+        """)
+        try:
+            upload(browser, make_image("car.png"))
+            WebDriverWait(browser, 5, poll_frequency=0.05).until(
+                lambda driver: driver.execute_script("return typeof window.startupReleaseRead === 'function'"),
+                message="The selected file did not enter the controlled arrayBuffer hold",
+            )
+            assert browser.find_element(By.ID, "status").text == "Reading image…"
+            startup_server.release.set()
+            wait_for_worker_ready(browser)
+&gt;           assert browser.find_element(By.TAG_NAME, "html").get_attribute("data-state") == "loading"
+E           AssertionError: assert 'ready' == 'loading'
+E             
+E             - loading
+E             + ready
+
+tests\test_startup.py:168: AssertionError</failure></testcase><testcase classname="tests.test_startup" name="test_stalled_configuration_times_out_and_retry_fetches_it_again[headers]" time="26.462"><failure message="Failed: Timed out waiting for UI state 'error' (timeout=20s).&#10;Observed state: 'loading'&#10;Displayed filename: 'car.png'&#10;UI error: &lt;none displayed&gt;">Timed out waiting for UI state 'error' (timeout=20s).
+Observed state: 'loading'
+Displayed filename: 'car.png'
+UI error: &lt;none displayed&gt;</failure></testcase><testcase classname="tests.test_startup" name="test_stalled_configuration_times_out_and_retry_fetches_it_again[body]" time="26.345"><failure message="Failed: Timed out waiting for UI state 'error' (timeout=20s).&#10;Observed state: 'loading'&#10;Displayed filename: 'car.png'&#10;UI error: &lt;none displayed&gt;">Timed out waiting for UI state 'error' (timeout=20s).
+Observed state: 'loading'
+Displayed filename: 'car.png'
+UI error: &lt;none displayed&gt;</failure></testcase><testcase classname="tests.test_startup" name="test_invalid_configuration_can_be_refetched_without_losing_the_image" time="5.831"><failure message="assert False&#10; +  where False = is_displayed()&#10; +    where is_displayed = &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;84c93adc0ac4713271d1f077ef9f0db7&quot;, element=&quot;f.10A4AC0CDCCDD84229E7BF6F3D67FFF6.d.59FC4BF08D90A75F892466D4CE924C80.e.7&quot;)&gt;.is_displayed&#10; +      where &lt;selenium.webdriver.remote.webelement.WebElement (session=&quot;84c93adc0ac4713271d1f077ef9f0db7&quot;, element=&quot;f.10A4AC0CDCCDD84229E7BF6F3D67FFF6.d.59FC4BF08D90A75F892466D4CE924C80.e.7&quot;)&gt; = find_element('id', 'retry-detection')&#10; +        where find_element = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session=&quot;84c93adc0ac4713271d1f077ef9f0db7&quot;)&gt;.find_element&#10; +        and   'id' = By.ID">browser = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session="84c93adc0ac4713271d1f077ef9f0db7")&gt;
+startup_server = namespace(requests=1, worker_requests=0, hold_mode='headers', first_payload=b'null', requested=&lt;threading.Event at 0x1...1ea23fcff80: set&gt;, sent=&lt;threading.Event at 0x1ea23fcfe60: set&gt;, requested_at=342789.562, url='http://127.0.0.1:64103')
+make_image = &lt;function make_image.&lt;locals&gt;.create at 0x000001EA240F4720&gt;
+
+    def test_invalid_configuration_can_be_refetched_without_losing_the_image(
+        browser, startup_server, make_image,
+    ):
+        startup_server.first_payload = b"null"
+        open_with_held_configuration(browser, startup_server)
+        upload(browser, make_image("car.png"))
+        WebDriverWait(browser, 5, poll_frequency=0.05).until(
+            lambda driver: driver.find_element(By.ID, "filename").text == "car.png",
+            message="The chosen image did not finish preparation before configuration was released",
+        )
+        startup_server.release.set()
+        wait_state(browser, "error")
+        assert browser.find_element(By.ID, "error-message").text.strip()
+&gt;       assert browser.find_element(By.ID, "retry-detection").is_displayed()
+E       assert False
+E        +  where False = is_displayed()
+E        +    where is_displayed = &lt;selenium.webdriver.remote.webelement.WebElement (session="84c93adc0ac4713271d1f077ef9f0db7", element="f.10A4AC0CDCCDD84229E7BF6F3D67FFF6.d.59FC4BF08D90A75F892466D4CE924C80.e.7")&gt;.is_displayed
+E        +      where &lt;selenium.webdriver.remote.webelement.WebElement (session="84c93adc0ac4713271d1f077ef9f0db7", element="f.10A4AC0CDCCDD84229E7BF6F3D67FFF6.d.59FC4BF08D90A75F892466D4CE924C80.e.7")&gt; = find_element('id', 'retry-detection')
+E        +        where find_element = &lt;selenium.webdriver.chrome.webdriver.WebDriver (session="84c93adc0ac4713271d1f077ef9f0db7")&gt;.find_element
+E        +        and   'id' = By.ID
+
+tests\test_startup.py:226: AssertionError</failure></testcase></testsuite></testsuites>

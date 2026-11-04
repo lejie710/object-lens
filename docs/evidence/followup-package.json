@@ -1,0 +1,137 @@
+{
+  "created_at_utc": "2026-11-03T12:50:55+00:00",
+  "source_commit": "74d108f70c0bea8ca09b2d5bdd3bb974023d523f",
+  "source_dirty": true,
+  "content_id": "7a1cedba5d84bf2fbe725c6addae60610bd5da9909446f45571c768bb26535c6",
+  "files": [
+    {
+      "path": "app.js",
+      "bytes": 28274,
+      "sha256": "d9996cf27eb7d084a8b401671f04f4d1f64f45bf2414fcace4f756619234c831"
+    },
+    {
+      "path": "assets/models/Xenova/detr-resnet-50/config.json",
+      "bytes": 4812,
+      "sha256": "2daaf8af0b4fe9d075fd728a6967b89a1084849d1b25de26338f97cd6ef41466"
+    },
+    {
+      "path": "assets/models/Xenova/detr-resnet-50/onnx/model_quantized.onnx",
+      "bytes": 43102531,
+      "sha256": "cae09a307ed9247da7e2ce8bcf81522a6817f1ea2e82b9c4dde59f5964b62b4f"
+    },
+    {
+      "path": "assets/models/Xenova/detr-resnet-50/preprocessor_config.json",
+      "bytes": 455,
+      "sha256": "fd7b4c38d03d99e37f75eebba889e064db89fed8fd451139442d010a11f2dc5e"
+    },
+    {
+      "path": "assets/runtime/ort-wasm-simd.wasm",
+      "bytes": 10014674,
+      "sha256": "9bd07bababc65f53d061f457233eeae501be7ceb8a2adb9eef52d87fe776d865"
+    },
+    {
+      "path": "assets/runtime/ort-wasm.wasm",
+      "bytes": 9223228,
+      "sha256": "bbdcb6b3c7d294577d806077630460be4e13ca35a345acb5e81188e9649fa74a"
+    },
+    {
+      "path": "assets/runtime/transformers.min.js",
+      "bytes": 897938,
+      "sha256": "bcf7cf304e51f470ed59409622b9d6ffbad80dfcf5baf6a40c919e4b9c4ff812"
+    },
+    {
+      "path": "credits.html",
+      "bytes": 7180,
+      "sha256": "38673103e5133b79e0c53e949d4b65dd42485d164f46b56c968a230a714bd6c0"
+    },
+    {
+      "path": "index.html",
+      "bytes": 6252,
+      "sha256": "d4b6944c8c2bce55a69903173d7fc6c009bddc49170ec3a461075ffa07d774bd"
+    },
+    {
+      "path": "licenses/detr-LICENSE.txt",
+      "bytes": 11354,
+      "sha256": "b208c52b00a2df2c8f4c3298c34407bf2bfe409968213372251c91fcc737a1a5"
+    },
+    {
+      "path": "licenses/detr-resnet-50-model-card.md",
+      "bytes": 5891,
+      "sha256": "bc7d74d96a9101113c06be3a90975510dd19671382eb6fdfc5d1edbb042a723b"
+    },
+    {
+      "path": "licenses/huggingface-jinja-0.2.2-LICENSE.txt",
+      "bytes": 1069,
+      "sha256": "d6e7b19451c1b3d1d66353bb4b1274138953b3bfd9ae60c56e77b1f548796982"
+    },
+    {
+      "path": "licenses/object-lens-LICENSE.txt",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "licenses/onnxruntime-1.14.0-ThirdPartyNotices.txt",
+      "bytes": 299762,
+      "sha256": "cc63920441c5681cfb1663caf1de1858349b517fc1bed9ca669a85bc526cd13e"
+    },
+    {
+      "path": "licenses/onnxruntime-web-1.14.0-LICENSE.txt",
+      "bytes": 1073,
+      "sha256": "2f07c72751aed99790b8a4869cf2311df85a860b22ded05fa22803587a48922c"
+    },
+    {
+      "path": "licenses/transformers-js-2.17.2-LICENSE.txt",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "licenses/upstream-example-LICENSE.txt",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    },
+    {
+      "path": "licenses/xenova-detr-resnet-50-model-card.md",
+      "bytes": 1811,
+      "sha256": "09f64e2f64fb3e64cefe581c72c8c79957f2614f46cd6b3d94fc1daff04641aa"
+    },
+    {
+      "path": "png-export.js",
+      "bytes": 3066,
+      "sha256": "cb7171cec270e245a78f70a8f56cd62a921157825458a3aeb97ac8b513948c41"
+    },
+    {
+      "path": "runtime-config.json",
+      "bytes": 20,
+      "sha256": "80c98bfac072ba06f97197da8758f21bf1f8988a75b5302001b0eb22787d5d77"
+    },
+    {
+      "path": "samples/coffee.png",
+      "bytes": 466706,
+      "sha256": "cc02f8ca188b167c775a7101b5d767d1e71792cf762c33d6fa15a4599b5a8de7"
+    },
+    {
+      "path": "style.css",
+      "bytes": 10856,
+      "sha256": "e4a1a8e3590fe79720ae588d53bee72f1d3e76c1e3118c75b6faffb5d0a41aa6"
+    },
+    {
+      "path": "worker.js",
+      "bytes": 1768,
+      "sha256": "a791a655630ad942a784fc0d769c9b1123812b5e0491a0e23ca17ed800c6377d"
+    }
+  ],
+  "file_count": 23,
+  "uncompressed_bytes": 64122792,
+  "archive_bytes": 34572254,
+  "archive_sha256": "5e937ebb427784ce6ffe1c4409129e42647bada95b42dd0276c6aa889c0c6d64",
+  "runtime_configuration": {
+    "testMode": false
+  },
+  "privacy_boundary": "Only allowlisted browser app files, public sample, model/runtime assets and credits are included. Repository history, tests, documents and environments are excluded.",
+  "verification_boundary": "A prepared local package is not evidence of a successful public deployment.",
+  "command": ".venv\\Scripts\\python.exe tools/build_public_demo.py",
+  "archive": "artifacts/public-demo/object-lens-7a1cedba5d-9khqdi1e/Object_Lens_Public_Demo.zip",
+  "site_directory": "artifacts/public-demo/object-lens-7a1cedba5d-9khqdi1e/site",
+  "local_integrity_result": "All 23 ZIP entries match the manifest and current dist bytes; archive integrity passed.",
+  "deployment_status": "Local package only. Website upload remains parked; no public URL verified."
+}

@@ -279,7 +279,7 @@ class CompanionBuilder:
 
         header = section.header.paragraphs[0]
         header.style = document.styles["Small"]
-        add_text(header, str(self.source["metadata"]["title"]) + "  System design and software quality")
+        add_text(header, str(self.source["metadata"]["title"]) + " · System design and software quality")
         footer = section.footer.paragraphs[0]
         footer.style = document.styles["Small"]
         footer.paragraph_format.tab_stops.add_tab_stop(self.available_width, WD_TAB_ALIGNMENT.RIGHT)
@@ -333,6 +333,11 @@ class CompanionBuilder:
                 labels.append(label)
             else:
                 labels.append(str(value))
+        # A source belongs to the block immediately above it. Keep that block's
+        # last paragraph with the citation so a source-only line cannot start
+        # the next page without the text or figure it identifies.
+        if self.document.paragraphs:
+            self.document.paragraphs[-1].paragraph_format.keep_with_next = True
         paragraph = self.document.add_paragraph(style="Source")
         add_text(paragraph, "Source: " + "; ".join(labels))
 
@@ -453,7 +458,13 @@ class CompanionBuilder:
                 paragraph = cell.paragraphs[0]
                 paragraph.style = self.document.styles["Table Text"]
                 paragraph.paragraph_format.space_after = Pt(1.5)
-                paragraph.paragraph_format.keep_with_next = row_index == 0
+                # Keep short tables together; splitting a four-row definition
+                # table after its first row makes the next page harder to read.
+                # A cited table keeps its last row with the spacer and source line below it.
+                paragraph.paragraph_format.keep_with_next = (
+                    row_index == 0 or len(rows) <= 5 and row_index < len(all_rows) - 1
+                    or bool(block.get("sources")) and row_index == len(all_rows) - 1
+                )
                 paragraph.paragraph_format.keep_together = True
                 if columns[column_index].lower() in ("id", "status", "result") and len(str(value)) < 20:
                     paragraph.alignment = WD_ALIGN_PARAGRAPH.CENTER
