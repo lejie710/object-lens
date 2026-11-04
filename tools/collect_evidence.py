@@ -76,7 +76,7 @@ def main():
     base = f"http://127.0.0.1:{server.server_port}"
     report = {"evidence_type": "actual CPU/WASM inference on public sample photos",
               "limitations": ["Small convenience sample, not a general accuracy benchmark.",
-                              "Expected labels use upstream image descriptions and independent AI-assisted visual review before inference; they are not exhaustive human annotations.",
+                              "Expected labels use upstream image descriptions and a separate AI-assisted visual inspection made before inference; they are not exhaustive human annotations.",
                               "Times measure observed UI completion, including decoding/rendering and browser polling.",
                               "Workstation load is not controlled; values are not performance guarantees.",
                               "Baseline uses the common pinned runtime; it is not the stock upstream release."],

@@ -1,9 +1,9 @@
 # Design reference
 
-`approved-concept.png` is the visual concept approved during planning. It was generated with the built-in image-generation tool. The photograph, labels and scores in that image are illustrative; they are not model execution evidence.
+`approved-concept.png` is the AI-generated visual concept the layout follows. Its photograph, labels and scores are illustrative; they are not model output.
 
-The implemented application follows its practical layout: a white header, essential controls, a large image area, a compact results list and restrained blue selection. The original concept said "Objects"; actual model results showed duplicate predictions, so the implementation uses "Detections" and "predictions" instead.
+The implemented application follows its practical layout: a white header, essential controls, a large image area, a compact results list and restrained blue selection. The list says "Detections" and "predictions" rather than the concept's "Objects" because the model can return duplicate predictions for one object.
 
-Current browser captures are in `../screenshots/review-followup`; earlier captures remain in their original paths as historical evidence. Verification records distinguish real inference from controlled UI fixtures. The approved concept remains a dated planning reference and is not regenerated to imitate the current execution.
+Captures of the current app are in `../screenshots/review-followup`; the other files under `../screenshots/` show earlier versions and are kept as evidence. Verification records distinguish real inference from controlled UI fixtures. The concept image is not updated to match the implementation.
 
-The generation prompt is retained in `generation-prompt.txt`. It is provenance for the planning image, not an application dependency or instruction to add more features.
+The generation prompt is retained in `generation-prompt.txt`. It is provenance for the concept image, not an application dependency or instruction to add more features.

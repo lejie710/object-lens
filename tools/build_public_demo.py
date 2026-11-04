@@ -137,6 +137,7 @@ def build(output_root: Path, project_root: Path = ROOT) -> dict:
     archive_path = build_root / "Object_Lens_Public_Demo.zip"
     with zipfile.ZipFile(archive_path, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
         for item in records:
+            # Fixed entry timestamp so identical inputs give an identical ZIP; it is not a build date.
             info = zipfile.ZipInfo(item["path"], date_time=(2020, 1, 1, 0, 0, 0))
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = 0o100644 << 16

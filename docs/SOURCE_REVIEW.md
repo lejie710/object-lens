@@ -1,92 +1,226 @@
-# Correctness reviews and regression fixes
+# Defects and corrections
 
-Four review passes are recorded here, newest first. The branch review corrects documentation miscounts, two loading edge cases, a misleading message after Clear, weak assertions and local paths in retained evidence. The loading follow-up before it corrected a slow-connection loading defect and an untested label rule found by an AI-assisted audit of `17f2b9a`. The review follow-up continued `74d108f`, corrected stage-specific timeout/Clear wording and strengthened assertions for visible labels/scores, real-model box positions, malformed responses and announcement configuration. [The current verification assessment](VERIFICATION.md) and [branch-review-verification.json](evidence/branch-review-verification.json) identify the current execution and source hashes. The earlier sections remain historical records.
+This document lists every confirmed defect in Object Lens, grouped by area. Each entry gives what failed, how it was detected, its impact, the cause in the system and the test that prevents it from returning. [VERIFICATION.md](VERIFICATION.md) holds the current results and source hashes.
 
-## Branch review
+Several defects have a deliberate fault in [`tools/check_review_sensitivity.py`](../tools/check_review_sensitivity.py) that restores the defective behavior in a disposable copy; the named test must then fail. [release-sensitivity.json](evidence/release-sensitivity.json) records those outcomes, and [branch-review-sensitivity.json](evidence/branch-review-sensitivity.json) records 11 of those faults against an earlier commit.
 
-After the loading follow-up, two further AI-assisted reviews examined the whole branch on 3 and 4 November 2026. A separate single-agent review session ran the suite and its own deliberate faults. A multi-agent review then assigned six reviewers to one area each (application state, test strength, evidence claims, tools, privacy and how the repository reads to a reviewer); every finding had to survive three independent attempts to refute it, and a final reviewer looked for unexamined areas. 22 of 24 findings survived; the final reviewer added two more, which were checked directly rather than through the three-refuter step. Neither review found a new defect in the slow-connection fix itself. The findings below were corrected; overlapping findings are combined.
+## How defects were found
 
-| Finding | Correction |
-| --- | --- |
-| The loading follow-up's documents counted nine faults, 15 intended failures and five new faults. The record held eight faults and 14 failures: the clean control had been counted as a fault | Recounted from the evidence. The current record holds 11 faults and 17 intended failures, quoted from the file |
-| The real-model score check tolerated every score forced to 1.0: the selected references were all 0.998 to 0.999 | Every visible row is compared with the recorded output, including the 0.67 and 0.93 coffee spoons. A new deliberate fault forces every score to 1.0 and fails |
-| The model's final bytes are followed by a silent 43 MB Cache Storage write before Transformers.js sends `done`, still under the 45-second connection-stall window | Once every byte of a known-size transfer has arrived, the 120-second initialization deadline applies. A controlled test and a deliberate fault cover it |
-| Without a Content-Length header, Transformers.js 2.17.2 reports total = bytes received, so the page would show "100%" for the whole transfer. The existing test injected a shape the library never sends | A size is trusted only after an event shows fewer bytes than the total; otherwise the page shows megabytes received with an indeterminate bar. A new test replays the real event shape |
-| After Clear, a hung analysis of the removed image still produced "Image analysis took too long" on an empty workspace | That case now restarts the detector quietly. Replacing a hung image with a new one keeps its existing error-and-retry behavior. A controlled test and a deliberate fault cover it |
-| Startup tests counted only controlled-worker requests, so a premature real worker was invisible | Startup tests also count `/worker.js` requests and require none before valid configuration |
-| Package provenance still failed for a repository with no commits | All Git calls fall back to absent provenance; a new test covers it |
-| Two new and one older retained JUnit file contained the Windows user path | Selected copies use placeholders, recorded in each redaction note; raw-record hashes still refer to the originals |
-| The verification record labelled itself with the previous round's name; the sensitivity tool wrote CRLF JSON and missed escaped paths | The recorder's label is neutral; the sensitivity tool writes LF and redacts escaped paths |
-| Claims without retained evidence: the audit's 93-case reproduction and the "44 tests still passed" blank-label observation; four startup/package timings that differed from the retained JUnit | The two audit runs are now retained as evidence; the timings quote the JUnit records |
-| Overstatements: an "independent oracle" that uses the same model's earlier output, "only the reference catches" scaled scores, "new" geometry checks from an earlier round, "2 to 3 source pixels" when one sample is 1.5 | Reworded to what the evidence shows |
-| Presentation: the README sent readers first to an owner handoff note; 12 recaptured screenshots duplicated byte-identical images; the book's AC10 row omitted `test_recovery.py`; a cited table's source line could start a new page | Reordered links, kept one screenshot set, corrected the row and the builder |
+The application, Python server, tests and setup, package, evidence and document helpers were read in full, including AI-assisted review. Findings were confirmed by reproduction: controlled local HTTP timing, a loopback probe that paced the model download, ordinary temporary directories, isolated mocks and disposable copies. The application source was not corrupted to create the defects listed here; deliberate faults are used only to show that a test can fail. Model and runtime binaries, distributed notices and preserved upstream files are checked against their recorded hashes. That check is not a manual audit of third-party code or an evaluation of model accuracy.
 
-Two findings were refuted. A suggested contradiction about the Clear button quirk was not one, and the CRLF finding was refuted as having no visible consequence, although the tool was corrected anyway. Rewriting Git history to remove the user path from earlier commits was not done; that is a decision for the owner.
+## Model loading
 
-## Loading follow-up
+### Slow connections could never load the model
 
-An AI-assisted audit of `17f2b9a` on 3 November 2026 reproduced the 93-case suite and the recorded fault and recovery checks, then looked for remaining gaps. It found one observed defect and one untested rule; both are corrected here.
+- **What failed:** with only the 43 MB model response paced at 2.5 Mbps on loopback, loading failed at 121 seconds with 37.4 of 43.1 MB (86%) received. Try again restarted the transfer from zero.
+- **How it was detected:** a paced loopback probe of `17f2b9a` (the same audit's 93-case suite run passed and did not detect it: [audit-17f2b9a-full-suite.xml](evidence/audit-17f2b9a-full-suite.xml)). The corrected package, under the same 2.5 Mbps transfer, received every byte and reached ready at 140.6 seconds ([branch-review-slow-transfer.json](evidence/branch-review-slow-transfer.json), which also holds the probe source; the probe against `f1a19a9` is in [loading-followup-slow-transfer.json](evidence/loading-followup-slow-transfer.json)). Each condition ran once on loopback; this is not an Internet speed measurement.
+- **Impact:** a steady connection below about 2.9 Mbps could not load the model at all, and retrying could not help.
+- **Cause in the system:** the model-load deadline counted 120 seconds from worker start and ignored progress. The correction fails a transfer only after 45 seconds without a loading event, and each event restarts that window. Try again still restarts the transfer from zero; resumable download is a non-goal because it would require changing the underlying library. Runtime initialization after the model file arrives keeps its own fixed 120-second deadline that later settings-file events cannot extend. The messages distinguish a stalled transfer from slow initialization.
+- **Test that prevents it:** `tests/test_recovery.py::test_slow_steady_model_transfer_is_not_timed_out` (fails under the `fixed-load-deadline` fault), `tests/test_recovery.py::test_stalled_model_transfer_times_out_after_its_last_progress` and `tests/test_recovery.py::test_model_initialization_has_its_own_deadline` (fails under the `initialization-extended-by-later-events` fault). The stalled-transfer and initialization tests then Clear and recover.
 
-| Finding | Before | Correction and observed check |
-| --- | --- | --- |
-| Slow connections could never load the model | The model-load deadline counted 120 seconds from worker start and ignored progress. With only the 43 MB model response paced at 2.5 Mbps on loopback, 37.4 MB (86%) had arrived when the deadline fired. Try again restarted the transfer from zero, so a steady connection below about 2.9 Mbps could not succeed by retrying. `PUBLIC_DEMO.md` said very slow connections "can require retry" | Transfer now fails only after 45 seconds without a loading event; each event restarts the window. Runtime initialization after the model file finishes keeps its own fixed 120-second deadline that later settings-file events cannot extend. Stage-specific messages distinguish a stalled transfer from slow initialization. Controlled tests cover a stalled transfer, a slow steady transfer that must not time out and an initialization hang, each followed by Clear and recovery where relevant |
-| The blank-label check had no test | Deleting `!label.trim()` from `renderResults` left all 44 recovery and UI tests passing ([audit-17f2b9a-blank-label-fault.xml](evidence/audit-17f2b9a-blank-label-fault.xml)) | Empty and whitespace-only labels are added to the malformed-response cases; deleting the check fails both |
+### A completed download could be reported as a stalled connection
 
-The audit also replaced one self-referential assertion. The real-model tests compared visible text with the page's own `data-*` attributes, so a fault that changed both consistently could pass. The selected row's visible label and score are now compared with the earlier recorded output of the same pinned model, with a 0.01 score tolerance. A deliberately scaled score fails all three photo cases.
+- **What failed:** after the model's final bytes arrive, Transformers.js writes the 43 MB file to Cache Storage before it sends `done`. That silent write was timed by the 45-second connection-stall window.
+- **How it was detected:** source review of the loading states against the library's event order.
+- **Impact:** a slow local cache write could produce a "stopped loading, check your connection" message although the download had finished.
+- **Cause in the system:** the stall window ended only on the library's `done` event. Once every byte of a known-size transfer has arrived, the 120-second initialization deadline applies instead.
+- **Test that prevents it:** `tests/test_recovery.py::test_completed_transfer_starts_initialization_before_the_done_event` (fails under the `completed-transfer-left-under-stall-window` fault).
 
-Each new check has a deliberate fault in `tools/check_review_sensitivity.py`, alongside the four earlier faults. The paced-transfer observation came from an audit probe on loopback. Repeated against the corrected package, the same 2.5 Mbps transfer completed and the detector became ready at 139.6 seconds. [loading-followup-slow-transfer.json](evidence/loading-followup-slow-transfer.json) records both runs and the probe source. It is one run per condition on loopback, not an Internet speed measurement. Four cosmetic book corrections were also made: two headings gained missing commas ("Filtering, samples and PNG output"; "Testing with Python, pytest and Selenium"), the running header gained a separator, the narrow-viewport table received a table number, and the acceptance table's source line gained the four missing test files.
+### Progress showed 100% for the whole download without Content-Length
 
-## Review follow-up
+- **What failed:** when a host omits Content-Length, Transformers.js 2.17.2 reports a total equal to the bytes received so far, so the page showed "100%" throughout the transfer. The existing test injected an event shape the library never sends.
+- **How it was detected:** source review of the library's progress events and of the test fixture.
+- **Impact:** the user saw a finished download while most of the model was still arriving.
+- **Cause in the system:** the page trusted any reported total. A size is trusted only after an event shows fewer bytes than the total; otherwise the page shows megabytes received with an indeterminate bar.
+- **Test that prevents it:** `tests/test_loading.py::test_missing_content_length_shape_stays_indeterminate`, which replays the real event shape.
 
-An earlier external AI-assisted review reproduced the preceding 72-case suite and reported important blind spots: blank visible text, displaced real-model boxes and removed announcement settings could evade its checks. Those are reported external experiments. The follow-up adds locally reproducible disposable-copy sensitivity checks and records their actual outcomes separately in `followup-sensitivity.json`. No broad mutation score is claimed.
+## Stale results and Clear
 
-The previous timeout callback always described image detection, including while the model was still loading. Clear then mapped any stopped worker to a startup failure. The corrected timeout callback selects a message for the active loading or inference stage. Clear uses the stopped-worker flag to show a generic unavailable/restart message; it does not retain or reclassify the earlier cause. Explicit Retry or a valid new selection can recover. Dedicated controlled tests exercise failure, Clear and recovery.
+### Timeout and Clear messages described the wrong stage
 
-The retained [before/after comparison](evidence/followup-recovery-comparison.json) runs the same three new wording tests against a disposable copy of `74d108f` and the current source: three expected failures in 26.732 seconds, then three passes in 27.644 seconds. The earlier source fails at the pre-Clear message assertions. Its Clear behavior is therefore a source finding, not independently reached by that failed run. The current passing checks do continue through Clear, Retry and successful processing. Unexpected worker crashes are deliberately simulated; a real-model trigger was not observed.
+- **What failed:** the timeout callback always described image detection, including while the model was still loading. Clear then reported any stopped worker as a startup failure.
+- **How it was detected:** source review, confirmed by a before/after comparison of three wording tests. Against a disposable copy of `74d108f` the three tests fail (26.732 seconds); against the corrected source they pass (27.644 seconds) ([followup-recovery-comparison.json](evidence/followup-recovery-comparison.json); the same comparison against the current source is in [branch-review-recovery-comparison.json](evidence/branch-review-recovery-comparison.json)). The earlier source fails at the message checks before Clear, so its Clear behavior is a source finding that the failed run did not reach.
+- **Impact:** the user was told the wrong thing failed, and after Clear a slow analysis read as a broken detector.
+- **Cause in the system:** one message for every timeout, and Clear mapped any stopped worker to a startup failure. The timeout callback selects a message for the active loading or inference stage. Clear shows a generic unavailable and restart message without reclassifying the earlier cause; Retry or a valid new image recovers.
+- **Test that prevents it:** `tests/test_recovery.py::test_model_load_timeout_clear_and_retry_describe_detector_availability`, `tests/test_recovery.py::test_inference_timeout_clear_and_retry_describe_detector_availability` and `tests/test_recovery.py::test_worker_crash_during_inference_is_not_described_as_startup_failure`. Each continues through Clear, Retry and a successful analysis. Worker crashes are simulated; no crash of the real model was observed.
 
-Representative malformed predictions now have rejection and recovery checks, including missing/non-finite coordinates, invalid scores, impossible boxes and a mixed batch. Clamping remains a defined boundary behavior for finite out-of-range coordinates that leave a usable rectangle. These are simulated model-component failures, not evidence of defects observed inside the actual model.
+### Clear during a hung analysis showed an error on an empty workspace
 
-Visible result assertions check both names and two-decimal scores. The three real-photo cases also compare selected coordinates with the earlier pinned-model outputs and measure the rendered box against the actual image rectangle. Tolerance accommodates small numeric/layout variation; it does not convert model-derived references into ground truth. Important input messages are checked for useful content without making every sentence an exact-text contract. DOM announcement checks establish configuration, not screen-reader certification.
+- **What failed:** after Clear, an analysis of the removed image that never answered still produced "Image analysis took too long" on an empty workspace.
+- **How it was detected:** review of the application state handling.
+- **Impact:** an error about an image the user had already removed.
+- **Cause in the system:** the inference timeout handler did not check whether an image was still shown. When the image has been cleared, the detector restarts quietly. Replacing a hung image with a new one keeps the error-and-retry behavior.
+- **Test that prevents it:** `tests/test_recovery.py::test_clear_during_a_hung_analysis_restarts_quietly` (fails under the `cleared-hang-reported-as-analysis-failure` fault).
 
-The current documentation is reconciled around one current execution record. The Word/PDF companion is rebuilt for the new implementation, with verified contents destinations, page numbers, return links and all-page rendering. Historical evidence is retained, and the public ZIP is rebuilt locally. Upload remains parked.
+## Malformed output and labels
 
-## Preceding correctness review
+### Blank labels were accepted without a test
 
-Review date: 3 November 2026. Reviewed starting point: merged `main` at `9a60886`, containing the public-preparation implementation `3ac9422`. The review kept the feature scope fixed. Website upload remains parked; no successful public deployment or hosted verification is recorded.
+- **What failed:** deleting the `!label.trim()` check from `renderResults` left all 44 recovery and UI tests passing ([audit-17f2b9a-blank-label-fault.xml](evidence/audit-17f2b9a-blank-label-fault.xml)).
+- **How it was detected:** a deliberate fault in a disposable copy of `17f2b9a`.
+- **Impact:** a prediction with an empty or whitespace label could be shown as a result row with no name, and no test would notice.
+- **Cause in the system:** the malformed-response cases had no empty or whitespace label. Both are included among them.
+- **Test that prevents it:** `tests/test_recovery.py::test_malformed_result_is_rejected_without_partial_detections_and_recovers` with `[empty-label]` and `[blank-label]` (both fail under the `accepted-blank-labels` fault).
 
-## Scope and method
+The same test rejects missing or non-finite coordinates, invalid scores, impossible boxes and a mixed batch, then recovers with a valid image. These are simulated failures of the model component, not defects observed inside the actual model. Finite out-of-range coordinates that still leave a usable rectangle are clamped by design (`tests/test_recovery.py::test_partially_outside_box_is_clamped_to_the_rendered_image`). The real model produces two spoon predictions for one photo, so `tests/test_filter.py::test_duplicate_labels_keep_distinct_identity_and_selection_through_filtering` checks selection, coordinates, colors and filtering by prediction identity rather than by label; no duplicate-selection defect was found.
 
-The maintained application, Python server, all tests, setup/package/evidence helpers and document-generation/navigation helpers were read. Model/runtime binaries, distributed notices and preserved upstream files were checked against their recorded hashes. That integrity check does not constitute a manual audit of every third-party implementation or a general model-accuracy evaluation.
+## Startup and configuration
 
-Independent source-reading passes examined application state, packaging/reproducibility, and test/document evidence. Findings were reproduced through controlled local HTTP timing, ordinary temporary directories or isolated mocks/copies. The application's source was not deliberately corrupted to create these defects. This review was assisted by AI tools.
+The first three defects below were present in `9a60886` (public-preparation implementation `3ac9422`). The five startup regressions written for them fail against that source in 73.298 seconds of JUnit time ([review-startup-before.xml](evidence/review-startup-before.xml)) and pass after correction in 63.996 seconds ([review-startup-after.xml](evidence/review-startup-after.xml)). The fourth is a gap in those startup tests themselves.
 
-## Confirmed findings and corrections
+### Configuration loading had no deadline
 
-| Finding | Before | Correction and observed check |
-| --- | --- | --- |
-| Configuration loading had no application deadline | A held response before headers or during its JSON body left the app loading after the 20-second regression wait; the model watchdog had not started | A real 15-second configuration deadline aborts the request. Retry fetches configuration again and retains the chosen image. Both held-response cases pass. |
-| Background startup could erase an input error | An invalid file's explanation disappeared when delayed configuration completed and started the worker | Worker creation no longer clears user-facing errors as an incidental startup action. The error remains until a deliberate recovery action. |
-| Worker readiness could misreport an active file read | The app said Ready to choose an image while a held file read was still pending | Track the current preparation revision separately. Ready and retry paths preserve Reading image or Loading sample until preparation actually finishes. |
-| Package provenance depended on the test's parent directory | The privacy test failed outside a Git checkout because a deliberately incomplete `.git` marker caused Git to exit 128 | Missing/unusable optional Git metadata produces absent provenance; a source copy never inherits its parent's repository metadata. Byte-integrity and public-file checks are unchanged. |
-| Failure-evidence writing could bypass browser cleanup | Injected evidence-directory denial skipped `driver.quit()`; observed mock call count was zero | An outer `finally` always attempts browser cleanup after creation. Evidence-write failures remain secondary. Three mocked failure paths require exactly one cleanup call. |
-| Navigation checking did not require return links | Prior rules accepted a disposable PDF with one Back to contents link removed | Require one return link per top-level section. The delivered document passes with ten; the damaged copy fails with nine. Its page content was unchanged. |
+- **What failed:** a configuration response held before its headers or during its JSON body left the app loading beyond a 20-second wait.
+- **How it was detected:** controlled local HTTP timing that holds the configuration response.
+- **Impact:** the app could stay in Loading indefinitely, because the model watchdog had not started yet.
+- **Cause in the system:** the configuration request had no application deadline. A 15-second deadline aborts it, and Retry fetches configuration again while keeping the chosen image.
+- **Test that prevents it:** `tests/test_startup.py::test_stalled_configuration_times_out_and_retry_fetches_it_again` (`[headers]` and `[body]`).
 
-The initial five startup regressions failed against the previous app in 73.298 seconds of JUnit time. After the first correction they passed in 63.996 seconds. A further regression covers worker retry during an unfinished file read. The original packaging privacy case failed outside the checkout in 1.688 seconds; after the provenance fix, eight browser-free cases passed there in 4.176 seconds. A separate case also covers a missing Git executable.
+### Background startup could erase an input error
 
-A controlled duplicate-label case was added because actual model observations include two spoon predictions. It verifies selection, coordinates, colors and filtering by prediction identity rather than merely comparing labels. No current duplicate-selection defect was found; this strengthens the regression oracle for an existing requirement.
+- **What failed:** an invalid file's explanation disappeared when delayed configuration completed and started the worker.
+- **How it was detected:** controlled local HTTP timing with an invalid file chosen while configuration was held.
+- **Impact:** the user lost the reason their file was rejected.
+- **Cause in the system:** worker creation cleared user-facing errors as a side effect. The error stays until a deliberate recovery action.
+- **Test that prevents it:** `tests/test_startup.py::test_configuration_completion_preserves_an_existing_input_error` and `tests/test_loading.py::test_startup_progress_and_ready_do_not_replace_an_input_error`.
 
-## Historical combined result
+### Worker readiness could misreport an unfinished file read
 
-The complete suite passed **72 cases**, with zero failures, errors or skips, in **531.363 seconds** of JUnit time (531.53 seconds by the runner). It used a temporary directory outside any Git repository, addressing the condition hidden by the earlier in-checkout test runs. There are 68 non-inference cases and four actual-model cases. The static-package real-model workflow remains included.
+- **What failed:** the app said "Ready to choose an image" while a held file read was still pending.
+- **How it was detected:** controlled timing that holds the file read while the worker becomes ready.
+- **Impact:** the status contradicted what the app was doing with the user's image.
+- **Cause in the system:** readiness did not know about image preparation in progress. The current preparation revision is tracked separately, so Ready and Retry keep "Reading image" or "Loading sample" until preparation finishes.
+- **Test that prevents it:** `tests/test_startup.py::test_worker_ready_preserves_in_progress_file_preparation` and `tests/test_startup.py::test_worker_retry_restores_status_while_file_preparation_is_pending`.
 
-At that preceding review checkpoint, the delivered Word/PDF files were unchanged. The stricter navigation check passed the 19-page document, 31 heading targets, 62 contents links and ten return links. Removing one return annotation from a disposable copy failed the new check; reconstructed prior rules incorrectly passed that same copy. This is a corrected verification gap, not a claim that the delivered document was missing its links.
+### Startup tests could not see a premature real worker
 
-The selected records and source hashes are in `docs/evidence/source-review-verification.json`. Earlier 26-, 48- and 59-case records retain their original source/version scope; their counts are not added together or relabelled as current execution.
+- **What failed:** startup tests counted only controlled-worker requests. Before configuration is valid, test mode is off, so a worker started too early would request the real worker and go unnoticed.
+- **How it was detected:** review of test strength.
+- **Impact:** a start-before-configuration defect could pass the suite.
+- **Cause in the system:** the test server did not count `/worker.js`. It counts both workers, and the startup tests require no request for either before valid configuration.
+- **Test that prevents it:** every test in `tests/test_startup.py` opens the page through a shared check that requires zero requests for either worker while configuration is held, for example `tests/test_startup.py::test_stalled_configuration_times_out_and_retry_fetches_it_again`; `tests/test_startup.py::test_invalid_configuration_can_be_refetched_without_losing_the_image` also requires none after invalid configuration.
 
-## Limits of the preceding review
+## Test strength
 
-No blocking finding remains from this bounded review of the agreed local workflow. This does not prove every possible input, browser, operating-system behavior or third-party dependency correct. Chrome on the recorded Windows environment remains the verified target; wider browser/device support, general recognition accuracy and hosted behavior remain unqualified.
+### Real-model checks compared the page with itself
 
-When this review was recorded, the optional transfer-rate checker respected the app's former fixed 120-second model-load deadline, so a sufficiently low requested rate was a negative loading scenario. The second follow-up replaced that deadline with a stall window; the checker's own 120-second readiness wait remains a separate limit of that helper. The recorded 10 Mbps model-only simulation remains limited to that scenario.
+- **What failed:** the real-model tests compared visible text with the page's own `data-*` attributes.
+- **How it was detected:** review of test strength.
+- **Impact:** a fault that changed visible text and attributes together could pass.
+- **Cause in the system:** the oracle came from the page under test. The selected row's visible label and score are compared with an earlier recorded output of the same pinned model ([model-observations.json](evidence/model-observations.json)), with a 0.01 score tolerance. That reference is a regression baseline, not ground truth.
+- **Test that prevents it:** `tests/test_inference.py::test_real_model_detects_reviewed_object` (all three photo cases fail under the `consistently-scaled-scores` fault).
 
-The corrected deployment package supersedes the earlier prepared ZIP, but upload remains paused. An independent reviewer should inspect this branch and the retained evidence before making additional release claims. Any next changes should address a demonstrated defect or a necessary clarification within the frozen scope.
+### Every score forced to 1.0 still passed
+
+- **What failed:** the selected reference scores were all 0.998 to 0.999, so a fault forcing every score to 1.0 stayed within tolerance.
+- **How it was detected:** review of test strength.
+- **Impact:** a score defect that inflates confidence would not be caught by the real-model checks.
+- **Cause in the system:** only the selected row was compared. Every visible row is compared with the recorded output, including the 0.67 and 0.93 coffee spoons.
+- **Test that prevents it:** `tests/test_inference.py::test_real_model_detects_reviewed_object` (the `coffee.png-cup` case fails under the `scores-forced-to-one` fault).
+
+### Blank visible text, displaced boxes and removed announcements could pass
+
+- **What failed:** blank visible names or scores, real-model boxes drawn in the wrong place and removed live-region settings could pass the 72-case suite.
+- **How it was detected:** external AI-assisted review of the 72-case suite, then deliberate faults in disposable copies ([followup-sensitivity.json](evidence/followup-sensitivity.json)). No broad mutation score is claimed.
+- **Impact:** text the user reads, box placement and status announcements were not protected.
+- **Cause in the system:** assertions read data attributes instead of visible text and did not measure rendered boxes. The tests check visible names and two-decimal scores, compare the selected box coordinates with the pinned-model reference, and measure the rendered box against the image rectangle. The announcement check establishes configuration, not screen-reader behavior.
+- **Test that prevents it:** `tests/test_ui.py::test_predictions_and_boxes_match_the_current_image` (`blank-visible-labels`), `tests/test_ui.py::test_visible_scores_round_without_changing_the_underlying_values` (`blank-visible-scores`), `tests/test_inference.py::test_real_model_detects_reviewed_object` (`displaced-rendered-boxes`) and `tests/test_ui.py::test_status_and_error_announcement_configuration_follows_visible_states` (`removed-announcement-configuration`).
+
+## Evidence claims
+
+### Fault counts were overstated
+
+- **What failed:** the documents at `f1a19a9` described the sensitivity record as nine faults and 15 intended failures. The file holds eight faults and 14 failures ([loading-followup-sensitivity.json](evidence/loading-followup-sensitivity.json)).
+- **How it was detected:** recounting from the evidence file.
+- **Impact:** a published claim larger than its evidence.
+- **Cause in the system:** the clean control was counted as a fault. Counts are quoted from the evidence files.
+- **Test that prevents it:** no automated test; document counts are checked against the evidence by hand.
+
+### Claims without retained evidence, and overstatements
+
+- **What failed:** a 93-case reproduction and the "44 tests still passed" blank-label observation had no retained record, and four startup and package timings differed from the retained JUnit. Wording claimed more than the evidence: an "independent oracle" that is the same model's earlier output, "only the reference catches" scaled scores, and "2 to 3 source pixels" where one sample is 1.5.
+- **How it was detected:** review of each claim against its evidence.
+- **Impact:** a reader could not check the claims, or would trust them more than they deserve.
+- **Cause in the system:** results quoted from memory or from raw artifacts that were not retained. Both runs are retained ([audit-17f2b9a-full-suite.xml](evidence/audit-17f2b9a-full-suite.xml), [audit-17f2b9a-blank-label-fault.xml](evidence/audit-17f2b9a-blank-label-fault.xml)), timings quote the JUnit records, and the wording states what the evidence shows.
+- **Test that prevents it:** no automated test; wording is a review matter.
+
+### Retained evidence exposed a local user path
+
+- **What failed:** three retained JUnit files contained the Windows user path. The verification recorder wrote a fixed run label, and the sensitivity tool missed backslash-escaped paths.
+- **How it was detected:** privacy review of the retained evidence and of the tools that write it.
+- **Impact:** a personal path in files intended for publication, and a record whose label did not match its run.
+- **Cause in the system:** the writers redacted only plain path spellings and used a hard-coded label. Selected copies use placeholders recorded in each redaction note, while raw-record hashes still refer to the originals. The recorder's label is neutral; the sensitivity tool writes LF and redacts plain, forward-slash and escaped spellings.
+- **Test that prevents it:** no automated test; the redaction is in the evidence-writing tools.
+
+Git history is not rewritten: earlier commits still contain the Windows user path in those three JUnit files.
+
+## Packaging and provenance
+
+### Package provenance failed outside a Git checkout
+
+- **What failed:** the packaging privacy test failed when the project sat outside a Git checkout, because a deliberately incomplete `.git` marker made Git exit with code 128.
+- **How it was detected:** running the browser-free package tests from an ordinary temporary directory. The original case fails in 1.688 seconds ([review-package-before.xml](evidence/review-package-before.xml)); after correction eight browser-free cases pass in 4.176 seconds ([review-package-after.xml](evidence/review-package-after.xml)).
+- **Impact:** a package could not be built from a source copy, and a copy could inherit its parent folder's repository metadata.
+- **Cause in the system:** Git metadata was treated as required. Missing or unusable metadata produces absent provenance; byte-integrity and public-file checks are unchanged.
+- **Test that prevents it:** `tests/test_public_package.py::test_git_provenance_is_absent_for_a_non_repository_marker` (`[not-repository]` and `[missing-git]`) and `tests/test_public_package.py::test_git_provenance_never_uses_a_parent_repository`.
+
+At that checkpoint, with the configuration, input-error, file-read, outside-checkout provenance and browser-cleanup corrections, the 72-case suite (68 controlled, 4 real-model) passed with zero failures, errors or skips in 531.363 seconds of JUnit time, run from a temporary directory outside any Git repository ([review-full-suite.xml](evidence/review-full-suite.xml), [source-review-verification.json](evidence/source-review-verification.json)). The current result is in [VERIFICATION.md](VERIFICATION.md).
+
+### Package provenance failed for a repository with no commits
+
+- **What failed:** a repository with no commits still made provenance fail.
+- **How it was detected:** review of the Git fallbacks.
+- **Impact:** a fresh repository could not build a package.
+- **Cause in the system:** not every Git call fell back. All of them fall back to absent provenance.
+- **Test that prevents it:** `tests/test_public_package.py::test_git_provenance_is_absent_for_a_repository_without_commits`.
+
+## Test harness and document checks
+
+### Failure-evidence writing could skip browser cleanup
+
+- **What failed:** when the evidence directory could not be created, `driver.quit()` was never called; the mocked call count was zero.
+- **How it was detected:** injected directory denial in an isolated mock.
+- **Impact:** a failing test could leave Chrome running.
+- **Cause in the system:** cleanup sat after the evidence write. An outer `finally` always attempts cleanup once the browser exists; evidence-write failures stay secondary.
+- **Test that prevents it:** `tests/test_harness_cleanup.py::test_browser_closes_when_failure_evidence_directory_cannot_be_created`, `tests/test_harness_cleanup.py::test_browser_closes_when_screenshot_and_fallback_evidence_both_fail` and `tests/test_harness_cleanup.py::test_browser_closes_when_timeout_setup_fails` ([review-harness-cleanup.xml](evidence/review-harness-cleanup.xml)). No real Chrome is launched for these cases.
+
+### The navigation check did not require return links
+
+- **What failed:** the companion's navigation checker accepted a disposable PDF with one "Back to contents" link removed.
+- **How it was detected:** removing one return annotation from a disposable copy. Reconstructed prior rules pass it; the corrected checker fails it with nine of ten return links ([review-navigation-original.json](evidence/review-navigation-original.json), [review-navigation-negative.json](evidence/review-navigation-negative.json), [review-navigation-prior-rules.json](evidence/review-navigation-prior-rules.json)). The delivered document was not missing its links.
+- **Impact:** a broken companion could pass its navigation check.
+- **Cause in the system:** the checker did not count return links. It requires one per top-level section.
+- **Test that prevents it:** no pytest case; [`docs/system-design/verify_document_navigation.py`](system-design/verify_document_navigation.py) enforces the count (one return link per top-level section) and is run as a step of the companion build procedure in [docs/system-design/README.md](system-design/README.md).
+
+### Document presentation errors
+
+- **What failed:** the README sent readers first to an owner handoff note; a second, byte-identical set of 12 screenshots was kept; the companion's AC10 row omitted `test_recovery.py`; a cited table's source line could start a new page.
+- **How it was detected:** review of how the repository reads to a newcomer.
+- **Impact:** a confusing first read and an incomplete acceptance trace.
+- **Cause in the system:** link order, duplicated captures, an incomplete acceptance row and the document builder's table layout. The links are reordered, one screenshot set is kept, the row is corrected and the builder keeps the source line with its table.
+- **Test that prevents it:** no automated test; the companion's content and navigation checks run when it is built.
+
+## Layout
+
+### Content overflowed a 320-pixel viewport
+
+- **What failed:** at a 320-pixel viewport the vertical scrollbar left 305 pixels of usable width, but the body's minimum width was 320 pixels.
+- **How it was detected:** rendered review at a 320-pixel viewport; [viewport-before-fix.xml](evidence/viewport-before-fix.xml) retains the failing assertion of the clientWidth check against the uncorrected layout.
+- **Impact:** horizontal scrolling on the narrowest supported width.
+- **Cause in the system:** a fixed 320-pixel body minimum, and a test that compared against `window.innerWidth`, which includes the scrollbar and hid the overflow. The check uses `documentElement.clientWidth`, and content fits the 305-pixel space.
+- **Test that prevents it:** `tests/test_ui.py::test_narrow_layout_preserves_results_and_does_not_overflow` (`[320]` and `[390]`).
+
+## Findings that did not hold
+
+- A suggested contradiction about the Clear button behavior is not a contradiction.
+- The CRLF output of the sensitivity tool has no visible consequence; the tool writes LF regardless.
+
+No defect was found in the slow-connection correction itself.
+
+## Limits
+
+No blocking defect is known in the local workflow. That does not prove every input, browser, operating system or third-party dependency correct. Chrome on the recorded Windows environment is the verified target; other browsers and devices, general recognition accuracy and hosted behavior are not verified.
+
+The optional transfer-rate checker has its own 120-second readiness wait, so very low requested rates fail in the helper independently of the app's stall window. The 10 Mbps model-only simulation is limited to that scenario.
+
+No public deployment exists.

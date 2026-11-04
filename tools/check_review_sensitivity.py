@@ -3,6 +3,8 @@
 Uses prepared local model assets and the existing Selenium cache, one browser at
 a time. Never edits the application checkout. This is bounded test-sensitivity
 evidence, not a mutation score, real model failure, or model accuracy benchmark.
+The faults named core-* break, once each, the five rules the project question
+depends on; an equivalent-* fault is expected to change nothing observable.
 Run with .venv/Scripts/python.exe tools/check_review_sensitivity.py.
 """
 from __future__ import annotations
@@ -33,8 +35,18 @@ MALFORMED = RECOVERY + "test_malformed_result_is_rejected_without_partial_detect
 BLANK_LABELS = [MALFORMED + "[empty-label]", MALFORMED + "[blank-label]"]
 COMPLETED_TRANSFER = RECOVERY + "test_completed_transfer_starts_initialization_before_the_done_event"
 CLEARED_HANG = RECOVERY + "test_clear_during_a_hung_analysis_restarts_quietly"
+# Core rules the project question depends on. Each is broken once on purpose below.
+SIZE_BOUNDARY = ["tests/test_ui.py::test_file_size_boundary[10485760-complete]",
+                 "tests/test_ui.py::test_file_size_boundary[10485761-error]"]
+FILTER = "tests/test_filter.py"
+STALE_RESULT = ["tests/test_ui.py::test_replacing_a_processing_image_discards_the_old_result[car.png]",
+                "tests/test_ui.py::test_replacing_a_processing_image_discards_the_old_result[slow-car.png]",
+                "tests/test_ui.py::test_clearing_a_processing_image_prevents_late_repaint"]
+STALE_EXPORT = "tests/test_export.py::test_changed_result_cancels_a_png_still_being_encoded"
+LATE_SAMPLE = "tests/test_sample.py::test_late_sample_response_cannot_override_a_later_user_action"
 CLEAN_CONTROLS = [VISIBLE, ROUNDING, ANNOUNCEMENTS, GEOMETRY, SLOW_LOAD, STALLED_LOAD, INITIALIZATION, *BLANK_LABELS,
-                  COMPLETED_TRANSFER, CLEARED_HANG]
+                  COMPLETED_TRANSFER, CLEARED_HANG, *SIZE_BOUNDARY, FILTER, *STALE_RESULT, STALE_EXPORT, LATE_SAMPLE]
+CLEAN_CONTROL_CASES = 30
 MUTATIONS = (
     {
         "name": "blank-visible-labels", "path": "dist/app.js",
@@ -119,7 +131,71 @@ MUTATIONS = (
         "reason_fragment": "TimeoutException",
         "purpose": "Report the timeout of an already cleared image as an analysis failure on an empty workspace.",
     },
+    {
+        "name": "core-size-limit-made-exclusive", "path": "dist/app.js",
+        "replacements": [("if (file.size > MAX_BYTES)", "if (file.size >= MAX_BYTES)")],
+        "tests": SIZE_BOUNDARY, "expected_failures": 1,
+        "reason_fragment": "This image exceeds 10 MiB",
+        "failing_tests": ["test_file_size_boundary[10485760-complete]"],
+        "purpose": "Core rule: a file of exactly 10 MiB is accepted. Reject it by making the size limit exclusive.",
+    },
+    {
+        "name": "core-filter-minimum-made-exclusive", "path": "dist/app.js",
+        "replacements": [("filter(({ score }) => score >= minimum)", "filter(({ score }) => score > minimum)")],
+        "tests": [FILTER], "expected_failures": 3,
+        "reason_fragment": ("['bottle'] == ['cup', 'bottle']", "data-label=\"cup\"", "[] == ['bottle']"),
+        "failing_tests": ["test_exact_minimum_filters_underlying_scores_and_restores_without_inference",
+                          "test_filter_preserves_result_identity_color_and_surviving_selection",
+                          "test_hidden_predictions_can_be_restored_and_differ_from_no_model_predictions"],
+        "purpose": "Core rule: the score filter keeps predictions whose score equals the minimum. Make the comparison exclusive.",
+    },
+    {
+        "name": "core-stale-result-guard-removed", "path": "dist/app.js",
+        "replacements": [("if (data.id === revision && currentImage?.id === revision) {", "if (true) {")],
+        "tests": STALE_RESULT, "expected_failures": 2,
+        "reason_fragment": ("'dog' not in", "Left contains one more item"),
+        "failing_tests": ["test_replacing_a_processing_image_discards_the_old_result[slow-car.png]",
+                          "test_clearing_a_processing_image_prevents_late_repaint"],
+        "purpose": "Core rule: an old image's result cannot repaint a newer image or a cleared workspace. Accept every result.",
+    },
+    {
+        "name": "core-stale-export-guard-removed", "path": "dist/app.js",
+        "replacements": [("    // Clear, image replacement and filter changes all retire an older export.\n"
+                          "    if (token !== exportRevision || snapshot.id !== revision) return;\n", "")],
+        "tests": [STALE_EXPORT], "expected_failures": 3,
+        "reason_fragment": ".crdownload",
+        "purpose": "Core rule: an outdated export cannot download. Remove the check made after PNG encoding finishes.",
+    },
+    {
+        "name": "core-late-sample-defences-removed", "path": "dist/app.js",
+        "replacements": [("  finishSampleLoad(request);\n  request.controller.abort();\n}",
+                          "  finishSampleLoad(request);\n}"),
+                         ("    if (id !== revision || sampleRequest !== request) return;\n    finishSampleLoad(request);",
+                          "    finishSampleLoad(request);"),
+                         ("{ type: blob.type || 'image/png' }), id);", "{ type: blob.type || 'image/png' }));")],
+        "tests": [LATE_SAMPLE], "expected_failures": 2,
+        "reason_fragment": ("is_displayed", "'coffee.png' == 'car.png'"),
+        "purpose": ("Core rule: a late sample cannot replace a newer image or undo Clear. The rule has three "
+                    "independent defences (cancelling the fetch, the check after the download, and the reserved "
+                    "image revision), so removing one alone is an equivalent fault; remove all three."),
+    },
+    {
+        "name": "equivalent-late-sample-check-only-removed", "path": "dist/app.js",
+        "replacements": [("    if (id !== revision || sampleRequest !== request) return;\n    finishSampleLoad(request);",
+                          "    finishSampleLoad(request);")],
+        "tests": [LATE_SAMPLE], "expected_failures": 0,
+        "reason_fragment": "",
+        "purpose": ("Equivalent fault, recorded so the result is not mistaken for a gap: removing only the check after "
+                    "the sample download changes nothing observable, because cancelling the fetch and the reserved "
+                    "image revision still stop the late sample. Both cases are expected to pass."),
+    },
 )
+
+
+def matches_reason(fragments, reason):
+    """A fault's failures must show its intended assertion; tests with different messages list each one."""
+    fragments = (fragments,) if isinstance(fragments, str) else fragments
+    return any(fragment in reason for fragment in fragments)
 
 
 def sha256(path):
@@ -256,13 +332,16 @@ def main():
                                           "mutated_sha256": sha256(target)}
                     failures = [case for case in result["cases"] if case["outcome"] == "failed"]
                     result["expected_outcome_verified"] = (
-                        result["exit_code"] == 1 and len(failures) == mutation["expected_failures"]
+                        result["exit_code"] == (1 if mutation["expected_failures"] else 0)
+                        and len(failures) == mutation["expected_failures"]
                         and result["counts"]["error"] == result["counts"]["skipped"] == 0
-                        and all(mutation["reason_fragment"] in case["reason"] for case in failures)
+                        and all(matches_reason(mutation["reason_fragment"], case["reason"]) for case in failures)
+                        and ("failing_tests" not in mutation or sorted(
+                            case["id"].split("::")[-1] for case in failures) == sorted(mutation["failing_tests"]))
                     )
                 else:
                     result["expected_outcome_verified"] = result["exit_code"] == 0 and result["counts"] == {
-                        "passed": 13, "failed": 0, "error": 0, "skipped": 0}
+                        "passed": CLEAN_CONTROL_CASES, "failed": 0, "error": 0, "skipped": 0}
                 report["runs"].append(result)
                 print(f"{name}: {result['counts']} expected={result['expected_outcome_verified']}", flush=True)
                 if not result["expected_outcome_verified"]:

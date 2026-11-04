@@ -23,7 +23,7 @@ Python is the main language to learn for this project's automation. The actual a
 
 Headless Chrome still renders the page and can save screenshots, but it does not open a visible browser window. Selenium controls that isolated browser session, not your mouse or desktop. Your normal browser profile is not used for the tests.
 
-The pretrained model is the AI inside the app. The coding agent's help in developing this project is a separate form of AI assistance. Both are credited, and neither supplies a trustworthy expected answer automatically.
+The pretrained model is the AI inside the app. AI coding agents helped build this project; that is separate from the model inside the app, and neither supplies a trustworthy expected answer for a test.
 
 The filter compares full model scores, even though the interface rounds them to two decimal places. A score of 0.7999 can display as 0.80 and still disappear at a minimum of 0.80. In the real coffee result, the cup score is about 0.9979: it displays as 1.00 but is below a minimum of 1.00. Neither displayed value is a measured accuracy percentage.
 
@@ -54,7 +54,7 @@ The actual test continues with assertions about the displayed error or results. 
 
 This test uses **controlled model responses**. A plain generated image returning laptop/cup labels is intentional test data. It tests application behavior, not object recognition.
 
-After the walkthrough, one small change you can make is to add this parameter:
+One small change you can make is to add this parameter:
 
 ```python
 (10 * 1024 * 1024 - 1, "complete"),
@@ -66,8 +66,6 @@ That adds a just-below-the-limit check without changing the application. Run onl
 .\.venv\Scripts\python.exe -m pytest tests/test_ui.py::test_file_size_boundary -v
 ```
 
-This is a suggested post-delivery change, not a claim that you have already made it.
-
 ## 4. Controlled tests and real inference answer different questions
 
 | Evidence | Question it answers | What it cannot establish |
@@ -78,9 +76,9 @@ This is a suggested post-delivery change, not a claim that you have already made
 | Real astronaut/cup/cat tests | Does the pinned model run, show the expected label/score and retain the selected box location and rendered geometry? | General accuracy, independent localization accuracy or correctness of every other prediction |
 | Baseline comparison | Did shared labels and boxes change under the same pinned inference setup? | Equivalence to every upstream library version or all possible images |
 
-The real-model tests are deliberately small. For example, the cup check does not reject the extra duplicate spoon predictions. Its reference coordinates are earlier outputs from the same model, not human-drawn correct boxes. Comparing those values detects regression; it cannot prove localization accuracy.
+The real-model tests are deliberately small. For example, the cup check does not reject the extra duplicate spoon predictions. Its reference coordinates are recorded outputs from the same model, not human-drawn correct boxes. Comparing those values detects regression; it cannot prove localization accuracy.
 
-A test that only reads `data-label="cup"` can pass even when the visible word is blank. The strengthened checks read the text the user sees as well as identity metadata. Disposable-copy experiments blank names/scores or move boxes, then show the intended assertions fail. A deliberately introduced fault is evidence about test sensitivity, not a naturally discovered product incident.
+A test that only reads `data-label="cup"` can pass even when the visible word is blank. The result checks read the text the user sees as well as identity metadata. Disposable-copy experiments blank names/scores or move boxes, then show the intended assertions fail. A deliberately introduced fault is evidence about test sensitivity, not a naturally discovered product incident.
 
 Malformed-response and timeout cases ask whether the app rejects invalid component output and recovers. They do not claim the real model produced those faults. Similarly, checking `role` and `aria-live` confirms the configured announcement mechanism; it does not measure what a screen reader actually speaks.
 
@@ -88,13 +86,13 @@ Malformed-response and timeout cases ask whether the app rejects invalid compone
 
 A test failure can come from the application, the model, the test itself or the environment. Read the assertion and the saved screenshot/logs before deciding which one it is.
 
-During development, an attempted test of worker-loading failure initially did not create that failure at all: the server returned HTTP 200 and the page became Ready. The test was corrected to return HTTP 503 once, after which Retry succeeded. Changing the application to satisfy the mistaken first test would have addressed the wrong problem.
+Check that a failure test actually causes the failure. A worker-loading failure test whose server returns HTTP 200 lets the page become Ready, so it tests nothing. Returning HTTP 503 once makes the failure real, and Retry then succeeds. Changing the application to satisfy a test that never caused its failure would address the wrong problem.
 
-The review also found a missing recovery path for a worker that never replies. The fix added a deadline and worker restart. A controlled silent-worker test verifies that recovery. This is not evidence that the real model was observed hanging.
+A worker that never replies has a deadline and a restart path. A controlled silent-worker test, `tests/test_ui.py::test_nonresponding_worker_times_out_and_retries_the_latest_image`, verifies that recovery. This is not evidence that the real model hangs.
 
-The extension's rendered review found a real narrow-layout defect. At a 320-pixel window width, the vertical scrollbar left only 305 pixels of usable width. A fixed 320-pixel body therefore overflowed, while a test using the full window width incorrectly passed. The corrected test uses the document's client width; it failed before the CSS fix and passes afterward. This is an example of improving both the application and the rule used to judge its output.
+An example of a defect in both the app and its test: at a 320-pixel window width, the vertical scrollbar left only 305 pixels of usable width. A fixed 320-pixel body therefore overflowed, while a test using the full window width incorrectly passed. The corrected test, `tests/test_ui.py::test_narrow_layout_preserves_results_and_does_not_overflow`, uses the document's client width; it fails against the unfixed CSS and passes against the fixed CSS. Both the application and the rule used to judge its output had to change.
 
-A later audit found a timing defect that no earlier test exercised. The model-loading deadline counted 120 seconds from worker start and ignored progress. With the 43 MB model paced at 2.5 Mbps on loopback, 86% had arrived when the deadline fired, and Try again restarted the download from zero, so a steady connection below about 2.9 Mbps could never finish. The fix measures a stall instead: each loading event restarts a 45-second window, and runtime initialization after the transfer keeps its own 120-second limit. Three controlled tests now cover a stalled transfer, a slow steady transfer that must not time out, and an initialization hang. The lesson is to ask what a timeout is really protecting against. Here it protects against a dead connection, not a slow one.
+A timing defect: a fixed model-loading deadline counted 120 seconds from worker start and ignored progress. With the 43 MB model paced at 2.5 Mbps on loopback, 86% had arrived when the deadline fired, and Try again restarted the download from zero, so a steady connection below about 2.9 Mbps could never finish. The app measures a stall instead: each loading event restarts a 45-second window, and runtime initialization after the transfer keeps its own 120-second limit. Three controlled tests cover a stalled transfer, a slow steady transfer that must not time out, and an initialization hang. The lesson is to ask what a timeout is really protecting against. Here it protects against a dead connection, not a slow one.
 
 ## 6. A small exercise with an answer
 
@@ -108,6 +106,6 @@ Answer: the first case succeeds. Each event arrives well inside the 45-second st
 
 ## 7. A useful release explanation
 
-An honest explanation connects the requirement, test and evidence: "I checked that replacing an image cannot display its predecessor's results. I tested delayed responses deliberately, kept those tests separate from real inference, and preserved failure evidence. The app is suitable for this local learning/evaluation workflow, with the model limitations documented."
+An honest explanation connects the requirement, test and evidence: "I defined the rule that replacing an image must never display its predecessor's results, and I directed tests that deliver delayed responses deliberately, kept separate from real inference, with failure evidence preserved. AI coding agents implemented most of the code and tests. The app is suitable for this local learning/evaluation workflow, with the model limitations documented."
 
-Do not describe the project as proof of semiconductor hardware validation, production-grade recognition, general model accuracy or work independently written without AI assistance. The goal is to understand and explain the real contribution you can demonstrate.
+Do not describe the project as proof of semiconductor hardware validation, production-grade recognition, general model accuracy or work written without AI assistance. The goal is to understand and explain the real contribution you can demonstrate.

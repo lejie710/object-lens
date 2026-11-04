@@ -1,6 +1,43 @@
 # Object Lens
 
-Object Lens is a small browser app that runs a pretrained DETR object detector on your photo, entirely on your own machine. It comes with a Python, pytest and Selenium suite aimed at specific risks: stale results, broken recovery, misplaced boxes and loading failures.
+**The question.** When someone tries a browser object detector on their own photos, switching images quickly, on a slow connection, or when the model returns something broken, can the page show results that belong to a different photo, misplace boxes, or get stuck with no way to recover?
+
+Object Lens is a small browser app that runs a pretrained DETR object detector on your photo, entirely on your own machine. Its Python, pytest and Selenium suite answers the question with three kinds of evidence: a controlled test for each failure, every core rule caught when it is broken on purpose, and a before/after measurement on a slow connection.
+
+## The answer, with evidence
+
+| Evidence | Result |
+| --- | --- |
+| Model download throttled to 2.5 Mbps on loopback | Before: loading failed at 121 s with 37.4 of 43.1 MB (86%) received, and Try again restarted from zero. After: the package received every byte and reached ready at 140.6 s ([branch-review-slow-transfer.json](docs/evidence/branch-review-slow-transfer.json)) |
+| Recorded full suite | 102 passed, with 0 failures, errors or skips: 98 controlled cases and 4 real-model cases ([summary](docs/evidence/release-verification.json), [JUnit XML](docs/evidence/release-full-suite.xml)) |
+| Core rules broken on purpose | Every core rule the question depends on has at least one test that fails when the rule is broken ([release-sensitivity.json](docs/evidence/release-sensitivity.json)) |
+
+The question, its measure, the acceptance examples, the ranked risks and the design decisions are in [DESIGN.md](docs/DESIGN.md#the-question).
+
+## Limits
+
+What Object Lens deliberately does not do, and why ([non-goals and rabbit holes](docs/DESIGN.md#non-goals-and-rabbit-holes)):
+
+- **Model training or accuracy evaluation.** The tests check how the app handles model output, not whether the model is accurate. Nothing here measures accuracy, precision or recall.
+- **Accounts, upload records or image history.** The app handles one image at a time and photos never leave the browser, so nothing needs storing.
+- **A hosted inference API or cloud deployment.** The model runs locally in the user's browser. There is no deployed URL.
+- **Other browsers and mobile.** Only Windows and Chrome were verified, which keeps the scope small enough to test thoroughly.
+- **Resumable model download.** Try again restarts the download from zero. Resuming would require changing the underlying library.
+
+Known risks that are not tested:
+
+- **Repeated 45 s stalls.** Try again restarts from zero, so a connection that keeps stalling for 45 s cannot load the detector (non-goal 5).
+- **Other browsers and mobile** (non-goal 4).
+- **Large real phone photos with EXIF rotation.** Only synthetic images and small public photos are tested.
+
+Other limits of the evidence:
+
+- There is no CI. All results come from one local Windows and Chrome environment.
+- The real-model checks compare against earlier output from the same pinned model. They show regression, not accuracy.
+- The announcement tests inspect how the page is configured. Nobody has tested it with an actual screen reader, and there is no accessibility certification.
+- A single full run does not measure a flake rate.
+
+The full release assessment is in [VERIFICATION.md](docs/VERIFICATION.md).
 
 | Real detection on the sample photo | Score filter applied | Controlled analysis timeout |
 | --- | --- | --- |
@@ -16,11 +53,11 @@ The model runs in a web worker using Transformers.js 2.17.2 and ONNX Runtime Web
 
 ## How it is tested
 
-**Recorded full run: 102 passed, with 0 failures, errors or skips.** That is 98 controlled cases and 4 real-model cases, taking 780.398 s of JUnit suite time. The run used Windows, Chrome 156.0.8078.80, Python 3.12.10, pytest 9.0.3 and Selenium 4.40.0. Records: [summary](docs/evidence/branch-review-verification.json) and [JUnit XML](docs/evidence/branch-review-full-suite.xml).
+**Recorded full run: 102 passed, with 0 failures, errors or skips.** That is 98 controlled cases and 4 real-model cases, taking 774.316 s of JUnit suite time. The run used Windows 11, Chrome 156.0.8078.80, Python 3.12.10, pytest 9.0.3 and Selenium 4.40.0. Records: [summary](docs/evidence/release-verification.json) and [JUnit XML](docs/evidence/release-full-suite.xml).
 
 The tests use two kinds of check, and each answers a different question:
 
-- **Controlled tests (98)** swap the model for a scripted test worker. It returns exact predictions, empty results, malformed responses, hangs and stalls on demand. The tests check app state, race conditions and recovery against fixture values that were defined separately from the app.
+- **Controlled tests (98)** do not run the real model. 84 are browser tests that swap the model for a scripted test worker, which returns exact predictions, empty results, malformed responses, hangs and stalls on demand; 13 are browser-free checks of the package and the test harness, and 1 checks that the normal server cannot serve the test worker ([test mix](docs/DESIGN.md#risks-and-test-mix)). The browser tests check app state, race conditions and recovery against fixture values that were defined separately from the app.
 - **Real-model tests (4, marked `inference`)** run the actual pinned model. Three of them use three public photos and compare each visible row's label and score, and the position of the target object's box, with earlier recorded output from the same model. That catches regressions. It does not prove the predictions are correct. The fourth runs the sample, filter and export workflow through the static package.
 
 | Test module | Cases | What it protects |
@@ -37,11 +74,25 @@ The tests use two kinds of check, and each answers a different question:
 | `test_harness_cleanup.py` | 3 | The test harness still closes the browser when timeout setup fails or when it cannot save failure evidence |
 | `test_server.py` | 1 | The normal server cannot serve controlled test predictions |
 
-The tests are organised around eleven risk-based acceptance criteria, AC1 to AC11, in [DESIGN.md](docs/DESIGN.md). The table linking each criterion to its evidence is in [VERIFICATION.md](docs/VERIFICATION.md).
+Each [acceptance example](docs/DESIGN.md#acceptance-examples) in DESIGN.md names the tests that check it, and the [ranked risk table](docs/DESIGN.md#risks-and-test-mix) gives the covering test for each risk, or the reason it is not tested. [VERIFICATION.md](docs/VERIFICATION.md) holds the evidence for each behaviour.
 
 ### Do the tests catch real faults?
 
-[`tools/check_review_sensitivity.py`](tools/check_review_sensitivity.py) copies the app into throwaway folders and plants one deliberate fault in each copy. It never changes the checkout itself. A **13-case clean control** passes first. Each of the **11 faults** then makes its targeted assertions fail, giving **17 intended failures** in total. Record: [branch-review-sensitivity.json](docs/evidence/branch-review-sensitivity.json).
+[`tools/check_review_sensitivity.py`](tools/check_review_sensitivity.py) copies the app into throwaway folders and plants one deliberate fault in each copy. It never changes the checkout itself. A **30-case clean control** passes first. Each of the **16 faults** then makes its intended tests fail, giving **28 intended failures** in total. Record: [release-sensitivity.json](docs/evidence/release-sensitivity.json).
+
+Five of the faults each break one of the core rules the question depends on:
+
+| Core rule | Deliberate change | Test that failed |
+| --- | --- | --- |
+| A file of exactly 10 MiB is accepted | `file.size > MAX_BYTES` becomes `>=` | `tests/test_ui.py::test_file_size_boundary[10485760-complete]` (the 10 MiB + 1 byte case still passes) |
+| The filter keeps a score equal to the minimum | `score >= minimum` becomes `>` | 3 of 7 in `tests/test_filter.py`: `test_exact_minimum_filters_underlying_scores_and_restores_without_inference`, `test_filter_preserves_result_identity_color_and_surviving_selection`, `test_hidden_predictions_can_be_restored_and_differ_from_no_model_predictions` |
+| An old image's result cannot repaint a newer image or a cleared workspace | The guard `data.id === revision && currentImage?.id === revision` becomes `true` | `tests/test_ui.py::test_replacing_a_processing_image_discards_the_old_result[slow-car.png]`, `tests/test_ui.py::test_clearing_a_processing_image_prevents_late_repaint` |
+| An outdated export cannot download | The check after PNG encoding is removed | All 3 cases of `tests/test_export.py::test_changed_result_cancels_a_png_still_being_encoded` |
+| A late sample cannot replace a newer image or undo Clear | All three defences are removed: the fetch abort, the check after the download, and the reserved revision | Both cases of `tests/test_sample.py::test_late_sample_response_cannot_override_a_later_user_action` |
+
+One more fault is recorded as an equivalent fault. Removing only the check after the sample download changes nothing observable, because the fetch abort and the reserved revision still stop the late sample, so its 2 cases are expected to pass and do. That is why the late-sample fault removes all three defences.
+
+The other 11 faults account for 17 of the intended failures:
 
 | Fault planted | Caught by | Failures |
 | --- | --- | ---: |
@@ -61,23 +112,15 @@ The two score faults also change the page's own data attributes, so among the re
 
 ### One defect, end to end: the model could not load on a slow connection
 
-| Step | What happened |
+| Part | Detail |
 | --- | --- |
-| Symptom | A probe throttled only the 43.1 MB model download to 2.5 Mbps on loopback. After 121 s the app showed "The detection model took too long to load", with 37.4 of 43.1 MB received (86%). Try again restarted the download from zero, so at this speed retrying could never succeed. |
-| Cause | Model loading had one fixed 120 s deadline, counted from worker start. It ignored download progress, so a slow but steady download was treated the same as a dead one. |
-| Fix | The download now fails only after 45 s with no loading event, and each event restarts that 45 s window. Once all the bytes have arrived, model start-up gets its own fixed 120 s deadline, which later events cannot extend. The error messages now say which stage stalled. |
-| Verification | Under the same 2.5 Mbps probe, the current package received every byte and reached ready at 140.6 s ([branch-review-slow-transfer.json](docs/evidence/branch-review-slow-transfer.json)). Controlled tests cover a stalled download, a slow steady download that must not time out, and a hung start-up. Three of the planted faults above now guard this behaviour. |
+| What failed | With only the 43.1 MB model download throttled to 2.5 Mbps on loopback, the app showed "The detection model took too long to load" after 121 s, with 37.4 of 43.1 MB received (86%). |
+| How it was detected | An independent review ran a paced loopback probe at 2.5 Mbps against the package ([branch-review-slow-transfer.json](docs/evidence/branch-review-slow-transfer.json)). |
+| Impact | Try again restarted the download from zero, so at this speed retrying could never succeed and the detector could not be used. |
+| Cause in the system | Model loading had one fixed 120 s deadline, counted from worker start. It ignored download progress, so a slow but steady download was treated the same as a dead one. |
+| Test that prevents it | `tests/test_recovery.py::test_slow_steady_model_transfer_is_not_timed_out` and `tests/test_recovery.py::test_stalled_model_transfer_times_out_after_its_last_progress` check that the download fails only after 45 s with no loading event, and that each event restarts that window. `tests/test_recovery.py::test_model_initialization_has_its_own_deadline` and `tests/test_recovery.py::test_completed_transfer_starts_initialization_before_the_done_event` check that start-up after the last byte has its own fixed 120 s deadline, which later events cannot extend. Three of the planted faults above guard this behaviour. |
 
-Each condition was run once, on loopback. That is not a measurement of Internet speed. The full write-up of every confirmed finding is in [SOURCE_REVIEW.md](docs/SOURCE_REVIEW.md).
-
-### What is not claimed
-
-- Only the recorded Windows and Chrome environment was checked. There is no CI yet, no deployed URL, and no testing on other browsers or mobile.
-- The real-model checks compare against earlier output from the same pinned model. Nothing here measures accuracy, precision or recall.
-- The announcement tests inspect how the page is configured. Nobody has tested it with an actual screen reader, and there is no accessibility certification.
-- A single full run does not measure a flake rate. Try again still restarts the model download from the beginning, so a connection that keeps stalling for 45 s cannot load the detector.
-
-The full release assessment is in [VERIFICATION.md](docs/VERIFICATION.md).
+The error messages say which stage stalled. Under the same 2.5 Mbps probe, the package received every byte and reached ready at 140.6 s. Each condition was run once, on loopback. That is not a measurement of Internet speed. Every confirmed defect is described in the same five parts in [Defects and corrections](docs/SOURCE_REVIEW.md).
 
 ![Runtime flow: page, worker, model and test harness](docs/diagrams/object-lens-runtime-flow.png)
 
@@ -137,9 +180,9 @@ The static-package test serves the prepared site from an ordinary local static s
 
 ## Read next
 
-- [Design and acceptance criteria](docs/DESIGN.md)
+- [Design: question, acceptance examples, risks and decisions](docs/DESIGN.md)
 - [Verification and release assessment](docs/VERIFICATION.md)
-- [Defects found and how they were fixed](docs/SOURCE_REVIEW.md)
+- [Defects and corrections](docs/SOURCE_REVIEW.md)
 - [Short guide to the stack and one test](docs/LEARNING.md)
 - [Evidence index](docs/evidence/README.md)
 - [System design PDF](docs/system-design/Object_Lens_System_Design.pdf), with diagrams of the [runtime architecture](docs/system-design/diagrams/runtime-architecture.png) and the [image sequence](docs/system-design/diagrams/image-sequence.png)
