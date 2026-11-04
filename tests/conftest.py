@@ -6,7 +6,6 @@ import logging
 import os
 import re
 import struct
-import sys
 import threading
 import zlib
 from datetime import datetime, timezone
@@ -20,9 +19,10 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 
+from helpers import WORKER_TRACE_SCRIPT
+from serve import AppHandler, make_server
+
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-from serve import AppHandler, make_server  # noqa: E402
 
 
 @pytest.fixture(scope="session")
@@ -94,6 +94,8 @@ def browser(request):
     try:
         driver.set_page_load_timeout(30)
         driver.set_script_timeout(30)
+        # Record worker inference requests and replies on every page this browser opens.
+        driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {"source": WORKER_TRACE_SCRIPT})
         yield driver
         failed = any(
             getattr(request.node, f"rep_{phase}", None)
@@ -146,6 +148,16 @@ def app(browser, controlled_url):
         lambda driver: driver.find_element("tag name", "html").get_attribute("data-state") == "ready"
     )
     return browser
+
+
+@pytest.fixture
+def downloads(browser, tmp_path):
+    folder = tmp_path / "downloads"
+    folder.mkdir()
+    browser.execute_cdp_cmd("Browser.setDownloadBehavior", {
+        "behavior": "allow", "downloadPath": str(folder), "eventsEnabled": True,
+    })
+    return folder
 
 
 @pytest.fixture

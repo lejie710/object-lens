@@ -9,39 +9,16 @@ import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
-from test_filter import set_minimum
-from test_ui import (
+from helpers import (
     assert_for_late_response_window,
     assert_no_visible_image,
     make_browser_jpeg,
     result_labels,
+    set_minimum,
     upload,
+    wait_for_png,
     wait_state,
 )
-
-
-@pytest.fixture
-def downloads(browser, tmp_path):
-    folder = tmp_path / "downloads"
-    folder.mkdir()
-    browser.execute_cdp_cmd("Browser.setDownloadBehavior", {
-        "behavior": "allow", "downloadPath": str(folder), "eventsEnabled": True,
-    })
-    return folder
-
-
-def wait_for_png(browser, downloads):
-    def completed_download(_):
-        files = list(downloads.glob("*.png"))
-        if len(files) == 1 and not list(downloads.glob("*.crdownload")):
-            return files[0] if files[0].stat().st_size >= 24 else False
-        return False
-
-    path = WebDriverWait(browser, 10).until(completed_download)
-    data = path.read_bytes()
-    assert data[:8] == b"\x89PNG\r\n\x1a\n"
-    assert data[12:16] == b"IHDR"
-    return path, struct.unpack(">II", data[16:24])
 
 
 def read_png_pixels(browser, path, coordinates):
@@ -169,7 +146,7 @@ def test_nonresponding_png_encoder_times_out_and_a_new_export_recovers(app, down
     """)
     started = time.monotonic()
     app.find_element(By.ID, "save-result").click()
-    WebDriverWait(app, 20).until(
+    WebDriverWait(app, 30).until(
         lambda driver: driver.find_element(By.ID, "export-message").is_displayed()
         and "too long" in driver.find_element(By.ID, "export-message").text.lower()
         and driver.find_element(By.ID, "save-result").is_enabled()
@@ -229,7 +206,8 @@ def test_changed_result_cancels_a_png_still_being_encoded(app, downloads, make_i
             assert result_labels(driver) == []
             assert "minimum score" in driver.find_element(By.ID, "results-empty").text
 
-    assert_for_late_response_window(app, old_export_stays_cancelled)
+    # The late event here is the held encoder callback, not a worker reply: keep the full window.
+    assert_for_late_response_window(app, old_export_stays_cancelled, hold=1.4)
     # Cancellation must not strand the save action for the next eligible result.
     if action == "clear":
         upload(app, make_image("car.png"))

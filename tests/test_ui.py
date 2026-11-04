@@ -1,65 +1,23 @@
 """Application behavior with controlled predictions, NOT AI accuracy tests."""
 from __future__ import annotations
 
-import base64
 import struct
-import time
 
 import pytest
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 
-
-def upload(browser, path):
-    browser.find_element(By.ID, "file-input").send_keys(str(path))
-
-
-def wait_state(browser, expected, timeout=10):
-    try:
-        WebDriverWait(browser, timeout).until(
-            lambda driver: driver.find_element(By.TAG_NAME, "html").get_attribute("data-state") == expected
-        )
-        return
-    except TimeoutException:
-        pass
-    # Keep the full wait, then explain its failure using the final visible UI.
-    html = browser.find_elements(By.TAG_NAME, "html")
-    errors = browser.find_elements(By.ID, "error-message")
-    filenames = browser.find_elements(By.ID, "filename")
-    observed = html[0].get_attribute("data-state") if html else "<no page>"
-    error = errors[0].text.strip() if errors else ""
-    filename = filenames[0].text.strip() if filenames else "<not displayed>"
-    pytest.fail(
-        f"Timed out waiting for UI state {expected!r} (timeout={timeout}s).\n"
-        f"Observed state: {observed!r}\n"
-        f"Displayed filename: {filename!r}\n"
-        f"UI error: {error or '<none displayed>'}",
-        pytrace=False,
-    )
-
-
-def result_labels(browser):
-    # Read what a person can see, rather than the application's internal metadata.
-    return [name.text for name in browser.find_elements(By.CSS_SELECTOR, ".result-row .object-name")]
-
-
-def assert_visible_result_text(browser, expected):
-    """Check independently supplied names and formatted scores in both visible views."""
-    rows = browser.find_elements(By.CSS_SELECTOR, ".result-row")
-    boxes = browser.find_elements(By.CSS_SELECTOR, ".detection-box")
-    assert len(rows) == len(boxes) == len(expected)
-    for row, box, (label, score_text) in zip(rows, boxes, expected):
-        name = row.find_element(By.CSS_SELECTOR, ".object-name")
-        score = row.find_element(By.CSS_SELECTOR, ".object-score")
-        tag = box.find_element(By.CSS_SELECTOR, ".box-label")
-        assert name.is_displayed() and name.text == label, "Visible detection name does not match"
-        assert score.is_displayed() and score.text == score_text, "Visible model score does not match"
-        assert tag.is_displayed() and tag.text == label, "Visible box label does not match"
-        assert row.get_attribute("data-label") == box.get_attribute("data-label") == label
-        accessible_name = row.get_attribute("aria-label")
-        assert label in accessible_name and score_text in accessible_name
+from helpers import (
+    assert_for_late_response_window,
+    assert_no_visible_image,
+    assert_visible_result_text,
+    make_browser_jpeg,
+    result_labels,
+    upload,
+    wait_for_inference,
+    wait_state,
+)
 
 
 def assert_actionable_error(browser, *required_fragments):
@@ -70,32 +28,6 @@ def assert_actionable_error(browser, *required_fragments):
     for fragment in required_fragments:
         assert fragment.lower() in message, f"Missing useful error detail {fragment!r}: {message!r}"
     assert browser.find_element(By.ID, "status").text.strip()
-
-
-def wait_for_inference(browser, filename):
-    """Wait past file reading/decoding so the worker has actually received this image."""
-    WebDriverWait(browser, 10).until(
-        lambda driver: driver.find_element(By.ID, "filename").text == filename
-        and driver.find_element(By.ID, "status").text.startswith("Analyzing image")
-        and driver.find_element(By.TAG_NAME, "html").get_attribute("data-state") == "processing"
-    )
-
-
-def assert_no_visible_image(browser):
-    assert not browser.find_element(By.ID, "image-preview").is_displayed()
-    assert browser.find_elements(By.CSS_SELECTOR, ".detection-box") == []
-    assert result_labels(browser) == []
-
-
-def assert_for_late_response_window(browser, assertion):
-    """Check an invariant past the controlled worker's known 900 ms response delay."""
-    end = time.monotonic() + 1.4
-
-    def invariant_still_holds(driver):
-        assertion(driver)
-        return time.monotonic() >= end
-
-    WebDriverWait(browser, 2.5, poll_frequency=0.1).until(invariant_still_holds)
 
 
 def test_predictions_and_boxes_match_the_current_image(app, make_image):
@@ -268,19 +200,6 @@ def test_decoded_pixel_boundary(app, make_image, width, expected_state):
         assert result_labels(app) == []
     else:
         assert result_labels(app) == ["laptop", "cup"]
-
-
-def make_browser_jpeg(browser):
-    # Generate an ordinary JPEG with the browser's standard encoder, not application code.
-    encoded = browser.execute_script("""
-        const canvas = document.createElement('canvas');
-        canvas.width = 320; canvas.height = 240;
-        const context = canvas.getContext('2d');
-        context.fillStyle = '#285bb4'; context.fillRect(0, 0, 160, 240);
-        context.fillStyle = '#e6be3c'; context.fillRect(160, 0, 160, 240);
-        return canvas.toDataURL('image/jpeg', 0.9).split(',')[1];
-    """)
-    return base64.b64decode(encoded)
 
 
 def test_real_jpeg_input_is_accepted(app, tmp_path):

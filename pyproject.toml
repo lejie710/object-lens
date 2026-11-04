@@ -1,0 +1,6 @@
+[project]
+name = "object-lens"
+version = "1.0.0"
+description = "Browser object detection with a pinned DETR model, tested with pytest and Selenium for stale results, timeouts and recovery."
+requires-python = ">=3.12"
+license = "Apache-2.0"

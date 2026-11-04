@@ -1,10 +1,10 @@
 # Diagram source checks
 
-These editable diagrams describe the Object Lens system documented by source.json. Their component and message claims match the source files listed under Source fidelity. The diagrams are schematic: configuration/recovery and assertion detail are explained in the companion prose. All labels and operational qualifications remain inside each SVG so they survive export.
+These three editable diagrams (runtime architecture, image replacement sequence and browser testing workflow) describe the Object Lens system. The `object-lens-runtime-flow.*` figure in the same folder is not covered by these checks. Their component and message claims match the source files listed under Source fidelity. The diagrams are schematic: configuration/recovery detail is explained in [the design notes](../DESIGN.md) and assertion detail in [the verification assessment](../VERIFICATION.md). All labels and operational qualifications remain inside each SVG so they survive export.
 
 ## Files and display size
 
-| Figure | Editable HTML | Exported SVG | Canvas | Intended document width |
+| Figure | Editable HTML | Exported SVG | Canvas | Intended display width |
 | --- | --- | --- | --- | --- |
 | Runtime architecture | `runtime-architecture.html` | `runtime-architecture.svg` | 1000 x 1052 | 6.5 in |
 | Image replacement sequence | `image-sequence.html` | `image-sequence.svg` | 1000 x 1092 | 6.5 in |
@@ -32,13 +32,13 @@ The Canvas PNG export node and optional-export note match dist/png-export.js and
 - The testing figure describes browser tests. Its final note identifies server-only Python checks separately, so the figure does not imply that every test launches Chrome.
 - The model/inference path and the controlled worker path are visibly separate. They merge only at the common assertion/reporting/evidence workflow.
 - No application/UI screen is simulated by these figures. They are architecture and behavior illustrations, not execution evidence.
-- The runtime and sequence diagrams match the worker, image-revision guards, filtered-result cache and canvas export in `app.js` and `png-export.js`, including the main-thread canvas, current-result snapshot and stale-export guard. The sequence shows one successful replacement, not failure or retry states. The runtime figure describes the local Python serving path; the companion explains that the static package supplies the same browser files through an ordinary static server.
+- The runtime and sequence diagrams match the worker, image-revision guards, filtered-result cache and canvas export in `app.js` and `png-export.js`, including the main-thread canvas, current-result snapshot and stale-export guard. The sequence shows one successful replacement, not failure or retry states. The runtime figure describes the local Python serving path; [the public package notes](../PUBLIC_DEMO.md) explain that the static package supplies the same browser files through an ordinary static server.
 - The testing figure is an overview of browser checks. The suite also contains non-browser server/package and mocked cleanup checks. Assertion details not drawn include visible labels/scores, selected real-model coordinates and rendered geometry, malformed output, timeout/Clear recovery and announcement configuration. The figure does not claim those checks establish accuracy or screen-reader behavior.
 
 ## Diagram export checks
 
-- `self_check.py --offline` and `export_svg.py --system-fonts` passed for all three files; the optional `verify-geometry.py` check was not available and did not run.
+- The diagram authoring tool's `self_check.py --offline` and `export_svg.py --system-fonts` checks passed for all three files; the optional `verify-geometry.py` check was not available and did not run. These authoring tools are not included in this repository.
 - Static source review: orthogonal arrows, distinct fan-out ports, accessible title/description IDs, all explanatory notes inside SVG, and no external resources.
 - Browser PNG rendering at twice the logical SVG dimensions. All three PNG exports were visually inspected for legibility and source semantics.
-- Diagram pages are checked at the actual document size; page layout and navigation results, including diagram pages, are recorded in `../document-validation.json`. The tall figures use up to eight inches of page height to preserve readable labels.
+- The figures are tall so that labels stay readable at a 6.5 in display width.
 - The diagrams contain no pass count or application commit.

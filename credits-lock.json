@@ -57,6 +57,42 @@
       "sha256": "d6e7b19451c1b3d1d66353bb4b1274138953b3bfd9ae60c56e77b1f548796982",
       "url": "https://cdn.jsdelivr.net/npm/@huggingface/jinja@0.2.2/LICENSE",
       "version_source": "https://raw.githubusercontent.com/huggingface/transformers.js/2.17.2/package-lock.json"
+    },
+    {
+      "path": "licenses/long-4.0.0-LICENSE.txt",
+      "bytes": 11560,
+      "sha256": "3ddf9be5c28fe27dad143a5dc76eea25222ad1dd68934a047064e56ed2fa40c5",
+      "url": "https://unpkg.com/long@4.0.0/LICENSE",
+      "version_source": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.14.0/js/web/package-lock.json"
+    },
+    {
+      "path": "licenses/flatbuffers-1.12.0-LICENSE.txt",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "url": "https://unpkg.com/flatbuffers@1.12.0/LICENSE.txt",
+      "version_source": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.14.0/js/web/package-lock.json"
+    },
+    {
+      "path": "licenses/onnx-proto-4.0.4-LICENSE.txt",
+      "bytes": 1056,
+      "sha256": "bf5370fb56d5fcc347af4b4e64689a3ad0a5d4cf17a334d1cedf8c87d04e9b25",
+      "url": "https://unpkg.com/onnx-proto@4.0.4/LICENSE",
+      "version_source": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.14.0/js/web/package-lock.json"
+    },
+    {
+      "path": "licenses/protobufjs-6.11.3-LICENSE.txt",
+      "bytes": 1937,
+      "sha256": "49d6a1c9a623784c61c6cb70f773f3457faceb1914a13c8560a9823b7631950c",
+      "url": "https://unpkg.com/protobufjs@6.11.3/LICENSE",
+      "version_source": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.14.0/js/web/package-lock.json"
+    },
+    {
+      "path": "licenses/guid-typescript-1.0.9-LICENSE.txt",
+      "bytes": 1231,
+      "sha256": "7b151bf65ac9f7bec0c9b62e088fd89506a885fe5e5cf4034c108e5c05a6e268",
+      "url": "https://unpkg.com/guid-typescript@1.0.9/package.json",
+      "version_source": "https://raw.githubusercontent.com/microsoft/onnxruntime/v1.14.0/js/web/package-lock.json",
+      "note": "The package ships no licence file; this notice records its ISC declaration and the standard ISC text."
     }
   ],
   "notes": [
@@ -64,6 +100,7 @@
     "The pinned Transformers.js 2.17.2 package lists /LICENSE but no separate transformers.min.js.LICENSE.txt; its shipped browser bundle has no external licence-file reference.",
     "The full ONNX Runtime 1.14.0 upstream third-party notice file is retained without claiming that every listed component is included in the browser build.",
     "The Xenova conversion card identifies facebook/detr-resnet-50 as its base model. The pinned base-model card declares Apache-2.0; both cards are retained.",
-    "The browser bundle includes @huggingface/jinja. The Transformers.js 2.17.2 package-lock.json pins it to 0.2.2; its published MIT licence is included."
+    "The browser bundle includes @huggingface/jinja. The Transformers.js 2.17.2 package-lock.json pins it to 0.2.2; its published MIT licence is included.",
+    "The ONNX Runtime Web 1.14.0 bundle inside transformers.min.js contains long, guid-typescript, flatbuffers and onnx-proto with the protobufjs runtime (found by searching the bundle for each library's code, for example Long.fromBits, isGuid, flatbuffers and onnx.ModelProto). Their versions come from ONNX Runtime 1.14.0's js/web/package-lock.json and their licences are included."
   ]
 }

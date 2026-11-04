@@ -12,6 +12,15 @@ ROOT = Path(__file__).resolve().parent
 
 
 class AppHandler(SimpleHTTPRequestHandler):
+    # Fixed types, so the result does not depend on the Windows registry of the machine
+    # serving the app: a wrong JavaScript or WebAssembly type stops the module worker.
+    extensions_map = {
+        **SimpleHTTPRequestHandler.extensions_map,
+        ".html": "text/html", ".css": "text/css", ".js": "text/javascript", ".mjs": "text/javascript",
+        ".json": "application/json", ".wasm": "application/wasm", ".onnx": "application/octet-stream",
+        ".png": "image/png", ".jpg": "image/jpeg", ".txt": "text/plain", ".md": "text/markdown",
+    }
+
     def __init__(self, *args, test_mode=False, **kwargs):
         self.test_mode = test_mode
         super().__init__(*args, directory=str(ROOT / "dist"), **kwargs)

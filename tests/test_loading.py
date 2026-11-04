@@ -14,8 +14,8 @@ import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
+from helpers import upload, wait_state
 from serve import AppHandler
-from test_ui import upload, wait_state
 
 
 @pytest.fixture
