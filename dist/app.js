@@ -51,10 +51,14 @@ let exportRevision = 0;
 let exportBusy = false;
 let modelFileStarted = false;
 let modelFileLoaded = false;
+// Transformers.js reports total = bytes received when a host omits Content-Length,
+// so a size is trusted only after an event shows fewer bytes than the total.
+let modelSizeKnown = false;
 
 function showModelLoading() {
   modelFileStarted = false;
   modelFileLoaded = false;
+  modelSizeKnown = false;
   elements.modelLoading.hidden = false;
   elements.modelLoading.dataset.phase = 'preparing';
   elements.modelLoadingStage.textContent = 'Loading detection files…';
@@ -65,8 +69,7 @@ function showModelLoading() {
 function updateModelLoading(data) {
   if (modelReady || modelFailed || elements.modelLoading.hidden) return;
   if (!['initiate', 'download', 'progress', 'done'].includes(data.status)) return;
-  const isModel = typeof data.file === 'string' && /\.onnx$/i.test(data.file);
-  if (!isModel) {
+  if (!isModelEvent(data)) {
     // Small settings files may finish after the model starts. Do not let their
     // individual progress replace the model's progress or initialization stage.
     if (modelFileStarted || modelFileLoaded) return;
@@ -87,11 +90,14 @@ function updateModelLoading(data) {
   modelFileStarted = true;
   elements.modelLoading.dataset.phase = 'downloading';
   elements.modelLoadingStage.textContent = 'Loading detection model…';
-  if (Number.isFinite(data.loaded) && Number.isFinite(data.total) && data.total > 0) {
+  if (modelSizeKnown && Number.isFinite(data.loaded) && Number.isFinite(data.total) && data.total > 0) {
     const received = Math.max(0, Math.min(data.loaded, data.total));
     const percentage = received / data.total * 100;
     elements.modelLoadingProgress.value = percentage;
     elements.modelLoadingDetail.textContent = `${(received / 1_000_000).toFixed(1)} of ${(data.total / 1_000_000).toFixed(1)} MB received (${Math.floor(percentage)}%).`;
+  } else if (Number.isFinite(data.loaded) && data.loaded >= 0) {
+    elements.modelLoadingProgress.removeAttribute('value');
+    elements.modelLoadingDetail.textContent = `${(data.loaded / 1_000_000).toFixed(1)} MB received. The total size is not available.`;
   } else {
     elements.modelLoadingProgress.removeAttribute('value');
     elements.modelLoadingDetail.textContent = 'Receiving the model. Download size is not available yet.';
@@ -239,10 +245,24 @@ function armLoadWatchdog(instance, stage, delay) {
   loadTimer = setTimeout(() => workerTimedOut(instance, stage), delay);
 }
 
-// Any loading event proves the transfer is alive; finishing the model file starts initialization.
+function isModelEvent(data) {
+  return typeof data.file === 'string' && /\.onnx$/i.test(data.file);
+}
+
+function noteModelSize(data) {
+  if (isModelEvent(data) && data.status === 'progress' && Number.isFinite(data.loaded) &&
+      Number.isFinite(data.total) && data.loaded < data.total) {
+    modelSizeKnown = true;
+  }
+}
+
+// Any loading event proves the transfer is alive. The model's final bytes start initialization:
+// the library then writes the file to Cache Storage before its 'done' event, with no progress.
 function extendLoadWatchdog(data) {
   if (modelReady || loadTimer === null || loadInitializing) return;
-  if (data.status === 'done' && typeof data.file === 'string' && /\.onnx$/i.test(data.file)) {
+  const transferComplete = isModelEvent(data) && data.status === 'progress' && modelSizeKnown &&
+    Number.isFinite(data.loaded) && data.loaded >= data.total;
+  if (transferComplete || (data.status === 'done' && isModelEvent(data))) {
     loadInitializing = true;
     armLoadWatchdog(worker, 'initialize', INITIALIZE_TIMEOUT_MS);
   } else {
@@ -460,7 +480,15 @@ function startPendingInference() {
   const instance = worker;
   clearTimeout(inferenceTimer);
   inferenceTimer = setTimeout(() => {
-    if (activeRequest === image.id) workerTimedOut(instance, 'infer');
+    if (activeRequest !== image.id || instance !== worker) return;
+    if (!currentImage) {
+      // Clear already removed this image. Restart the stalled detector without
+      // reporting an analysis failure for an image that is no longer shown.
+      console.warn('Object Lens: restarting a detector that stopped responding after Clear.');
+      createWorker();
+      return;
+    }
+    workerTimedOut(instance, 'infer');
   }, testMode ? CONTROLLED_TIMEOUT_MS : INFERENCE_TIMEOUT_MS);
   try {
     instance.postMessage({ type: 'infer', id: image.id, image: image.image, filename: image.filename });
@@ -580,6 +608,7 @@ function renderFilteredResults() {
 
 function onWorkerMessage({ data }) {
   if (data.type === 'progress') {
+    noteModelSize(data);
     extendLoadWatchdog(data);
     updateModelLoading(data);
     return;

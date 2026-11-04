@@ -76,12 +76,16 @@ def git_provenance(project_root: Path) -> tuple[str | None, bool | None]:
         return None, None
     if Path(top).resolve() != project_root:
         return None, None
-    commit = subprocess.check_output(
-        ["git", "-C", str(project_root), "rev-parse", "HEAD"], text=True
-    ).strip()
-    changed = subprocess.check_output(
-        ["git", "-C", str(project_root), "status", "--porcelain"], text=True
-    ).strip()
+    try:
+        commit = subprocess.check_output(
+            ["git", "-C", str(project_root), "rev-parse", "HEAD"], text=True, stderr=subprocess.DEVNULL
+        ).strip()
+        changed = subprocess.check_output(
+            ["git", "-C", str(project_root), "status", "--porcelain"], text=True, stderr=subprocess.DEVNULL
+        ).strip()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        # For example a repository with no commits: still no usable provenance.
+        return None, None
     return commit, bool(changed)
 
 

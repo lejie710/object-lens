@@ -1,0 +1,82 @@
+{
+  "created_at_utc": "2026-11-04T02:39:30.266996+00:00",
+  "evidenceType": "Controlled before/after recovery regression checks; no real-model fault",
+  "baselineRef": "74d108f70c0bea8ca09b2d5bdd3bb974023d523f",
+  "loadDeadline": "Only the isolated test page's 45000ms stall and 120000ms initialization callbacks are accelerated",
+  "baselineLimit": "The baseline fails at pre-Clear timeout/crash wording assertions. These failures do not independently reproduce its Clear wording; current passing checks continue through Clear and successful recovery.",
+  "sourceHashes": {
+    "dist/app.js": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+    "dist/credits.html": "38673103e5133b79e0c53e949d4b65dd42485d164f46b56c968a230a714bd6c0",
+    "dist/index.html": "d4b6944c8c2bce55a69903173d7fc6c009bddc49170ec3a461075ffa07d774bd",
+    "dist/png-export.js": "cb7171cec270e245a78f70a8f56cd62a921157825458a3aeb97ac8b513948c41",
+    "dist/runtime-config.json": "80c98bfac072ba06f97197da8758f21bf1f8988a75b5302001b0eb22787d5d77",
+    "dist/style.css": "e4a1a8e3590fe79720ae588d53bee72f1d3e76c1e3118c75b6faffb5d0a41aa6",
+    "dist/worker.js": "a791a655630ad942a784fc0d769c9b1123812b5e0491a0e23ca17ed800c6377d",
+    "pytest.ini": "5ee196e2a6c29c1c03f7e84a994bf274451c39c3ccf8d4e46c6cddb6d7216399",
+    "serve.py": "fbee47676ed615440f51eb4dad47c211c49c03a2afdc233e51683b719d4caedb",
+    "tests/conftest.py": "ca815de5bc4af6372b63447de6ba397785693122995d1da3e806cd72a71b092b",
+    "tests/fixtures/test-worker.js": "496cb40f8e383d7bdaf370783f7cd499886d4f14aaaf14383df036841a10a477",
+    "tests/test_export.py": "1c62dabda67959a142319d46c5f46f5a6bdc45354346ceca058f29f04f8f3707",
+    "tests/test_filter.py": "e6bf885555bce350e039f5adadc42dfcfc8b8dfefd416700296abbe7791801c7",
+    "tests/test_harness_cleanup.py": "07ccefdd44a45495281019c2a90316f4f7193f1f7bf611dc000e9c45539bc301",
+    "tests/test_inference.py": "3e952f68923cd788c536a4d7642a8ead29a2c77b203b08f941e7adedd5bbfe3f",
+    "tests/test_loading.py": "6323685d108fbb6f39ecee6de50fedcd92bc099763fdbb2db4e75779627ec7ae",
+    "tests/test_public_package.py": "f424805a3780d8306defa2545d875766de3a1102164af10a63a84bd5b90ecfc3",
+    "tests/test_recovery.py": "cf098b855dca78ed7fd33a83e38310e4ce0bd35a3b15ed39d250c051553632cc",
+    "tests/test_sample.py": "66e21ae95ae7fa36156844e732c3606c8006d207de8ad73e0c7344f8948074df",
+    "tests/test_server.py": "6dbff96615d244a590363e8c340e665e00d6aa71be65e5b7e6278edd0ca34ce9",
+    "tests/test_startup.py": "e966309ee3f4a84691b64e1e6c94609d679a56a819d6bd1a91b46abbd1b51509",
+    "tests/test_ui.py": "513bed45e14ccdb47dc4012548ba1a69b22568f9cfec13aa446e6bea822334d6",
+    "tools/check_recovery_comparison.py": "2bc34925b09a8edb323f60c4dea4405d7b64ee47e7ce466dcb1fdb72d4647106"
+  },
+  "checkout_app_unchanged": true,
+  "source_tests_unchanged": true,
+  "before": {
+    "returnCode": 1,
+    "cases": [
+      {
+        "name": "test_model_load_timeout_clear_and_retry_describe_detector_availability",
+        "outcome": "failure",
+        "details": "browser = <selenium.webdriver.chrome.webdriver.WebDriver (session=\"b40c46d3de8c8289bdaecccc4a9defe9\")>\nrecovery_server = namespace(mode='load-timeout', requests=1, url='http://127.0.0.1:58942')\nmake_image = <function make_image.<locals>.create at 0x000001A45FF7F100>\n\n    def test_model_load_timeout_clear_and_retry_describe_detector_availability(\n        browser, recovery_server, make_image,\n    ):\n        # Ordinary controlled loading tests retain the full production load deadlines.\n        open_with_accelerated_loading(browser, recovery_server.url)\n        upload(browser, make_image(\"car.png\"))\n        wait_state(browser, \"error\")\n        message = browser.find_element(By.ID, \"error-message\").text.lower()\n>       assert \"model\" in message and \"stopped loading\" in message and \"connection\" in message\nE       AssertionError: assert ('model' in 'detection took too long. try again or choose another image.')\n\ntests\\test_recovery.py:177: AssertionError"
+      },
+      {
+        "name": "test_inference_timeout_clear_and_retry_describe_detector_availability",
+        "outcome": "failure",
+        "details": "app = <selenium.webdriver.chrome.webdriver.WebDriver (session=\"772d2ce8e5e0e121b795baab0ee4f690\")>\nmake_image = <function make_image.<locals>.create at 0x000001A460266980>\n\n    def test_inference_timeout_clear_and_retry_describe_detector_availability(app, make_image):\n        upload(app, make_image(\"silent.png\"))\n        wait_state(app, \"error\")\n        message = app.find_element(By.ID, \"error-message\").text.lower()\n>       assert \"image\" in message and \"too long\" in message and \"analysis\" in message\nE       AssertionError: assert ('image' in 'detection took too long. try again or choose another image.' and 'too long' in 'detection took too long. try again or choose another image.' and 'analysis' in 'detection took too long. try again or choose another image.')\n\ntests\\test_recovery.py:261: AssertionError"
+      },
+      {
+        "name": "test_worker_crash_during_inference_is_not_described_as_startup_failure",
+        "outcome": "failure",
+        "details": "browser = <selenium.webdriver.chrome.webdriver.WebDriver (session=\"91e07c0f8e3eb32e39f6f5474fe809a8\")>\nrecovery_server = namespace(mode='infer-crash', requests=1, url='http://127.0.0.1:62471')\nmake_image = <function make_image.<locals>.create at 0x000001A460266F20>\n\n    def test_worker_crash_during_inference_is_not_described_as_startup_failure(\n        browser, recovery_server, make_image,\n    ):\n        recovery_server.mode = \"infer-crash\"\n        browser.get(recovery_server.url)\n        wait_state(browser, \"ready\")\n        upload(browser, make_image(\"car.png\"))\n        wait_state(browser, \"error\")\n        message = browser.find_element(By.ID, \"error-message\").text.lower()\n>       assert \"stopped unexpectedly\" in message and \"try again\" in message\nE       AssertionError: assert ('stopped unexpectedly' in 'object detection could not start. try again or reload the page.')\n\ntests\\test_recovery.py:276: AssertionError"
+      }
+    ],
+    "junit": "baseline.xml",
+    "durationSeconds": 26.952,
+    "appSha256": "0ae2a27aca500d67a95b052ce91dd871492fee6072d43b253db9e0607863e26c"
+  },
+  "after": {
+    "returnCode": 0,
+    "cases": [
+      {
+        "name": "test_model_load_timeout_clear_and_retry_describe_detector_availability",
+        "outcome": "pass",
+        "details": ""
+      },
+      {
+        "name": "test_inference_timeout_clear_and_retry_describe_detector_availability",
+        "outcome": "pass",
+        "details": ""
+      },
+      {
+        "name": "test_worker_crash_during_inference_is_not_described_as_startup_failure",
+        "outcome": "pass",
+        "details": ""
+      }
+    ],
+    "junit": "current.xml",
+    "durationSeconds": 26.04,
+    "appSha256": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9"
+  },
+  "expectedThreeBaselineFailures": true,
+  "expectedThreeCurrentPasses": true
+}

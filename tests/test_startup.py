@@ -27,6 +27,7 @@ def startup_server():
     control = SimpleNamespace(
         requests=0,
         worker_requests=0,
+        real_worker_requests=0,
         first_worker_error=False,
         hold_mode="headers",
         first_payload=normal_payload,
@@ -40,6 +41,11 @@ def startup_server():
     class StartupHandler(AppHandler):
         def do_GET(self):
             path = urlsplit(self.path).path
+            if path == "/worker.js":
+                # Before validated configuration testMode is false, so a premature
+                # worker would request the real worker rather than the controlled one.
+                with request_lock:
+                    control.real_worker_requests += 1
             if path == "/test-worker.js":
                 with request_lock:
                     control.worker_requests += 1
@@ -116,6 +122,7 @@ def open_with_held_configuration(browser, startup_server):
     browser.get(startup_server.url)
     assert startup_server.requested.wait(timeout=5), "Configuration request did not reach its hold point"
     assert startup_server.worker_requests == 0, "Worker started before configuration was available"
+    assert startup_server.real_worker_requests == 0, "Real worker started before configuration was available"
 
 
 def wait_for_worker_ready(browser):
@@ -247,6 +254,7 @@ def test_stalled_configuration_times_out_and_retry_fetches_it_again(
     )
     assert browser.find_element(By.ID, "image-preview").is_displayed()
     assert startup_server.worker_requests == 0
+    assert startup_server.real_worker_requests == 0
 
     # Exercise the real 15-second configuration deadline without changing timers.
     wait_state(browser, "error", timeout=20)
@@ -281,6 +289,7 @@ def test_invalid_configuration_can_be_refetched_without_losing_the_image(
     assert browser.find_element(By.ID, "error-message").text.strip()
     assert browser.find_element(By.ID, "retry-detection").is_displayed()
     assert startup_server.worker_requests == 0, "Invalid configuration must not select a worker mode"
+    assert startup_server.real_worker_requests == 0, "Invalid configuration must not start the real worker"
     browser.find_element(By.ID, "retry-detection").click()
     assert_car_result(browser)
     assert startup_server.requests == 2

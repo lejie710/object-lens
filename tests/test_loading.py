@@ -128,9 +128,11 @@ def test_model_bytes_complete_before_runtime_is_ready(browser, loading_server):
 
 
 def test_model_progress_is_clamped_and_unknown_length_is_indeterminate(browser, loading_server):
-    loading_server.messages[1].put(model_event(loaded=60_000_000, total=40_000_000))
+    loading_server.messages[1].put(model_event(loaded=10_000_000, total=40_000_000))
     browser.get(loading_server.url)
     wait_phase(browser, "downloading")
+    wait_progress(browser, 25)
+    loading_server.messages[1].put(model_event(loaded=60_000_000, total=40_000_000))
     wait_progress(browser, 100)
     assert "40.0 of 40.0 MB" in browser.find_element(By.ID, "model-loading-detail").text
 
@@ -141,6 +143,24 @@ def test_model_progress_is_clamped_and_unknown_length_is_indeterminate(browser, 
     wait_progress(browser, 0)
     loading_server.messages[1].put(model_event(loaded="invalid", total=40_000_000))
     wait_progress(browser, None)
+    loading_server.messages[1].put({"type": "ready"})
+    wait_state(browser, "ready")
+
+
+def test_missing_content_length_shape_stays_indeterminate(browser, loading_server):
+    # Transformers.js 2.17.2 sets total to the bytes received so far when a host omits
+    # Content-Length, so every event has total == loaded. That is not a known size.
+    loading_server.messages[1].put(model_event(loaded=5_000_000, total=5_000_000))
+    browser.get(loading_server.url)
+    wait_phase(browser, "downloading")
+    wait_progress(browser, None)
+    detail = browser.find_element(By.ID, "model-loading-detail")
+    assert "5.0 MB received" in detail.text and "not available" in detail.text and "100%" not in detail.text
+    loading_server.messages[1].put(model_event(loaded=15_000_000, total=15_000_000))
+    WebDriverWait(browser, 5).until(lambda driver: "15.0 MB received" in detail.text)
+    assert browser.find_element(By.ID, "model-loading-progress").get_dom_attribute("value") is None
+    loading_server.messages[1].put(model_event(status="done"))
+    wait_phase(browser, "initializing")
     loading_server.messages[1].put({"type": "ready"})
     wait_state(browser, "ready")
 

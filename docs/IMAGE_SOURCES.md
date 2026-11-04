@@ -38,7 +38,7 @@ Use controlled worker fixtures, clearly marked as simulated, to exercise exact e
 
 The current photo tests use the selected person, cup and cat coordinates in `docs/evidence/model-observations.json` as regression references. Those coordinates are outputs of the earlier pinned model, not independent human-drawn annotations. A comparison can detect that the current output or rendering moved; it cannot establish localization accuracy.
 
-Each normalized edge allows a difference of 0.005, equivalent to 0.5 percent of that image extent, or about 2 to 3 source pixels in these photographs. Rendered positions allow the scaled edge tolerance plus 2 CSS pixels for rounding/borders. Widths and heights depend on two edges, so they allow two scaled edge tolerances plus 2 CSS pixels. `tests/test_inference.py` measures the actual image and box rectangles; the separate disposable-copy experiment verifies that deliberately displacing boxes fails the checks.
+Each normalized edge allows a difference of 0.005, equivalent to 0.5 percent of that image extent, or about 1.5 to 3 source pixels in these photographs. Rendered positions allow the scaled edge tolerance plus 2 CSS pixels for rounding/borders. Widths and heights depend on two edges, so they allow two scaled edge tolerances plus 2 CSS pixels. `tests/test_inference.py` measures the actual image and box rectangles; the separate disposable-copy experiment verifies that deliberately displacing boxes fails the checks.
 
 ## Integrity record
 

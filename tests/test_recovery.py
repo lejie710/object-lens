@@ -9,6 +9,7 @@ from urllib.parse import urlsplit
 
 import pytest
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
 from serve import AppHandler
 from test_ui import assert_no_visible_image, result_labels, upload, wait_state
@@ -54,6 +55,14 @@ FIRST_WORKERS = {
                     self.postMessage({{type: 'ready'}});
                 }}
             }}, 250);
+        }};
+    """,
+    # Every model byte arrives, then the library's silent Cache Storage write never finishes.
+    "transfer-then-silence": f"""
+        self.onmessage = ({{data}}) => {{
+            if (data.type !== 'load') return;
+            {model_progress(50)}
+            setTimeout(() => {{ {model_progress(100)} }}, 300);
         }};
     """,
     # The model file finishes, then runtime initialization never reports ready.
@@ -193,12 +202,43 @@ def test_slow_steady_model_transfer_is_not_timed_out(browser, recovery_server, m
     open_with_accelerated_loading(browser, recovery_server.url)
     wait_state(browser, "ready", timeout=20)
     deadlines = browser.execute_script("return window.recoveryLoadDeadlines")
-    assert deadlines.count(45000) == 21 and deadlines[-1] == 120000
+    # The initial window and 19 partial events; the final bytes start initialization once.
+    assert deadlines.count(45000) == 20 and deadlines.count(120000) == 1 and deadlines[-1] == 120000
     assert not browser.find_element(By.ID, "error-notice").is_displayed()
     upload(browser, make_image("car.png"))
     wait_state(browser, "complete")
     assert result_labels(browser) == ["car"]
     assert recovery_server.requests == 1
+
+
+def test_completed_transfer_starts_initialization_before_the_done_event(browser, recovery_server, make_image):
+    # Transformers.js stores the model in Cache Storage after the last byte and before
+    # 'done'. That local write must not be reported as a stalled connection.
+    recovery_server.mode = "transfer-then-silence"
+    open_with_accelerated_loading(browser, recovery_server.url)
+    wait_state(browser, "error")
+    message = browser.find_element(By.ID, "error-message").text.lower()
+    assert "too long to start" in message and "connection" not in message
+    assert browser.execute_script("return window.recoveryLoadDeadlines") == [45000, 45000, 120000]
+    clear_and_restart(browser, make_image)
+    assert recovery_server.requests == 2
+
+
+def test_clear_during_a_hung_analysis_restarts_quietly(app, make_image):
+    # The controlled worker never answers silent.png; Clear removes that image first.
+    upload(app, make_image("silent.png"))
+    WebDriverWait(app, 5).until(lambda driver: driver.find_element(By.TAG_NAME, "html").get_attribute("data-state") == "processing")
+    app.find_element(By.ID, "clear-image").click()
+    wait_state(app, "ready")
+    WebDriverWait(app, 10, poll_frequency=0.2).until(lambda driver: any(
+        "restarting a detector" in entry["message"] for entry in driver.get_log("browser")))
+    wait_state(app, "ready")
+    assert not app.find_element(By.ID, "error-notice").is_displayed()
+    assert "analysis" not in app.find_element(By.ID, "status").text.lower()
+    assert_no_visible_image(app)
+    upload(app, make_image("car.png"))
+    wait_state(app, "complete")
+    assert result_labels(app) == ["car"]
 
 
 def test_model_initialization_has_its_own_deadline(browser, recovery_server, make_image):

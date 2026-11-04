@@ -94,7 +94,7 @@ def main():
                    for suffix in ("full-suite.xml", "verification.json")]
         if any(path.exists() for path in targets):
             parser.error("Evidence already exists; choose a fresh prefix to preserve it")
-    output_parent = ROOT / "artifacts" / "review-followup"
+    output_parent = ROOT / "artifacts" / "verification"
     output_parent.mkdir(parents=True, exist_ok=True)
     output = Path(tempfile.mkdtemp(prefix="suite-", dir=output_parent))
     temporary_parent = Path(tempfile.mkdtemp(prefix="object-lens-pytest-"))
@@ -146,7 +146,7 @@ def main():
                 shutil.copyfile(record.with_suffix(suffix), inference_output / f"{name}{suffix}")
     report = {
         "started_at_utc": started,
-        "evidence_type": "Integrated local pytest run on the final review-follow-up application and tests",
+        "evidence_type": "Integrated local pytest run of the application and tests identified by source_sha256",
         "base_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
         "source_identity": "Base commit plus source_sha256 identifies the tested uncommitted changes; documentation is recorded separately.",
         "source_sha256": before, "sources_unchanged_during_run": before == after,

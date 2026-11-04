@@ -65,6 +65,19 @@ def test_git_provenance_is_absent_for_a_non_repository_marker(tmp_path, monkeypa
     assert git_provenance(project.resolve()) == (None, None)
 
 
+def test_git_provenance_is_absent_for_a_repository_without_commits(tmp_path, monkeypatch):
+    project = tmp_path / "source-copy"
+    write_payload(project, ".git/config", b"PRIVATE_FIXTURE_SENTINEL\n")
+
+    def commitless_repository(command, **kwargs):
+        if command[-2:] == ["rev-parse", "--show-toplevel"]:
+            return str(project.resolve()) + "\n"
+        raise subprocess.CalledProcessError(128, command)
+
+    monkeypatch.setattr(subprocess, "check_output", commitless_repository)
+    assert git_provenance(project.resolve()) == (None, None)
+
+
 def test_git_provenance_never_uses_a_parent_repository(tmp_path, monkeypatch):
     project = tmp_path / "source-copy"
     write_payload(project, ".git/config", b"PRIVATE_FIXTURE_SENTINEL\n")

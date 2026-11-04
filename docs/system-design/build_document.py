@@ -460,8 +460,10 @@ class CompanionBuilder:
                 paragraph.paragraph_format.space_after = Pt(1.5)
                 # Keep short tables together; splitting a four-row definition
                 # table after its first row makes the next page harder to read.
+                # A cited table keeps its last row with the spacer and source line below it.
                 paragraph.paragraph_format.keep_with_next = (
                     row_index == 0 or len(rows) <= 5 and row_index < len(all_rows) - 1
+                    or bool(block.get("sources")) and row_index == len(all_rows) - 1
                 )
                 paragraph.paragraph_format.keep_together = True
                 if columns[column_index].lower() in ("id", "status", "result") and len(str(value)) < 20:

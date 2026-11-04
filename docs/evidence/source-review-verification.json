@@ -54,7 +54,7 @@
       "source": "artifacts/source-review/startup-before.xml",
       "source_sha256": "e1e72bce36c95fbd87898f41d639b34eb6055d9bb2a9b3abeeb25bedc7c2f83c",
       "selected": "docs/evidence/review-startup-before.xml",
-      "redaction": "Removed hostname attributes; selected XML uses UTF-8/LF.",
+      "redaction": "Removed hostname attributes; selected XML uses UTF-8/LF. Selected copy also replaces local absolute path prefixes with <repository>, <workspace> or <user-home> placeholders (3 November 2026); test outcomes, counts and messages are otherwise unchanged. The raw-record hash refers to the unredacted original under artifacts.",
       "tests": 5,
       "failures": 5,
       "errors": 0
@@ -72,7 +72,7 @@
       "source": "artifacts/source-review/package-before.xml",
       "source_sha256": "d62b3818ac12f043bba4aa3b44c692d6b85f643cea693261ffa4eedc8f25c464",
       "selected": "docs/evidence/review-package-before.xml",
-      "redaction": "Removed hostname attributes; selected XML uses UTF-8/LF.",
+      "redaction": "Removed hostname attributes; selected XML uses UTF-8/LF. Selected copy also replaces local absolute path prefixes with <repository>, <workspace> or <user-home> placeholders (3 November 2026); test outcomes, counts and messages are otherwise unchanged. The raw-record hash refers to the unredacted original under artifacts.",
       "tests": 1,
       "failures": 1,
       "errors": 0

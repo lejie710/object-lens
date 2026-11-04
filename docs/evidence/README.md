@@ -1,17 +1,23 @@
 # Selected verification evidence
 
-These files summarize actual local checks and preserve their evidence boundaries. Raw run outputs remain in the ignored `artifacts` directory. JUnit copies here remove the machine hostname. `export-record.json` records base-version hashes and redaction; `extension-verification.json` records the combined extension, with separate `score-filter-record.json` and `sample-image-record.json` checkpoint records. Test counts, assertions and timestamps are preserved.
+These files summarize actual local checks and preserve their evidence boundaries. Raw run outputs remain in the ignored `artifacts` directory. JUnit copies here remove the machine hostname. Three earlier copies (`extension-first-full-suite.xml`, `review-package-before.xml` and `review-startup-before.xml`) also replace local absolute path prefixes with `<repository>`, `<workspace>` or `<user-home>` placeholders, as recorded in their redaction notes; newer tools redact paths when they write evidence. `export-record.json` records base-version hashes and redaction; `extension-verification.json` records the combined extension, with separate `score-filter-record.json` and `sample-image-record.json` checkpoint records. Test counts, assertions and timestamps are preserved.
 
 Selected text files use UTF-8 with LF line endings to match Git checkout. Raw-run hashes continue to refer to the original files under `artifacts`; normalizing a selected copy does not change those raw hashes.
 
 | File | What it establishes |
 | --- | --- |
-| `loading-followup-verification.json` and `loading-followup-full-suite.xml` | Current 98-case loading-follow-up suite, environment, exact commands, source hashes and retained-record provenance |
-| `loading-followup-sensitivity.json` | Nine deliberate source faults in disposable copies, including the fixed load deadline, extended initialization, accepted blank labels and consistently scaled scores, with an 11-case passing control |
-| `loading-followup-recovery-comparison.json` | The three recovery wording checks rerun against `74d108f` and the current source |
-| `loading-followup-rendered-review.json` | Current real-model captures, viewport measurements and labelled controlled timeout/Clear captures in `docs/screenshots/loading-followup` |
-| `loading-followup-package.json` | Rebuilt local static package identity and integrity; no deployment |
-| `loading-followup-slow-transfer.json` | Audit probe at 2.5 Mbps on loopback: the previous source failed at 86% received and restarted from zero; the corrected package reached ready at 139.6 seconds. Includes the probe source |
+| `branch-review-verification.json` and `branch-review-full-suite.xml` | Current 102-case branch-review suite, environment, exact commands, source hashes and retained-record provenance |
+| `branch-review-sensitivity.json` | 11 deliberate source faults in disposable copies with a 13-case passing control and 17 intended failures |
+| `branch-review-recovery-comparison.json` | The three recovery wording checks rerun against `74d108f` and the current source |
+| `branch-review-rendered-review.json` | Current real-model captures, viewport measurements and labelled controlled timeout/Clear captures; byte-identical to the images kept in `docs/screenshots/review-followup` |
+| `branch-review-package.json` | Rebuilt local static package identity and integrity; no deployment |
+| `branch-review-slow-transfer.json` | 2.5 Mbps loopback probe: the fixed-deadline source failed at 86% received; the current package reached ready. Includes the probe source |
+| `audit-17f2b9a-full-suite.xml` | The audit's 93-case reproduction of `17f2b9a` in a disposable copy, hostname and paths redacted |
+| `audit-17f2b9a-blank-label-fault.xml` | The audit's deliberate fault: with the blank-label check deleted, 44 recovery and UI tests still passed |
+| `loading-followup-verification.json` and `loading-followup-full-suite.xml` | Historical 98-case run of `f1a19a9`. Its `evidence_type` text names the earlier review follow-up because the recorder used a hard-coded label at the time |
+| `loading-followup-sensitivity.json` | Historical eight-fault run: an 11-case control and 14 intended failures (the documents at `f1a19a9` overstated this as nine faults and 15) |
+| `loading-followup-recovery-comparison.json`, `loading-followup-rendered-review.json`, `loading-followup-package.json` | Historical records for `f1a19a9`. Its captures were byte-identical to `docs/screenshots/review-followup`, which is the one copy kept |
+| `loading-followup-slow-transfer.json` | Historical 2.5 Mbps probe for `f1a19a9`: the previous source failed at 86% received; that package reached ready at 139.6 seconds |
 | `followup-verification.json` and `followup-full-suite.xml` | Historical 93-case review-follow-up suite, environment, exact commands, source hashes and retained-record provenance |
 | `followup-sensitivity.json` | Historical four-fault run: reproducible deliberate source faults in disposable copies, with passing controls and expected assertion failures |
 | `followup-recovery-comparison.json` | Three pre-Clear wording failures against the earlier source and three current passes that continue through Clear/Retry/recovery; controlled faults |

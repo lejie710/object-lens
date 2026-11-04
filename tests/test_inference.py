@@ -17,10 +17,13 @@ NORMALIZED_TOLERANCE = 0.005
 LAYOUT_TOLERANCE_PX = 2
 
 
-def selected_reference(filename, label):
+def reference_predictions(filename):
     observations = json.loads(REFERENCE_PATH.read_text(encoding="utf-8"))
-    sample = next(item for item in observations["app"] if item["image"] == filename)
-    return max((item for item in sample["predictions"] if item["label"] == label),
+    return next(item for item in observations["app"] if item["image"] == filename)["predictions"]
+
+
+def selected_reference(filename, label):
+    return max((item for item in reference_predictions(filename) if item["label"] == label),
                key=lambda item: item["score"])
 
 
@@ -106,6 +109,16 @@ def test_real_model_detects_reviewed_object(browser, real_url, filename, expecte
     assert expected_label in [item["label"] for item in observed]
     assert len(rows) == len(boxes)
     assert_visible_result_text(browser, [(item["label"], f"{float(item['score']):.2f}") for item in observed])
+    # Every visible row must match the recorded output, including lower scores such as the
+    # 0.67 coffee spoon; top scores near 1.00 alone cannot detect a score forced upward.
+    expected_rows = sorted((item["label"], item["score"]) for item in reference_predictions(filename))
+    visible_rows = sorted((row.find_element(By.CSS_SELECTOR, ".object-name").text,
+                           float(row.find_element(By.CSS_SELECTOR, ".object-score").text)) for row in rows)
+    assert [label for label, _ in visible_rows] == [label for label, _ in expected_rows]
+    for (label, visible_score), (_, expected_score) in zip(visible_rows, expected_rows):
+        assert visible_score == pytest.approx(expected_score, abs=0.01), (
+            f"Visible score regression for {label}: {visible_score} vs reference {expected_score}"
+        )
     # Selecting the highest-score matching row avoids depending on prediction order.
     matching_rows = [row for row in rows if row.get_attribute("data-label") == expected_label]
     selected_row = max(matching_rows, key=lambda row: float(row.get_attribute("data-score")))

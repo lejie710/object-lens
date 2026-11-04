@@ -31,7 +31,10 @@ STALLED_LOAD = RECOVERY + "test_stalled_model_transfer_times_out_after_its_last_
 INITIALIZATION = RECOVERY + "test_model_initialization_has_its_own_deadline"
 MALFORMED = RECOVERY + "test_malformed_result_is_rejected_without_partial_detections_and_recovers"
 BLANK_LABELS = [MALFORMED + "[empty-label]", MALFORMED + "[blank-label]"]
-CLEAN_CONTROLS = [VISIBLE, ROUNDING, ANNOUNCEMENTS, GEOMETRY, SLOW_LOAD, STALLED_LOAD, INITIALIZATION, *BLANK_LABELS]
+COMPLETED_TRANSFER = RECOVERY + "test_completed_transfer_starts_initialization_before_the_done_event"
+CLEARED_HANG = RECOVERY + "test_clear_during_a_hung_analysis_restarts_quietly"
+CLEAN_CONTROLS = [VISIBLE, ROUNDING, ANNOUNCEMENTS, GEOMETRY, SLOW_LOAD, STALLED_LOAD, INITIALIZATION, *BLANK_LABELS,
+                  COMPLETED_TRANSFER, CLEARED_HANG]
 MUTATIONS = (
     {
         "name": "blank-visible-labels", "path": "dist/app.js",
@@ -93,6 +96,29 @@ MUTATIONS = (
         "reason_fragment": "Visible score regression",
         "purpose": "Scale every score before rendering so visible text and data attributes still agree with each other.",
     },
+    {
+        "name": "scores-forced-to-one", "path": "dist/app.js",
+        "replacements": [("    return { id: index, label, score, box: bounds, color",
+                          "    return { id: index, label, score: 1, box: bounds, color")],
+        "tests": [GEOMETRY + "::test_real_model_detects_reviewed_object[coffee.png-cup]"], "expected_failures": 1,
+        "reason_fragment": "Visible score regression for spoon",
+        "purpose": "Force every score to 1.0; the 0.99+ cup and dining-table references tolerate this, but both spoon rows (0.67 and 0.93) must fail.",
+    },
+    {
+        "name": "completed-transfer-left-under-stall-window", "path": "dist/app.js",
+        "replacements": [("  if (transferComplete || (data.status === 'done' && isModelEvent(data))) {",
+                          "  if (data.status === 'done' && isModelEvent(data)) {")],
+        "tests": [COMPLETED_TRANSFER], "expected_failures": 1,
+        "reason_fragment": "too long to start",
+        "purpose": "Keep the silent Cache Storage write under the 45-second connection-stall window.",
+    },
+    {
+        "name": "cleared-hang-reported-as-analysis-failure", "path": "dist/app.js",
+        "replacements": [("    if (!currentImage) {\n", "    if (false) {\n")],
+        "tests": [CLEARED_HANG], "expected_failures": 1,
+        "reason_fragment": "TimeoutException",
+        "purpose": "Report the timeout of an already cleared image as an analysis failure on an empty workspace.",
+    },
 )
 
 
@@ -134,7 +160,8 @@ def copy_project(destination):
 def portable(text, copy_root):
     for path, replacement in ((copy_root, "<disposable-copy>"), (ROOT, "<repository>"),
                               (Path.home(), "<user-home>")):
-        text = text.replace(str(path), replacement).replace(path.as_posix(), replacement)
+        for spelling in (str(path), path.as_posix(), str(path).replace("\\", "\\\\")):
+            text = text.replace(spelling, replacement)
     return text
 
 
@@ -154,7 +181,8 @@ def execute_case(name, destination, test_ids, output):
     completed = subprocess.run(command, cwd=destination, env=environment, capture_output=True,
                                text=True, encoding="utf-8", errors="replace")
     elapsed = round(time.monotonic() - started, 3)
-    (output / f"{name}.log").write_text(portable(completed.stdout + completed.stderr, destination), encoding="utf-8")
+    (output / f"{name}.log").write_text(portable(completed.stdout + completed.stderr, destination),
+                                        encoding="utf-8", newline="\n")
     if not xml_path.is_file():
         raise RuntimeError(f"{name}: pytest produced no XML; inspect {name}.log")
     tree = ET.parse(xml_path)
@@ -234,7 +262,7 @@ def main():
                     )
                 else:
                     result["expected_outcome_verified"] = result["exit_code"] == 0 and result["counts"] == {
-                        "passed": 11, "failed": 0, "error": 0, "skipped": 0}
+                        "passed": 13, "failed": 0, "error": 0, "skipped": 0}
                 report["runs"].append(result)
                 print(f"{name}: {result['counts']} expected={result['expected_outcome_verified']}", flush=True)
                 if not result["expected_outcome_verified"]:
@@ -245,7 +273,7 @@ def main():
             len(report["runs"]) == len(MUTATIONS) + 1
             and all(run["expected_outcome_verified"] for run in report["runs"])
             and report["checkout_source_unchanged"])
-        (output / "summary.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+        (output / "summary.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8", newline="\n")
     if not report["all_expected_outcomes_verified"]:
         raise SystemExit("Sensitivity verification incomplete; inspect summary.json")
 

@@ -120,7 +120,8 @@ def main() -> None:
         },
         'source_checks': {**checks, 'code_excerpts_verified': excerpts,
                           'figure_assets_found': assets, 'pdf_text_bad_characters': bad_chars},
-        'scope': 'Document content, navigation and layout. Application execution remains separately recorded in followup-verification.json.',
+        'scope': 'Document content, navigation and layout. Application execution remains separately recorded in '
+                 + Path(source['metadata']['evidence_revision']).name + '.',
         'problems': errors,
         'status': 'passed' if not errors and args.visual_reviewed_all else 'failed' if errors else 'awaiting_visual_review',
     }

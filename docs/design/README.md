@@ -4,6 +4,6 @@
 
 The implemented application follows its practical layout: a white header, essential controls, a large image area, a compact results list and restrained blue selection. The original concept said "Objects"; actual model results showed duplicate predictions, so the implementation uses "Detections" and "predictions" instead.
 
-Current browser captures are in `../screenshots/loading-followup`; earlier captures remain in their original paths as historical evidence. Verification records distinguish real inference from controlled UI fixtures. The approved concept remains a dated planning reference and is not regenerated to imitate the current execution.
+Current browser captures are in `../screenshots/review-followup`; earlier captures remain in their original paths as historical evidence. Verification records distinguish real inference from controlled UI fixtures. The approved concept remains a dated planning reference and is not regenerated to imitate the current execution.
 
 The generation prompt is retained in `generation-prompt.txt`. It is provenance for the planning image, not an application dependency or instruction to add more features.

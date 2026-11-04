@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.688" timestamp="2026-11-03T14:31:42.722503+08:00"><testcase classname="tests.test_public_package" name="test_public_zip_exactly_matches_manifest_and_excludes_private_material" time="0.791"><failure message="subprocess.CalledProcessError: Command '['git', '-C', '%USERPROFILE%\\Downloads\\Apple-SDET\\.audit-external-temp-before-repro\\test_public_zip_exactly_matche0\\project', 'rev-parse', '--show-toplevel']' returned non-zero exit status 128.">package_project = WindowsPath('%USERPROFILE%/Downloads/Apple-SDET/.audit-external-temp-before-repro/test_public_zip_exactly_matche0/project')
-tmp_path = WindowsPath('%USERPROFILE%/Downloads/Apple-SDET/.audit-external-temp-before-repro/test_public_zip_exactly_matche0')
+<testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.688" timestamp="2026-11-03T14:31:42.722503+08:00"><testcase classname="tests.test_public_package" name="test_public_zip_exactly_matches_manifest_and_excludes_private_material" time="0.791"><failure message="subprocess.CalledProcessError: Command '['git', '-C', '&lt;workspace&gt;\\.audit-external-temp-before-repro\\test_public_zip_exactly_matche0\\project', 'rev-parse', '--show-toplevel']' returned non-zero exit status 128.">package_project = WindowsPath('&lt;workspace&gt;/.audit-external-temp-before-repro/test_public_zip_exactly_matche0/project')
+tmp_path = WindowsPath('&lt;workspace&gt;/.audit-external-temp-before-repro/test_public_zip_exactly_matche0')
 
     def test_public_zip_exactly_matches_manifest_and_excludes_private_material(package_project, tmp_path):
         private_paths = [
@@ -27,9 +27,9 @@ tools\build_public_demo.py:68: in git_provenance
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
 input = None, capture_output = False, timeout = None, check = True
-popenargs = (['git', '-C', '%USERPROFILE%\\Downloads\\Apple-SDET\\.audit-external-temp-before-repro\\test_public_zip_exactly_matche0\\project', 'rev-parse', '--show-toplevel'],)
+popenargs = (['git', '-C', '&lt;workspace&gt;\\.audit-external-temp-before-repro\\test_public_zip_exactly_matche0\\project', 'rev-parse', '--show-toplevel'],)
 kwargs = {'stdout': -1, 'text': True}
-process = &lt;Popen: returncode: 128 args: ['git', '-C', '%USERPROFILE%\\Downloads\\A...&gt;
+process = &lt;Popen: returncode: 128 args: ['git', '-C', '&lt;user-home&gt;\\Downloads\\A...&gt;
 stdout = '', stderr = None, retcode = 128
 
     def run(*popenargs,
@@ -99,6 +99,6 @@ stdout = '', stderr = None, retcode = 128
             if check and retcode:
 &gt;               raise CalledProcessError(retcode, process.args,
                                          output=stdout, stderr=stderr)
-E               subprocess.CalledProcessError: Command '['git', '-C', '%USERPROFILE%\\Downloads\\Apple-SDET\\.audit-external-temp-before-repro\\test_public_zip_exactly_matche0\\project', 'rev-parse', '--show-toplevel']' returned non-zero exit status 128.
+E               subprocess.CalledProcessError: Command '['git', '-C', '&lt;workspace&gt;\\.audit-external-temp-before-repro\\test_public_zip_exactly_matche0\\project', 'rev-parse', '--show-toplevel']' returned non-zero exit status 128.
 
 ..\..\..\AppData\Local\Programs\Python\Python312\Lib\subprocess.py:571: CalledProcessError</failure></testcase></testsuite></testsuites>

@@ -1,16 +1,16 @@
 {
-  "date": "3 November 2026",
-  "documented_source": "17f2b9a plus source hashes in the evidence record",
-  "base_commit": "17f2b9a5e2ded7fa8c7954d748f825ba33f5d8a7",
-  "source_sha256": "1d217cca28598c6fcf827321ef83dad04af206bfcda6cd921ac5c44fe4fc919a",
-  "docx_sha256": "07a02f53548e8c906470c9e1004f63edfc9f466addab64753b03d1a0c70bef33",
-  "pdf_sha256": "a048b739175445a9c2b4e875af8cf855faa23e2c27cf8d75eeca7e006c233938",
+  "date": "4 November 2026",
+  "documented_source": "f1a19a9 plus source hashes in the evidence record",
+  "base_commit": "f1a19a9c6ae7555cae8f9e69b616ef79fd8232c7",
+  "source_sha256": "f9ff47bc727180174fb12bcd737754f24a856414a4de61607881f30bd878e454",
+  "docx_sha256": "6303e2a6d54495a60ce237cb3aac397b494752e7f9e1a6628f22586bc083d9b7",
+  "pdf_sha256": "42add4d777feb260677ad6c6f944ce7e4cb48fa8927706fe35739cfd84c3bf5e",
   "page_count": 22,
-  "contents_heading_targets": 36,
-  "pdf_contents_links": 72,
+  "contents_heading_targets": 37,
+  "pdf_contents_links": 74,
   "pdf_back_to_contents_links": 10,
   "navigation_audit": "navigation-audit.json",
-  "navigation_audit_sha256": "5a43c8eef52ef5b0c0460c7e104296a4f8ecbc7e982d32aa2722964b2514c53b",
+  "navigation_audit_sha256": "f183026fdee2a0a4cd92860a4ad6237bb50029da4ccdb73f43c25aa87582f58d",
   "visual_review": {
     "pages": [
       1,
@@ -64,12 +64,12 @@
   },
   "source_checks": {
     "reviewed_source_sha256": 40,
-    "evidence_sha256": 23,
+    "evidence_sha256": 25,
     "code_excerpts_verified": 2,
     "figure_assets_found": 5,
     "pdf_text_bad_characters": 0
   },
-  "scope": "Document content, navigation and layout. Application execution remains separately recorded in followup-verification.json.",
+  "scope": "Document content, navigation and layout. Application execution remains separately recorded in branch-review-verification.json.",
   "problems": [],
   "status": "passed"
 }

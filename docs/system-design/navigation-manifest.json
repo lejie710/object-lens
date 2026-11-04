@@ -1,6 +1,6 @@
 {
-  "source_sha256": "1d217cca28598c6fcf827321ef83dad04af206bfcda6cd921ac5c44fe4fc919a",
-  "docx_sha256": "07a02f53548e8c906470c9e1004f63edfc9f466addab64753b03d1a0c70bef33",
+  "source_sha256": "f9ff47bc727180174fb12bcd737754f24a856414a4de61607881f30bd878e454",
+  "docx_sha256": "6303e2a6d54495a60ce237cb3aac397b494752e7f9e1a6628f22586bc083d9b7",
   "toc_mode": "static",
   "toc_depth": 2,
   "field_refresh_required": false,
@@ -224,10 +224,18 @@
       "section_index": 6
     },
     {
+      "title": "Findings from a multi-agent review",
+      "level": 2,
+      "key": "investigation__Findings from a multi-agent review",
+      "block_index": 19,
+      "bookmark": "OL_investigation__Findings_fro_9b046580",
+      "section_index": 6
+    },
+    {
       "title": "Current recovery wording and assertion gaps",
       "level": 2,
       "key": "investigation__Current recovery wording and assertion gaps",
-      "block_index": 19,
+      "block_index": 22,
       "bookmark": "OL_investigation__Current_reco_e6d6d428",
       "section_index": 6
     },
@@ -300,7 +308,7 @@
   "table_count": 11,
   "assets": [
     {
-      "declared_path": "../screenshots/loading-followup/desktop.png",
+      "declared_path": "../screenshots/review-followup/desktop.png",
       "sha256": "4d86d92f4dcd5f84c5ee1c7f36256f4f5995bf2dae852d77d16717e85bc1ec5e",
       "pixels": [
         1424,
@@ -324,7 +332,7 @@
       ]
     },
     {
-      "declared_path": "../screenshots/loading-followup/export.png",
+      "declared_path": "../screenshots/review-followup/export.png",
       "sha256": "a74cbc0fb02034136299010a9fcc2c2f22241fb0aa8ba38cdf70ab4f7fb57482",
       "pixels": [
         600,
