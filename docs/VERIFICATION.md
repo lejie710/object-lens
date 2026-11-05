@@ -122,7 +122,21 @@ Five faults each break one core rule the question depends on:
 
 **A replacement case that cannot prove the stale-result rule.** With the stale-result guard removed, `tests/test_ui.py::test_replacing_a_processing_image_discards_the_old_result[car.png]` sometimes fails and sometimes passes: the old result is shown for only about 40 ms before the faster new result replaces it, so whether a check sees it is a matter of timing. That case is therefore not counted for this fault. The `[slow-car.png]` case and the Clear case keep the old result on screen and fail every time.
 
-The other 11 faults produce 17 of the intended failures. Four target visible output: blank visible names, blank visible scores, displaced rendered boxes and removed announcement settings. Seven target loading and validation: a fixed load deadline that ignores progress, settings events extending initialization, accepted blank labels, every score scaled by 0.95, every score forced to 1.0, a completed transfer left under the stall window, and a cleared hang reported as an analysis failure. Within the real-model checks, only the recorded-reference comparison catches the two score faults, because the page's own attributes change with them; controlled UI tests compare against independently specified fixture values and are a separate oracle. The README lists each of these faults with its failing module and count.
+The other 11 faults produce 17 of the intended failures. Four target visible output: blank visible names, blank visible scores, displaced rendered boxes and removed announcement settings. Seven target loading and validation: a fixed load deadline that ignores progress, settings events extending initialization, accepted blank labels, every score scaled by 0.95, every score forced to 1.0, a completed transfer left under the stall window, and a cleared hang reported as an analysis failure. Within the real-model checks, only the recorded-reference comparison catches the two score faults, because the page's own attributes change with them; controlled UI tests compare against independently specified fixture values and are a separate oracle. Each of these faults, with its failing module and count:
+
+| Fault planted | Caught by | Failures |
+| --- | --- | ---: |
+| Visible labels blanked | `test_ui.py` | 1 |
+| Visible scores blanked, numeric metadata kept | `test_ui.py` | 2 |
+| Rendered boxes moved out of position | `test_inference.py` | 3 |
+| Status, live-region and alert settings removed | `test_ui.py` | 1 |
+| Fixed load deadline that ignores progress | `test_recovery.py` | 1 |
+| Later settings-file events keep extending initialization | `test_recovery.py` | 1 |
+| Blank-label rejection removed | `test_recovery.py` | 2 |
+| Every score scaled by 0.95 | `test_inference.py` | 3 |
+| Every score forced to 1.0 | `test_inference.py` | 1 |
+| Completed download still timed by the stall window | `test_recovery.py` | 1 |
+| A cleared hang reported as an analysis failure | `test_recovery.py` | 1 |
 
 Conclusion: every core rule the question depends on has at least one test that fails when the rule is broken. The clean application is preserved. These results show that the selected checks detect the selected faults; they are not a mutation score, a test-completeness proof or naturally observed production incidents. Only locally retained runs are claimed as evidence.
 
@@ -133,6 +147,10 @@ Passed on commit `0dc7e80`: every README setup step exited 0, the usage example 
 The run clones the repository into a new, empty folder and follows the README exactly: the first-setup steps, the smallest usage example and the test command. The operating system and runtime versions it ran on are recorded in [fresh-clone-run.json](evidence/fresh-clone-run.json).
 
 ## Reproduce the evidence
+
+![How browser tests produce evidence: pytest starts an isolated local server and headless Chrome, Selenium drives the app through either the controlled test worker or the real model worker, pytest asserts the expected behaviour, and failures keep a screenshot, page HTML, console and test context](diagrams/testing-workflow.png)
+
+How a browser test runs: each test uses either the controlled test worker (UI rules and recovery) or the real model worker (real path and selected labels), and pytest decides pass or fail.
 
 From the prepared repository environment:
 
