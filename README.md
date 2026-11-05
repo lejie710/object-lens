@@ -58,11 +58,11 @@ The model runs in a web worker using Transformers.js 2.17.2 and ONNX Runtime Web
 ## What it looks like
 
 <p>
-  <img src="docs/screenshots/app/filtered.png" width="70%" alt="The coffee sample with the minimum model score at 0.80: the spoon scored 0.67 is hidden, leaving dining table, cup and spoon, Showing 3 of 4 predictions">
-  <img src="docs/screenshots/app/width-390.png" width="25%" alt="The same result at 390 pixels wide: buttons wrap, the photo sits above the detection list, and the list still shows dining table, cup and spoon, 3 of 4 predictions">
+  <img src="docs/screenshots/app/filtered.png" width="76%" align="top" alt="The coffee sample with the minimum model score at 0.80: the spoon scored 0.67 is hidden, leaving dining table, cup and spoon, Showing 3 of 4 predictions">
+  <img src="docs/screenshots/app/width-390-top.png" width="19%" align="top" alt="The top of the same result at 390 pixels wide: buttons wrap, the photo sits above the detection list, and the list still shows dining table, cup and spoon, 3 of 4 predictions">
 </p>
 
-At a minimum score of 0.80 the filter hides the spoon scored 0.67 and keeps the other three predictions, without running the model again. At 390 pixels wide the page stacks the photo above the list and keeps the same 3 of 4 result. **Save result** at this setting produced [export.png](docs/screenshots/app/export.png), the 600 x 400 photo with the three visible boxes and their scores drawn on it. The [walkthrough](docs/WALKTHROUGH.md) goes through every screen in order, 12 captures in all.
+At a minimum score of 0.80 the filter hides the spoon scored 0.67 and keeps the other three predictions, without running the model again. At 390 pixels wide (the top of the page is shown) the photo stacks above the list and keeps the same 3 of 4 result. **Save result** at this setting produced [export.png](docs/screenshots/app/export.png), the 600 x 400 photo with the three visible boxes and their scores drawn on it. The [walkthrough](docs/WALKTHROUGH.md) goes through every screen in order and shows the model on the other sample photos, including a wrong guess and a photo with nothing it recognises.
 
 ![How it works: serve.py serves the files to Chrome, the Object Lens page sends the image to the AI worker, which returns labels, scores and boxes; pytest drives the same page through Selenium in headless Chrome](docs/diagrams/object-lens-runtime-flow.png)
 

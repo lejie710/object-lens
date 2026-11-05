@@ -1,0 +1,126 @@
+{
+  "created_at_utc": "2026-11-05T03:44:51+00:00",
+  "evidence_type": "real model inference on the public sample photos, for the walkthrough",
+  "source_sha256": {
+    "asset-lock.json": "9304dd88602a161c3ac1e580fa559e01a22f285c57573bf77d708b0c1af58216",
+    "credits-lock.json": "4f3dd86c8268f6bd5c186546aa4737c68d3d80b58230c79e26bad7a49990b805",
+    "dist/app.js": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+    "dist/credits.html": "a7198cfe8462d91e15aedae08e77adadcda54d82167f394065a83794292fc670",
+    "dist/index.html": "d4b6944c8c2bce55a69903173d7fc6c009bddc49170ec3a461075ffa07d774bd",
+    "dist/png-export.js": "cb7171cec270e245a78f70a8f56cd62a921157825458a3aeb97ac8b513948c41",
+    "dist/runtime-config.json": "80c98bfac072ba06f97197da8758f21bf1f8988a75b5302001b0eb22787d5d77",
+    "dist/style.css": "e4a1a8e3590fe79720ae588d53bee72f1d3e76c1e3118c75b6faffb5d0a41aa6",
+    "dist/worker.js": "b83ddaca9e27871799b6f23ddf27b4e1384c28e9565975c9b04e11bcd706916c",
+    "docs/evidence/model-observations.json": "2fc47a23ea4d948ec2558c479e9b7802d2012406ff32c977c3a23f635efcdd17",
+    "pytest.ini": "d6a73402698c941e3566d71d858e2269b735e6c41c2038dcaa82ab8fb6be234c",
+    "requirements-lock.txt": "ca55ce2a97df508ac3ab5ec0ab1c6ae8bd9cf7f636a93759d12031e96998bae5",
+    "requirements.txt": "e22547340f95f8327dc5669a31f0a74d55f54748ce6374388918a4b9e1d47ba6",
+    "serve.py": "ee9e8614966fa36e0ef94411f19e10be5b29c7898e63bf571bb0577cc0e018b1",
+    "tests/conftest.py": "95cceb7c2ef8db87eadba6ad569f35279e225dc2ec021aa5936ff2cb4eac9bc5",
+    "tests/fixtures/test-worker.js": "496cb40f8e383d7bdaf370783f7cd499886d4f14aaaf14383df036841a10a477",
+    "tests/helpers.py": "5c2cb9c4d1efc71ac99c5cf8b95dde19141313af4c787c1f5b74a37320e37110",
+    "tests/test_export.py": "7c5a248d4f64fc2bbfdee2a9cdf4f0220c70d2c7c284d82e3af339e1f8b504d8",
+    "tests/test_filter.py": "b011416c2326ef9a7f50d3ae3581022f322e5423aa825706425a160cdf5ec9fa",
+    "tests/test_harness_cleanup.py": "07ccefdd44a45495281019c2a90316f4f7193f1f7bf611dc000e9c45539bc301",
+    "tests/test_inference.py": "32d3de25db67268650eb3177b96c89ef010713d724f7516002d08590f64db6de",
+    "tests/test_loading.py": "9fb6042dea2aa3d1fe9be83fd2013bf05ad85642e3893245d364889d1e910bf2",
+    "tests/test_public_package.py": "00d8dbcf83c7a350c269be1b40deea1ff239421d0c0e6936008125667657ad6e",
+    "tests/test_recovery.py": "199fa607267473ead781b5e3e937722d5aeffb08bcb710180e3e85e3b2215292",
+    "tests/test_sample.py": "b843dc1483e5c3ed50b8cab404a72af593c4f0fd6f68a918da0197fdbcc3d58d",
+    "tests/test_server.py": "e9a1c434e1843e9aa2044be3fdadefdd5d297e1c0d8be028768910ae37a31926",
+    "tests/test_startup.py": "3730a502ef612bb370043e6a86fdc0a52c4baf3cc08c038a4eb5a62f9a3297ff",
+    "tests/test_ui.py": "5ac1bab1e015fb8469f068b8a1ff2bbcb9e1b708809c9d8ef1e9fe8045287b86",
+    "tools/browser_check.py": "73c6355674fa3396a48e5768a50fcfd3050b1ed83a16fee5051f150bb1c9bfb7",
+    "tools/build_baseline.py": "7df1b3bed0b1a35cb6f84b654027c4d39a72b7f3b6ba9c0f3b77f657f9fb995f",
+    "tools/build_public_demo.py": "634b05ca1119776ff337e20ff3ce0a483f9f98d7fc14514c988a84b53e891ce6",
+    "tools/capture_demo.py": "ad053eb75838f81ee2180ba6fe20fb9d26188adf5ab719c67a5a7f33331ca7bf",
+    "tools/capture_review.py": "0ff79a91c28abf51527f2d21a519026e22b5519f42569351a5ef61dcad2d0acb",
+    "tools/capture_samples.py": "274eab668d2be521783e5f0a69d6fc9e616a0835d2025696ca3f263da9de85f8",
+    "tools/check_public_demo.py": "17d8109d864634def9653b02020bbf9d259d06a5ef111377b06bb59aa52c812a",
+    "tools/check_recovery_comparison.py": "5b648d9fc29d1f7b7cf3c5c9cd550909dbafe46d9e015bd2870b21843987550f",
+    "tools/check_review_sensitivity.py": "28744b340a2d7f82f5514fa6279e967c31d47cb5b218977dd182d1618f96d69a",
+    "tools/collect_evidence.py": "9bb8ed26c79fe2e6776b0d91bf1c45d9d5975c11ec38205d1f9716546712d3a6",
+    "tools/download_samples.py": "2d9c0a95fc4a8613e58d399e2e3fbedd6d4acb2e4c3489a2c7d5cd6f66f7dae9",
+    "tools/fetch_upstream.py": "6517139f8f7feb670461a606b2bf90bc9bf835d9bfdcf50956685c6d1cbc4b14",
+    "tools/prepare_assets.py": "8733667b051c6de9b25d742c4c29476df9177d4b88486ac96bd685a0d6d6dc2c",
+    "tools/record_verification.py": "7c4c88f4cda88faa0bc35562a224b7a88e2477feed6a9b1ae0eaf058915c140b",
+    "tools/security_scan.py": "710f270ad102859bc8711067524d4a75ab058927816d7430fafc1a0221f62984"
+  },
+  "captures": [
+    {
+      "file": "sample-astronaut.png",
+      "sha256": "1e514f2f38ada19436d7123acb89c371bf2b2d713855aba1a08a38dc452775dd",
+      "input": "dist/samples/astronaut.png",
+      "state": "complete",
+      "status": "Detection complete. Showing 1 of 1 predictions.",
+      "results_message": "",
+      "predictions": [
+        {
+          "label": "person",
+          "displayed_score": "1.00"
+        }
+      ]
+    },
+    {
+      "file": "sample-chelsea.png",
+      "sha256": "0232a8be9b62c61249b4544c5d40f17adf47dee76582e0fb1461a860172bf6ee",
+      "input": "dist/samples/chelsea.png",
+      "state": "complete",
+      "status": "Detection complete. Showing 1 of 1 predictions.",
+      "results_message": "",
+      "predictions": [
+        {
+          "label": "cat",
+          "displayed_score": "1.00"
+        }
+      ]
+    },
+    {
+      "file": "sample-camera.png",
+      "sha256": "2d88ad8c4c81f9feaa784324b69273d5e1ff48afba58f42af46bd64fe68db696",
+      "input": "dist/samples/camera.png",
+      "state": "complete",
+      "status": "Detection complete. Showing 6 of 6 predictions.",
+      "results_message": "",
+      "predictions": [
+        {
+          "label": "bicycle",
+          "displayed_score": "0.51"
+        },
+        {
+          "label": "handbag",
+          "displayed_score": "0.50"
+        },
+        {
+          "label": "person",
+          "displayed_score": "0.75"
+        },
+        {
+          "label": "person",
+          "displayed_score": "0.99"
+        },
+        {
+          "label": "person",
+          "displayed_score": "0.70"
+        },
+        {
+          "label": "bicycle",
+          "displayed_score": "0.68"
+        }
+      ]
+    },
+    {
+      "file": "sample-rocket.png",
+      "sha256": "d4001d5a73c29e52d6044e01cdd35fe0e838453af8c8eb9b8e61a5ac1bff557a",
+      "input": "dist/samples/rocket.jpg",
+      "state": "empty",
+      "status": "Detection complete. No predictions.",
+      "results_message": "No supported objects were detected in this image.",
+      "predictions": []
+    }
+  ],
+  "passed": true,
+  "limits": "One run per photo in local Chrome on Windows at a 1440 x 1000 window. Model output, not ground truth; not an accuracy measurement.",
+  "browser_version": "156.0.8078.80",
+  "sources_unchanged_during_capture": true
+}
