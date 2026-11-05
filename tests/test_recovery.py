@@ -11,8 +11,8 @@ import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
+from helpers import assert_no_visible_image, result_labels, upload, wait_state
 from serve import AppHandler
-from test_ui import assert_no_visible_image, result_labels, upload, wait_state
 
 
 MODEL_FILE = "onnx/model_quantized.onnx"

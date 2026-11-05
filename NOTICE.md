@@ -1,14 +1,18 @@
 # Attribution and scope
 
+Object Lens
+Copyright 2026 Le Jie Tan
+
 Object Lens adapts the interaction demonstrated by Hugging Face's Transformers.js vanilla JavaScript object-detection tutorial. The original example is retained in `baseline/upstream`, under its Apache License 2.0. Its repository, exact revision and file checksums are recorded in `baseline/source.json`.
 
-The Object Lens interface, file validation, background-worker integration, stale-result handling and Python test suite are project modifications developed with AI assistance. They are not represented as upstream features or independently written work by Le Jie.
+The Object Lens interface, file validation, background-worker integration, stale-result handling and Python test suite are project modifications developed with AI assistance. They are not represented as upstream features or independently written work by Le Jie Tan.
 
 ## Runtime and model
 
 - Transformers.js 2.17.2: https://github.com/huggingface/transformers.js (Apache-2.0).
 - ONNX Runtime Web 1.14.0: https://github.com/microsoft/onnxruntime (MIT).
 - Hugging Face Jinja 0.2.2, embedded in the browser bundle: https://www.npmjs.com/package/@huggingface/jinja (MIT).
+- Embedded in ONNX Runtime Web 1.14.0 inside the same bundle: long 4.0.0 (Apache-2.0), flatbuffers 1.12.0 (Apache-2.0), onnx-proto 4.0.4 (MIT), protobufjs 6.11.3 (BSD-3-Clause) and guid-typescript 1.0.9 (ISC). Versions come from ONNX Runtime 1.14.0's `js/web/package-lock.json`.
 - DETR model: https://huggingface.co/facebook/detr-resnet-50 (Apache-2.0 model card).
 - Browser-compatible model conversion: https://huggingface.co/Xenova/detr-resnet-50, with its exact revision in `asset-lock.json`.
 - Sample photographs and their separate licences: `docs/IMAGE_SOURCES.md`.

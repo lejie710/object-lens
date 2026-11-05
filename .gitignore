@@ -7,3 +7,6 @@ dist/assets/models/
 artifacts/
 test-results/
 .local/
+
+# Static site build used by the Pages workflow
+build/

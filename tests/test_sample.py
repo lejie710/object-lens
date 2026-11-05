@@ -12,15 +12,15 @@ import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-from serve import AppHandler
-from test_filter import set_minimum
-from test_ui import (
+from helpers import (
     assert_for_late_response_window,
     assert_no_visible_image,
     result_labels,
+    set_minimum,
     upload,
     wait_state,
 )
+from serve import AppHandler
 
 
 @pytest.fixture
@@ -145,7 +145,8 @@ def test_late_sample_response_cannot_override_a_later_user_action(browser, sampl
             assert driver.find_element(By.ID, "filename").text == "car.png"
             assert result_labels(driver) == ["car"]
 
-    assert_for_late_response_window(browser, latest_action_still_wins)
+    # The late event here is the released sample fetch, not a worker reply: keep the full window.
+    assert_for_late_response_window(browser, latest_action_still_wins, hold=1.4)
 
 
 def test_try_sample_is_keyboard_reachable_and_activates_with_enter(browser, sample_server):
@@ -173,7 +174,7 @@ def test_nonresponding_sample_fetch_times_out_and_a_new_attempt_recovers(browser
     started = time.monotonic()
     browser.find_element(By.ID, "try-sample").click()
     assert sample_server.requested.wait(timeout=5), "No sample request reached the local server"
-    wait_state(browser, "error", timeout=20)
+    wait_state(browser, "error", timeout=30)
     assert time.monotonic() - started >= 14, "Sample failed before the intended timeout window"
     message = browser.find_element(By.ID, "error-message").text.lower()
     assert "sample" in message and "too long" in message

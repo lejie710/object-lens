@@ -2,18 +2,18 @@
 
 This document lists every confirmed defect in Object Lens, grouped by area. Each entry gives what failed, how it was detected, its impact, the cause in the system and the test that prevents it from returning. [VERIFICATION.md](VERIFICATION.md) holds the current results and source hashes.
 
-Several defects have a deliberate fault in [`tools/check_review_sensitivity.py`](../tools/check_review_sensitivity.py) that restores the defective behavior in a disposable copy; the named test must then fail. [release-sensitivity.json](evidence/release-sensitivity.json) records those outcomes, and [branch-review-sensitivity.json](evidence/branch-review-sensitivity.json) records 11 of those faults against an earlier commit.
+Several defects have a deliberate fault in [`tools/check_review_sensitivity.py`](../tools/check_review_sensitivity.py) that restores the defective behavior in a disposable copy; the named test must then fail. [v1-0-sensitivity.json](evidence/v1-0-sensitivity.json) records those outcomes (a passing clean control, 16 faults with 28 intended failures, and one equivalent fault that passes as expected), and [branch-review-sensitivity.json](evidence/history/branch-review-sensitivity.json) records 11 of those faults against an earlier commit.
 
 ## How defects were found
 
-The application, Python server, tests and setup, package, evidence and document helpers were read in full, including AI-assisted review. Findings were confirmed by reproduction: controlled local HTTP timing, a loopback probe that paced the model download, ordinary temporary directories, isolated mocks and disposable copies. The application source was not corrupted to create the defects listed here; deliberate faults are used only to show that a test can fail. Model and runtime binaries, distributed notices and preserved upstream files are checked against their recorded hashes. That check is not a manual audit of third-party code or an evaluation of model accuracy.
+The application, Python server, tests and setup, package and evidence helpers were read in full, including AI-assisted review. Findings were confirmed by reproduction: controlled local HTTP timing, a loopback probe that paced the model download, ordinary temporary directories, isolated mocks and disposable copies. The application source was not corrupted to create the defects listed here; deliberate faults are used only to show that a test can fail. Model and runtime binaries, distributed notices and preserved upstream files are checked against their recorded hashes. That check is not a manual audit of third-party code or an evaluation of model accuracy.
 
 ## Model loading
 
 ### Slow connections could never load the model
 
 - **What failed:** with only the 43 MB model response paced at 2.5 Mbps on loopback, loading failed at 121 seconds with 37.4 of 43.1 MB (86%) received. Try again restarted the transfer from zero.
-- **How it was detected:** a paced loopback probe of `17f2b9a` (the same audit's 93-case suite run passed and did not detect it: [audit-17f2b9a-full-suite.xml](evidence/audit-17f2b9a-full-suite.xml)). The corrected package, under the same 2.5 Mbps transfer, received every byte and reached ready at 140.6 seconds ([branch-review-slow-transfer.json](evidence/branch-review-slow-transfer.json), which also holds the probe source; the probe against `f1a19a9` is in [loading-followup-slow-transfer.json](evidence/loading-followup-slow-transfer.json)). Each condition ran once on loopback; this is not an Internet speed measurement.
+- **How it was detected:** a paced loopback probe of `17f2b9a` (the same audit's 93-case suite run passed and did not detect it: [audit-17f2b9a-full-suite.xml](evidence/history/audit-17f2b9a-full-suite.xml)). The corrected package, under the same 2.5 Mbps transfer, received every byte and reached ready at 140.6 seconds ([slow-transfer-2-5-mbps.json](evidence/slow-transfer-2-5-mbps.json), which also holds the probe source; the probe against `f1a19a9` is in [loading-followup-slow-transfer.json](evidence/history/loading-followup-slow-transfer.json)). Each condition ran once on loopback; this is not an Internet speed measurement.
 - **Impact:** a steady connection below about 2.9 Mbps could not load the model at all, and retrying could not help.
 - **Cause in the system:** the model-load deadline counted 120 seconds from worker start and ignored progress. The correction fails a transfer only after 45 seconds without a loading event, and each event restarts that window. Try again still restarts the transfer from zero; resumable download is a non-goal because it would require changing the underlying library. Runtime initialization after the model file arrives keeps its own fixed 120-second deadline that later settings-file events cannot extend. The messages distinguish a stalled transfer from slow initialization.
 - **Test that prevents it:** `tests/test_recovery.py::test_slow_steady_model_transfer_is_not_timed_out` (fails under the `fixed-load-deadline` fault), `tests/test_recovery.py::test_stalled_model_transfer_times_out_after_its_last_progress` and `tests/test_recovery.py::test_model_initialization_has_its_own_deadline` (fails under the `initialization-extended-by-later-events` fault). The stalled-transfer and initialization tests then Clear and recover.
@@ -39,7 +39,7 @@ The application, Python server, tests and setup, package, evidence and document 
 ### Timeout and Clear messages described the wrong stage
 
 - **What failed:** the timeout callback always described image detection, including while the model was still loading. Clear then reported any stopped worker as a startup failure.
-- **How it was detected:** source review, confirmed by a before/after comparison of three wording tests. Against a disposable copy of `74d108f` the three tests fail (26.732 seconds); against the corrected source they pass (27.644 seconds) ([followup-recovery-comparison.json](evidence/followup-recovery-comparison.json); the same comparison against the current source is in [branch-review-recovery-comparison.json](evidence/branch-review-recovery-comparison.json)). The earlier source fails at the message checks before Clear, so its Clear behavior is a source finding that the failed run did not reach.
+- **How it was detected:** source review, confirmed by a before/after comparison of three wording tests. Against a disposable copy of `74d108f` the three tests fail (26.732 seconds); against the corrected source they pass (27.644 seconds) ([followup-recovery-comparison.json](evidence/history/followup-recovery-comparison.json); the same comparison against the current source is in [branch-review-recovery-comparison.json](evidence/history/branch-review-recovery-comparison.json)). The earlier source fails at the message checks before Clear, so its Clear behavior is a source finding that the failed run did not reach.
 - **Impact:** the user was told the wrong thing failed, and after Clear a slow analysis read as a broken detector.
 - **Cause in the system:** one message for every timeout, and Clear mapped any stopped worker to a startup failure. The timeout callback selects a message for the active loading or inference stage. Clear shows a generic unavailable and restart message without reclassifying the earlier cause; Retry or a valid new image recovers.
 - **Test that prevents it:** `tests/test_recovery.py::test_model_load_timeout_clear_and_retry_describe_detector_availability`, `tests/test_recovery.py::test_inference_timeout_clear_and_retry_describe_detector_availability` and `tests/test_recovery.py::test_worker_crash_during_inference_is_not_described_as_startup_failure`. Each continues through Clear, Retry and a successful analysis. Worker crashes are simulated; no crash of the real model was observed.
@@ -56,7 +56,7 @@ The application, Python server, tests and setup, package, evidence and document 
 
 ### Blank labels were accepted without a test
 
-- **What failed:** deleting the `!label.trim()` check from `renderResults` left all 44 recovery and UI tests passing ([audit-17f2b9a-blank-label-fault.xml](evidence/audit-17f2b9a-blank-label-fault.xml)).
+- **What failed:** deleting the `!label.trim()` check from `renderResults` left all 44 recovery and UI tests passing ([audit-17f2b9a-blank-label-fault.xml](evidence/history/audit-17f2b9a-blank-label-fault.xml)).
 - **How it was detected:** a deliberate fault in a disposable copy of `17f2b9a`.
 - **Impact:** a prediction with an empty or whitespace label could be shown as a result row with no name, and no test would notice.
 - **Cause in the system:** the malformed-response cases had no empty or whitespace label. Both are included among them.
@@ -66,7 +66,7 @@ The same test rejects missing or non-finite coordinates, invalid scores, impossi
 
 ## Startup and configuration
 
-The first three defects below were present in `9a60886` (public-preparation implementation `3ac9422`). The five startup regressions written for them fail against that source in 73.298 seconds of JUnit time ([review-startup-before.xml](evidence/review-startup-before.xml)) and pass after correction in 63.996 seconds ([review-startup-after.xml](evidence/review-startup-after.xml)). The fourth is a gap in those startup tests themselves.
+The first three defects below were present in `9a60886`. The five startup regressions written for them fail against that source in 73.298 seconds of JUnit time ([review-startup-before.xml](evidence/history/review-startup-before.xml)) and pass after correction in 63.996 seconds ([review-startup-after.xml](evidence/history/review-startup-after.xml)). The fourth is a gap in those startup tests themselves.
 
 ### Configuration loading had no deadline
 
@@ -121,16 +121,24 @@ The first three defects below were present in `9a60886` (public-preparation impl
 ### Blank visible text, displaced boxes and removed announcements could pass
 
 - **What failed:** blank visible names or scores, real-model boxes drawn in the wrong place and removed live-region settings could pass the 72-case suite.
-- **How it was detected:** external AI-assisted review of the 72-case suite, then deliberate faults in disposable copies ([followup-sensitivity.json](evidence/followup-sensitivity.json)). No broad mutation score is claimed.
+- **How it was detected:** external AI-assisted review of the 72-case suite, then deliberate faults in disposable copies ([followup-sensitivity.json](evidence/history/followup-sensitivity.json)). No broad mutation score is claimed.
 - **Impact:** text the user reads, box placement and status announcements were not protected.
 - **Cause in the system:** assertions read data attributes instead of visible text and did not measure rendered boxes. The tests check visible names and two-decimal scores, compare the selected box coordinates with the pinned-model reference, and measure the rendered box against the image rectangle. The announcement check establishes configuration, not screen-reader behavior.
 - **Test that prevents it:** `tests/test_ui.py::test_predictions_and_boxes_match_the_current_image` (`blank-visible-labels`), `tests/test_ui.py::test_visible_scores_round_without_changing_the_underlying_values` (`blank-visible-scores`), `tests/test_inference.py::test_real_model_detects_reviewed_object` (`displaced-rendered-boxes`) and `tests/test_ui.py::test_status_and_error_announcement_configuration_follows_visible_states` (`removed-announcement-configuration`).
+
+### The late-response check could pass before the late reply arrived
+
+- **What failed:** the shared check for stale results held its invariant for a fixed 1.4 seconds, chosen to outlast the controlled worker's 900-millisecond reply delay. Nothing confirmed that the delayed reply had actually reached the page within that window.
+- **How it was detected:** review of test strength.
+- **Impact:** on a slow runner the late reply could arrive after the window closed, so a stale-result regression could pass without the stale reply ever being exercised.
+- **Cause in the system:** a fixed wall-clock window. The browser fixture installs a small worker trace, and `tests/helpers.py::assert_for_late_response_window` asserts the invariant on every poll until the trace shows no outstanding inference request, which proves the late reply was delivered, then holds it a little longer while the page handles that reply. Checks whose late event is a held encoder callback or a held sample response, not a worker reply, keep a 1.4-second hold.
+- **Test that prevents it:** the stale-result tests whose late event is a worker reply: `tests/test_ui.py::test_replacing_a_processing_image_discards_the_old_result`, `tests/test_ui.py::test_clearing_a_processing_image_prevents_late_repaint` and `tests/test_filter.py::test_new_image_and_clear_reset_filter_and_retire_old_cached_predictions`. The helper fails the test if the trace is missing or a reply is still outstanding after 10 seconds.
 
 ## Evidence claims
 
 ### Fault counts were overstated
 
-- **What failed:** the documents at `f1a19a9` described the sensitivity record as nine faults and 15 intended failures. The file holds eight faults and 14 failures ([loading-followup-sensitivity.json](evidence/loading-followup-sensitivity.json)).
+- **What failed:** the documents at `f1a19a9` described the sensitivity record as nine faults and 15 intended failures. The file holds eight faults and 14 failures ([loading-followup-sensitivity.json](evidence/history/loading-followup-sensitivity.json)).
 - **How it was detected:** recounting from the evidence file.
 - **Impact:** a published claim larger than its evidence.
 - **Cause in the system:** the clean control was counted as a fault. Counts are quoted from the evidence files.
@@ -141,7 +149,7 @@ The first three defects below were present in `9a60886` (public-preparation impl
 - **What failed:** a 93-case reproduction and the "44 tests still passed" blank-label observation had no retained record, and four startup and package timings differed from the retained JUnit. Wording claimed more than the evidence: an "independent oracle" that is the same model's earlier output, "only the reference catches" scaled scores, and "2 to 3 source pixels" where one sample is 1.5.
 - **How it was detected:** review of each claim against its evidence.
 - **Impact:** a reader could not check the claims, or would trust them more than they deserve.
-- **Cause in the system:** results quoted from memory or from raw artifacts that were not retained. Both runs are retained ([audit-17f2b9a-full-suite.xml](evidence/audit-17f2b9a-full-suite.xml), [audit-17f2b9a-blank-label-fault.xml](evidence/audit-17f2b9a-blank-label-fault.xml)), timings quote the JUnit records, and the wording states what the evidence shows.
+- **Cause in the system:** results quoted from memory or from raw artifacts that were not retained. Both runs are retained ([audit-17f2b9a-full-suite.xml](evidence/history/audit-17f2b9a-full-suite.xml), [audit-17f2b9a-blank-label-fault.xml](evidence/history/audit-17f2b9a-blank-label-fault.xml)), timings quote the JUnit records, and the wording states what the evidence shows.
 - **Test that prevents it:** no automated test; wording is a review matter.
 
 ### Retained evidence exposed a local user path
@@ -152,19 +160,17 @@ The first three defects below were present in `9a60886` (public-preparation impl
 - **Cause in the system:** the writers redacted only plain path spellings and used a hard-coded label. Selected copies use placeholders recorded in each redaction note, while raw-record hashes still refer to the originals. The recorder's label is neutral; the sensitivity tool writes LF and redacts plain, forward-slash and escaped spellings.
 - **Test that prevents it:** no automated test; the redaction is in the evidence-writing tools.
 
-Git history is not rewritten: earlier commits still contain the Windows user path in those three JUnit files.
-
 ## Packaging and provenance
 
 ### Package provenance failed outside a Git checkout
 
 - **What failed:** the packaging privacy test failed when the project sat outside a Git checkout, because a deliberately incomplete `.git` marker made Git exit with code 128.
-- **How it was detected:** running the browser-free package tests from an ordinary temporary directory. The original case fails in 1.688 seconds ([review-package-before.xml](evidence/review-package-before.xml)); after correction eight browser-free cases pass in 4.176 seconds ([review-package-after.xml](evidence/review-package-after.xml)).
+- **How it was detected:** running the browser-free package tests from an ordinary temporary directory. The original case fails in 1.688 seconds ([review-package-before.xml](evidence/history/review-package-before.xml)); after correction eight browser-free cases pass in 4.176 seconds ([review-package-after.xml](evidence/history/review-package-after.xml)).
 - **Impact:** a package could not be built from a source copy, and a copy could inherit its parent folder's repository metadata.
 - **Cause in the system:** Git metadata was treated as required. Missing or unusable metadata produces absent provenance; byte-integrity and public-file checks are unchanged.
 - **Test that prevents it:** `tests/test_public_package.py::test_git_provenance_is_absent_for_a_non_repository_marker` (`[not-repository]` and `[missing-git]`) and `tests/test_public_package.py::test_git_provenance_never_uses_a_parent_repository`.
 
-At that checkpoint, with the configuration, input-error, file-read, outside-checkout provenance and browser-cleanup corrections, the 72-case suite (68 controlled, 4 real-model) passed with zero failures, errors or skips in 531.363 seconds of JUnit time, run from a temporary directory outside any Git repository ([review-full-suite.xml](evidence/review-full-suite.xml), [source-review-verification.json](evidence/source-review-verification.json)). The current result is in [VERIFICATION.md](VERIFICATION.md).
+At that checkpoint, with the configuration, input-error, file-read, outside-checkout provenance and browser-cleanup corrections, the 72-case suite (68 controlled, 4 real-model) passed with zero failures, errors or skips in 531.363 seconds of JUnit time, run from a temporary directory outside any Git repository ([review-full-suite.xml](evidence/history/review-full-suite.xml), [source-review-verification.json](evidence/history/source-review-verification.json)). The current result is in [VERIFICATION.md](VERIFICATION.md).
 
 ### Package provenance failed for a repository with no commits
 
@@ -174,7 +180,33 @@ At that checkpoint, with the configuration, input-error, file-read, outside-chec
 - **Cause in the system:** not every Git call fell back. All of them fall back to absent provenance.
 - **Test that prevents it:** `tests/test_public_package.py::test_git_provenance_is_absent_for_a_repository_without_commits`.
 
-## Test harness and document checks
+### The package failed under a URL subpath
+
+- **What failed:** the worker requested the model from `/assets/models/` and the runtime from `/assets/runtime/`, absolute paths from the host root. A package served under a subpath such as `/object-lens/` sent those requests outside its own directory.
+- **How it was detected:** review of how the package resolves its URLs.
+- **Impact:** a GitHub Pages project site, which serves the package under the repository name, could not load the model.
+- **Cause in the system:** absolute URLs. The worker resolves both locations relative to its own URL (`new URL('./assets/...', import.meta.url)`), so the package works at a site root or under a subpath.
+- **Test that prevents it:** `tests/test_public_package.py::test_packaged_site_runs_real_sample_filter_and_export_on_an_ordinary_static_server` serves the built package under `/object-lens/` from an ordinary static server, requires a 404 for application files at the host root, and runs the real sample, filter and export there.
+
+### Embedded libraries lacked their licence texts
+
+- **What failed:** the ONNX Runtime Web 1.14.0 code inside the bundled runtime contains five libraries whose licence texts were not in the package: long 4.0.0 (Apache-2.0), flatbuffers 1.12.0 (Apache-2.0), onnx-proto 4.0.4 (MIT), protobufjs 6.11.3 (BSD-3-Clause) and guid-typescript 1.0.9 (ISC).
+- **How it was detected:** searching the bundle for each library's code.
+- **Impact:** the package redistributed code without the licence notices those licences require.
+- **Cause in the system:** the credits covered the top-level libraries but not libraries compiled into the runtime bundle. The five licences are in `dist/licenses`, recorded with hashes and their version source in [`credits-lock.json`](../credits-lock.json), linked from `dist/credits.html` and listed in [NOTICE.md](../NOTICE.md). guid-typescript ships no licence file, so its notice records the ISC declaration in its `package.json` with the standard ISC text.
+- **Test that prevents it:** no automated test detects an undeclared embedded library; the bundle search is recorded in `credits-lock.json`, and the recorded licence files are checked against their hashes.
+
+## Local server
+
+### Served content types depended on the Windows registry
+
+- **What failed:** `serve.py` took content types from Python's `mimetypes` table, which on Windows reads the registry of the machine serving the app.
+- **How it was detected:** review of the local server.
+- **Impact:** a machine whose registry maps `.js` or `.wasm` to another type would serve the module worker or runtime with a type the browser refuses, and the app could not start there.
+- **Cause in the system:** the server relied on machine configuration. It uses a fixed map (`.js` as `text/javascript`, `.wasm` as `application/wasm` and the other served types).
+- **Test that prevents it:** `tests/test_server.py::test_controlled_worker_requires_explicit_test_mode` requires `/worker.js` and `/app.js` to be served as `text/javascript`.
+
+## Test harness
 
 ### Failure-evidence writing could skip browser cleanup
 
@@ -182,30 +214,24 @@ At that checkpoint, with the configuration, input-error, file-read, outside-chec
 - **How it was detected:** injected directory denial in an isolated mock.
 - **Impact:** a failing test could leave Chrome running.
 - **Cause in the system:** cleanup sat after the evidence write. An outer `finally` always attempts cleanup once the browser exists; evidence-write failures stay secondary.
-- **Test that prevents it:** `tests/test_harness_cleanup.py::test_browser_closes_when_failure_evidence_directory_cannot_be_created`, `tests/test_harness_cleanup.py::test_browser_closes_when_screenshot_and_fallback_evidence_both_fail` and `tests/test_harness_cleanup.py::test_browser_closes_when_timeout_setup_fails` ([review-harness-cleanup.xml](evidence/review-harness-cleanup.xml)). No real Chrome is launched for these cases.
+- **Test that prevents it:** `tests/test_harness_cleanup.py::test_browser_closes_when_failure_evidence_directory_cannot_be_created`, `tests/test_harness_cleanup.py::test_browser_closes_when_screenshot_and_fallback_evidence_both_fail` and `tests/test_harness_cleanup.py::test_browser_closes_when_timeout_setup_fails` ([review-harness-cleanup.xml](evidence/history/review-harness-cleanup.xml)). No real Chrome is launched for these cases.
 
-### The navigation check did not require return links
+### Repository presentation errors
 
-- **What failed:** the companion's navigation checker accepted a disposable PDF with one "Back to contents" link removed.
-- **How it was detected:** removing one return annotation from a disposable copy. Reconstructed prior rules pass it; the corrected checker fails it with nine of ten return links ([review-navigation-original.json](evidence/review-navigation-original.json), [review-navigation-negative.json](evidence/review-navigation-negative.json), [review-navigation-prior-rules.json](evidence/review-navigation-prior-rules.json)). The delivered document was not missing its links.
-- **Impact:** a broken companion could pass its navigation check.
-- **Cause in the system:** the checker did not count return links. It requires one per top-level section.
-- **Test that prevents it:** no pytest case; [`docs/system-design/verify_document_navigation.py`](system-design/verify_document_navigation.py) enforces the count (one return link per top-level section) and is run as a step of the companion build procedure in [docs/system-design/README.md](system-design/README.md).
-
-### Document presentation errors
-
-- **What failed:** the README sent readers first to an owner handoff note; a second, byte-identical set of 12 screenshots was kept; the companion's AC10 row omitted `test_recovery.py`; a cited table's source line could start a new page.
+- **What failed:** the README sent readers first to an owner handoff note, and a second, byte-identical set of 12 screenshots was kept.
 - **How it was detected:** review of how the repository reads to a newcomer.
-- **Impact:** a confusing first read and an incomplete acceptance trace.
-- **Cause in the system:** link order, duplicated captures, an incomplete acceptance row and the document builder's table layout. The links are reordered, one screenshot set is kept, the row is corrected and the builder keeps the source line with its table.
-- **Test that prevents it:** no automated test; the companion's content and navigation checks run when it is built.
+- **Impact:** a confusing first read and two copies of the same captures.
+- **Cause in the system:** link order and duplicated captures. The README leads with the project question and its evidence, and one current screenshot set is kept in [docs/screenshots/app](screenshots/app).
+- **Test that prevents it:** no automated test; presentation is a review matter.
+
+Defects in the tooling of the separate study companion, which is not published with this repository, are recorded with that companion.
 
 ## Layout
 
 ### Content overflowed a 320-pixel viewport
 
 - **What failed:** at a 320-pixel viewport the vertical scrollbar left 305 pixels of usable width, but the body's minimum width was 320 pixels.
-- **How it was detected:** rendered review at a 320-pixel viewport; [viewport-before-fix.xml](evidence/viewport-before-fix.xml) retains the failing assertion of the clientWidth check against the uncorrected layout.
+- **How it was detected:** rendered review at a 320-pixel viewport; [viewport-before-fix.xml](evidence/history/viewport-before-fix.xml) retains the failing assertion of the clientWidth check against the uncorrected layout.
 - **Impact:** horizontal scrolling on the narrowest supported width.
 - **Cause in the system:** a fixed 320-pixel body minimum, and a test that compared against `window.innerWidth`, which includes the scrollbar and hid the overflow. The check uses `documentElement.clientWidth`, and content fits the 305-pixel space.
 - **Test that prevents it:** `tests/test_ui.py::test_narrow_layout_preserves_results_and_does_not_overflow` (`[320]` and `[390]`).
@@ -223,4 +249,4 @@ No blocking defect is known in the local workflow. That does not prove every inp
 
 The optional transfer-rate checker has its own 120-second readiness wait, so very low requested rates fail in the helper independently of the app's stall window. The 10 Mbps model-only simulation is limited to that scenario.
 
-No public deployment exists.
+Hosted behavior, including any GitHub Pages showcase, is outside the recorded verification; CI runs the controlled suite on GitHub Actions, and hosted results are not recorded in this repository.

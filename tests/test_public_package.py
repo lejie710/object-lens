@@ -19,9 +19,7 @@ from urllib.request import urlopen
 import pytest
 from selenium.webdriver.common.by import By
 
-from test_export import downloads, wait_for_png  # noqa: F401 - imports the shared download fixture
-from test_filter import set_minimum
-from test_ui import result_labels, wait_state
+from helpers import result_labels, set_minimum, wait_for_png, wait_state
 from tools.build_public_demo import build, git_provenance
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -207,13 +205,22 @@ def test_manifest_cannot_add_an_unapproved_path(package_project, tmp_path):
 def test_packaged_site_runs_real_sample_filter_and_export_on_an_ordinary_static_server(browser, downloads, tmp_path):
     result = build(tmp_path / "public-package", project_root=ROOT)
     site = Path(result["site_directory"])
+    # Host the package under a URL subpath, as a GitHub Pages project site is
+    # (https://<user>.github.io/<repository>/), so root-relative URLs would break.
+    hosting_root = tmp_path / "static-host"
+    shutil.copytree(site, hosting_root / "object-lens")
     # Deliberately avoid serve.AppHandler: all required routes must be ordinary files.
-    handler = partial(SimpleHTTPRequestHandler, directory=str(site))
+    handler = partial(SimpleHTTPRequestHandler, directory=str(hosting_root))
     server = ThreadingHTTPServer(("127.0.0.1", 0), handler)
     worker = threading.Thread(target=server.serve_forever, daemon=True)
     worker.start()
-    url = f"http://127.0.0.1:{server.server_port}"
+    origin = f"http://127.0.0.1:{server.server_port}"
+    url = origin + "/object-lens"
     try:
+        # Nothing of the application exists at the host root.
+        with pytest.raises(HTTPError) as outside:
+            urlopen(origin + "/runtime-config.json", timeout=10)
+        assert outside.value.code == 404
         with urlopen(url + "/runtime-config.json", timeout=10) as response:
             assert json.load(response) == {"testMode": False}
         with urlopen(url + "/credits.html", timeout=10) as response:
@@ -223,7 +230,7 @@ def test_packaged_site_runs_real_sample_filter_and_export_on_an_ordinary_static_
                 urlopen(url + route, timeout=10)
             assert failure.value.code == 404
 
-        browser.get(url)
+        browser.get(url + "/")
         wait_state(browser, "ready", timeout=120)
         browser.find_element(By.ID, "try-sample").click()
         wait_state(browser, "complete", timeout=120)
@@ -243,7 +250,7 @@ def test_packaged_site_runs_real_sample_filter_and_export_on_an_ordinary_static_
         assert dimensions == (600, 400)
         report = {
             "evidence_type": "Local static-package integration with real model inference",
-            "hosting": "Python standard SimpleHTTPRequestHandler on numeric loopback; no hosted URL tested",
+            "hosting": "Python standard SimpleHTTPRequestHandler on numeric loopback, site under the /object-lens/ subpath; no hosted URL tested",
             "content_id": result["content_id"],
             "browser_version": browser.capabilities.get("browserVersion"),
             "input_action": "Try sample button using the packaged coffee photo",

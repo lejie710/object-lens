@@ -1,5 +1,11 @@
 # Object Lens
 
+[![tests](https://github.com/lejie710/object-lens/actions/workflows/ci.yml/badge.svg)](https://github.com/lejie710/object-lens/actions/workflows/ci.yml)
+
+A browser object detector built to be tested: stale results, slow model downloads, malformed model output and recovery.
+
+**Showcase:** [lejie710.github.io/object-lens](https://lejie710.github.io/object-lens/) | **Status:** complete (version 1.0), not under active development
+
 **The question.** When someone tries a browser object detector on their own photos, switching images quickly, on a slow connection, or when the model returns something broken, can the page show results that belong to a different photo, misplace boxes, or get stuck with no way to recover?
 
 Object Lens is a small browser app that runs a pretrained DETR object detector on your photo, entirely on your own machine. Its Python, pytest and Selenium suite answers the question with three kinds of evidence: a controlled test for each failure, every core rule caught when it is broken on purpose, and a before/after measurement on a slow connection.
@@ -8,9 +14,9 @@ Object Lens is a small browser app that runs a pretrained DETR object detector o
 
 | Evidence | Result |
 | --- | --- |
-| Model download throttled to 2.5 Mbps on loopback | Before: loading failed at 121 s with 37.4 of 43.1 MB (86%) received, and Try again restarted from zero. After: the package received every byte and reached ready at 140.6 s ([branch-review-slow-transfer.json](docs/evidence/branch-review-slow-transfer.json)) |
-| Recorded full suite | 102 passed, with 0 failures, errors or skips: 98 controlled cases and 4 real-model cases ([summary](docs/evidence/release-verification.json), [JUnit XML](docs/evidence/release-full-suite.xml)) |
-| Core rules broken on purpose | Every core rule the question depends on has at least one test that fails when the rule is broken ([release-sensitivity.json](docs/evidence/release-sensitivity.json)) |
+| Model download throttled to 2.5 Mbps on loopback | Before: loading failed at 121 s with 37.4 of 43.1 MB (86%) received, and Try again restarted from zero. After: the package received every byte and reached ready at 140.6 s ([slow-transfer-2-5-mbps.json](docs/evidence/slow-transfer-2-5-mbps.json)) |
+| Recorded full suite | 102 passed, with 0 failures, errors or skips: 98 controlled cases and 4 real-model cases ([summary](docs/evidence/v1-0-verification.json), [JUnit XML](docs/evidence/v1-0-full-suite.xml)) |
+| Core rules broken on purpose | Every core rule the question depends on has at least one test that fails when the rule is broken ([v1-0-sensitivity.json](docs/evidence/v1-0-sensitivity.json)) |
 
 The question, its measure, the acceptance examples, the ranked risks and the design decisions are in [DESIGN.md](docs/DESIGN.md#the-question).
 
@@ -20,7 +26,7 @@ What Object Lens deliberately does not do, and why ([non-goals and rabbit holes]
 
 - **Model training or accuracy evaluation.** The tests check how the app handles model output, not whether the model is accurate. Nothing here measures accuracy, precision or recall.
 - **Accounts, upload records or image history.** The app handles one image at a time and photos never leave the browser, so nothing needs storing.
-- **A hosted inference API or cloud deployment.** The model runs locally in the user's browser. There is no deployed URL.
+- **A hosted inference API or cloud deployment.** The model runs locally in the user's browser. The showcase is the same static package served as plain files; no server runs the model.
 - **Other browsers and mobile.** Only Windows and Chrome were verified, which keeps the scope small enough to test thoroughly.
 - **Resumable model download.** Try again restarts the download from zero. Resuming would require changing the underlying library.
 
@@ -32,7 +38,7 @@ Known risks that are not tested:
 
 Other limits of the evidence:
 
-- There is no CI. All results come from one local Windows and Chrome environment.
+- CI runs the 98 controlled tests on GitHub Actions (`windows-latest`), and the 4 real-model tests only on a manual run. Results of hosted runs are not recorded in this repository. The recorded results all come from one local Windows and Chrome environment.
 - The real-model checks compare against earlier output from the same pinned model. They show regression, not accuracy.
 - The announcement tests inspect how the page is configured. Nobody has tested it with an actual screen reader, and there is no accessibility certification.
 - A single full run does not measure a flake rate.
@@ -41,9 +47,9 @@ The full release assessment is in [VERIFICATION.md](docs/VERIFICATION.md).
 
 | Real detection on the sample photo | Score filter applied | Controlled analysis timeout |
 | --- | --- | --- |
-| [![Detections on the public coffee sample photo](docs/screenshots/review-followup/desktop.png)](docs/screenshots/review-followup/desktop.png) | [![Predictions hidden by the minimum score filter](docs/screenshots/review-followup/filtered.png)](docs/screenshots/review-followup/filtered.png) | [![Image analysis timeout raised by a controlled test worker](docs/screenshots/review-followup/timeout.png)](docs/screenshots/review-followup/timeout.png) |
+| [![Detections on the public coffee sample photo](docs/screenshots/app/desktop.png)](docs/screenshots/app/desktop.png) | [![Predictions hidden by the minimum score filter](docs/screenshots/app/filtered.png)](docs/screenshots/app/filtered.png) | [![Image analysis timeout raised by a controlled test worker](docs/screenshots/app/timeout.png)](docs/screenshots/app/timeout.png) |
 
-The first two screenshots show the real model running on the public coffee sample. The third shows an image-analysis timeout that a test triggers on purpose with a controlled worker. It is not a model result. The screenshot after Clear shows the workspace emptied, with a prompt to restart the detector with Try again ([timeout-cleared.png](docs/screenshots/review-followup/timeout-cleared.png)).
+The first two screenshots show the real model running on the public coffee sample. The third shows an image-analysis timeout that a test triggers on purpose with a controlled worker. It is not a model result. The screenshot after Clear shows the workspace emptied, with a prompt to restart the detector with Try again ([timeout-cleared.png](docs/screenshots/app/timeout-cleared.png)).
 
 ## What the app does
 
@@ -53,7 +59,9 @@ The model runs in a web worker using Transformers.js 2.17.2 and ONNX Runtime Web
 
 ## How it is tested
 
-**Recorded full run: 102 passed, with 0 failures, errors or skips.** That is 98 controlled cases and 4 real-model cases, taking 774.316 s of JUnit suite time. The run used Windows 11, Chrome 156.0.8078.80, Python 3.12.10, pytest 9.0.3 and Selenium 4.40.0. Records: [summary](docs/evidence/release-verification.json) and [JUnit XML](docs/evidence/release-full-suite.xml).
+**Recorded full run: 102 passed, with 0 failures, errors or skips.** That is 98 controlled cases and 4 real-model cases, taking 702.164 s of JUnit suite time. The run used Windows 11, Chrome 156.0.8078.80, Python 3.12.10, pytest 9.0.3 and Selenium 4.40.0. Records: [summary](docs/evidence/v1-0-verification.json) and [JUnit XML](docs/evidence/v1-0-full-suite.xml).
+
+CI runs the 98 controlled tests on every push to `main` and every pull request ([ci.yml](.github/workflows/ci.yml)); the 4 real-model tests run there only when the workflow is started by hand. Every run also audits the locked Python dependencies with pip-audit. Results of hosted runs are not recorded in this repository. A local audit of `requirements-lock.txt` found 0 known vulnerabilities in 30 packages ([pip-audit.json](docs/evidence/security/pip-audit.json)).
 
 The tests use two kinds of check, and each answers a different question:
 
@@ -78,7 +86,7 @@ Each [acceptance example](docs/DESIGN.md#acceptance-examples) in DESIGN.md names
 
 ### Do the tests catch real faults?
 
-[`tools/check_review_sensitivity.py`](tools/check_review_sensitivity.py) copies the app into throwaway folders and plants one deliberate fault in each copy. It never changes the checkout itself. A **30-case clean control** passes first. Each of the **16 faults** then makes its intended tests fail, giving **28 intended failures** in total. Record: [release-sensitivity.json](docs/evidence/release-sensitivity.json).
+[`tools/check_review_sensitivity.py`](tools/check_review_sensitivity.py) copies the app into throwaway folders and plants one deliberate fault in each copy. It never changes the checkout itself. A **30-case clean control** passes first. Each of the **16 faults** then makes its intended tests fail, giving **28 intended failures** in total. Record: [v1-0-sensitivity.json](docs/evidence/v1-0-sensitivity.json).
 
 Five of the faults each break one of the core rules the question depends on:
 
@@ -115,18 +123,18 @@ The two score faults also change the page's own data attributes, so among the re
 | Part | Detail |
 | --- | --- |
 | What failed | With only the 43.1 MB model download throttled to 2.5 Mbps on loopback, the app showed "The detection model took too long to load" after 121 s, with 37.4 of 43.1 MB received (86%). |
-| How it was detected | An independent review ran a paced loopback probe at 2.5 Mbps against the package ([branch-review-slow-transfer.json](docs/evidence/branch-review-slow-transfer.json)). |
+| How it was detected | An independent review ran a paced loopback probe at 2.5 Mbps against the package ([slow-transfer-2-5-mbps.json](docs/evidence/slow-transfer-2-5-mbps.json)). |
 | Impact | Try again restarted the download from zero, so at this speed retrying could never succeed and the detector could not be used. |
 | Cause in the system | Model loading had one fixed 120 s deadline, counted from worker start. It ignored download progress, so a slow but steady download was treated the same as a dead one. |
 | Test that prevents it | `tests/test_recovery.py::test_slow_steady_model_transfer_is_not_timed_out` and `tests/test_recovery.py::test_stalled_model_transfer_times_out_after_its_last_progress` check that the download fails only after 45 s with no loading event, and that each event restarts that window. `tests/test_recovery.py::test_model_initialization_has_its_own_deadline` and `tests/test_recovery.py::test_completed_transfer_starts_initialization_before_the_done_event` check that start-up after the last byte has its own fixed 120 s deadline, which later events cannot extend. Three of the planted faults above guard this behaviour. |
 
-The error messages say which stage stalled. Under the same 2.5 Mbps probe, the package received every byte and reached ready at 140.6 s. Each condition was run once, on loopback. That is not a measurement of Internet speed. Every confirmed defect is described in the same five parts in [Defects and corrections](docs/SOURCE_REVIEW.md).
+The error messages say which stage stalled. Under the same 2.5 Mbps probe, the package received every byte and reached ready at 140.6 s. Each condition was run once, on loopback. That is not a measurement of Internet speed. Every confirmed defect is described in the same five parts in [Defects and corrections](docs/DEFECTS.md).
 
 ![Runtime flow: page, worker, model and test harness](docs/diagrams/object-lens-runtime-flow.png)
 
 ## First setup
 
-Start in the folder where you cloned the repository. The target environment is Python 3.12 with Chrome. The first setup needs internet access to download the Python packages, the Chrome driver, the browser runtime, the model files and the public sample photos. No paid API is needed.
+Start in the folder where you cloned the repository. The target environment is Python 3.12 with Chrome. The first setup needs internet access to download the Python packages, the Chrome driver, the browser runtime, and the model files. The public sample photos are already in `dist/samples`; `tools/download_samples.py` checks them against their pinned upstream SHA-256 hashes, fetches only a photo that is missing, and stops with an error if any photo does not match. No paid API is needed.
 
 ```powershell
 py -3.12 -m venv .venv
@@ -170,22 +178,22 @@ The tests start and stop their own local servers and use headless Chrome, so `se
 .\.venv\Scripts\python.exe -m pytest -m inference
 ```
 
-The static-package test serves the prepared site from an ordinary local static server. It does not mean the app has been deployed to a public URL.
+The static-package test serves the prepared site under the subpath `/object-lens/` from an ordinary local static server. The worker resolves the model and runtime files relative to its own location, so the package works at a site root or under a subpath such as a GitHub Pages project site. The showcase is published by the manually started [pages.yml](.github/workflows/pages.yml) workflow, which builds the same allowlisted package with `tools/build_public_demo.py`; the tests do not check the hosted copy.
 
-![Testing workflow](docs/system-design/diagrams/testing-workflow.png)
+![Testing workflow](docs/diagrams/testing-workflow.png)
 
 ## More screenshots
 
-[Empty state](docs/screenshots/review-followup/empty.png), [filter hides every prediction](docs/screenshots/review-followup/filtered-empty.png), [exported PNG](docs/screenshots/review-followup/export.png), [input error](docs/screenshots/review-followup/error.png), [timeout after Clear](docs/screenshots/review-followup/timeout-cleared.png), and the layout at widths of [320](docs/screenshots/review-followup/width-320.png), [390](docs/screenshots/review-followup/width-390.png), [768](docs/screenshots/review-followup/width-768.png) and [1440](docs/screenshots/review-followup/width-1440.png) px. The input error comes from the real app with a deliberately unsupported file. The two timeout screens come from the controlled test worker.
+[Empty state](docs/screenshots/app/empty.png), [filter hides every prediction](docs/screenshots/app/filtered-empty.png), [exported PNG](docs/screenshots/app/export.png), [input error](docs/screenshots/app/error.png), [timeout after Clear](docs/screenshots/app/timeout-cleared.png), and the layout at widths of [320](docs/screenshots/app/width-320.png), [390](docs/screenshots/app/width-390.png), [768](docs/screenshots/app/width-768.png) and [1440](docs/screenshots/app/width-1440.png) px. The input error comes from the real app with a deliberately unsupported file. The two timeout screens come from the controlled test worker.
 
 ## Read next
 
 - [Design: question, acceptance examples, risks and decisions](docs/DESIGN.md)
 - [Verification and release assessment](docs/VERIFICATION.md)
-- [Defects and corrections](docs/SOURCE_REVIEW.md)
-- [Short guide to the stack and one test](docs/LEARNING.md)
+- [Defects and corrections](docs/DEFECTS.md)
 - [Evidence index](docs/evidence/README.md)
-- [System design PDF](docs/system-design/Object_Lens_System_Design.pdf), with diagrams of the [runtime architecture](docs/system-design/diagrams/runtime-architecture.png) and the [image sequence](docs/system-design/diagrams/image-sequence.png)
+- Diagrams of the [runtime architecture](docs/diagrams/runtime-architecture.png) and the [image sequence](docs/diagrams/image-sequence.png)
+- [Security scope and reporting](SECURITY.md)
 - [Image sources and the objects expected in each photo](docs/IMAGE_SOURCES.md)
 
 ## Which folders matter
@@ -197,13 +205,14 @@ The static-package test serves the prepared site from an ordinary local static s
 | `tools` | Helpers for setup, packaging, collecting evidence and checking fault sensitivity |
 | `docs` | Design, verification evidence, screenshots and diagrams |
 | `baseline` | The original upstream example, kept for attribution and comparison |
+| `.github/workflows` | CI for the controlled suite and dependency audit, and the manual showcase deployment |
 | `.venv`, `.local`, `artifacts` | Generated locally and ignored by Git: the Python environment, the driver cache and local verification copies, and raw test outputs; not part of the app |
 
 ## Credits and licences
 
 - Adapted from Hugging Face's Transformers.js vanilla JavaScript object-detection tutorial (Apache-2.0). The original is kept in [`baseline/upstream`](baseline/upstream/README.md), and its revision and checksums are in `baseline/source.json`.
 - Model: [facebook/detr-resnet-50](https://huggingface.co/facebook/detr-resnet-50) (the model card states Apache-2.0), used through the browser-compatible conversion [Xenova/detr-resnet-50](https://huggingface.co/Xenova/detr-resnet-50) at the revision pinned in `asset-lock.json`.
-- Runtime: [Transformers.js](https://github.com/huggingface/transformers.js) 2.17.2 (Apache-2.0), [ONNX Runtime Web](https://github.com/microsoft/onnxruntime) 1.14.0 (MIT) and [@huggingface/jinja](https://www.npmjs.com/package/@huggingface/jinja) 0.2.2 (MIT).
+- Runtime: [Transformers.js](https://github.com/huggingface/transformers.js) 2.17.2 (Apache-2.0), [ONNX Runtime Web](https://github.com/microsoft/onnxruntime) 1.14.0 (MIT) and [@huggingface/jinja](https://www.npmjs.com/package/@huggingface/jinja) 0.2.2 (MIT). The ONNX Runtime Web bundle embeds long 4.0.0 and flatbuffers 1.12.0 (Apache-2.0), onnx-proto 4.0.4 (MIT), protobufjs 6.11.3 (BSD-3-Clause) and guid-typescript 1.0.9 (ISC, as declared in its package metadata); their licences are in `dist/licenses` and listed on the app's credits page.
 - Sample photos: unchanged copies from scikit-image v0.25.2. Each is public domain or CC0, and the creators are credited in [IMAGE_SOURCES.md](docs/IMAGE_SOURCES.md).
 
-[NOTICE.md](NOTICE.md) has the full attribution. The project is licensed under the [Apache License 2.0](LICENSE).
+[NOTICE.md](NOTICE.md) has the full attribution. Object Lens is copyright 2026 Le Jie Tan and licensed under the [Apache License 2.0](LICENSE).

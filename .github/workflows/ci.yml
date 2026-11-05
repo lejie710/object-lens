@@ -1,0 +1,71 @@
+# Runs the controlled test suite and the dependency audit on GitHub Actions.
+# The four real-model tests run only when started by hand (Run workflow).
+# Results of hosted runs are not recorded in this repository.
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# The workflow only reads the repository.
+permissions:
+  contents: read
+
+# A newer push to the same branch or pull request cancels the run it supersedes.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    # Bash stops a multi-line step at the first failing command; PowerShell would only
+    # report the last one, so a failed asset check could leave the step green.
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-lock.txt
+      # The pinned runtime and model files are verified against asset-lock.json.
+      # The cache avoids downloading the 43 MB model on every run.
+      - name: Restore model and runtime assets
+        uses: actions/cache@v4
+        with:
+          path: |
+            dist/assets/runtime
+            dist/assets/models
+          key: assets-${{ hashFiles('asset-lock.json') }}
+      - name: Install dependencies
+        run: python -m pip install -r requirements-lock.txt
+      - name: Prepare and verify assets
+        run: |
+          python tools/prepare_assets.py
+          python tools/prepare_assets.py --verify-only
+          python tools/download_samples.py --verify
+      - name: Controlled test suite
+        # The hosted Windows runner has Google Chrome installed, which the browser tests use.
+        run: python -m pytest -m "not inference"
+      - name: Real-model tests
+        if: github.event_name == 'workflow_dispatch'
+        run: python -m pytest -m inference
+      - name: Dependency audit
+        # Runs even when the tests fail, so every run that is not cancelled audits the lock file.
+        if: ${{ !cancelled() }}
+        run: |
+          python -m pip install pip-audit==2.10.1
+          python tools/security_scan.py
+      - name: Keep failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-failures
+          path: artifacts/test-failures
+          if-no-files-found: ignore

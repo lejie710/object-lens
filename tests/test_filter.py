@@ -6,27 +6,15 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 
-from test_ui import (
+from helpers import (
     assert_for_late_response_window,
     assert_no_visible_image,
     result_labels,
+    set_minimum,
     upload,
     wait_for_inference,
     wait_state,
 )
-
-
-def set_minimum(browser, value):
-    """Exercise the public range input; keyboard operation has its own check."""
-    slider = browser.find_element(By.ID, "minimum-score")
-    assert slider.is_enabled()
-    browser.execute_script("""
-        arguments[0].value = arguments[1];
-        arguments[0].dispatchEvent(new Event('input', {bubbles: true}));
-    """, slider, str(value))
-    WebDriverWait(browser, 5).until(
-        lambda driver: driver.find_element(By.ID, "minimum-score-value").text == f"{value:.2f}"
-    )
 
 
 def assert_visible_predictions(browser, labels, total):

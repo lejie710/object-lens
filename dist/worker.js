@@ -3,8 +3,10 @@ import { pipeline, env } from './assets/runtime/transformers.min.js';
 
 env.allowLocalModels = true;
 env.allowRemoteModels = false;
-env.localModelPath = '/assets/models/';
-env.backends.onnx.wasm.wasmPaths = '/assets/runtime/';
+// Resolve assets next to this worker, so the app also works under a URL subpath
+// such as a GitHub Pages project site.
+env.localModelPath = new URL('./assets/models/', import.meta.url).href;
+env.backends.onnx.wasm.wasmPaths = new URL('./assets/runtime/', import.meta.url).href;
 env.backends.onnx.wasm.numThreads = 1;
 
 let detector;

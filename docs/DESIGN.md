@@ -1,6 +1,6 @@
 # Object Lens
 
-Object Lens is a small local browser application for trying object detection on a photo. Its intended user is a developer, QA engineer or learner exploring a pretrained detector. This is a practical way to explore Python, pytest, Selenium and an AI-enabled web interface. It is not a semiconductor defect detector or an established commercial product.
+Object Lens is a small browser application, run locally or as a static site, for trying object detection on a photo. Its intended user is a developer, QA engineer or learner exploring a pretrained detector. This is a practical way to explore Python, pytest, Selenium and an AI-enabled web interface. It is not a semiconductor defect detector or an established commercial product.
 
 The application scope is one image at a time, one fixed model and Chrome on Windows. The interface follows the design concept: a light background, large photograph, compact results list and essential controls. The app can be served as a static site; see [Public demo package](PUBLIC_DEMO.md) for the package and hosting status.
 
@@ -10,7 +10,7 @@ When someone tries a browser object detector on their own photos, switching imag
 
 Measure: a controlled test for each of those failures, every core rule the answer depends on caught when broken on purpose, and a model download throttled to 2.5 Mbps compared with a fixed loading deadline and with stall-based loading.
 
-Result: each failure has a controlled test, the suite has 102 tests, and every core rule made at least one test fail when it was broken on purpose ([Core rules broken on purpose](VERIFICATION.md#core-rules-broken-on-purpose)). At 2.5 Mbps, a fixed 120-second deadline failed at 121 s with 86% of the model received; the stall-based loading reached ready at 140.6 s ([branch-review-slow-transfer.json](evidence/branch-review-slow-transfer.json)).
+Result: each failure has a controlled test, the suite has 102 tests, and every core rule made at least one test fail when it was broken on purpose ([Core rules broken on purpose](VERIFICATION.md#core-rules-broken-on-purpose)). At 2.5 Mbps, a fixed 120-second deadline failed at 121 s with 86% of the model received; the stall-based loading reached ready at 140.6 s ([slow-transfer-2-5-mbps.json](evidence/slow-transfer-2-5-mbps.json)).
 
 Scope the answer holds for: Windows with Chrome, one image at a time, the pinned model (Transformers.js 2.17.2 with a quantized DETR model), synthetic test images and small public photos. Failure cases use a controlled test worker; four tests run the real model. The answer says nothing about how accurate the model is.
 
@@ -60,7 +60,7 @@ Each example is one concrete case of an acceptance criterion. "Traces to" names 
 
 **AC10 Startup and model loading.** Given a model transfer that keeps reporting progress for longer than several stall windows, when it finishes, then it is not timed out and the detector becomes ready; given a transfer that stops reporting progress, then the page reports that the model stopped loading and asks the user to check the connection, counted from the last progress event; given a transfer that completes but a runtime that never becomes ready, then the page says the model took too long to start. Progress without a known size stays indeterminate, startup progress never replaces an input error, and a retired worker cannot change the loading notice. A configuration response held past 15 seconds, or an invalid one, gives Retry, which fetches it again and keeps the selected image. Traces to: stuck with no way to recover. Tests: `tests/test_recovery.py::test_slow_steady_model_transfer_is_not_timed_out`, `tests/test_recovery.py::test_stalled_model_transfer_times_out_after_its_last_progress`, `tests/test_recovery.py::test_model_load_timeout_clear_and_retry_describe_detector_availability`, `tests/test_recovery.py::test_completed_transfer_starts_initialization_before_the_done_event`, `tests/test_recovery.py::test_model_initialization_has_its_own_deadline`, all 5 in `test_loading.py` and all 6 in `test_startup.py`.
 
-**AC11 Public package.** Given the public package build, when it runs, then the ZIP contains exactly the files in the manifest and no private or test material; a missing or changed runtime asset, a changed licence, test mode, or an unapproved path added to the manifest stops the build; build provenance never reads a parent or missing git repository. Given the built package on an ordinary static file server, when the user tries the sample, filters at 0.80 and saves, then the real model returns a cup and the PNG is 600 × 400. A normal server never serves the controlled test worker. Traces to: supporting. Tests: the 11 tests in `test_public_package.py`, including `tests/test_public_package.py::test_public_zip_exactly_matches_manifest_and_excludes_private_material` and `tests/test_public_package.py::test_packaged_site_runs_real_sample_filter_and_export_on_an_ordinary_static_server`, and `tests/test_server.py::test_controlled_worker_requires_explicit_test_mode`.
+**AC11 Public package.** Given the public package build, when it runs, then the ZIP contains exactly the files in the manifest and no private or test material; a missing or changed runtime asset, a changed licence, test mode, or an unapproved path added to the manifest stops the build; build provenance never reads a parent or missing git repository. Given the built package served under the URL subpath `/object-lens/` by an ordinary static file server, when the user tries the sample, filters at 0.80 and saves, then the real model returns a cup and the PNG is 600 × 400. A normal server never serves the controlled test worker. Traces to: supporting. Tests: the 11 tests in `test_public_package.py`, including `tests/test_public_package.py::test_public_zip_exactly_matches_manifest_and_excludes_private_material` and `tests/test_public_package.py::test_packaged_site_runs_real_sample_filter_and_export_on_an_ordinary_static_server`, and `tests/test_server.py::test_controlled_worker_requires_explicit_test_mode`.
 
 The model's fixed inference threshold is 0.5. A separate display filter starts at 0.50, moves in steps of 0.01 and cannot recover lower-score predictions discarded by inference. Comparisons use the underlying model score, while visible scores are rounded to two decimal places. The displayed value is a model score, not a measured accuracy percentage. Supported classes come from the model; unrecognized objects do not imply an application defect.
 
@@ -71,7 +71,7 @@ The failures most likely to hurt the intended user, most important first:
 | Rank | Risk | Likelihood | Impact | Covering test |
 | --- | --- | --- | --- | --- |
 | 1 | An old photo's result is shown on a new photo | Likely: analysis takes 8 to 14 seconds, long enough to switch photos | High: the user trusts labels that belong to another photo | `tests/test_ui.py::test_replacing_a_processing_image_discards_the_old_result`, `tests/test_ui.py::test_clearing_a_processing_image_prevents_late_repaint` |
-| 2 | The model never finishes loading on a slow connection | Fairly likely: the model is a 43 MB download | High: the app is unusable | `tests/test_recovery.py::test_slow_steady_model_transfer_is_not_timed_out`, `tests/test_recovery.py::test_stalled_model_transfer_times_out_after_its_last_progress`, and the 2.5 Mbps probe in [branch-review-slow-transfer.json](evidence/branch-review-slow-transfer.json) |
+| 2 | The model never finishes loading on a slow connection | Fairly likely: the model is a 43 MB download | High: the app is unusable | `tests/test_recovery.py::test_slow_steady_model_transfer_is_not_timed_out`, `tests/test_recovery.py::test_stalled_model_transfer_times_out_after_its_last_progress`, and the 2.5 Mbps probe in [slow-transfer-2-5-mbps.json](evidence/slow-transfer-2-5-mbps.json) |
 | 3 | The page hangs or the detector crashes with no way to recover | Moderate | High: the user has to reload and may lose the photo | `tests/test_recovery.py::test_inference_timeout_clear_and_retry_describe_detector_availability`, `tests/test_ui.py::test_nonresponding_worker_times_out_and_retries_the_latest_image` |
 | 4 | Boxes are drawn in the wrong place | Low: the model is pinned | Medium to high: a correct label points at the wrong object | `tests/test_inference.py::test_real_model_detects_reviewed_object`, `tests/test_recovery.py::test_partially_outside_box_is_clamped_to_the_rendered_image` |
 | 5 | Broken model output is shown as a result | Low | High: nonsense appears as a real detection | `tests/test_recovery.py::test_malformed_result_is_rejected_without_partial_detections_and_recovers` (16 cases) |
@@ -145,7 +145,7 @@ The first command keeps serving files until you stop it with Ctrl+C. The second 
 In `.\.venv\Scripts\python.exe -m pytest`, the executable selects this project's Python environment. Python's `-m` option launches the installed pytest module.
 
 1. pytest finds the `test_*.py` files in `tests`, as configured by `pytest.ini`.
-2. Test fixtures prepare the local server, test inputs and an isolated headless Chrome session.
+2. Test fixtures in `tests/conftest.py` prepare the local server, test inputs, a per-test download folder and an isolated headless Chrome session. Shared actions and checks, such as selecting a file or waiting for a result, are in `tests/helpers.py`.
 3. pytest runs each Python test function. The function describes actions and checks, called assertions.
 4. Selenium follows the test's instructions to select files, click controls and read the page.
 5. The assertions compare the observed behavior with the expected rule. pytest reports a pass or a failure.
@@ -163,7 +163,7 @@ For example, the requirement says an unsupported file should be rejected with a 
 
 In `.\.venv\Scripts\python.exe -m pytest -m inference`, the two `-m` options belong to different tools. The first launches pytest through Python; pytest interprets the second as a selection of tests marked `inference`. These run the actual model. The controlled UI tests instead supply deliberate predictions, delays or failures to test application behavior reproducibly.
 
-The longer worked example and a small optional test edit are in [the learning guide](LEARNING.md). The result counts and evidence limits are in [the verification record](VERIFICATION.md). Passing the application checks does not establish general object-recognition accuracy.
+The result counts and evidence limits are in [the verification record](VERIFICATION.md). Passing the application checks does not establish general object-recognition accuracy.
 
 ## Components
 
@@ -176,7 +176,7 @@ The longer worked example and a small optional test edit are in [the learning gu
 | Transformers.js 2.17.2 | Object-detection inference with a quantized DETR model |
 | ONNX Runtime Web 1.14.0 | CPU/WASM execution underneath Transformers.js |
 | Python standard HTTP server | Serves local application/model files on 127.0.0.1 |
-| Static deployment package | Supplies the same browser app, normal-mode configuration, pinned assets and public credits without requiring the custom Python routes |
+| Static deployment package | Supplies the same browser app, normal-mode configuration, pinned assets and public credits without requiring the custom Python routes; works at a site root or under a URL subpath |
 | Python test code | Defines test actions and assertions about expected behavior |
 | pytest | Discovers and runs tests, manages fixtures and reports their outcomes |
 | Selenium | Controls the test browser and reads the page for assertions |
@@ -219,16 +219,22 @@ Real-inference checks use publicly sourced photos with independent notes about t
 
 Disposable-copy fault experiments deliberately remove visible result text, displace boxes or break a core rule, to verify that the result assertions fail; the core-rule cases are listed in [Core rules broken on purpose](VERIFICATION.md#core-rules-broken-on-purpose). Controlled malformed-response cases cover invalid scores, coordinates and impossible boxes; valid out-of-range coordinates are clamped when they retain positive area. Announcement checks inspect DOM roles and live settings, not actual screen-reader behavior.
 
+Late-reply tests prove that the late reply was actually delivered. The browser fixture installs a small worker trace that records which inference requests are still waiting for a reply. `tests/helpers.py::assert_for_late_response_window` holds the invariant (for example, "dog never appears") until the trace reports no outstanding reply from a live worker, then for a short further hold. A test that passed only because the late reply had not yet arrived therefore cannot pass. Tests that wait on a held encoder callback or a held sample response use a longer 1.4-second further hold, because their late event is not a worker reply, and tests that exercise a real 15-second deadline wait up to 30 seconds.
+
+Continuous integration runs on GitHub Actions (`.github/workflows/ci.yml`) for pushes to `main`, pull requests and manual runs, on a hosted Windows runner with Chrome. It restores and verifies the hash-pinned model and runtime assets and the committed sample photos, runs the 98 controlled tests and the dependency audit, and runs the 4 real-model tests only on a manual run. When a run fails, it uploads `artifacts/test-failures` as a workflow artifact. Results of hosted runs are not recorded in this repository; the recorded results in [the verification record](VERIFICATION.md) come from local runs. Only Windows and Chrome are verified.
+
 Failures are investigated using reproduction steps, assertions, screenshots and browser logs. Initial loading and warm inference timing are recorded separately. No load, scalability, GPU or physical-hardware qualification is claimed.
 
 ## Delivery boundary
 
-Design and evidence are versioned with the implementation. Optional learning exercises explain existing behavior without expanding the application feature scope. A hosted URL is not part of the verified result; it needs its own checks once deployed.
+Design and evidence are versioned with the implementation. Hosted deployments are not part of the recorded verification; a hosted copy needs its own checks.
 
 ## Sharing boundary
 
-A public deployment exposes the frontend files and model/runtime assets to visitors; the repository, tests and design documents are not part of that package. The README uses real screenshots with relative image links.
+The source repository holds the application, tests, design documents and evidence. The static package is a separate, smaller artifact: it exposes only the frontend files, normal-mode configuration, pinned model and runtime assets, one sample photo and the licence and credit texts to visitors. The repository, tests and design documents are not part of that package. The README uses real screenshots with relative image links.
+
+The public ZIP is created from an explicit allowlist, not the entire checkout. Its normal-mode configuration and dependency hashes are verified before packaging. The worker resolves model and runtime URLs relative to its own location, so the package works at a site root or under a URL subpath; the packaged-site real-model test serves it under `/object-lens/`.
+
+The showcase workflow (`.github/workflows/pages.yml`, started by hand) builds the same allowlisted package with `tools/build_public_demo.py` and deploys it to GitHub Pages at a project subpath (`https://lejie710.github.io/object-lens/`). It deploys only once GitHub Pages is enabled for the repository with GitHub Actions as its source. Checks of the hosted showcase are not recorded in this repository.
 
 Object Lens uses a pretrained detector; it does not train a model. Tests distinguish controlled failures from real inference and from observed model mistakes. The upstream example is credited. A local address such as `127.0.0.1` is not a public demo link.
-
-The public ZIP is created from an explicit allowlist, not the entire checkout. Its normal-mode configuration and dependency hashes are verified before packaging. No hosted URL has been verified.

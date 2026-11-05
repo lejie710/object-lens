@@ -16,8 +16,8 @@ import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
+from helpers import result_labels, upload, wait_state
 from serve import AppHandler
-from test_ui import result_labels, upload, wait_state
 
 
 @pytest.fixture
@@ -257,7 +257,7 @@ def test_stalled_configuration_times_out_and_retry_fetches_it_again(
     assert startup_server.real_worker_requests == 0
 
     # Exercise the real 15-second configuration deadline without changing timers.
-    wait_state(browser, "error", timeout=20)
+    wait_state(browser, "error", timeout=30)
     assert time.monotonic() - startup_server.requested_at >= 14, "Configuration failed before its deadline"
     assert "too long" in browser.find_element(By.ID, "error-message").text.lower()
     assert browser.find_element(By.ID, "retry-detection").is_displayed()

@@ -152,8 +152,11 @@ MUTATIONS = (
     {
         "name": "core-stale-result-guard-removed", "path": "dist/app.js",
         "replacements": [("if (data.id === revision && currentImage?.id === revision) {", "if (true) {")],
-        "tests": STALE_RESULT, "expected_failures": 2,
-        "reason_fragment": ("'dog' not in", "Left contains one more item"),
+        # The car.png case is left out: with this fault the old result only flashes for about
+        # 40 ms before the fast new result replaces it, so whether a poll sees it is timing luck.
+        # The slow replacement and Clear cases keep the old result on screen and fail every time.
+        "tests": STALE_RESULT[1:], "expected_failures": 2,
+        "reason_fragment": ("'dog' not in", "AssertionError", "Left contains one more item"),
         "failing_tests": ["test_replacing_a_processing_image_discards_the_old_result[slow-car.png]",
                           "test_clearing_a_processing_image_prevents_late_repaint"],
         "purpose": "Core rule: an old image's result cannot repaint a newer image or a cleared workspace. Accept every result.",
@@ -174,7 +177,8 @@ MUTATIONS = (
                           "    finishSampleLoad(request);"),
                          ("{ type: blob.type || 'image/png' }), id);", "{ type: blob.type || 'image/png' }));")],
         "tests": [LATE_SAMPLE], "expected_failures": 2,
-        "reason_fragment": ("is_displayed", "'coffee.png' == 'car.png'"),
+        # Either symptom shows the late sample won: its image is shown, or its filename replaced the newer one.
+        "reason_fragment": ("is_displayed", "'coffee.png' == "),
         "purpose": ("Core rule: a late sample cannot replace a newer image or undo Clear. The rule has three "
                     "independent defences (cancelling the fetch, the check after the download, and the reserved "
                     "image revision), so removing one alone is an equivalent fault; remove all three."),

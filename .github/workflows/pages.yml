@@ -1,0 +1,44 @@
+# Publishes the static app to GitHub Pages.
+# Prepared only. It does nothing until the repository is public (or on a paid plan)
+# and Pages is set to "GitHub Actions" in the repository settings.
+name: showcase
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # Downloads the pinned runtime and model files and verifies them against asset-lock.json,
+      # then builds the allowlisted static package (no tests, documents or test worker).
+      - name: Build the static package
+        id: build
+        run: |
+          python tools/prepare_assets.py
+          python tools/prepare_assets.py --verify-only
+          python tools/build_public_demo.py --output build/pages
+          echo "site=$(ls -d build/pages/*/site)" >> "$GITHUB_OUTPUT"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ steps.build.outputs.site }}
+      - id: deployment
+        uses: actions/deploy-pages@v4

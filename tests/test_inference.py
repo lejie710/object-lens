@@ -8,7 +8,7 @@ import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
-from test_ui import assert_visible_result_text
+from helpers import assert_visible_result_text
 
 ROOT = Path(__file__).resolve().parents[1]
 # These are earlier outputs of the same pinned model, not independent annotations.
