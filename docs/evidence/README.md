@@ -16,11 +16,11 @@ The `v1-0-*` files, `fresh-clone-run.json`, `slow-transfer-2-5-mbps.json` and `s
 
 | File | What it establishes |
 | --- | --- |
-| `v1-0-verification.json` and `v1-0-full-suite.xml` | Current 102-case suite (98 controlled, 4 real-model), environment, exact commands, source hashes and retained-record provenance |
-| `v1-0-sensitivity.json` | 16 deliberate source faults in disposable copies, including the five core-rule faults, with a 30-case passing control and 28 intended failures; plus one equivalent fault whose 2 cases are expected to pass |
+| `v1-0-1-verification.json` and `v1-0-1-full-suite.xml` | Current 102-case suite (98 controlled, 4 real-model), environment, exact commands, source hashes and retained-record provenance |
+| `v1-0-1-sensitivity.json` | 16 deliberate source faults in disposable copies, including the five core-rule faults, with a 30-case passing control and 28 intended failures; plus one equivalent fault whose 2 cases are expected to pass |
 | `sample-captures.json` | The real model on the four other public sample photos (astronaut, chelsea, camera, rocket), with what the page showed and the hash of each capture used in the walkthrough; single runs, not an accuracy measurement |
-| `v1-0-rendered-review.json` | Current real-model captures, viewport measurements and labelled controlled timeout and Clear captures, with the hash of each capture; the 12 captures are expected to match the images in `docs/screenshots/app` |
-| `v1-0-package.json` | Rebuilt local static package identity and integrity: 28 files, each entry verified against the manifest; no deployment |
+| `v1-0-rendered-review.json` | Real-model captures (the application has not changed since), viewport measurements and labelled controlled timeout and Clear captures, with the hash of each capture; the 12 captures are expected to match the images in `docs/screenshots/app` |
+| `v1-0-package.json` | Local static package identity (the application has not changed since) and integrity: 28 files, each entry verified against the manifest; no deployment |
 | `fresh-clone-run.json` | A fresh `git clone` of commit `ccd3d5b` into a new folder following the README exactly: setup, the smallest usage example and the test command, with the operating system and runtime versions |
 | `slow-transfer-2-5-mbps.json` | 2.5 Mbps loopback probe: the fixed-deadline source (`a338f7c`) failed at 86% received; the stall-based package (`8c154b7`) reached ready at 140.6 seconds. Its `app.js` loading deadlines are identical to the current source. Includes the probe source |
 | `security/pip-audit.json` | pip-audit report for `requirements-lock.txt` written by `tools/security_scan.py`: 30 packages checked, 0 known vulnerabilities on the day of the local run. Does not cover the browser runtime or model, which are pinned by hash in `asset-lock.json` |

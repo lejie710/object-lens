@@ -7,6 +7,7 @@ import os
 import re
 import struct
 import threading
+import warnings
 import zlib
 from datetime import datetime, timezone
 from functools import partial
@@ -16,6 +17,7 @@ from urllib.parse import urlsplit
 
 import pytest
 from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -141,12 +143,45 @@ def pytest_runtest_makereport(item, call):
     setattr(item, f"rep_{report.when}", report)
 
 
+# A Windows runner can briefly run out of socket buffer space, so one static file
+# fails to load before any application code runs. That is the test machine, not the
+# app, and it is the only failure that earns one reload.
+RUNNER_NETWORK_ERROR = "net::ERR_NO_BUFFER_SPACE"
+
+
+def _page_ready(driver, timeout):
+    try:
+        WebDriverWait(driver, timeout).until(
+            lambda d: d.find_element("tag name", "html").get_attribute("data-state") == "ready"
+        )
+        return True
+    except TimeoutException:
+        return False
+
+
+def _page_load_report(driver, browser_log):
+    loaded = driver.execute_script(
+        "return performance.getEntriesByType('resource').map((entry) => entry.name.split('/').pop());"
+    )
+    state = driver.find_element("tag name", "html").get_attribute("data-state")
+    errors = [entry.get("message", "") for entry in browser_log if entry.get("level") == "SEVERE"]
+    return f"page state {state!r}; loaded files {loaded}; browser errors {errors}"
+
+
 @pytest.fixture
 def app(browser, controlled_url):
     browser.get(controlled_url)
-    WebDriverWait(browser, 10).until(
-        lambda driver: driver.find_element("tag name", "html").get_attribute("data-state") == "ready"
-    )
+    if _page_ready(browser, 10):
+        return browser
+    browser_log = browser.get_log("browser")
+    report = _page_load_report(browser, browser_log)
+    if not any(RUNNER_NETWORK_ERROR in entry.get("message", "") for entry in browser_log):
+        pytest.fail(f"The controlled page did not become ready within 10 s: {report}")
+    warnings.warn(f"Reloaded the controlled page once after a runner network error: {report}")
+    browser.get(controlled_url)
+    if not _page_ready(browser, 10):
+        report = _page_load_report(browser, browser.get_log("browser"))
+        pytest.fail(f"The controlled page did not become ready after one reload: {report}")
     return browser
 
 
