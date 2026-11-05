@@ -42,7 +42,7 @@ Known risks that are not tested:
 
 Other limits of the evidence:
 
-- CI runs the 98 controlled tests on GitHub Actions (`windows-latest`), and the 4 real-model tests only on a manual run. Results of hosted runs are not recorded in this repository. The recorded results all come from one local Windows and Chrome environment.
+- CI runs the 98 controlled tests on GitHub Actions (`windows-latest`). The 4 real-model tests run locally only: on a hosted runner the same pinned model gives slightly different scores and boxes than the recorded references ([details](docs/DEFECTS.md#real-model-references-hold-only-on-the-recording-machine)). Results of hosted runs are not recorded in this repository. The recorded results all come from one local Windows and Chrome environment.
 - The real-model checks compare against earlier output from the same pinned model. They show regression, not accuracy.
 - The announcement tests inspect how the page is configured. Nobody has tested it with an actual screen reader, and there is no accessibility certification.
 - A single full run does not measure a flake rate.
