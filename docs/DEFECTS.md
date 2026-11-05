@@ -13,7 +13,7 @@ The application, Python server, tests and setup, package and evidence helpers we
 ### Slow connections could never load the model
 
 - **What failed:** with only the 43 MB model response paced at 2.5 Mbps on loopback, loading failed at 121 seconds with 37.4 of 43.1 MB (86%) received. Try again restarted the transfer from zero.
-- **How it was detected:** a paced loopback probe of `17f2b9a` (the same audit's 93-case suite run passed and did not detect it: [audit-17f2b9a-full-suite.xml](evidence/history/audit-17f2b9a-full-suite.xml)). The corrected package, under the same 2.5 Mbps transfer, received every byte and reached ready at 140.6 seconds ([slow-transfer-2-5-mbps.json](evidence/slow-transfer-2-5-mbps.json), which also holds the probe source; the probe against `f1a19a9` is in [loading-followup-slow-transfer.json](evidence/history/loading-followup-slow-transfer.json)). Each condition ran once on loopback; this is not an Internet speed measurement.
+- **How it was detected:** a paced loopback probe of `a338f7c` (the same audit's 93-case suite run passed and did not detect it: [audit-17f2b9a-full-suite.xml](evidence/history/audit-17f2b9a-full-suite.xml)). The corrected package, under the same 2.5 Mbps transfer, received every byte and reached ready at 140.6 seconds ([slow-transfer-2-5-mbps.json](evidence/slow-transfer-2-5-mbps.json), which also holds the probe source; the probe against `b8ff7bc` is in [loading-followup-slow-transfer.json](evidence/history/loading-followup-slow-transfer.json)). Each condition ran once on loopback; this is not an Internet speed measurement.
 - **Impact:** a steady connection below about 2.9 Mbps could not load the model at all, and retrying could not help.
 - **Cause in the system:** the model-load deadline counted 120 seconds from worker start and ignored progress. The correction fails a transfer only after 45 seconds without a loading event, and each event restarts that window. Try again still restarts the transfer from zero; resumable download is a non-goal because it would require changing the underlying library. Runtime initialization after the model file arrives keeps its own fixed 120-second deadline that later settings-file events cannot extend. The messages distinguish a stalled transfer from slow initialization.
 - **Test that prevents it:** `tests/test_recovery.py::test_slow_steady_model_transfer_is_not_timed_out` (fails under the `fixed-load-deadline` fault), `tests/test_recovery.py::test_stalled_model_transfer_times_out_after_its_last_progress` and `tests/test_recovery.py::test_model_initialization_has_its_own_deadline` (fails under the `initialization-extended-by-later-events` fault). The stalled-transfer and initialization tests then Clear and recover.
@@ -39,7 +39,7 @@ The application, Python server, tests and setup, package and evidence helpers we
 ### Timeout and Clear messages described the wrong stage
 
 - **What failed:** the timeout callback always described image detection, including while the model was still loading. Clear then reported any stopped worker as a startup failure.
-- **How it was detected:** source review, confirmed by a before/after comparison of three wording tests. Against a disposable copy of `74d108f` the three tests fail (26.732 seconds); against the corrected source they pass (27.644 seconds) ([followup-recovery-comparison.json](evidence/history/followup-recovery-comparison.json); the same comparison against the current source is in [branch-review-recovery-comparison.json](evidence/history/branch-review-recovery-comparison.json)). The earlier source fails at the message checks before Clear, so its Clear behavior is a source finding that the failed run did not reach.
+- **How it was detected:** source review, confirmed by a before/after comparison of three wording tests. Against a disposable copy of `8a35f38` the three tests fail (26.732 seconds); against the corrected source they pass (27.644 seconds) ([followup-recovery-comparison.json](evidence/history/followup-recovery-comparison.json); the same comparison against the current source is in [branch-review-recovery-comparison.json](evidence/history/branch-review-recovery-comparison.json)). The earlier source fails at the message checks before Clear, so its Clear behavior is a source finding that the failed run did not reach.
 - **Impact:** the user was told the wrong thing failed, and after Clear a slow analysis read as a broken detector.
 - **Cause in the system:** one message for every timeout, and Clear mapped any stopped worker to a startup failure. The timeout callback selects a message for the active loading or inference stage. Clear shows a generic unavailable and restart message without reclassifying the earlier cause; Retry or a valid new image recovers.
 - **Test that prevents it:** `tests/test_recovery.py::test_model_load_timeout_clear_and_retry_describe_detector_availability`, `tests/test_recovery.py::test_inference_timeout_clear_and_retry_describe_detector_availability` and `tests/test_recovery.py::test_worker_crash_during_inference_is_not_described_as_startup_failure`. Each continues through Clear, Retry and a successful analysis. Worker crashes are simulated; no crash of the real model was observed.
@@ -57,7 +57,7 @@ The application, Python server, tests and setup, package and evidence helpers we
 ### Blank labels were accepted without a test
 
 - **What failed:** deleting the `!label.trim()` check from `renderResults` left all 44 recovery and UI tests passing ([audit-17f2b9a-blank-label-fault.xml](evidence/history/audit-17f2b9a-blank-label-fault.xml)).
-- **How it was detected:** a deliberate fault in a disposable copy of `17f2b9a`.
+- **How it was detected:** a deliberate fault in a disposable copy of `a338f7c`.
 - **Impact:** a prediction with an empty or whitespace label could be shown as a result row with no name, and no test would notice.
 - **Cause in the system:** the malformed-response cases had no empty or whitespace label. Both are included among them.
 - **Test that prevents it:** `tests/test_recovery.py::test_malformed_result_is_rejected_without_partial_detections_and_recovers` with `[empty-label]` and `[blank-label]` (both fail under the `accepted-blank-labels` fault).
@@ -66,7 +66,7 @@ The same test rejects missing or non-finite coordinates, invalid scores, impossi
 
 ## Startup and configuration
 
-The first three defects below were present in `9a60886`. The five startup regressions written for them fail against that source in 73.298 seconds of JUnit time ([review-startup-before.xml](evidence/history/review-startup-before.xml)) and pass after correction in 63.996 seconds ([review-startup-after.xml](evidence/history/review-startup-after.xml)). The fourth is a gap in those startup tests themselves.
+The first three defects below were present in `6306ba6`. The five startup regressions written for them fail against that source in 73.298 seconds of JUnit time ([review-startup-before.xml](evidence/history/review-startup-before.xml)) and pass after correction in 63.996 seconds ([review-startup-after.xml](evidence/history/review-startup-after.xml)). The fourth is a gap in those startup tests themselves.
 
 ### Configuration loading had no deadline
 
@@ -138,7 +138,7 @@ The first three defects below were present in `9a60886`. The five startup regres
 
 ### Fault counts were overstated
 
-- **What failed:** the documents at `f1a19a9` described the sensitivity record as nine faults and 15 intended failures. The file holds eight faults and 14 failures ([loading-followup-sensitivity.json](evidence/history/loading-followup-sensitivity.json)).
+- **What failed:** the documents at `b8ff7bc` described the sensitivity record as nine faults and 15 intended failures. The file holds eight faults and 14 failures ([loading-followup-sensitivity.json](evidence/history/loading-followup-sensitivity.json)).
 - **How it was detected:** recounting from the evidence file.
 - **Impact:** a published claim larger than its evidence.
 - **Cause in the system:** the clean control was counted as a fault. Counts are quoted from the evidence files.

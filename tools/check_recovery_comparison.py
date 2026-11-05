@@ -87,7 +87,7 @@ def run_copy(destination, app_bytes, environment):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--baseline-ref", default="74d108f70c0bea8ca09b2d5bdd3bb974023d523f")
+    parser.add_argument("--baseline-ref", default="8a35f3817632b3355c1b836daa4e7a96f5a32675")
     parser.add_argument("--output", type=Path, required=True, help="New directory for immutable comparison outputs")
     args = parser.parse_args()
     output = args.output.resolve()

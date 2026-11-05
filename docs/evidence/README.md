@@ -6,6 +6,8 @@ Selected text files use UTF-8 with LF line endings to match Git checkout. Raw-ru
 
 ## Layout
 
+Commit IDs: the documents cite the published commit IDs. Evidence records keep the IDs they were recorded with, before the history was rewritten for publication (personal email address, local user path and a private notes file removed; content, messages and dates otherwise unchanged). [history/commit-map.txt](history/commit-map.txt) maps each recorded ID to its published commit. For the same reason, the source hash of `tools/check_recovery_comparison.py`, whose default reference commit was updated to the published ID, differs from the hash in the records.
+
 Current records are at the top level of this folder. Every earlier record is in `history/`, and the dependency audit report is in `security/`. Paths written inside older records (for example `docs/evidence/release-full-suite.xml` or `docs/screenshots/review-followup`) describe where files were when the record was made; the files have since moved without changing their content: earlier evidence to `history/`, current screenshots to `docs/screenshots/app` and older screenshots to `docs/screenshots/history/`. `slow-transfer-2-5-mbps.json` was recorded as `branch-review-slow-transfer.json`.
 
 The `v1-0-*` files, `fresh-clone-run.json`, `slow-transfer-2-5-mbps.json` and `security/pip-audit.json` are the current records. `model-observations.json` is the reference data the current real-model checks compare against. Every file in `history/` records an earlier run. Where the source is known, its commit is named in its row or in the [earlier recorded runs](../VERIFICATION.md#earlier-recorded-runs) table. No earlier record is combined with the current result. Hosted CI results are shown on GitHub and are not recorded here.
@@ -18,8 +20,8 @@ The `v1-0-*` files, `fresh-clone-run.json`, `slow-transfer-2-5-mbps.json` and `s
 | `v1-0-sensitivity.json` | 16 deliberate source faults in disposable copies, including the five core-rule faults, with a 30-case passing control and 28 intended failures; plus one equivalent fault whose 2 cases are expected to pass |
 | `v1-0-rendered-review.json` | Current real-model captures, viewport measurements and labelled controlled timeout and Clear captures, with the hash of each capture; the 12 captures are expected to match the images in `docs/screenshots/app` |
 | `v1-0-package.json` | Rebuilt local static package identity and integrity: 28 files, each entry verified against the manifest; no deployment |
-| `fresh-clone-run.json` | A fresh `git clone` of commit `0dc7e80` into a new folder following the README exactly: setup, the smallest usage example and the test command, with the operating system and runtime versions |
-| `slow-transfer-2-5-mbps.json` | 2.5 Mbps loopback probe: the fixed-deadline source (`17f2b9a`) failed at 86% received; the stall-based package (`764fb9d`) reached ready at 140.6 seconds. Its `app.js` loading deadlines are identical to the current source. Includes the probe source |
+| `fresh-clone-run.json` | A fresh `git clone` of commit `ccd3d5b` into a new folder following the README exactly: setup, the smallest usage example and the test command, with the operating system and runtime versions |
+| `slow-transfer-2-5-mbps.json` | 2.5 Mbps loopback probe: the fixed-deadline source (`a338f7c`) failed at 86% received; the stall-based package (`8c154b7`) reached ready at 140.6 seconds. Its `app.js` loading deadlines are identical to the current source. Includes the probe source |
 | `security/pip-audit.json` | pip-audit report for `requirements-lock.txt` written by `tools/security_scan.py`: 30 packages checked, 0 known vulnerabilities on the day of the local run. Does not cover the browser runtime or model, which are pinned by hash in `asset-lock.json` |
 | `model-observations.json` | Five real-photo observations and three comparisons with the runtime-normalized baseline; the reference for the real-model regression checks; not general model accuracy |
 
@@ -27,35 +29,35 @@ The `v1-0-*` files, `fresh-clone-run.json`, `slow-transfer-2-5-mbps.json` and `s
 
 | File | What it establishes |
 | --- | --- |
-| `release-verification.json` and `release-full-suite.xml` | 102-case suite (98 controlled, 4 real-model) of the files committed as `0dc7e80` (run from `be34c5e` with uncommitted changes), environment, exact commands, source hashes and retained-record provenance |
-| `release-sensitivity.json` | 16 deliberate source faults in disposable copies of `0dc7e80`, with a 30-case passing control and 28 intended failures, plus one equivalent fault whose 2 cases passed as expected |
-| `release-rendered-review.json` | Real-model captures, viewport measurements and labelled controlled timeout and Clear captures for `0dc7e80`; the 12 images are byte-identical to those now kept in `docs/screenshots/app` |
-| `release-package.json` | Local static package identity and integrity for `0dc7e80`: 23 files, before the five embedded-library licences were added; no deployment |
-| `branch-review-verification.json` and `branch-review-full-suite.xml` | 102-case suite of the files committed as `764fb9d`, environment, exact commands, source hashes and retained-record provenance |
-| `branch-review-sensitivity.json` | 11 deliberate source faults in disposable copies of `764fb9d`, with a 13-case passing control and 17 intended failures |
-| `branch-review-recovery-comparison.json` | The three recovery wording checks run against `app.js` from `74d108f` (all fail) and from `764fb9d` (all pass); `764fb9d` has the same `app.js` as the current source |
-| `branch-review-rendered-review.json` | Real-model captures, viewport measurements and labelled controlled timeout and Clear captures for `764fb9d`; the images matched those then kept in `docs/screenshots/review-followup` |
-| `branch-review-package.json` | Local static package identity and integrity for `764fb9d`; no deployment |
-| `audit-17f2b9a-full-suite.xml` | A 93-case run of `17f2b9a` in a disposable copy, hostname and paths redacted |
-| `audit-17f2b9a-blank-label-fault.xml` | Deliberate fault: with the blank-label check deleted from `17f2b9a`, 44 recovery and UI tests still passed |
-| `loading-followup-verification.json` and `loading-followup-full-suite.xml` | 98-case run of the files committed as `f1a19a9`. Its `evidence_type` text is a fixed label that does not describe this run; the source hashes identify it |
-| `loading-followup-sensitivity.json` | Eight-fault run for `f1a19a9`: an 11-case control and 14 intended failures |
-| `loading-followup-recovery-comparison.json`, `loading-followup-rendered-review.json`, `loading-followup-package.json` | Recovery comparison, captures and package records for `f1a19a9`. Its captures matched the images then kept in `docs/screenshots/review-followup` |
-| `loading-followup-slow-transfer.json` | 2.5 Mbps probe for `f1a19a9`: the fixed-deadline source failed at 86% received; that package reached ready at 139.6 seconds |
-| `followup-verification.json` and `followup-full-suite.xml` | 93-case suite of the files committed as `17f2b9a`, environment, exact commands, source hashes and retained-record provenance |
-| `followup-sensitivity.json` | Four-fault run for `17f2b9a`: deliberate source faults in disposable copies, with a 6-case passing control and 7 intended failures |
-| `followup-recovery-comparison.json` | Three pre-Clear wording failures against `74d108f` and three passes for `17f2b9a` that continue through Clear, Retry and recovery; controlled faults |
-| `followup-rendered-review.json` | Real-model app and export captures, viewport observations and explicitly controlled error and recovery captures for `17f2b9a` |
-| `followup-package.json` | Local static package identity and verification for `17f2b9a`; no deployment |
-| `source-review-verification.json` and `review-full-suite.xml` | Corrected 72-case gate of the files committed as `74d108f`, reviewed source hashes and limits; the suite used temporary files outside a Git checkout |
+| `release-verification.json` and `release-full-suite.xml` | 102-case suite (98 controlled, 4 real-model) of the files committed as `ccd3d5b` (run from `0601bbc` with uncommitted changes), environment, exact commands, source hashes and retained-record provenance |
+| `release-sensitivity.json` | 16 deliberate source faults in disposable copies of `ccd3d5b`, with a 30-case passing control and 28 intended failures, plus one equivalent fault whose 2 cases passed as expected |
+| `release-rendered-review.json` | Real-model captures, viewport measurements and labelled controlled timeout and Clear captures for `ccd3d5b`; the 12 images are byte-identical to those now kept in `docs/screenshots/app` |
+| `release-package.json` | Local static package identity and integrity for `ccd3d5b`: 23 files, before the five embedded-library licences were added; no deployment |
+| `branch-review-verification.json` and `branch-review-full-suite.xml` | 102-case suite of the files committed as `8c154b7`, environment, exact commands, source hashes and retained-record provenance |
+| `branch-review-sensitivity.json` | 11 deliberate source faults in disposable copies of `8c154b7`, with a 13-case passing control and 17 intended failures |
+| `branch-review-recovery-comparison.json` | The three recovery wording checks run against `app.js` from `8a35f38` (all fail) and from `8c154b7` (all pass); `8c154b7` has the same `app.js` as the current source |
+| `branch-review-rendered-review.json` | Real-model captures, viewport measurements and labelled controlled timeout and Clear captures for `8c154b7`; the images matched those then kept in `docs/screenshots/review-followup` |
+| `branch-review-package.json` | Local static package identity and integrity for `8c154b7`; no deployment |
+| `audit-17f2b9a-full-suite.xml` | A 93-case run of `a338f7c` in a disposable copy, hostname and paths redacted |
+| `audit-17f2b9a-blank-label-fault.xml` | Deliberate fault: with the blank-label check deleted from `a338f7c`, 44 recovery and UI tests still passed |
+| `loading-followup-verification.json` and `loading-followup-full-suite.xml` | 98-case run of the files committed as `b8ff7bc`. Its `evidence_type` text is a fixed label that does not describe this run; the source hashes identify it |
+| `loading-followup-sensitivity.json` | Eight-fault run for `b8ff7bc`: an 11-case control and 14 intended failures |
+| `loading-followup-recovery-comparison.json`, `loading-followup-rendered-review.json`, `loading-followup-package.json` | Recovery comparison, captures and package records for `b8ff7bc`. Its captures matched the images then kept in `docs/screenshots/review-followup` |
+| `loading-followup-slow-transfer.json` | 2.5 Mbps probe for `b8ff7bc`: the fixed-deadline source failed at 86% received; that package reached ready at 139.6 seconds |
+| `followup-verification.json` and `followup-full-suite.xml` | 93-case suite of the files committed as `a338f7c`, environment, exact commands, source hashes and retained-record provenance |
+| `followup-sensitivity.json` | Four-fault run for `a338f7c`: deliberate source faults in disposable copies, with a 6-case passing control and 7 intended failures |
+| `followup-recovery-comparison.json` | Three pre-Clear wording failures against `8a35f38` and three passes for `a338f7c` that continue through Clear, Retry and recovery; controlled faults |
+| `followup-rendered-review.json` | Real-model app and export captures, viewport observations and explicitly controlled error and recovery captures for `a338f7c` |
+| `followup-package.json` | Local static package identity and verification for `a338f7c`; no deployment |
+| `source-review-verification.json` and `review-full-suite.xml` | Corrected 72-case gate of the files committed as `8a35f38`, reviewed source hashes and limits; the suite used temporary files outside a Git checkout |
 | `review-startup-before.xml` and `review-startup-after.xml` | Five startup regressions failed before correction and passed afterward; the full suite also includes the worker-retry preparation case |
 | `review-package-before.xml` and `review-package-after.xml` | Reproduced outside-checkout provenance failure and successful browser-free package checks after correction |
 | `review-harness-cleanup.xml` | Three mocked cleanup regressions, with no real Chrome launched for those cases |
-| `public-prep-full-suite.xml` and `public-prep-focused-suite.xml` | The 59-case full run and 11-case focused startup and package run of `3ac9422` |
-| `public-prep-verification.json` | Source hashes, raw-record provenance, counts, the 10 Mbps loopback model transfer and pre-deployment limits for `3ac9422` |
-| `public-prep-review.json` | Local static-package real inference and export, simulated model transfer, viewport, credits-link and keyboard observations for `3ac9422`; not hosted verification |
-| `extension-full-suite.xml` | The 48-case run of `781d9b7` covering sample loading, score filter, PNG export and the corrected narrow-layout check |
-| `extension-verification.json` | Counts, application and test hashes, redaction records, observed findings and scope limits for `781d9b7` |
+| `public-prep-full-suite.xml` and `public-prep-focused-suite.xml` | The 59-case full run and 11-case focused startup and package run of `e4781ab` |
+| `public-prep-verification.json` | Source hashes, raw-record provenance, counts, the 10 Mbps loopback model transfer and pre-deployment limits for `e4781ab` |
+| `public-prep-review.json` | Local static-package real inference and export, simulated model transfer, viewport, credits-link and keyboard observations for `e4781ab`; not hosted verification |
+| `extension-full-suite.xml` | The 48-case run of `724d04d` covering sample loading, score filter, PNG export and the corrected narrow-layout check |
+| `extension-verification.json` | Counts, application and test hashes, redaction records, observed findings and scope limits for `724d04d` |
 | `extension-demo.json` | Real sample, filter and PNG workflow and usable-width geometry on four viewports |
 | `score-filter-suite.xml` and `score-filter-record.json` | The 29-case controlled score-filter suite |
 | `sample-image-suite.xml` and `sample-image-record.json` | Seven sample-loading checks plus three real-inference cases |
