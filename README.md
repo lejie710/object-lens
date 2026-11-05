@@ -19,8 +19,8 @@ Object Lens is a small browser app that runs a pretrained DETR object detector o
 | Evidence | Result |
 | --- | --- |
 | Model download throttled to 2.5 Mbps on loopback | Before: loading failed at 121 s with 37.4 of 43.1 MB (86%) received, and Try again restarted from zero. After: the package received every byte and reached ready at 140.6 s ([slow-transfer-2-5-mbps.json](docs/evidence/slow-transfer-2-5-mbps.json)) |
-| Recorded full suite | 102 passed, with 0 failures, errors or skips: 98 controlled cases and 4 real-model cases ([summary](docs/evidence/v1-0-verification.json), [JUnit XML](docs/evidence/v1-0-full-suite.xml)) |
-| Core rules broken on purpose | Every core rule the question depends on has at least one test that fails when the rule is broken ([v1-0-sensitivity.json](docs/evidence/v1-0-sensitivity.json)) |
+| Recorded full suite | 102 passed, with 0 failures, errors or skips: 98 controlled cases and 4 real-model cases ([summary](docs/evidence/v1-0-1-verification.json), [JUnit XML](docs/evidence/v1-0-1-full-suite.xml)) |
+| Core rules broken on purpose | Every core rule the question depends on has at least one test that fails when the rule is broken ([v1-0-1-sensitivity.json](docs/evidence/v1-0-1-sensitivity.json)) |
 
 The question, its measure, the acceptance examples, the ranked risks and the design decisions are in [DESIGN.md](docs/DESIGN.md#the-question).
 
@@ -79,11 +79,11 @@ The model runs inside the browser and the Python server only serves files; the t
 | Harness and package unit checks | pytest, no browser | the package matches its allowlist; the harness still closes the browser when setup fails |
 | CI | GitHub Actions on `windows-latest`, pip-audit | controlled tests on every push to `main` and every pull request; locked dependencies audited ([ci.yml](.github/workflows/ci.yml)) |
 
-The recorded run took 702.164 s of JUnit suite time on Windows 11, Chrome 156.0.8078.80, Python 3.12.10, pytest 9.0.3 and Selenium 4.40.0. A local audit of `requirements-lock.txt` found 0 known vulnerabilities in 30 packages ([pip-audit.json](docs/evidence/security/pip-audit.json)). The count per module and the risk each one covers are in the [test mix](docs/DESIGN.md#risks-and-test-mix), and each [acceptance example](docs/DESIGN.md#acceptance-examples) names the tests that check it.
+The recorded run took 784.165 s of JUnit suite time on Windows 11, Chrome 156.0.8078.80, Python 3.12.10, pytest 9.0.3 and Selenium 4.40.0. A local audit of `requirements-lock.txt` found 0 known vulnerabilities in 30 packages ([pip-audit.json](docs/evidence/security/pip-audit.json)). The count per module and the risk each one covers are in the [test mix](docs/DESIGN.md#risks-and-test-mix), and each [acceptance example](docs/DESIGN.md#acceptance-examples) names the tests that check it.
 
 ### Do the tests catch real faults?
 
-The sensitivity check plants one deliberate fault in each throwaway copy of the app and never changes the checkout itself. A **30-case clean control** passes first. Each of the **16 faults** then makes its intended tests fail, giving **28 intended failures** in total ([v1-0-sensitivity.json](docs/evidence/v1-0-sensitivity.json)). Five of the faults each break one of the core rules the question depends on:
+The sensitivity check plants one deliberate fault in each throwaway copy of the app and never changes the checkout itself. A **30-case clean control** passes first. Each of the **16 faults** then makes its intended tests fail, giving **28 intended failures** in total ([v1-0-1-sensitivity.json](docs/evidence/v1-0-1-sensitivity.json)). Five of the faults each break one of the core rules the question depends on:
 
 | Core rule | Deliberate change | Test that failed |
 | --- | --- | --- |

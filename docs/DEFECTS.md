@@ -2,7 +2,7 @@
 
 This document lists every confirmed defect in Object Lens, grouped by area. Each entry gives what failed, how it was detected, its impact, the cause in the system and the test that prevents it from returning. [VERIFICATION.md](VERIFICATION.md) holds the current results and source hashes.
 
-Several defects have a deliberate fault in [`tools/check_review_sensitivity.py`](../tools/check_review_sensitivity.py) that restores the defective behavior in a disposable copy; the named test must then fail. [v1-0-sensitivity.json](evidence/v1-0-sensitivity.json) records those outcomes (a passing clean control, 16 faults with 28 intended failures, and one equivalent fault that passes as expected), and [branch-review-sensitivity.json](evidence/history/branch-review-sensitivity.json) records 11 of those faults against an earlier commit.
+Several defects have a deliberate fault in [`tools/check_review_sensitivity.py`](../tools/check_review_sensitivity.py) that restores the defective behavior in a disposable copy; the named test must then fail. [v1-0-1-sensitivity.json](evidence/v1-0-1-sensitivity.json) records those outcomes (a passing clean control, 16 faults with 28 intended failures, and one equivalent fault that passes as expected), and [branch-review-sensitivity.json](evidence/history/branch-review-sensitivity.json) records 11 of those faults against an earlier commit.
 
 ## How defects were found
 
@@ -215,6 +215,14 @@ At that checkpoint, with the configuration, input-error, file-read, outside-chec
 - **Impact:** a failing test could leave Chrome running.
 - **Cause in the system:** cleanup sat after the evidence write. An outer `finally` always attempts cleanup once the browser exists; evidence-write failures stay secondary.
 - **Test that prevents it:** `tests/test_harness_cleanup.py::test_browser_closes_when_failure_evidence_directory_cannot_be_created`, `tests/test_harness_cleanup.py::test_browser_closes_when_screenshot_and_fallback_evidence_both_fail` and `tests/test_harness_cleanup.py::test_browser_closes_when_timeout_setup_fails` ([review-harness-cleanup.xml](evidence/history/review-harness-cleanup.xml)). No real Chrome is launched for these cases.
+
+### A runner network error stopped one test page from loading
+
+- **What failed:** on the first hosted CI run, the setup of `tests/test_filter.py::test_new_image_and_clear_reset_filter_and_retire_old_cached_predictions` timed out after 10 s: the page loaded `app.js` but never requested its other files, so it stayed in the loading state. The other 97 controlled tests passed.
+- **How it was detected:** the failure evidence that CI uploads (`artifacts/test-failures`) held one browser error: `png-export.js - Failed to load resource: net::ERR_NO_BUFFER_SPACE`, a Windows error meaning the runner briefly had no socket buffer space for a new connection.
+- **Impact:** CI went red for a fault in the test machine, not in Object Lens, and the timeout message was empty, so the cause was only visible in the uploaded evidence.
+- **Cause in the system:** the shared `app` fixture loaded the page once and waited with no diagnosis. A failed module request stops the page before any application code runs.
+- **Test that prevents it:** `tests/conftest.py` `app` fixture. It reloads the page once only when the browser log shows `net::ERR_NO_BUFFER_SPACE`, records a warning naming the loaded files and the error, and otherwise fails at once with the page state, the loaded files and the browser errors. No automated test exercises this rule; it was checked with a fake browser driver covering a ready page, the runner error, another error and a page that stays broken after the reload.
 
 ### Repository presentation errors
 

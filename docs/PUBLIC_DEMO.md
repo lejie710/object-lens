@@ -1,6 +1,6 @@
 # Public demo package
 
-Status: the static package can be built and inspected locally, and `.github/workflows/pages.yml` is set up to publish it to GitHub Pages at [lejie710.github.io/object-lens](https://lejie710.github.io/object-lens/). No hosted run has been verified or recorded in this repository. [The verification record](evidence/v1-0-verification.json) identifies the tested source and [the package record](evidence/v1-0-package.json) identifies the archive. [Defects and corrections](DEFECTS.md) lists the startup, recovery and slow-connection loading defects and the tests that prevent them.
+Status: the static package can be built and inspected locally, and `.github/workflows/pages.yml` is set up to publish it to GitHub Pages at [lejie710.github.io/object-lens](https://lejie710.github.io/object-lens/). No hosted run has been verified or recorded in this repository. [The verification record](evidence/v1-0-1-verification.json) identifies the tested source and [the package record](evidence/v1-0-package.json) identifies the archive. [Defects and corrections](DEFECTS.md) lists the startup, recovery and slow-connection loading defects and the tests that prevent them.
 
 ## What the public package exposes
 

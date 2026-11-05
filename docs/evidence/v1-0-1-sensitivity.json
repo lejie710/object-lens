@@ -1,0 +1,1065 @@
+{
+  "evidence_type": "deliberately seeded fault sensitivity in disposable copies",
+  "created_utc": "2026-11-05T07:49:28.037200+00:00",
+  "source_sha256": {
+    "asset-lock.json": "9304dd88602a161c3ac1e580fa559e01a22f285c57573bf77d708b0c1af58216",
+    "dist/app.js": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+    "dist/credits.html": "a7198cfe8462d91e15aedae08e77adadcda54d82167f394065a83794292fc670",
+    "dist/index.html": "d4b6944c8c2bce55a69903173d7fc6c009bddc49170ec3a461075ffa07d774bd",
+    "dist/png-export.js": "cb7171cec270e245a78f70a8f56cd62a921157825458a3aeb97ac8b513948c41",
+    "dist/runtime-config.json": "80c98bfac072ba06f97197da8758f21bf1f8988a75b5302001b0eb22787d5d77",
+    "dist/style.css": "e4a1a8e3590fe79720ae588d53bee72f1d3e76c1e3118c75b6faffb5d0a41aa6",
+    "dist/worker.js": "b83ddaca9e27871799b6f23ddf27b4e1384c28e9565975c9b04e11bcd706916c",
+    "docs/evidence/model-observations.json": "2fc47a23ea4d948ec2558c479e9b7802d2012406ff32c977c3a23f635efcdd17",
+    "pytest.ini": "d6a73402698c941e3566d71d858e2269b735e6c41c2038dcaa82ab8fb6be234c",
+    "requirements-lock.txt": "ca55ce2a97df508ac3ab5ec0ab1c6ae8bd9cf7f636a93759d12031e96998bae5",
+    "requirements.txt": "e22547340f95f8327dc5669a31f0a74d55f54748ce6374388918a4b9e1d47ba6",
+    "serve.py": "ee9e8614966fa36e0ef94411f19e10be5b29c7898e63bf571bb0577cc0e018b1",
+    "tests/conftest.py": "1b972013732bdb9d0c4ec6cc381bcbbeff93d6ee91942b9231e2f6c796314c92",
+    "tests/fixtures/test-worker.js": "496cb40f8e383d7bdaf370783f7cd499886d4f14aaaf14383df036841a10a477",
+    "tests/helpers.py": "5c2cb9c4d1efc71ac99c5cf8b95dde19141313af4c787c1f5b74a37320e37110",
+    "tests/test_export.py": "7c5a248d4f64fc2bbfdee2a9cdf4f0220c70d2c7c284d82e3af339e1f8b504d8",
+    "tests/test_filter.py": "b011416c2326ef9a7f50d3ae3581022f322e5423aa825706425a160cdf5ec9fa",
+    "tests/test_harness_cleanup.py": "07ccefdd44a45495281019c2a90316f4f7193f1f7bf611dc000e9c45539bc301",
+    "tests/test_inference.py": "32d3de25db67268650eb3177b96c89ef010713d724f7516002d08590f64db6de",
+    "tests/test_loading.py": "9fb6042dea2aa3d1fe9be83fd2013bf05ad85642e3893245d364889d1e910bf2",
+    "tests/test_public_package.py": "00d8dbcf83c7a350c269be1b40deea1ff239421d0c0e6936008125667657ad6e",
+    "tests/test_recovery.py": "199fa607267473ead781b5e3e937722d5aeffb08bcb710180e3e85e3b2215292",
+    "tests/test_sample.py": "b843dc1483e5c3ed50b8cab404a72af593c4f0fd6f68a918da0197fdbcc3d58d",
+    "tests/test_server.py": "e9a1c434e1843e9aa2044be3fdadefdd5d297e1c0d8be028768910ae37a31926",
+    "tests/test_startup.py": "3730a502ef612bb370043e6a86fdc0a52c4baf3cc08c038a4eb5a62f9a3297ff",
+    "tests/test_ui.py": "5ac1bab1e015fb8469f068b8a1ff2bbcb9e1b708809c9d8ef1e9fe8045287b86",
+    "tools/check_review_sensitivity.py": "28744b340a2d7f82f5514fa6279e967c31d47cb5b218977dd182d1618f96d69a"
+  },
+  "python_version": "3.12.10",
+  "runs": [
+    {
+      "name": "clean-baseline",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_ui.py::test_predictions_and_boxes_match_the_current_image",
+        "tests/test_ui.py::test_visible_scores_round_without_changing_the_underlying_values",
+        "tests/test_ui.py::test_status_and_error_announcement_configuration_follows_visible_states",
+        "tests/test_inference.py",
+        "tests/test_recovery.py::test_slow_steady_model_transfer_is_not_timed_out",
+        "tests/test_recovery.py::test_stalled_model_transfer_times_out_after_its_last_progress",
+        "tests/test_recovery.py::test_model_initialization_has_its_own_deadline",
+        "tests/test_recovery.py::test_malformed_result_is_rejected_without_partial_detections_and_recovers[empty-label]",
+        "tests/test_recovery.py::test_malformed_result_is_rejected_without_partial_detections_and_recovers[blank-label]",
+        "tests/test_recovery.py::test_completed_transfer_starts_initialization_before_the_done_event",
+        "tests/test_recovery.py::test_clear_during_a_hung_analysis_restarts_quietly",
+        "tests/test_ui.py::test_file_size_boundary[10485760-complete]",
+        "tests/test_ui.py::test_file_size_boundary[10485761-error]",
+        "tests/test_filter.py",
+        "tests/test_ui.py::test_replacing_a_processing_image_discards_the_old_result[car.png]",
+        "tests/test_ui.py::test_replacing_a_processing_image_discards_the_old_result[slow-car.png]",
+        "tests/test_ui.py::test_clearing_a_processing_image_prevents_late_repaint",
+        "tests/test_export.py::test_changed_result_cancels_a_png_still_being_encoded",
+        "tests/test_sample.py::test_late_sample_response_cannot_override_a_later_user_action",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\clean-baseline.xml"
+      ],
+      "elapsed_seconds": 260.187,
+      "exit_code": 0,
+      "counts": {
+        "passed": 30,
+        "failed": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_ui.py::test_predictions_and_boxes_match_the_current_image",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_ui.py::test_visible_scores_round_without_changing_the_underlying_values",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_ui.py::test_status_and_error_announcement_configuration_follows_visible_states",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_inference.py::test_real_model_detects_reviewed_object[astronaut.png-person]",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_inference.py::test_real_model_detects_reviewed_object[coffee.png-cup]",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_inference.py::test_real_model_detects_reviewed_object[chelsea.png-cat]",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_recovery.py::test_slow_steady_model_transfer_is_not_timed_out",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_recovery.py::test_stalled_model_transfer_times_out_after_its_last_progress",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_recovery.py::test_model_initialization_has_its_own_deadline",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_recovery.py::test_malformed_result_is_rejected_without_partial_detections_and_recovers[empty-label]",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_recovery.py::test_malformed_result_is_rejected_without_partial_detections_and_recovers[blank-label]",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_recovery.py::test_completed_transfer_starts_initialization_before_the_done_event",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_recovery.py::test_clear_during_a_hung_analysis_restarts_quietly",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_ui.py::test_file_size_boundary[10485760-complete]",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_ui.py::test_file_size_boundary[10485761-error]",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_filter.py::test_exact_minimum_filters_underlying_scores_and_restores_without_inference",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_filter.py::test_filter_preserves_result_identity_color_and_surviving_selection",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_filter.py::test_duplicate_labels_keep_distinct_identity_and_selection_through_filtering",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_filter.py::test_hidden_predictions_can_be_restored_and_differ_from_no_model_predictions",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_filter.py::test_new_image_and_clear_reset_filter_and_retire_old_cached_predictions",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_filter.py::test_invalid_replacement_discards_filter_cache_and_valid_image_recovers",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_filter.py::test_minimum_score_has_accessible_label_and_keyboard_controls",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_ui.py::test_replacing_a_processing_image_discards_the_old_result[car.png]",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_ui.py::test_replacing_a_processing_image_discards_the_old_result[slow-car.png]",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_ui.py::test_clearing_a_processing_image_prevents_late_repaint",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_export.py::test_changed_result_cancels_a_png_still_being_encoded[clear]",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_export.py::test_changed_result_cancels_a_png_still_being_encoded[replacement]",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_export.py::test_changed_result_cancels_a_png_still_being_encoded[filter]",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_sample.py::test_late_sample_response_cannot_override_a_later_user_action[clear]",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_sample.py::test_late_sample_response_cannot_override_a_later_user_action[upload]",
+          "outcome": "passed",
+          "reason": null
+        }
+      ],
+      "expected_outcome_verified": true
+    },
+    {
+      "name": "blank-visible-labels",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_ui.py::test_predictions_and_boxes_match_the_current_image",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\blank-visible-labels.xml"
+      ],
+      "elapsed_seconds": 9.25,
+      "exit_code": 1,
+      "counts": {
+        "passed": 0,
+        "failed": 1,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_ui.py::test_predictions_and_boxes_match_the_current_image",
+          "outcome": "failed",
+          "reason": "AssertionError: assert ['', ''] == ['laptop', 'cup']\n  \n  At index 0 diff: '' != 'laptop'\n  Use -v to get more diff"
+        }
+      ],
+      "mutation": {
+        "path": "dist/app.js",
+        "purpose": "Blank user-visible names and box labels while preserving data attributes.",
+        "replacements": [
+          {
+            "before": "name.textContent = label;",
+            "after": "name.textContent = '';",
+            "occurrences": 1
+          },
+          {
+            "before": "tag.textContent = label;",
+            "after": "tag.textContent = '';",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+        "mutated_sha256": "91b87c72525112e2bd22e30a39a7f15f8c449b8b69dd1738b4ffbe45de9fc65d"
+      },
+      "expected_outcome_verified": true
+    },
+    {
+      "name": "blank-visible-scores",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_ui.py::test_predictions_and_boxes_match_the_current_image",
+        "tests/test_ui.py::test_visible_scores_round_without_changing_the_underlying_values",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\blank-visible-scores.xml"
+      ],
+      "elapsed_seconds": 15.25,
+      "exit_code": 1,
+      "counts": {
+        "passed": 0,
+        "failed": 2,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_ui.py::test_predictions_and_boxes_match_the_current_image",
+          "outcome": "failed",
+          "reason": "AssertionError: Visible model score does not match"
+        },
+        {
+          "id": "tests/test_ui.py::test_visible_scores_round_without_changing_the_underlying_values",
+          "outcome": "failed",
+          "reason": "AssertionError: Visible model score does not match"
+        }
+      ],
+      "mutation": {
+        "path": "dist/app.js",
+        "purpose": "Blank user-visible formatted scores while preserving numeric metadata.",
+        "replacements": [
+          {
+            "before": "modelScore.textContent = score.toFixed(2);",
+            "after": "modelScore.textContent = '';",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+        "mutated_sha256": "967583136b0d0e4af4ad2a46b7873f9234f4fa181307512ce2333af46a201356"
+      },
+      "expected_outcome_verified": true
+    },
+    {
+      "name": "displaced-rendered-boxes",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_inference.py",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\displaced-rendered-boxes.xml"
+      ],
+      "elapsed_seconds": 57.297,
+      "exit_code": 1,
+      "counts": {
+        "passed": 0,
+        "failed": 3,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_inference.py::test_real_model_detects_reviewed_object[astronaut.png-person]",
+          "outcome": "failed",
+          "reason": "AssertionError: Rendered box regression for x: 551.984375 vs 284.00255250930786\nassert 551.984375 == 284.00255250930786 \u00b1 4.8\n  \n  comparison failed\n  Obtained: 551.984375\n  Expected: 284.00255250930786 \u00b1 4.8"
+        },
+        {
+          "id": "tests/test_inference.py::test_real_model_detects_reviewed_object[coffee.png-cup]",
+          "outcome": "failed",
+          "reason": "AssertionError: Rendered box regression for x: 552 vs 367.6458086669445\nassert 552 == 367.6458086669445 \u00b1 6.205\n  \n  comparison failed\n  Obtained: 552\n  Expected: 367.6458086669445 \u00b1 6.205"
+        },
+        {
+          "id": "tests/test_inference.py::test_real_model_detects_reviewed_object[chelsea.png-cat]",
+          "outcome": "failed",
+          "reason": "AssertionError: Rendered box regression for x: 552 vs 130.8125\nassert 552 == 130.8125 \u00b1 6.21\n  \n  comparison failed\n  Obtained: 552\n  Expected: 130.8125 \u00b1 6.21"
+        }
+      ],
+      "mutation": {
+        "path": "dist/app.js",
+        "purpose": "Move every rendered rectangle to the image center; preserve model coordinates and labels.",
+        "replacements": [
+          {
+            "before": "left: `${box.xmin * 100}%`, top: `${box.ymin * 100}%`,",
+            "after": "left: '50%', top: '50%',",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+        "mutated_sha256": "727ddbb891161daa60b0c3499dba369fbdcbd1c6fb05677344e5e66e92d38284"
+      },
+      "expected_outcome_verified": true
+    },
+    {
+      "name": "removed-announcement-configuration",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_ui.py::test_status_and_error_announcement_configuration_follows_visible_states",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\removed-announcement-configuration.xml"
+      ],
+      "elapsed_seconds": 9.203,
+      "exit_code": 1,
+      "counts": {
+        "passed": 0,
+        "failed": 1,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_ui.py::test_status_and_error_announcement_configuration_follows_visible_states",
+          "outcome": "failed",
+          "reason": "AssertionError: Missing status role on status\nassert None == 'status'\n +  where None = get_attribute('role')\n +    where get_attribute = <selenium.webdriver.remote.webelement.WebElement (session=\"b3a7c31fc73df60c67af24d3eef6157d\", element=\"f.C3FB06204E25ED89D9CD704A38F5CA16.d.4096940CF1430E66BD91D51A9D280573.e.3\")>.get_attribute"
+        }
+      ],
+      "mutation": {
+        "path": "dist/index.html",
+        "purpose": "Remove status/live-region/alert declarations while retaining visible page content.",
+        "replacements": [
+          {
+            "before": "role=\"status\" aria-live=\"polite\" aria-atomic=\"true\"",
+            "after": "",
+            "occurrences": 3
+          },
+          {
+            "before": "role=\"alert\"",
+            "after": "",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "d4b6944c8c2bce55a69903173d7fc6c009bddc49170ec3a461075ffa07d774bd",
+        "mutated_sha256": "8b5ab9c02b3eecf414de1ba168104d43e02d852b71c006e8b9745a4af3bada85"
+      },
+      "expected_outcome_verified": true
+    },
+    {
+      "name": "fixed-load-deadline",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_recovery.py::test_slow_steady_model_transfer_is_not_timed_out",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\fixed-load-deadline.xml"
+      ],
+      "elapsed_seconds": 27.313,
+      "exit_code": 1,
+      "counts": {
+        "passed": 0,
+        "failed": 1,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_recovery.py::test_slow_steady_model_transfer_is_not_timed_out",
+          "outcome": "failed",
+          "reason": "Failed: Timed out waiting for UI state 'ready' (timeout=20s).\nObserved state: 'error'\nDisplayed filename: 'No image selected'\nUI error: The detection model stopped loading. Check your connection, then try again or reload the page."
+        }
+      ],
+      "mutation": {
+        "path": "dist/app.js",
+        "purpose": "Restore a fixed transfer deadline that ignores loading progress, as before the stall watchdog.",
+        "replacements": [
+          {
+            "before": "  if (modelReady || loadTimer === null || loadInitializing) return;",
+            "after": "  return;",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+        "mutated_sha256": "f69373360f5f45dac58a49e14a318fc375128746ef986d4d660d44c7162acbd6"
+      },
+      "expected_outcome_verified": true
+    },
+    {
+      "name": "initialization-extended-by-later-events",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_recovery.py::test_model_initialization_has_its_own_deadline",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\initialization-extended-by-later-events.xml"
+      ],
+      "elapsed_seconds": 17.391,
+      "exit_code": 1,
+      "counts": {
+        "passed": 0,
+        "failed": 1,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_recovery.py::test_model_initialization_has_its_own_deadline",
+          "outcome": "failed",
+          "reason": "Failed: Timed out waiting for UI state 'error' (timeout=10s).\nObserved state: 'loading'\nDisplayed filename: 'No image selected'\nUI error: <none displayed>"
+        }
+      ],
+      "mutation": {
+        "path": "dist/app.js",
+        "purpose": "Let settings-file events keep extending the deadline after the model file has finished.",
+        "replacements": [
+          {
+            "before": "  if (modelReady || loadTimer === null || loadInitializing) return;",
+            "after": "  if (modelReady || loadTimer === null) return;",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+        "mutated_sha256": "4240069ee350d11b8e7e0ee9ae898dd65181b3d5d43694ad31b1c80fe1615a9f"
+      },
+      "expected_outcome_verified": true
+    },
+    {
+      "name": "accepted-blank-labels",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_recovery.py::test_malformed_result_is_rejected_without_partial_detections_and_recovers[empty-label]",
+        "tests/test_recovery.py::test_malformed_result_is_rejected_without_partial_detections_and_recovers[blank-label]",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\accepted-blank-labels.xml"
+      ],
+      "elapsed_seconds": 33.782,
+      "exit_code": 1,
+      "counts": {
+        "passed": 0,
+        "failed": 2,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_recovery.py::test_malformed_result_is_rejected_without_partial_detections_and_recovers[empty-label]",
+          "outcome": "failed",
+          "reason": "Failed: Timed out waiting for UI state 'error' (timeout=10s).\nObserved state: 'complete'\nDisplayed filename: 'invalid-result-empty-label.png'\nUI error: <none displayed>"
+        },
+        {
+          "id": "tests/test_recovery.py::test_malformed_result_is_rejected_without_partial_detections_and_recovers[blank-label]",
+          "outcome": "failed",
+          "reason": "Failed: Timed out waiting for UI state 'error' (timeout=10s).\nObserved state: 'complete'\nDisplayed filename: 'invalid-result-blank-label.png'\nUI error: <none displayed>"
+        }
+      ],
+      "mutation": {
+        "path": "dist/app.js",
+        "purpose": "Remove the blank-label rejection while keeping every other prediction check.",
+        "replacements": [
+          {
+            "before": "!label.trim() ||",
+            "after": "",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+        "mutated_sha256": "58e2c20335e8dbc8af7791692825817b3157bbf41a56ce8118e6de467cafda36"
+      },
+      "expected_outcome_verified": true
+    },
+    {
+      "name": "consistently-scaled-scores",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_inference.py",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\consistently-scaled-scores.xml"
+      ],
+      "elapsed_seconds": 57.813,
+      "exit_code": 1,
+      "counts": {
+        "passed": 0,
+        "failed": 3,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_inference.py::test_real_model_detects_reviewed_object[astronaut.png-person]",
+          "outcome": "failed",
+          "reason": "AssertionError: Visible score regression for person: 0.95 vs reference 0.999136209487915\nassert 0.95 == 0.999136209487915 \u00b1 0.01\n  \n  comparison failed\n  Obtained: 0.95\n  Expected: 0.999136209487915 \u00b1 0.01"
+        },
+        {
+          "id": "tests/test_inference.py::test_real_model_detects_reviewed_object[coffee.png-cup]",
+          "outcome": "failed",
+          "reason": "AssertionError: Visible score regression for cup: 0.95 vs reference 0.997867226600647\nassert 0.95 == 0.997867226600647 \u00b1 0.01\n  \n  comparison failed\n  Obtained: 0.95\n  Expected: 0.997867226600647 \u00b1 0.01"
+        },
+        {
+          "id": "tests/test_inference.py::test_real_model_detects_reviewed_object[chelsea.png-cat]",
+          "outcome": "failed",
+          "reason": "AssertionError: Visible score regression for cat: 0.95 vs reference 0.9979628324508667\nassert 0.95 == 0.9979628324508667 \u00b1 0.01\n  \n  comparison failed\n  Obtained: 0.95\n  Expected: 0.9979628324508667 \u00b1 0.01"
+        }
+      ],
+      "mutation": {
+        "path": "dist/app.js",
+        "purpose": "Scale every score before rendering so visible text and data attributes still agree with each other.",
+        "replacements": [
+          {
+            "before": "    return { id: index, label, score, box: bounds, color",
+            "after": "    return { id: index, label, score: score * 0.95, box: bounds, color",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+        "mutated_sha256": "2aeb7c447045f8b3029bab648a213b514cfda78565cd0ca0370d513f8df314d7"
+      },
+      "expected_outcome_verified": true
+    },
+    {
+      "name": "scores-forced-to-one",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_inference.py::test_real_model_detects_reviewed_object[coffee.png-cup]",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\scores-forced-to-one.xml"
+      ],
+      "elapsed_seconds": 21.532,
+      "exit_code": 1,
+      "counts": {
+        "passed": 0,
+        "failed": 1,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_inference.py::test_real_model_detects_reviewed_object[coffee.png-cup]",
+          "outcome": "failed",
+          "reason": "AssertionError: Visible score regression for spoon: 1.0 vs reference 0.6670341491699219\nassert 1.0 == 0.6670341491699219 \u00b1 0.01\n  \n  comparison failed\n  Obtained: 1.0\n  Expected: 0.6670341491699219 \u00b1 0.01"
+        }
+      ],
+      "mutation": {
+        "path": "dist/app.js",
+        "purpose": "Force every score to 1.0; the 0.99+ cup and dining-table references tolerate this, but both spoon rows (0.67 and 0.93) must fail.",
+        "replacements": [
+          {
+            "before": "    return { id: index, label, score, box: bounds, color",
+            "after": "    return { id: index, label, score: 1, box: bounds, color",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+        "mutated_sha256": "5fa7e98ba3e001908b2bd744980340d77de986b11176674e53b14a10090a7ec9"
+      },
+      "expected_outcome_verified": true
+    },
+    {
+      "name": "completed-transfer-left-under-stall-window",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_recovery.py::test_completed_transfer_starts_initialization_before_the_done_event",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\completed-transfer-left-under-stall-window.xml"
+      ],
+      "elapsed_seconds": 9.969,
+      "exit_code": 1,
+      "counts": {
+        "passed": 0,
+        "failed": 1,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_recovery.py::test_completed_transfer_starts_initialization_before_the_done_event",
+          "outcome": "failed",
+          "reason": "AssertionError: assert ('too long to start' in 'the detection model stopped loading. check your connection, then try again or reload the page.')"
+        }
+      ],
+      "mutation": {
+        "path": "dist/app.js",
+        "purpose": "Keep the silent Cache Storage write under the 45-second connection-stall window.",
+        "replacements": [
+          {
+            "before": "  if (transferComplete || (data.status === 'done' && isModelEvent(data))) {",
+            "after": "  if (data.status === 'done' && isModelEvent(data)) {",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+        "mutated_sha256": "993d7e942abefd13032e2ca91b0ad8ce29aa59261010b016cca5e1471f47231c"
+      },
+      "expected_outcome_verified": true
+    },
+    {
+      "name": "cleared-hang-reported-as-analysis-failure",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_recovery.py::test_clear_during_a_hung_analysis_restarts_quietly",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\cleared-hang-reported-as-analysis-failure.xml"
+      ],
+      "elapsed_seconds": 18.344,
+      "exit_code": 1,
+      "counts": {
+        "passed": 0,
+        "failed": 1,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_recovery.py::test_clear_during_a_hung_analysis_restarts_quietly",
+          "outcome": "failed",
+          "reason": "selenium.common.exceptions.TimeoutException: Message:"
+        }
+      ],
+      "mutation": {
+        "path": "dist/app.js",
+        "purpose": "Report the timeout of an already cleared image as an analysis failure on an empty workspace.",
+        "replacements": [
+          {
+            "before": "    if (!currentImage) {\n",
+            "after": "    if (false) {\n",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+        "mutated_sha256": "bb6643e8b48a0881d8b112b0d3909e1dd1bacb4f8b64329aa6db34fa73c62156"
+      },
+      "expected_outcome_verified": true
+    },
+    {
+      "name": "core-size-limit-made-exclusive",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_ui.py::test_file_size_boundary[10485760-complete]",
+        "tests/test_ui.py::test_file_size_boundary[10485761-error]",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\core-size-limit-made-exclusive.xml"
+      ],
+      "elapsed_seconds": 33.515,
+      "exit_code": 1,
+      "counts": {
+        "passed": 1,
+        "failed": 1,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_ui.py::test_file_size_boundary[10485760-complete]",
+          "outcome": "failed",
+          "reason": "Failed: Timed out waiting for UI state 'complete' (timeout=20s).\nObserved state: 'error'\nDisplayed filename: 'No image selected'\nUI error: This image exceeds 10 MiB. Choose a smaller JPEG or PNG."
+        },
+        {
+          "id": "tests/test_ui.py::test_file_size_boundary[10485761-error]",
+          "outcome": "passed",
+          "reason": null
+        }
+      ],
+      "mutation": {
+        "path": "dist/app.js",
+        "purpose": "Core rule: a file of exactly 10 MiB is accepted. Reject it by making the size limit exclusive.",
+        "replacements": [
+          {
+            "before": "if (file.size > MAX_BYTES)",
+            "after": "if (file.size >= MAX_BYTES)",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+        "mutated_sha256": "ec6cb0f66def6870dd61d328638866f7f77e5edee6d95b9227c7c9ddaa9892ae"
+      },
+      "expected_outcome_verified": true
+    },
+    {
+      "name": "core-filter-minimum-made-exclusive",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_filter.py",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\core-filter-minimum-made-exclusive.xml"
+      ],
+      "elapsed_seconds": 49.75,
+      "exit_code": 1,
+      "counts": {
+        "passed": 4,
+        "failed": 3,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_filter.py::test_exact_minimum_filters_underlying_scores_and_restores_without_inference",
+          "outcome": "failed",
+          "reason": "AssertionError: assert ['bottle'] == ['cup', 'bottle']\n  \n  At index 0 diff: 'bottle' != 'cup'\n  Right contains one more item: 'bottle'\n  Use -v to get more diff"
+        },
+        {
+          "id": "tests/test_filter.py::test_filter_preserves_result_identity_color_and_surviving_selection",
+          "outcome": "failed",
+          "reason": "selenium.common.exceptions.NoSuchElementException: Message: no such element: Unable to locate element: {\"method\":\"css selector\",\"selector\":\".result-row[data-label=\"cup\"]\"}\n  (Session info: chrome=156.0.8078.80); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#nosuchelementexception\nStacktrace:\nSymbols not available. Dumping unresolved backtrace:\n\t(No symbol) [0x7ff7ab87be65]\n\t(No symbol) [0x7ff7ab7835f0]\n\t(No symbol) [0x7ff7ab5f26d3]\n\t(No symbol) [0x7ff7abdfd8e1]\n\t(No symbol) [0x7ff7abdfdb3c]\n\t(No symbol) [0x7ff7abe2bbb7]\n\t(No symbol) [0x7ff7ab626661]\n\t(No symbol) [0x7ff7ab60b969]\n\t(No symbol) [0x7ff7ab60cca3]\n\t(No symbol) [0x7ff7abcf5af1]\n\t(No symbol) [0x7ff7abd167f7]\n\t(No symbol) [0x7ff7abd0ce20]\n\t(No symbol) [0x7ff7ab99ff8e]\n\t(No symbol) [0x7ff7ab792865]\n\t(No symbol) [0x7ff7ab78d1d4]\n\t(No symbol) [0x7ff7ab78d364]\n\t(No symbol) [0x7ff7ab77644c]\n\t(No symbol) [0x7ffc35e2dda7]\n\t(No symbol) [0x7ffc36b5ee4c]"
+        },
+        {
+          "id": "tests/test_filter.py::test_duplicate_labels_keep_distinct_identity_and_selection_through_filtering",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_filter.py::test_hidden_predictions_can_be_restored_and_differ_from_no_model_predictions",
+          "outcome": "failed",
+          "reason": "AssertionError: assert [] == ['bottle']\n  \n  Right contains one more item: 'bottle'\n  Use -v to get more diff"
+        },
+        {
+          "id": "tests/test_filter.py::test_new_image_and_clear_reset_filter_and_retire_old_cached_predictions",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_filter.py::test_invalid_replacement_discards_filter_cache_and_valid_image_recovers",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_filter.py::test_minimum_score_has_accessible_label_and_keyboard_controls",
+          "outcome": "passed",
+          "reason": null
+        }
+      ],
+      "mutation": {
+        "path": "dist/app.js",
+        "purpose": "Core rule: the score filter keeps predictions whose score equals the minimum. Make the comparison exclusive.",
+        "replacements": [
+          {
+            "before": "filter(({ score }) => score >= minimum)",
+            "after": "filter(({ score }) => score > minimum)",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+        "mutated_sha256": "3ffd641469eda9087b205779fac6324d782791535acd7286e3bade5f5ccbeb05"
+      },
+      "expected_outcome_verified": true
+    },
+    {
+      "name": "core-stale-result-guard-removed",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_ui.py::test_replacing_a_processing_image_discards_the_old_result[slow-car.png]",
+        "tests/test_ui.py::test_clearing_a_processing_image_prevents_late_repaint",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\core-stale-result-guard-removed.xml"
+      ],
+      "elapsed_seconds": 16.735,
+      "exit_code": 1,
+      "counts": {
+        "passed": 0,
+        "failed": 2,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_ui.py::test_replacing_a_processing_image_discards_the_old_result[slow-car.png]",
+          "outcome": "failed",
+          "reason": "assert 'dog' not in ['dog']\n +  where ['dog'] = result_labels(<selenium.webdriver.chrome.webdriver.WebDriver (session=\"3f3f59983e5bbe6e57d8d7e678a46fe6\")>)"
+        },
+        {
+          "id": "tests/test_ui.py::test_clearing_a_processing_image_prevents_late_repaint",
+          "outcome": "failed",
+          "reason": "AssertionError"
+        }
+      ],
+      "mutation": {
+        "path": "dist/app.js",
+        "purpose": "Core rule: an old image's result cannot repaint a newer image or a cleared workspace. Accept every result.",
+        "replacements": [
+          {
+            "before": "if (data.id === revision && currentImage?.id === revision) {",
+            "after": "if (true) {",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+        "mutated_sha256": "34b1c92645ba542666693a9621b6ee3f9f4191eec8b804ebc7e1847cffa069b1"
+      },
+      "expected_outcome_verified": true
+    },
+    {
+      "name": "core-stale-export-guard-removed",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_export.py::test_changed_result_cancels_a_png_still_being_encoded",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\core-stale-export-guard-removed.xml"
+      ],
+      "elapsed_seconds": 25.312,
+      "exit_code": 1,
+      "counts": {
+        "passed": 0,
+        "failed": 3,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_export.py::test_changed_result_cancels_a_png_still_being_encoded[clear]",
+          "outcome": "failed",
+          "reason": "AssertionError: assert [WindowsPath(....crdownload')] == []\n  \n  Left contains one more item: WindowsPath('<disposable-copy>/.pytest-temp/test_changed_result_cancels_a_0/downloads/score-boundary-object-lens-min-0.50.png.crdownload')\n  Use -v to get more diff"
+        },
+        {
+          "id": "tests/test_export.py::test_changed_result_cancels_a_png_still_being_encoded[replacement]",
+          "outcome": "failed",
+          "reason": "AssertionError: assert [WindowsPath(....crdownload')] == []\n  \n  Left contains one more item: WindowsPath('<disposable-copy>/.pytest-temp/test_changed_result_cancels_a_1/downloads/score-boundary-object-lens-min-0.50.png.crdownload')\n  Use -v to get more diff"
+        },
+        {
+          "id": "tests/test_export.py::test_changed_result_cancels_a_png_still_being_encoded[filter]",
+          "outcome": "failed",
+          "reason": "AssertionError: assert [WindowsPath(....crdownload')] == []\n  \n  Left contains one more item: WindowsPath('<disposable-copy>/.pytest-temp/test_changed_result_cancels_a_2/downloads/score-boundary-object-lens-min-0.50.png.crdownload')\n  Use -v to get more diff"
+        }
+      ],
+      "mutation": {
+        "path": "dist/app.js",
+        "purpose": "Core rule: an outdated export cannot download. Remove the check made after PNG encoding finishes.",
+        "replacements": [
+          {
+            "before": "    // Clear, image replacement and filter changes all retire an older export.\n    if (token !== exportRevision || snapshot.id !== revision) return;\n",
+            "after": "",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+        "mutated_sha256": "7c553e0682c1c28b6b2bcc3d4f1ffbee2a78d3f1e2a3fad4ca06a2dcf5facdf4"
+      },
+      "expected_outcome_verified": true
+    },
+    {
+      "name": "core-late-sample-defences-removed",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_sample.py::test_late_sample_response_cannot_override_a_later_user_action",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\core-late-sample-defences-removed.xml"
+      ],
+      "elapsed_seconds": 14.672,
+      "exit_code": 1,
+      "counts": {
+        "passed": 0,
+        "failed": 2,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_sample.py::test_late_sample_response_cannot_override_a_later_user_action[clear]",
+          "outcome": "failed",
+          "reason": "AssertionError: assert 'coffee.png' == 'No image selected'\n  \n  - No image selected\n  + coffee.png"
+        },
+        {
+          "id": "tests/test_sample.py::test_late_sample_response_cannot_override_a_later_user_action[upload]",
+          "outcome": "failed",
+          "reason": "AssertionError: assert 'coffee.png' == 'car.png'\n  \n  - car.png\n  + coffee.png"
+        }
+      ],
+      "mutation": {
+        "path": "dist/app.js",
+        "purpose": "Core rule: a late sample cannot replace a newer image or undo Clear. The rule has three independent defences (cancelling the fetch, the check after the download, and the reserved image revision), so removing one alone is an equivalent fault; remove all three.",
+        "replacements": [
+          {
+            "before": "  finishSampleLoad(request);\n  request.controller.abort();\n}",
+            "after": "  finishSampleLoad(request);\n}",
+            "occurrences": 1
+          },
+          {
+            "before": "    if (id !== revision || sampleRequest !== request) return;\n    finishSampleLoad(request);",
+            "after": "    finishSampleLoad(request);",
+            "occurrences": 1
+          },
+          {
+            "before": "{ type: blob.type || 'image/png' }), id);",
+            "after": "{ type: blob.type || 'image/png' }));",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+        "mutated_sha256": "ff7a49b50bf1e0d6de1b398a3a45e6b2c46ccf0da1de86001cab6dc64f275e1a"
+      },
+      "expected_outcome_verified": true
+    },
+    {
+      "name": "equivalent-late-sample-check-only-removed",
+      "command": [
+        "<venv-python>",
+        "-m",
+        "pytest",
+        "tests/test_sample.py::test_late_sample_response_cannot_override_a_later_user_action",
+        "-q",
+        "--tb=short",
+        "--basetemp=<disposable-copy>\\.pytest-temp",
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-1\\equivalent-late-sample-check-only-removed.xml"
+      ],
+      "elapsed_seconds": 16.672,
+      "exit_code": 0,
+      "counts": {
+        "passed": 2,
+        "failed": 0,
+        "error": 0,
+        "skipped": 0
+      },
+      "cases": [
+        {
+          "id": "tests/test_sample.py::test_late_sample_response_cannot_override_a_later_user_action[clear]",
+          "outcome": "passed",
+          "reason": null
+        },
+        {
+          "id": "tests/test_sample.py::test_late_sample_response_cannot_override_a_later_user_action[upload]",
+          "outcome": "passed",
+          "reason": null
+        }
+      ],
+      "mutation": {
+        "path": "dist/app.js",
+        "purpose": "Equivalent fault, recorded so the result is not mistaken for a gap: removing only the check after the sample download changes nothing observable, because cancelling the fetch and the reserved image revision still stop the late sample. Both cases are expected to pass.",
+        "replacements": [
+          {
+            "before": "    if (id !== revision || sampleRequest !== request) return;\n    finishSampleLoad(request);",
+            "after": "    finishSampleLoad(request);",
+            "occurrences": 1
+          }
+        ],
+        "original_sha256": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
+        "mutated_sha256": "e2446e6b40394e16447444660e2cbb29ee69de798bdb5a96e46131c20a1c5c56"
+      },
+      "expected_outcome_verified": true
+    }
+  ],
+  "limits": [
+    "Only the explicitly listed faults were seeded; no overall mutation score is measured.",
+    "Malformed/blank/displaced outputs are simulations, not observed real-model defects.",
+    "Reference boxes are earlier pinned-model outputs, not localization ground truth.",
+    "Announcement tests inspect DOM content/configuration, not actual assistive technology."
+  ],
+  "checkout_source_unchanged": true,
+  "all_expected_outcomes_verified": true
+}
