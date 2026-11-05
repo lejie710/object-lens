@@ -224,6 +224,14 @@ At that checkpoint, with the configuration, input-error, file-read, outside-chec
 - **Cause in the system:** the shared `app` fixture loaded the page once and waited with no diagnosis. A failed module request stops the page before any application code runs.
 - **Test that prevents it:** `tests/conftest.py` `app` fixture. It reloads the page once only when the browser log shows `net::ERR_NO_BUFFER_SPACE`, records a warning naming the loaded files and the error, and otherwise fails at once with the page state, the loaded files and the browser errors. No automated test exercises this rule; it was checked with a fake browser driver covering a ready page, the runner error, another error and a page that stays broken after the reload.
 
+### Real-model references hold only on the recording machine
+
+- **What failed:** a manual CI run of the real-model tests on a GitHub-hosted Windows runner failed `tests/test_inference.py::test_real_model_detects_reviewed_object[coffee.png-cup]` and `[chelsea.png-cat]`. The astronaut case and the static-package workflow passed.
+- **How it was detected:** the failure evidence that CI uploads held each page as it was. Every label matched, but the coffee spoon scored 0.710 instead of the recorded 0.667, the other spoon 0.945 instead of 0.927, and the cat box's right edge was at 0.9325 instead of 0.9412. The browser console had no errors.
+- **Impact:** none on users; the app showed the model's output correctly. The checks would fail on any machine whose model output differs this much, so they cannot run in CI.
+- **Cause in the system:** the references in `docs/evidence/model-observations.json` are earlier outputs of the same pinned model on the owner's laptop, compared within 0.01 for scores and 0.005 for box edges. A different machine produces slightly different numbers from the same model and image. Widening the tolerances would let the deliberate fault that scales every score by 0.95 pass for the cup (0.998 becomes 0.948), so the tolerances stay.
+- **Test that prevents it:** none. CI runs the 98 controlled tests only, and the real-model tests stay a local check on the recording machine. The real-model regression references are recorded outputs of the same pinned model on the owner's Windows laptop.
+
 ### Repository presentation errors
 
 - **What failed:** the README sent readers first to an owner handoff note, and a second, byte-identical set of 12 screenshots was kept.

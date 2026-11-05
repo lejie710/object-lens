@@ -59,7 +59,7 @@ Temporary test files go under `.local/pytest` (set in `pytest.ini`), because som
 
 The static-package test serves the prepared site under the subpath `/object-lens/` from an ordinary local static server. The worker resolves the model and runtime files relative to its own location, so the package works at a site root or under a subpath such as a GitHub Pages project site. The showcase is published by the manually started [pages.yml](../.github/workflows/pages.yml) workflow, which builds the same allowlisted package with `tools/build_public_demo.py`; the tests do not check the hosted copy. [PUBLIC_DEMO.md](PUBLIC_DEMO.md) describes the package.
 
-CI ([ci.yml](../.github/workflows/ci.yml)) runs the controlled tests on every push to `main` and every pull request, and audits the locked Python dependencies with pip-audit. The real-model tests run there only when the workflow is started by hand.
+CI ([ci.yml](../.github/workflows/ci.yml)) runs the controlled tests on every push to `main` and every pull request, and audits the locked Python dependencies with pip-audit. The real-model tests run locally only; their recorded references hold only on the machine that recorded them.
 
 ## 4. Record evidence
 
