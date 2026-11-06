@@ -10,7 +10,7 @@ Commit IDs: the documents cite the published commit IDs. Evidence records keep t
 
 Current records are at the top level of this folder. Every earlier record is in `history/`, and the dependency audit report is in `security/`. Paths written inside older records (for example `docs/evidence/release-full-suite.xml` or `docs/screenshots/review-followup`) describe where files were when the record was made; the files have since moved without changing their content: earlier evidence to `history/`, current screenshots to `docs/screenshots/app` and older screenshots to `docs/screenshots/history/`. `slow-transfer-2-5-mbps.json` was recorded as `branch-review-slow-transfer.json`.
 
-The `v1-0-*` files, `fresh-clone-run.json`, `slow-transfer-2-5-mbps.json` and `security/pip-audit.json` are the current records. `model-observations.json` is the reference data the current real-model checks compare against. Every file in `history/` records an earlier run. Where the source is known, its commit is named in its row or in the [earlier recorded runs](../VERIFICATION.md#earlier-recorded-runs) table. No earlier record is combined with the current result. Hosted CI results are shown on GitHub and are not recorded here.
+The `v1-0-1-*` and `v1-0-*` files, `fresh-clone-github.json`, `showcase-check.json`, `slow-transfer-2-5-mbps.json` and `security/pip-audit.json` are the current records. `model-observations.json` is the reference data the current real-model checks compare against. Every file in `history/` records an earlier run. Where the source is known, its commit is named in its row or in the [earlier recorded runs](../VERIFICATION.md#earlier-recorded-runs) table. No earlier record is combined with the current result. Hosted CI results are shown on GitHub and are not recorded here.
 
 ## Current records
 
@@ -21,7 +21,8 @@ The `v1-0-*` files, `fresh-clone-run.json`, `slow-transfer-2-5-mbps.json` and `s
 | `sample-captures.json` | The real model on the four other public sample photos (astronaut, chelsea, camera, rocket), with what the page showed and the hash of each capture used in the walkthrough; single runs, not an accuracy measurement |
 | `v1-0-rendered-review.json` | Real-model captures (the application has not changed since), viewport measurements and labelled controlled timeout and Clear captures, with the hash of each capture; the 12 captures are expected to match the images in `docs/screenshots/app` |
 | `v1-0-package.json` | Local static package identity (the application has not changed since) and integrity: 28 files, each entry verified against the manifest; no deployment |
-| `fresh-clone-run.json` | A fresh `git clone` of commit `ccd3d5b` into a new folder following the README exactly: setup, the smallest usage example and the test command, with the operating system and runtime versions |
+| `fresh-clone-github.json` | A fresh `git clone` of the public repository at `673f8b3` into a new folder following the README exactly: setup, the smallest usage example and the test command (102 passed), with the operating system and runtime versions |
+| `showcase-check.json` | The live GitHub Pages showcase opened in a fresh headless Chrome profile: readiness, the try-it steps, the saved PNG, test mode off and unpublished test files |
 | `slow-transfer-2-5-mbps.json` | 2.5 Mbps loopback probe: the fixed-deadline source (`a338f7c`) failed at 86% received; the stall-based package (`8c154b7`) reached ready at 140.6 seconds. Its `app.js` loading deadlines are identical to the current source. Includes the probe source |
 | `security/pip-audit.json` | pip-audit report for `requirements-lock.txt` written by `tools/security_scan.py`: 30 packages checked, 0 known vulnerabilities on the day of the local run. Does not cover the browser runtime or model, which are pinned by hash in `asset-lock.json` |
 | `model-observations.json` | Five real-photo observations and three comparisons with the runtime-normalized baseline; the reference for the real-model regression checks; not general model accuracy |
@@ -30,6 +31,7 @@ The `v1-0-*` files, `fresh-clone-run.json`, `slow-transfer-2-5-mbps.json` and `s
 
 | File | What it establishes |
 | --- | --- |
+| `fresh-clone-run.json` | A fresh `git clone` of the development repository at `ccd3d5b` following the README: 102 passed; an ignored pytest temp-folder warning after the summary line |
 | `release-verification.json` and `release-full-suite.xml` | 102-case suite (98 controlled, 4 real-model) of the files committed as `ccd3d5b` (run from `0601bbc` with uncommitted changes), environment, exact commands, source hashes and retained-record provenance |
 | `release-sensitivity.json` | 16 deliberate source faults in disposable copies of `ccd3d5b`, with a 30-case passing control and 28 intended failures, plus one equivalent fault whose 2 cases passed as expected |
 | `release-rendered-review.json` | Real-model captures, viewport measurements and labelled controlled timeout and Clear captures for `ccd3d5b`; the 12 images are byte-identical to those now kept in `docs/screenshots/app` |

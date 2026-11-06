@@ -1,0 +1,104 @@
+{
+  "evidence_type": "fresh clone of the public GitHub repository into a new empty folder, following the README exactly",
+  "run_date_utc": "2026-11-06",
+  "repository": "https://github.com/lejie710/object-lens",
+  "cloned_commit": "673f8b34fb398d2822e405979a4da7e29f724e85",
+  "environment": {
+    "os": "Windows-11-10.0.26100-SP0",
+    "python": "3.12.10",
+    "pytest": "9.0.3",
+    "selenium": "4.40.0",
+    "browser": "Chrome 156.0.8078.80",
+    "shell": "Windows PowerShell 5.1"
+  },
+  "steps": [
+    {
+      "step": "setup-venv",
+      "readme_command": "py -3.12 -m venv .venv",
+      "exit_code": 0,
+      "seconds": 14.2
+    },
+    {
+      "step": "setup-pip",
+      "readme_command": ".\\.venv\\Scripts\\python.exe -m pip install -r requirements-lock.txt",
+      "exit_code": 0,
+      "seconds": 27.3
+    },
+    {
+      "step": "setup-assets",
+      "readme_command": ".\\.venv\\Scripts\\python.exe tools/prepare_assets.py",
+      "exit_code": 0,
+      "seconds": 10.5
+    },
+    {
+      "step": "setup-samples",
+      "readme_command": ".\\.venv\\Scripts\\python.exe tools/download_samples.py",
+      "exit_code": 0,
+      "seconds": 0.7
+    },
+    {
+      "step": "setup-browser-check",
+      "readme_command": ".\\.venv\\Scripts\\python.exe tools/browser_check.py",
+      "exit_code": 0,
+      "seconds": 11.1
+    },
+    {
+      "step": "verify-assets",
+      "readme_command": ".\\.venv\\Scripts\\python.exe tools/prepare_assets.py --verify-only",
+      "exit_code": 0,
+      "seconds": 0.7
+    },
+    {
+      "step": "verify-samples",
+      "readme_command": ".\\.venv\\Scripts\\python.exe tools/download_samples.py --verify",
+      "exit_code": 0,
+      "seconds": 0.6
+    },
+    {
+      "step": "usage-example",
+      "readme_command": ".\\.venv\\Scripts\\python.exe serve.py, then the README try-it steps in headless Chrome",
+      "exit_code": 0,
+      "seconds": 20.4
+    },
+    {
+      "step": "test-full-suite",
+      "readme_command": ".\\.venv\\Scripts\\python.exe -m pytest",
+      "exit_code": 0,
+      "seconds": 783.7
+    }
+  ],
+  "observations": {
+    "usage_example": {
+      "sample_seconds": 9.0,
+      "predictions_at_minimum_0_50": [
+        "spoon",
+        "dining table",
+        "cup",
+        "spoon"
+      ],
+      "predictions_at_minimum_0_80": [
+        "dining table",
+        "cup",
+        "spoon"
+      ],
+      "saved_png": {
+        "name": "coffee-object-lens-min-0.80.png",
+        "width": 600,
+        "height": 400
+      },
+      "predictions_after_lowering_the_minimum": [
+        "spoon",
+        "dining table",
+        "cup",
+        "spoon"
+      ],
+      "passed": true
+    },
+    "full_suite": "102 passed in 781.58s (0:13:01); pytest exit code 0; no warning after the summary line.",
+    "working_tree_after_run": "git status --short was empty: the run created only ignored files."
+  },
+  "limits": [
+    "One Windows laptop that had run the project before; user-level pip and Selenium caches may have been warm.",
+    "The usage example was driven in headless Chrome instead of a person clicking in a visible window."
+  ]
+}
