@@ -1,14 +1,14 @@
 {
   "evidence_type": "deliberately seeded fault sensitivity in disposable copies",
-  "created_utc": "2026-11-07T04:13:19.706573+00:00",
+  "created_utc": "2026-11-07T05:28:08.835054+00:00",
   "source_sha256": {
     "asset-lock.json": "9304dd88602a161c3ac1e580fa559e01a22f285c57573bf77d708b0c1af58216",
     "dist/app.js": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
     "dist/credits.html": "a7198cfe8462d91e15aedae08e77adadcda54d82167f394065a83794292fc670",
-    "dist/index.html": "5c8eab2c68d07f8c2f219382d10562b57e05770777e82bc4876fa278404289f0",
+    "dist/index.html": "8f0e3f82768e04f82498b4788523caa7743e9d7e5eaffc86f1aa279576aa901c",
     "dist/png-export.js": "cb7171cec270e245a78f70a8f56cd62a921157825458a3aeb97ac8b513948c41",
     "dist/runtime-config.json": "80c98bfac072ba06f97197da8758f21bf1f8988a75b5302001b0eb22787d5d77",
-    "dist/social-preview.png": "6a0e8abf86fb495cfaa4ca33760c2df8b7b311023b10113097efb7d622ef2962",
+    "dist/social-preview.png": "7d64ce633b0ec4ea18ea545367f2807aef2cc276e01b44f3cae680715bb6897c",
     "dist/style.css": "e4a1a8e3590fe79720ae588d53bee72f1d3e76c1e3118c75b6faffb5d0a41aa6",
     "dist/worker.js": "b83ddaca9e27871799b6f23ddf27b4e1384c28e9565975c9b04e11bcd706916c",
     "docs/evidence/model-observations.json": "2fc47a23ea4d948ec2558c479e9b7802d2012406ff32c977c3a23f635efcdd17",
@@ -63,9 +63,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\clean-baseline.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\clean-baseline.xml"
       ],
-      "elapsed_seconds": 263.0,
+      "elapsed_seconds": 259.656,
       "exit_code": 0,
       "counts": {
         "passed": 30,
@@ -237,9 +237,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\blank-visible-labels.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\blank-visible-labels.xml"
       ],
-      "elapsed_seconds": 9.203,
+      "elapsed_seconds": 9.421,
       "exit_code": 1,
       "counts": {
         "passed": 0,
@@ -285,9 +285,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\blank-visible-scores.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\blank-visible-scores.xml"
       ],
-      "elapsed_seconds": 15.391,
+      "elapsed_seconds": 15.625,
       "exit_code": 1,
       "counts": {
         "passed": 0,
@@ -299,12 +299,12 @@
         {
           "id": "tests/test_ui.py::test_predictions_and_boxes_match_the_current_image",
           "outcome": "failed",
-          "reason": "AssertionError: Visible model score does not match\nassert (False)\n +  where False = is_displayed()\n +    where is_displayed = <selenium.webdriver.remote.webelement.WebElement (session=\"fc8e159b62264ebe79fc8803ba8ccc25\", element=\"f.98822D1731B2844F4D73ECB2255CB017.d.8DF8385FB4BE9F7D18247F3E28753BE7.e.19\")>.is_displayed"
+          "reason": "AssertionError: Visible model score does not match\nassert (False)\n +  where False = is_displayed()\n +    where is_displayed = <selenium.webdriver.remote.webelement.WebElement (session=\"1048c1f38230b08725fe5fe4c2d6d0ad\", element=\"f.59E073CA38C1E3007B5FF047F8858338.d.F8B49B5BCB5AAE7B11076FB430E83CA3.e.19\")>.is_displayed"
         },
         {
           "id": "tests/test_ui.py::test_visible_scores_round_without_changing_the_underlying_values",
           "outcome": "failed",
-          "reason": "AssertionError: Visible model score does not match\nassert (False)\n +  where False = is_displayed()\n +    where is_displayed = <selenium.webdriver.remote.webelement.WebElement (session=\"73cc1c26453dba07eae3af6eb9afc410\", element=\"f.8AB410E87ECC506D0226F356C064BEF1.d.B1A214C0790200B2E90441CA3AAB4E54.e.20\")>.is_displayed"
+          "reason": "AssertionError: Visible model score does not match\nassert (False)\n +  where False = is_displayed()\n +    where is_displayed = <selenium.webdriver.remote.webelement.WebElement (session=\"48f9671f54258a2ea2b7a0f112f656d6\", element=\"f.2EB52225586B4E59EF404F22EADEFF4C.d.6F7D2ABE6375CA8012BC7551E7905AC7.e.19\")>.is_displayed"
         }
       ],
       "mutation": {
@@ -332,9 +332,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\displaced-rendered-boxes.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\displaced-rendered-boxes.xml"
       ],
-      "elapsed_seconds": 56.906,
+      "elapsed_seconds": 56.781,
       "exit_code": 1,
       "counts": {
         "passed": 0,
@@ -384,9 +384,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\removed-announcement-configuration.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\removed-announcement-configuration.xml"
       ],
-      "elapsed_seconds": 8.922,
+      "elapsed_seconds": 8.891,
       "exit_code": 1,
       "counts": {
         "passed": 0,
@@ -398,7 +398,7 @@
         {
           "id": "tests/test_ui.py::test_status_and_error_announcement_configuration_follows_visible_states",
           "outcome": "failed",
-          "reason": "AssertionError: Missing status role on status\nassert None == 'status'\n +  where None = get_attribute('role')\n +    where get_attribute = <selenium.webdriver.remote.webelement.WebElement (session=\"1dbaab00198f723620578675241eb4bc\", element=\"f.04548B4490F22C5B840F89D92BEF5C4E.d.CF8EF8BE1AF973852838B82EF19E24F8.e.3\")>.get_attribute"
+          "reason": "AssertionError: Missing status role on status\nassert None == 'status'\n +  where None = get_attribute('role')\n +    where get_attribute = <selenium.webdriver.remote.webelement.WebElement (session=\"b8b40bf82a90b5e5be22fa938aa3a1cd\", element=\"f.7C2B965925EF693EA0A0207BD727921E.d.40E899DAAD8019CAAADCE37B76AE6AE4.e.3\")>.get_attribute"
         }
       ],
       "mutation": {
@@ -416,8 +416,8 @@
             "occurrences": 1
           }
         ],
-        "original_sha256": "5c8eab2c68d07f8c2f219382d10562b57e05770777e82bc4876fa278404289f0",
-        "mutated_sha256": "5a3849d038c9173f81dbb60c7cfd7f5b594f1490819957fb0687f94a8851d87b"
+        "original_sha256": "8f0e3f82768e04f82498b4788523caa7743e9d7e5eaffc86f1aa279576aa901c",
+        "mutated_sha256": "15a4aeec4d6ae7ba0fe1e3b7f834b81155246480839e008a3b1533b67332d568"
       },
       "expected_outcome_verified": true
     },
@@ -431,9 +431,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\fixed-load-deadline.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\fixed-load-deadline.xml"
       ],
-      "elapsed_seconds": 28.172,
+      "elapsed_seconds": 28.046,
       "exit_code": 1,
       "counts": {
         "passed": 0,
@@ -473,9 +473,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\initialization-extended-by-later-events.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\initialization-extended-by-later-events.xml"
       ],
-      "elapsed_seconds": 18.407,
+      "elapsed_seconds": 18.5,
       "exit_code": 1,
       "counts": {
         "passed": 0,
@@ -516,9 +516,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\accepted-blank-labels.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\accepted-blank-labels.xml"
       ],
-      "elapsed_seconds": 34.672,
+      "elapsed_seconds": 34.516,
       "exit_code": 1,
       "counts": {
         "passed": 0,
@@ -563,9 +563,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\consistently-scaled-scores.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\consistently-scaled-scores.xml"
       ],
-      "elapsed_seconds": 56.078,
+      "elapsed_seconds": 55.281,
       "exit_code": 1,
       "counts": {
         "passed": 0,
@@ -615,9 +615,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\scores-forced-to-one.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\scores-forced-to-one.xml"
       ],
-      "elapsed_seconds": 19.375,
+      "elapsed_seconds": 19.328,
       "exit_code": 1,
       "counts": {
         "passed": 0,
@@ -657,9 +657,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\completed-transfer-left-under-stall-window.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\completed-transfer-left-under-stall-window.xml"
       ],
-      "elapsed_seconds": 10.765,
+      "elapsed_seconds": 10.782,
       "exit_code": 1,
       "counts": {
         "passed": 0,
@@ -699,9 +699,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\cleared-hang-reported-as-analysis-failure.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\cleared-hang-reported-as-analysis-failure.xml"
       ],
-      "elapsed_seconds": 18.766,
+      "elapsed_seconds": 18.828,
       "exit_code": 1,
       "counts": {
         "passed": 0,
@@ -742,9 +742,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\core-size-limit-made-exclusive.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\core-size-limit-made-exclusive.xml"
       ],
-      "elapsed_seconds": 33.968,
+      "elapsed_seconds": 33.984,
       "exit_code": 1,
       "counts": {
         "passed": 1,
@@ -789,9 +789,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\core-filter-minimum-made-exclusive.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\core-filter-minimum-made-exclusive.xml"
       ],
-      "elapsed_seconds": 49.25,
+      "elapsed_seconds": 48.953,
       "exit_code": 1,
       "counts": {
         "passed": 4,
@@ -862,9 +862,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\core-stale-result-guard-removed.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\core-stale-result-guard-removed.xml"
       ],
-      "elapsed_seconds": 16.25,
+      "elapsed_seconds": 16.297,
       "exit_code": 1,
       "counts": {
         "passed": 0,
@@ -876,12 +876,12 @@
         {
           "id": "tests/test_ui.py::test_replacing_a_processing_image_discards_the_old_result[slow-car.png]",
           "outcome": "failed",
-          "reason": "assert 'dog' not in ['dog']\n +  where ['dog'] = result_labels(<selenium.webdriver.chrome.webdriver.WebDriver (session=\"9430c3c9d1e54ba3e94118528a043e49\")>)"
+          "reason": "assert 'dog' not in ['dog']\n +  where ['dog'] = result_labels(<selenium.webdriver.chrome.webdriver.WebDriver (session=\"1b43ff4f531e8b1e9c92dd4c3e29c135\")>)"
         },
         {
           "id": "tests/test_ui.py::test_clearing_a_processing_image_prevents_late_repaint",
           "outcome": "failed",
-          "reason": "AssertionError: assert ['dog'] == []\n  \n  Left contains one more item: 'dog'\n  Use -v to get more diff"
+          "reason": "assert [<selenium.we...3DDFA.e.73\")>] == []\n  \n  Left contains one more item: <selenium.webdriver.remote.webelement.WebElement (session=\"8f628f54513b10693c796dffe088d32d\", element=\"f.D68C3D955501FBB7694A54690804D43B.d.437828E05B35870F2F7EF8E33603DDFA.e.73\")>\n  Use -v to get more diff"
         }
       ],
       "mutation": {
@@ -909,9 +909,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\core-stale-export-guard-removed.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\core-stale-export-guard-removed.xml"
       ],
-      "elapsed_seconds": 25.063,
+      "elapsed_seconds": 24.609,
       "exit_code": 1,
       "counts": {
         "passed": 0,
@@ -961,9 +961,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\core-late-sample-defences-removed.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\core-late-sample-defences-removed.xml"
       ],
-      "elapsed_seconds": 16.094,
+      "elapsed_seconds": 15.984,
       "exit_code": 1,
       "counts": {
         "passed": 0,
@@ -1018,9 +1018,9 @@
         "-q",
         "--tb=short",
         "--basetemp=<disposable-copy>\\.pytest-temp",
-        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2c\\equivalent-late-sample-check-only-removed.xml"
+        "--junitxml=<repository>\\artifacts\\sensitivity-v1-0-2d\\equivalent-late-sample-check-only-removed.xml"
       ],
-      "elapsed_seconds": 17.734,
+      "elapsed_seconds": 17.875,
       "exit_code": 0,
       "counts": {
         "passed": 2,

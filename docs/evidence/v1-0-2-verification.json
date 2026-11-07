@@ -1,17 +1,17 @@
 {
-  "started_at_utc": "2026-11-07T04:00:57+00:00",
+  "started_at_utc": "2026-11-07T05:15:57+00:00",
   "evidence_type": "Integrated local pytest run of the application and tests identified by source_sha256",
-  "base_commit": "9473c4ee96ec050bc76709d0a99f0910ffe41232",
+  "base_commit": "9b2dbdb06e27937551cd5b886e79e4b0e310d906",
   "source_identity": "Base commit plus source_sha256 identifies the tested uncommitted changes; documentation is recorded separately.",
   "source_sha256": {
     "asset-lock.json": "9304dd88602a161c3ac1e580fa559e01a22f285c57573bf77d708b0c1af58216",
     "credits-lock.json": "4f3dd86c8268f6bd5c186546aa4737c68d3d80b58230c79e26bad7a49990b805",
     "dist/app.js": "05378d298203adce46482b87223c84fbe311f422d75d23ed9459613b5cd751d9",
     "dist/credits.html": "a7198cfe8462d91e15aedae08e77adadcda54d82167f394065a83794292fc670",
-    "dist/index.html": "5c8eab2c68d07f8c2f219382d10562b57e05770777e82bc4876fa278404289f0",
+    "dist/index.html": "8f0e3f82768e04f82498b4788523caa7743e9d7e5eaffc86f1aa279576aa901c",
     "dist/png-export.js": "cb7171cec270e245a78f70a8f56cd62a921157825458a3aeb97ac8b513948c41",
     "dist/runtime-config.json": "80c98bfac072ba06f97197da8758f21bf1f8988a75b5302001b0eb22787d5d77",
-    "dist/social-preview.png": "6a0e8abf86fb495cfaa4ca33760c2df8b7b311023b10113097efb7d622ef2962",
+    "dist/social-preview.png": "7d64ce633b0ec4ea18ea545367f2807aef2cc276e01b44f3cae680715bb6897c",
     "dist/style.css": "e4a1a8e3590fe79720ae588d53bee72f1d3e76c1e3118c75b6faffb5d0a41aa6",
     "dist/worker.js": "b83ddaca9e27871799b6f23ddf27b4e1384c28e9565975c9b04e11bcd706916c",
     "docs/evidence/model-observations.json": "2fc47a23ea4d948ec2558c479e9b7802d2012406ff32c977c3a23f635efcdd17",
@@ -46,6 +46,7 @@
     "tools/collect_evidence.py": "9bb8ed26c79fe2e6776b0d91bf1c45d9d5975c11ec38205d1f9716546712d3a6",
     "tools/download_samples.py": "2d9c0a95fc4a8613e58d399e2e3fbedd6d4acb2e4c3489a2c7d5cd6f66f7dae9",
     "tools/fetch_upstream.py": "6517139f8f7feb670461a606b2bf90bc9bf835d9bfdcf50956685c6d1cbc4b14",
+    "tools/make_social_preview.py": "e11afb444f54a752d636bf426b4945e926d23af2ea32f81f1cbdcafd43076be6",
     "tools/prepare_assets.py": "8733667b051c6de9b25d742c4c29476df9177d4b88486ac96bd685a0d6d6dc2c",
     "tools/record_verification.py": "7c4c88f4cda88faa0bc35562a224b7a88e2477feed6a9b1ae0eaf058915c140b",
     "tools/security_scan.py": "710f270ad102859bc8711067524d4a75ab058927816d7430fafc1a0221f62984"
@@ -59,8 +60,8 @@
     "passed": 104,
     "real_model_cases": 4,
     "other_cases": 100,
-    "pytest_seconds": 737.837,
-    "wall_seconds": 740.369,
+    "pytest_seconds": 727.82,
+    "wall_seconds": 729.946,
     "exit_code": 0
   },
   "environment": {
@@ -337,9 +338,9 @@
     "pytest_temporary_directory_outside_git": true,
     "inherited_pytest_addopts_ignored": true,
     "inherited_pytest_plugins_ignored": true,
-    "raw_directory": "artifacts/verification/suite-i8jx0plw"
+    "raw_directory": "artifacts/verification/suite-v2m3zxkp"
   },
-  "raw_xml_sha256": "1c77a8f4d9b17bd36a2fc98d24c6ded4ebea3e969b19c88efa28b685d793d3c3",
+  "raw_xml_sha256": "a2a87756910d8cb6af18fa85be9c0ae8a245c632b58a35c12df10ec81401f710",
   "retained_xml_transformation": "Remove hostname attributes only; serialize XML as UTF-8 with LF. Counts and test outcomes are unchanged.",
   "limits": [
     "One local Windows/Chrome environment; no remote CI or deployment validation.",
@@ -349,5 +350,5 @@
   ],
   "passed": true,
   "retained_xml": "docs/evidence/v1-0-2-full-suite.xml",
-  "retained_xml_sha256": "6b0a30d962002a9907c9d7b460cedbaaadc0d957f27e50959999560be95f49b9"
+  "retained_xml_sha256": "eb1473f81b0fca108d5aa6e2bc22fa892858156616d82c24cac75f5f3da86bd3"
 }

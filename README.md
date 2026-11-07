@@ -79,7 +79,7 @@ The model runs inside the browser and the Python server only serves files; the t
 | Harness and package unit checks | pytest, no browser | the package matches its allowlist; the link-preview tags name a packaged image of the declared size; shared assertion helpers say which check failed; the harness still closes the browser when setup fails |
 | CI | GitHub Actions on `windows-latest`, pip-audit | controlled tests on every push to `main` and every pull request; locked dependencies audited ([ci.yml](.github/workflows/ci.yml)) |
 
-The recorded run took 737.837 s of JUnit suite time on Windows 11, Chrome 156.0.8078.80, Python 3.12.10, pytest 9.0.3 and Selenium 4.40.0. A local audit of `requirements-lock.txt` found 0 known vulnerabilities in 30 packages ([pip-audit.json](docs/evidence/security/pip-audit.json)). The count per module and the risk each one covers are in the [test mix](docs/DESIGN.md#risks-and-test-mix), and each [acceptance example](docs/DESIGN.md#acceptance-examples) names the tests that check it.
+The recorded run took 727.820 s of JUnit suite time on Windows 11, Chrome 156.0.8078.80, Python 3.12.10, pytest 9.0.3 and Selenium 4.40.0. A local audit of `requirements-lock.txt` found 0 known vulnerabilities in 30 packages ([pip-audit.json](docs/evidence/security/pip-audit.json)). The count per module and the risk each one covers are in the [test mix](docs/DESIGN.md#risks-and-test-mix), and each [acceptance example](docs/DESIGN.md#acceptance-examples) names the tests that check it.
 
 ### Do the tests catch real faults?
 

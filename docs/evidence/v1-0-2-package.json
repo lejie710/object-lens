@@ -1,11 +1,11 @@
 {
-  "command": ".venv\\Scripts\\python.exe tools/build_public_demo.py --output artifacts/public-demo-v1-0-2c",
-  "archive": "artifacts/public-demo-v1-0-2c/object-lens-afdf6c3757-htoqh038/Object_Lens_Public_Demo.zip",
-  "site_directory": "artifacts/public-demo-v1-0-2c/object-lens-afdf6c3757-htoqh038/site",
-  "created_at_utc": "2026-11-07T04:25:33+00:00",
-  "source_commit": "9473c4ee96ec050bc76709d0a99f0910ffe41232",
+  "command": ".venv\\Scripts\\python.exe tools/build_public_demo.py --output artifacts/public-demo-v1-0-2d",
+  "archive": "artifacts/public-demo-v1-0-2d/object-lens-d61b9043b0-fz_gb9jd/Object_Lens_Public_Demo.zip",
+  "site_directory": "artifacts/public-demo-v1-0-2d/object-lens-d61b9043b0-fz_gb9jd/site",
+  "created_at_utc": "2026-11-07T05:40:18+00:00",
+  "source_commit": "9b2dbdb06e27937551cd5b886e79e4b0e310d906",
   "source_dirty": true,
-  "content_id": "afdf6c3757989d064085296911c12fb7a348b5a482350ea83aae427ce9d97ca7",
+  "content_id": "d61b9043b0e85a1c586096563d203770ccba27e92e9c3e0a7a11c603a80689b5",
   "files": [
     {
       "path": "app.js",
@@ -49,8 +49,8 @@
     },
     {
       "path": "index.html",
-      "bytes": 7598,
-      "sha256": "5c8eab2c68d07f8c2f219382d10562b57e05770777e82bc4876fa278404289f0"
+      "bytes": 7724,
+      "sha256": "8f0e3f82768e04f82498b4788523caa7743e9d7e5eaffc86f1aa279576aa901c"
     },
     {
       "path": "licenses/detr-LICENSE.txt",
@@ -139,8 +139,8 @@
     },
     {
       "path": "social-preview.png",
-      "bytes": 623292,
-      "sha256": "6a0e8abf86fb495cfaa4ca33760c2df8b7b311023b10113097efb7d622ef2962"
+      "bytes": 241051,
+      "sha256": "7d64ce633b0ec4ea18ea545367f2807aef2cc276e01b44f3cae680715bb6897c"
     },
     {
       "path": "style.css",
@@ -154,9 +154,9 @@
     }
   ],
   "file_count": 29,
-  "uncompressed_bytes": 64777623,
-  "archive_bytes": 35207046,
-  "archive_sha256": "cabb5967b8896d6a62379f2e39006fa7dda865ca50609ed88c48d75da0c265be",
+  "uncompressed_bytes": 64395508,
+  "archive_bytes": 34822652,
+  "archive_sha256": "7925178869b7e6c761e31f0f2a4ed5f8f8146fca66578f92cc487d6ff5fe1970",
   "runtime_configuration": {
     "testMode": false
   },
