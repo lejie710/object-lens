@@ -16,6 +16,8 @@ The licence statements below are documented by the upstream project. Original cr
 | `dist/samples/camera.png` | 512 x 512 | 139,512 | Lav Varshney; CC0 | [Pinned file](https://raw.githubusercontent.com/scikit-image/scikit-image/v0.25.2/skimage/data/camera.png); [upstream provenance and terms](https://scikit-image.org/docs/0.25.x/api/skimage.data.html#skimage.data.camera) |
 | `dist/samples/rocket.jpg` | 640 x 427 | 112,525 | SpaceX launch photograph; public domain | [Pinned file](https://raw.githubusercontent.com/scikit-image/scikit-image/v0.25.2/skimage/data/rocket.jpg); [upstream provenance and terms](https://scikit-image.org/docs/0.25.x/api/skimage.data.html#skimage.data.rocket) |
 
+`dist/social-preview.png`, the showcase's link preview image, is not a sample: it is made from app captures of `chelsea.png` and `camera.png`, and its derivation is recorded in [PUBLIC_DEMO.md](PUBLIC_DEMO.md#link-preview).
+
 The `camera.png` here is deliberately version-pinned: the upstream documentation says its old image was replaced in version 0.18 because of copyright restrictions. The file here matches the v0.25.2 registry.
 
 ## Expected visible content

@@ -15,6 +15,7 @@ from selenium.webdriver.common.keys import Keys
 from helpers import (
     assert_for_late_response_window,
     assert_no_visible_image,
+    open_ready_page,
     result_labels,
     set_minimum,
     upload,
@@ -80,8 +81,7 @@ def sample_server():
 
 
 def open_sample_app(browser, sample_server):
-    browser.get(sample_server.url)
-    wait_state(browser, "ready")
+    open_ready_page(browser, sample_server.url)
 
 
 def test_try_sample_fetches_the_real_photo_and_resets_the_previous_filter(browser, sample_server, make_image):

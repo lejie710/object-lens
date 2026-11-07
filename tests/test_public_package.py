@@ -7,10 +7,12 @@ from __future__ import annotations
 import hashlib
 import json
 import shutil
+import struct
 import subprocess
 import threading
 import zipfile
 from functools import partial
+from html.parser import HTMLParser
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.error import HTTPError
@@ -20,12 +22,13 @@ import pytest
 from selenium.webdriver.common.by import By
 
 from helpers import result_labels, set_minimum, wait_for_png, wait_state
+from tools.build_public_demo import APP_FILES as BUILDER_APP_FILES
 from tools.build_public_demo import build, git_provenance
 
 ROOT = Path(__file__).resolve().parents[1]
 APP_FILES = {
     "index.html", "style.css", "app.js", "worker.js", "png-export.js",
-    "credits.html", "runtime-config.json",
+    "credits.html", "runtime-config.json", "social-preview.png",
 }
 ASSET_PATHS = {
     "assets/runtime/transformers.min.js",
@@ -199,6 +202,52 @@ def test_manifest_cannot_add_an_unapproved_path(package_project, tmp_path):
     lock_path.write_text(json.dumps(asset_lock), encoding="utf-8")
     with pytest.raises(ValueError):
         build(tmp_path / "packages", project_root=package_project)
+
+
+class _MetaTags(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.tags = {}
+        self.kinds = {}
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag != "meta" or not ({"property", "name"} & set(attrs)):
+            return
+        assert not {"property", "name"} <= set(attrs), f"Meta tag with both property and name: {attrs}"
+        kind = "property" if "property" in attrs else "name"
+        key = attrs[kind]
+        assert key not in self.tags, f"Duplicate meta tag: {key}"
+        self.tags[key] = attrs.get("content")
+        self.kinds[key] = kind
+
+
+def test_link_preview_tags_point_to_the_packaged_image():
+    """Social sites fetch og:image from the live site, so it must name a packaged file."""
+    parser = _MetaTags()
+    parser.feed((ROOT / "dist" / "index.html").read_text(encoding="utf-8"))
+    tags = parser.tags
+    # Open Graph is defined on the property attribute and Twitter cards on name.
+    for key, kind in parser.kinds.items():
+        expected = "property" if key.startswith("og:") else "name"
+        assert kind == expected, f"{key} must use the {expected} attribute"
+    site = "https://lejie710.github.io/object-lens/"
+    assert tags["og:url"] == site
+    image_url = tags["og:image"]
+    assert image_url.startswith(site), "og:image must be an absolute URL on the showcase site"
+    image_name = image_url[len(site):]
+    assert image_name in BUILDER_APP_FILES, "The preview image must be in the public package allowlist"
+    assert tags["twitter:card"] == "summary_large_image"
+    assert tags["twitter:image"] == image_url
+    assert tags["og:title"] == tags["twitter:title"] == "Object Lens"
+    assert tags["og:description"] == tags["twitter:description"] == tags["description"]
+    assert tags["og:image:alt"] and tags["twitter:image:alt"] == tags["og:image:alt"]
+
+    payload = (ROOT / "dist" / image_name).read_bytes()
+    assert tags["og:image:type"] == "image/png" and payload[:8] == b"\x89PNG\r\n\x1a\n"
+    width, height = struct.unpack(">II", payload[16:24])
+    assert (width, height) == (int(tags["og:image:width"]), int(tags["og:image:height"])) == (1200, 630)
+    assert len(payload) < 5_000_000, "LinkedIn's sharing guidance allows at most 5 MB"
 
 
 @pytest.mark.inference

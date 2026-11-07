@@ -11,7 +11,7 @@ import pytest
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 
-from helpers import assert_no_visible_image, result_labels, upload, wait_state
+from helpers import assert_no_visible_image, open_ready_page, result_labels, upload, wait_state
 from serve import AppHandler
 
 
@@ -268,8 +268,7 @@ def test_worker_crash_during_inference_is_not_described_as_startup_failure(
     browser, recovery_server, make_image,
 ):
     recovery_server.mode = "infer-crash"
-    browser.get(recovery_server.url)
-    wait_state(browser, "ready")
+    open_ready_page(browser, recovery_server.url)
     upload(browser, make_image("car.png"))
     wait_state(browser, "error")
     message = browser.find_element(By.ID, "error-message").text.lower()

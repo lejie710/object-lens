@@ -1,0 +1,120 @@
+{
+  "code_under_probe": {
+    "base_commit": "dc1461ddec20d7740ba3dbbf9740ec73b06907f9",
+    "tests_uncommitted_changes": null,
+    "helpers_sha256": "e50752fa1b9e507e6962dc8950d3027f73e0cfe56712e5132e6fc041b5317495"
+  },
+  "evidence_type": "Local probe of a failed worker script request; deliberate server behaviour, not a runner fault",
+  "created_utc": "2026-11-07T10:00:37+00:00",
+  "python": "3.12.10",
+  "os": "Windows-11-10.0.26100-SP0",
+  "cases": [
+    {
+      "worker_script_response": "normal",
+      "page_state": "ready",
+      "console": [],
+      "network_failures": [],
+      "server_received_worker_request": true,
+      "server_logged_worker_response": true
+    },
+    {
+      "worker_script_response": "connection-dropped",
+      "page_state": "error",
+      "console": [
+        "665:14 \"Object Lens worker:\" undefined"
+      ],
+      "network_failures": [
+        {
+          "file": "test-worker.js",
+          "error": "net::ERR_ABORTED",
+          "canceled": true
+        }
+      ],
+      "server_received_worker_request": true,
+      "server_logged_worker_response": false
+    },
+    {
+      "worker_script_response": "http-404",
+      "page_state": "error",
+      "console": [
+        "665:14 \"Object Lens worker:\" undefined"
+      ],
+      "network_failures": [],
+      "server_received_worker_request": true,
+      "server_logged_worker_response": true
+    },
+    {
+      "worker_script_response": "config-connection-dropped",
+      "page_state": "error",
+      "console": [
+        "- Failed to load resource: net::ERR_EMPTY_RESPONSE",
+        "741:12 \"Object Lens initialization:\" TypeError: Failed to fetch\n    at initialize (http://127.0.0.1:63930/app.js:727:28)\n    at http://127.0.0.1:63930/app.js:752:1"
+      ],
+      "network_failures": [
+        {
+          "file": "runtime-config.json",
+          "error": "net::ERR_EMPTY_RESPONSE",
+          "canceled": false
+        }
+      ],
+      "server_received_worker_request": false,
+      "server_logged_worker_response": false
+    }
+  ],
+  "guard": [
+    {
+      "worker_script_response": "dropped-once",
+      "worker_requests_received": 2,
+      "warnings": [
+        "Reloaded the page once after a runner failure: page state 'error'; loaded files ['style.css', 'app.js', 'png-export.js', 'runtime-config.json']; browser errors ['http://127.0.0.1:<port>/app.js 665:14 \"Object Lens worker:\" undefined']; failed requests [{'file': 'test-worker.js', 'error': 'net::ERR_ABORTED', 'canceled': True}]"
+      ],
+      "open_ready_page": "ready",
+      "kept_for_failure_evidence": {
+        "console_entries": 1,
+        "network_failures": [
+          {
+            "file": "test-worker.js",
+            "error": "net::ERR_ABORTED",
+            "canceled": true
+          }
+        ]
+      }
+    },
+    {
+      "worker_script_response": "connection-dropped",
+      "worker_requests_received": 3,
+      "warnings": [
+        "Reloaded the page once after a runner failure: page state 'error'; loaded files ['style.css', 'app.js', 'png-export.js', 'runtime-config.json']; browser errors ['http://127.0.0.1:<port>/app.js 665:14 \"Object Lens worker:\" undefined']; failed requests [{'file': 'test-worker.js', 'error': 'net::ERR_ABORTED', 'canceled': True}]"
+      ],
+      "open_ready_page": "Failed: The page did not become ready after one reload: page state 'error'; loaded files ['style.css', 'app.js', 'png-export.js', 'runtime-config.json']; browser errors ['http://127.0.0.1:<port>/app.js 665:14 \"Object Lens worker:\" undefined']; failed requests [{'file': 'test-worker.js', 'error': 'net::ERR_ABORTED', 'canceled': True}]",
+      "kept_for_failure_evidence": {
+        "console_entries": 2,
+        "network_failures": [
+          {
+            "file": "test-worker.js",
+            "error": "net::ERR_ABORTED",
+            "canceled": true
+          },
+          {
+            "file": "test-worker.js",
+            "error": "net::ERR_ABORTED",
+            "canceled": true
+          }
+        ]
+      }
+    },
+    {
+      "worker_script_response": "http-404",
+      "worker_requests_received": 1,
+      "warnings": [],
+      "open_ready_page": "Failed: The page did not become ready within 5 s: page state 'error'; loaded files ['style.css', 'app.js', 'png-export.js', 'runtime-config.json']; browser errors ['http://127.0.0.1:<port>/app.js 665:14 \"Object Lens worker:\" undefined']; failed requests []",
+      "kept_for_failure_evidence": {
+        "console_entries": 1,
+        "network_failures": []
+      }
+    }
+  ],
+  "browser_version": "156.0.8078.80",
+  "probe_source": "\"\"\"Local probe: how a failed controlled-worker script request appears to the page, its\nconsole and Chrome's network log, and what helpers.open_ready_page reports for it.\"\"\"\nimport json, os, platform, sys, threading, time\nfrom datetime import datetime, timezone\nfrom functools import partial\nfrom http.server import ThreadingHTTPServer\nfrom pathlib import Path\nfrom urllib.parse import urlsplit\nrepo = Path(sys.argv[1]); out = Path(sys.argv[2])\nsys.path[:0] = [str(repo), str(repo / \"tests\")]\nfrom serve import AppHandler\nimport helpers\nfrom selenium import webdriver\nos.environ.update(SE_CACHE_PATH=str(repo / \".local\" / \"selenium\"), SE_OFFLINE=\"true\", SE_AVOID_STATS=\"true\")\n\n\ndef serve(mode, requests, logged):\n    class Handler(AppHandler):\n        def do_GET(self):\n            path = urlsplit(self.path).path\n            requests.append(path)\n            drop = {\"connection-dropped\": \"/test-worker.js\", \"config-connection-dropped\": \"/runtime-config.json\"}\n            if path == drop.get(mode) or (mode == \"dropped-once\" and path == \"/test-worker.js\"\n                                          and requests.count(path) == 1):\n                self.close_connection = True\n                self.connection.shutdown(2)\n                return\n            if path == \"/test-worker.js\" and mode == \"http-404\":\n                return self.send_error(404)\n            return super().do_GET()\n        def log_message(self, format, *args):\n            logged.append(format % args)\n    server = ThreadingHTTPServer((\"127.0.0.1\", 0), partial(Handler, test_mode=True))\n    threading.Thread(target=server.serve_forever, daemon=True).start()\n    return server\n\n\ndef browser(mode=\"normal\"):\n    options = webdriver.ChromeOptions()\n    options.add_argument(\"--headless=new\")\n    options.set_capability(\"goog:loggingPrefs\", {\"browser\": \"ALL\", \"performance\": \"ALL\"})\n    driver = webdriver.Chrome(options=options)\n    return driver\n\n\nimport hashlib, subprocess\ngit = lambda *args: subprocess.check_output([\"git\", \"-C\", str(repo), *args], text=True).strip()\ncode = {\"base_commit\": git(\"rev-parse\", \"HEAD\"),\n        \"tests_uncommitted_changes\": git(\"status\", \"--porcelain\", \"--\", \"tests\") or None,\n        \"helpers_sha256\": hashlib.sha256((repo / \"tests\" / \"helpers.py\").read_bytes()).hexdigest()}\nreport = {\"code_under_probe\": code, \"evidence_type\": \"Local probe of a failed worker script request; deliberate server behaviour, not a runner fault\",\n          \"created_utc\": datetime.now(timezone.utc).isoformat(timespec=\"seconds\"),\n          \"python\": platform.python_version(), \"os\": platform.platform(), \"cases\": [], \"guard\": []}\nfor mode in [\"normal\", \"connection-dropped\", \"http-404\", \"config-connection-dropped\"]:\n    requests = []; logged = []; server = serve(mode, requests, logged); driver = browser(mode)\n    try:\n        report[\"browser_version\"] = driver.capabilities.get(\"browserVersion\")\n        driver.get(f\"http://127.0.0.1:{server.server_port}/\")\n        time.sleep(4)\n        report[\"cases\"].append({\n            \"worker_script_response\": mode,\n            \"page_state\": driver.find_element(\"tag name\", \"html\").get_attribute(\"data-state\"),\n            \"console\": [entry[\"message\"].split(\" \", 1)[1] for entry in driver.get_log(\"browser\")],\n            \"network_failures\": helpers.network_failures(driver),\n            \"server_received_worker_request\": \"/test-worker.js\" in requests,\n            \"server_logged_worker_response\": any(\"/test-worker.js\" in line for line in logged),\n        })\n    finally:\n        driver.quit(); server.shutdown(); server.server_close()\nimport warnings\nfor mode in [\"dropped-once\", \"connection-dropped\", \"http-404\"]:\n    requests = []; logged = []; server = serve(mode, requests, logged); driver = browser(mode)\n    port = str(server.server_port)\n    with warnings.catch_warnings(record=True) as caught:\n        warnings.simplefilter(\"always\")\n        try:\n            helpers.open_ready_page(driver, f\"http://127.0.0.1:{port}/\", timeout=5)\n            outcome = \"ready\"\n        except BaseException as error:\n            outcome = f\"{type(error).__name__}: {error}\".replace(port, \"<port>\")\n    try:\n        kept = helpers.kept_logs(driver)\n        evidence = {\"console_entries\": len(kept[\"console\"]), \"network_failures\": kept[\"network\"]}\n    finally:\n        driver.quit(); server.shutdown(); server.server_close()\n    report[\"guard\"].append({\"worker_script_response\": mode, \"worker_requests_received\": requests.count(\"/test-worker.js\"),\n                            \"warnings\": [str(w.message).replace(port, \"<port>\") for w in caught],\n                            \"open_ready_page\": outcome, \"kept_for_failure_evidence\": evidence})\nreport[\"probe_source\"] = Path(__file__).read_text(encoding=\"utf-8\")\nreport[\"limits\"] = \"One Windows machine and Chrome version. A dropped loopback connection gives net::ERR_ABORTED. The server writes a log line only when it sends a response, as in the CI job log. The failure a hosted runner gives was not observed.\"\nassert not out.exists()\nout.write_text(json.dumps(report, indent=2) + \"\\n\", encoding=\"utf-8\", newline=\"\\n\")\nprint(json.dumps({k: report[k] for k in (\"cases\", \"guard\")}, indent=1))\n",
+  "limits": "One Windows machine and Chrome version. A dropped loopback connection gives net::ERR_ABORTED. The server writes a log line only when it sends a response, as in the CI job log. The failure a hosted runner gives was not observed."
+}

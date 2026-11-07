@@ -1,0 +1,36 @@
+{
+  "evidence_type": "Regeneration check of the link preview image",
+  "created_utc": "2026-11-07T05:45:53+00:00",
+  "command": "python -I tools/make_social_preview.py --output <new temporary file>",
+  "tool_sha256": "e11afb444f54a752d636bf426b4945e926d23af2ea32f81f1cbdcafd43076be6",
+  "python": "3.12.10",
+  "pillow": "12.2.0",
+  "os": "Windows-11-10.0.26100-SP0",
+  "font_sha256": {
+    "segoeui.ttf": "704eada12961a27fd271f7d3b09e2066520e758390c1776744eff430fee30f6e",
+    "segoeuib.ttf": "b169e636719880976a97e94e3b1cb3dbe5f4a38eabc037bf9f2a9165154c3ad2"
+  },
+  "source_captures_sha256": {
+    "sample-chelsea.png": "0232a8be9b62c61249b4544c5d40f17adf47dee76582e0fb1461a860172bf6ee",
+    "sample-camera.png": "2d88ad8c4c81f9feaa784324b69273d5e1ff48afba58f42af46bd64fe68db696"
+  },
+  "runs": [
+    {
+      "run": 1,
+      "bytes": 241051,
+      "sha256": "7d64ce633b0ec4ea18ea545367f2807aef2cc276e01b44f3cae680715bb6897c"
+    },
+    {
+      "run": 2,
+      "bytes": 241051,
+      "sha256": "7d64ce633b0ec4ea18ea545367f2807aef2cc276e01b44f3cae680715bb6897c"
+    }
+  ],
+  "committed_image": {
+    "path": "dist/social-preview.png",
+    "bytes": 241051,
+    "sha256": "7d64ce633b0ec4ea18ea545367f2807aef2cc276e01b44f3cae680715bb6897c"
+  },
+  "identical": true,
+  "limits": "One Windows machine. Pillow is not pinned by the project and other Pillow or font versions may give different bytes."
+}

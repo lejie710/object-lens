@@ -19,8 +19,8 @@ Object Lens is a small browser app that runs a pretrained DETR object detector o
 | Evidence | Result |
 | --- | --- |
 | Model download throttled to 2.5 Mbps on loopback | Before: loading failed at 121 s with 37.4 of 43.1 MB (86%) received, and Try again restarted from zero. After: the package received every byte and reached ready at 140.6 s ([slow-transfer-2-5-mbps.json](docs/evidence/slow-transfer-2-5-mbps.json)) |
-| Recorded full suite | 102 passed, with 0 failures, errors or skips: 98 controlled cases and 4 real-model cases ([summary](docs/evidence/v1-0-1-verification.json), [JUnit XML](docs/evidence/v1-0-1-full-suite.xml)) |
-| Core rules broken on purpose | Every core rule the question depends on has at least one test that fails when the rule is broken ([v1-0-1-sensitivity.json](docs/evidence/v1-0-1-sensitivity.json)) |
+| Recorded full suite | 116 passed, with 0 failures, errors or skips: 112 controlled cases and 4 real-model cases ([summary](docs/evidence/v1-0-3-verification.json), [JUnit XML](docs/evidence/v1-0-3-full-suite.xml)) |
+| Core rules broken on purpose | Every core rule the question depends on has at least one test that fails when the rule is broken ([v1-0-3-sensitivity.json](docs/evidence/v1-0-3-sensitivity.json)) |
 
 The question, its measure, the acceptance examples, the ranked risks and the design decisions are in [DESIGN.md](docs/DESIGN.md#the-question).
 
@@ -42,7 +42,7 @@ Known risks that are not tested:
 
 Other limits of the evidence:
 
-- CI runs the 98 controlled tests on GitHub Actions (`windows-latest`). The 4 real-model tests run locally only: on a hosted runner the same pinned model gives slightly different scores and boxes than the recorded references ([details](docs/DEFECTS.md#real-model-references-hold-only-on-the-recording-machine)). Results of hosted runs are not recorded in this repository. The recorded results all come from one local Windows and Chrome environment.
+- CI runs the 112 controlled tests on GitHub Actions (`windows-latest`). The 4 real-model tests run locally only: on a hosted runner the same pinned model gives slightly different scores and boxes than the recorded references ([details](docs/DEFECTS.md#real-model-references-hold-only-on-the-recording-machine)). Results of hosted runs are not recorded in this repository. The recorded results all come from one local Windows and Chrome environment.
 - The real-model checks compare against earlier output from the same pinned model. They show regression, not accuracy.
 - The announcement tests inspect how the page is configured. Nobody has tested it with an actual screen reader, and there is no accessibility certification.
 - A single full run does not measure a flake rate.
@@ -76,14 +76,14 @@ The model runs inside the browser and the Python server only serves files; the t
 | Real-model regression (marked `inference`) | pytest with the pinned DETR model | labels, scores and box position on three public photos compared with earlier recorded output from the same model |
 | Static package under a subpath | an ordinary Python static server at `/object-lens/` | sample, filter and export with the real model from the built package |
 | Deliberate faults | [`tools/check_review_sensitivity.py`](tools/check_review_sensitivity.py), in throwaway copies | each planted fault must make its intended tests fail |
-| Harness and package unit checks | pytest, no browser | the package matches its allowlist; the harness still closes the browser when setup fails |
+| Harness and package unit checks | pytest, no browser | the package matches its allowlist; the link-preview tags name a packaged image of the declared size; shared assertion helpers say which check failed; a page load is retried once only after `net::ERR_NO_BUFFER_SPACE` or a worker script request that Chrome reports as failed in transport, never after an HTTP error; the harness still closes the browser when setup fails |
 | CI | GitHub Actions on `windows-latest`, pip-audit | controlled tests on every push to `main` and every pull request; locked dependencies audited ([ci.yml](.github/workflows/ci.yml)) |
 
-The recorded run took 784.165 s of JUnit suite time on Windows 11, Chrome 156.0.8078.80, Python 3.12.10, pytest 9.0.3 and Selenium 4.40.0. A local audit of `requirements-lock.txt` found 0 known vulnerabilities in 30 packages ([pip-audit.json](docs/evidence/security/pip-audit.json)). The count per module and the risk each one covers are in the [test mix](docs/DESIGN.md#risks-and-test-mix), and each [acceptance example](docs/DESIGN.md#acceptance-examples) names the tests that check it.
+The recorded run took 741.760 s of JUnit suite time on Windows 11, Chrome 156.0.8078.80, Python 3.12.10, pytest 9.0.3 and Selenium 4.40.0. A local audit of `requirements-lock.txt` found 0 known vulnerabilities in 30 packages ([pip-audit.json](docs/evidence/security/pip-audit.json)). The count per module and the risk each one covers are in the [test mix](docs/DESIGN.md#risks-and-test-mix), and each [acceptance example](docs/DESIGN.md#acceptance-examples) names the tests that check it.
 
 ### Do the tests catch real faults?
 
-The sensitivity check plants one deliberate fault in each throwaway copy of the app and never changes the checkout itself. A **30-case clean control** passes first. Each of the **16 faults** then makes its intended tests fail, giving **28 intended failures** in total ([v1-0-1-sensitivity.json](docs/evidence/v1-0-1-sensitivity.json)). Five of the faults each break one of the core rules the question depends on:
+The sensitivity check plants one deliberate fault in each throwaway copy of the app and never changes the checkout itself. A **30-case clean control** passes first. Each of the **16 faults** then makes its intended tests fail, giving **28 intended failures** in total ([v1-0-3-sensitivity.json](docs/evidence/v1-0-3-sensitivity.json)). Five of the faults each break one of the core rules the question depends on:
 
 | Core rule | Deliberate change | Test that failed |
 | --- | --- | --- |
@@ -120,7 +120,7 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe serve.py
 ```
 
-Or skip setup and use the [showcase](https://lejie710.github.io/object-lens/). Locally, open `http://127.0.0.1:8765` in Chrome. To try it: click **Try sample**, select the cup, move **Minimum model score** from 0.50 to 0.80, and click **Save result**. Then lower the filter again to bring the hidden predictions back. Predictions can include mistakes or duplicates, and a score does not guarantee the prediction is right.
+Or skip setup and use the [showcase](https://lejie710.github.io/object-lens/) in Chrome on Windows, the only verified browser and platform. Its first visit downloads more than 50 MB of model and runtime files (the model alone is 43 MB), and the photo you choose stays in your browser. Locally, open `http://127.0.0.1:8765` in Chrome. To try it: click **Try sample**, select the cup, move **Minimum model score** from 0.50 to 0.80, and click **Save result**. Then lower the filter again to bring the hidden predictions back. Predictions can include mistakes or duplicates, and a score does not guarantee the prediction is right.
 
 ## Test it
 
