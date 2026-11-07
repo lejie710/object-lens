@@ -1,0 +1,20 @@
+{
+  "evidence_type": "LinkedIn Post Inspector result for the showcase address, captured by the owner as a screenshot",
+  "date": "2026-11-07",
+  "url_inspected": "https://lejie710.github.io/object-lens/",
+  "screenshot": {
+    "file": "linkedin-post-inspector.png",
+    "width": 1901,
+    "height": 935,
+    "bytes": 345500,
+    "sha256": "6b2bfb1b0e009c5a7b517dbf51be9c0ece7fdae58a8721a043e70bf404e4deb5"
+  },
+  "observations": [
+    "LinkedIn shows the large-image card: the deployed social-preview.png (Object Lens, 'Object detection in your browser', 'Try it on your own photo.', the cat and camera captures).",
+    "Below the image LinkedIn shows the title 'Object Lens' (from og:title) and the domain lejie710.github.io; LinkedIn adds both to every link card."
+  ],
+  "limits": [
+    "One inspection on the day it was made; LinkedIn caches previews, and posts shared before this date keep their earlier preview.",
+    "Shows LinkedIn only; other social sites were not checked."
+  ]
+}
