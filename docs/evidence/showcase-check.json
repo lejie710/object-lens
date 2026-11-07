@@ -1,12 +1,88 @@
 {
-  "evidence_type": "live GitHub Pages showcase opened in a fresh headless Chrome profile; README try-it steps",
+  "evidence_type": "live GitHub Pages showcase opened in a fresh headless Chrome profile; README try-it steps; link-preview tags and image",
   "url": "https://lejie710.github.io/object-lens/",
-  "checked_at_utc": "2026-11-06T01:19:13+00:00",
+  "checked_at_utc": "2026-11-07T11:45:29+00:00",
   "passed": true,
-  "ready_seconds_including_model_download": 11.2,
-  "state_after_load": "ready",
+  "page_status": 200,
+  "preview_tags": {
+    "og:type": {
+      "attribute": "property",
+      "content": "website"
+    },
+    "og:title": {
+      "attribute": "property",
+      "content": "Object Lens"
+    },
+    "og:description": {
+      "attribute": "property",
+      "content": "Try object detection on a photo and inspect the predicted objects and their locations."
+    },
+    "og:url": {
+      "attribute": "property",
+      "content": "https://lejie710.github.io/object-lens/"
+    },
+    "og:image": {
+      "attribute": "property",
+      "content": "https://lejie710.github.io/object-lens/social-preview.png"
+    },
+    "og:image:type": {
+      "attribute": "property",
+      "content": "image/png"
+    },
+    "og:image:width": {
+      "attribute": "property",
+      "content": "1200"
+    },
+    "og:image:height": {
+      "attribute": "property",
+      "content": "630"
+    },
+    "og:image:alt": {
+      "attribute": "property",
+      "content": "Object Lens: object detection in your browser. Two app screenshots show labelled boxes and model scores on a cat photo and on a photo of a man filming with a camera."
+    },
+    "twitter:card": {
+      "attribute": "name",
+      "content": "summary_large_image"
+    },
+    "twitter:title": {
+      "attribute": "name",
+      "content": "Object Lens"
+    },
+    "twitter:description": {
+      "attribute": "name",
+      "content": "Try object detection on a photo and inspect the predicted objects and their locations."
+    },
+    "twitter:image": {
+      "attribute": "name",
+      "content": "https://lejie710.github.io/object-lens/social-preview.png"
+    },
+    "twitter:image:alt": {
+      "attribute": "name",
+      "content": "Object Lens: object detection in your browser. Two app screenshots show labelled boxes and model scores on a cat photo and on a photo of a man filming with a camera."
+    }
+  },
+  "preview_tags_match_repository_index_html": true,
+  "preview_image": {
+    "url": "https://lejie710.github.io/object-lens/social-preview.png",
+    "status": 200,
+    "content_type": "image/png",
+    "bytes": 241051,
+    "sha256": "7d64ce633b0ec4ea18ea545367f2807aef2cc276e01b44f3cae680715bb6897c",
+    "dimensions": [
+      1200,
+      630
+    ],
+    "identical_to_repository_file": true
+  },
+  "status_test-worker.js": 404,
+  "status_docs/DESIGN.md": 404,
+  "status_credits.html": 200,
   "runtime_config_testMode": false,
-  "sample_seconds": 10.0,
+  "browser_version": "156.0.8078.80",
+  "ready_seconds_including_model_download": 16.2,
+  "state_after_load": "ready",
+  "sample_seconds": 9.3,
   "predictions_at_0_50": [
     [
       "spoon",
@@ -62,16 +138,20 @@
       0.927
     ]
   ],
-  "status_test-worker.js": 404,
-  "status_docs/DESIGN.md": 404,
-  "status_credits.html": 200,
-  "console_errors": [
-    "https://lejie710.github.io/object-lens/test-worker.js - Failed to load resource: the server responded with a status of 404 ()",
-    "https://lejie710.github.io/object-lens/docs/DESIGN.md - Failed to load resource: the server responded with a status of 404 ()"
-  ],
-  "note": "The two console errors are the deliberate 404 probes for test-worker.js and docs/DESIGN.md, which confirm those files are not published.",
+  "console_errors": [],
   "limits": [
-    "One visit from one Windows laptop in headless Chrome 156; not a load test, not a mobile or other-browser check.",
-    "Ready time depends on the network and on GitHub Pages caching; it is one observation."
-  ]
+    "One visit from one Windows laptop in headless Chrome; not a load test, not a mobile or other-browser check.",
+    "Ready time depends on the network and on GitHub Pages caching; it is one observation.",
+    "Checks the tags and image LinkedIn reads; how LinkedIn renders the card is shown only by its Post Inspector."
+  ],
+  "deployed_files_against_package_record": {
+    "checked_at_utc": "2026-11-07T11:48:47+00:00",
+    "package_record": "docs/evidence/v1-0-3-package.json",
+    "package_content_id": "d61b9043b0e85a1c586096563d203770ccba27e92e9c3e0a7a11c603a80689b5",
+    "files_checked": 29,
+    "files_matching": 29,
+    "mismatches": []
+  },
+  "check_source": "\"\"\"Open the live showcase in a fresh headless Chrome profile, run the README try-it steps,\nand check the link-preview tags and the deployed preview image.\"\"\"\nimport hashlib, json, os, struct, sys, tempfile, time\nfrom datetime import datetime, timezone\nfrom html.parser import HTMLParser\nfrom pathlib import Path\nfrom urllib.error import HTTPError\nfrom urllib.request import Request, urlopen\nfrom selenium import webdriver\nfrom selenium.webdriver.common.by import By\nfrom selenium.webdriver.support.ui import WebDriverWait\n\nrepo = Path(sys.argv[1]); out = Path(sys.argv[2])\nURL = \"https://lejie710.github.io/object-lens/\"\nos.environ.update(SE_CACHE_PATH=str(repo / \".local\" / \"selenium\"), SE_OFFLINE=\"true\", SE_AVOID_STATS=\"true\")\n\n\ndef fetch(path):\n    try:\n        with urlopen(Request(URL + path, headers={\"Cache-Control\": \"no-cache\"}), timeout=30) as response:\n            return response.status, response.headers.get(\"Content-Type\"), response.read()\n    except HTTPError as error:\n        return error.code, error.headers.get(\"Content-Type\"), b\"\"\n\n\nclass Meta(HTMLParser):\n    def __init__(self):\n        super().__init__(); self.tags = {}\n    def handle_starttag(self, tag, attrs):\n        attrs = dict(attrs)\n        if tag == \"meta\" and (\"property\" in attrs or \"name\" in attrs):\n            kind = \"property\" if \"property\" in attrs else \"name\"\n            self.tags[attrs[kind]] = {\"attribute\": kind, \"content\": attrs.get(\"content\")}\n\n\nreport = {\"evidence_type\": \"live GitHub Pages showcase opened in a fresh headless Chrome profile; README try-it steps; link-preview tags and image\",\n          \"url\": URL, \"checked_at_utc\": datetime.now(timezone.utc).isoformat(timespec=\"seconds\"), \"passed\": False}\nstatus, ctype, html = fetch(\"\")\nparser = Meta(); parser.feed(html.decode(\"utf-8\"))\nlocal = parser.__class__(); local.feed((repo / \"dist\" / \"index.html\").read_text(encoding=\"utf-8\"))\nreport[\"page_status\"] = status\nreport[\"preview_tags\"] = {k: v for k, v in parser.tags.items() if k.startswith((\"og:\", \"twitter:\"))}\nreport[\"preview_tags_match_repository_index_html\"] = report[\"preview_tags\"] == {k: v for k, v in local.tags.items() if k.startswith((\"og:\", \"twitter:\"))}\nimage_url = parser.tags[\"og:image\"][\"content\"]\nassert image_url.startswith(URL)\nistatus, itype, image = fetch(image_url[len(URL):])\ncommitted = (repo / \"dist\" / \"social-preview.png\").read_bytes()\nreport[\"preview_image\"] = {\"url\": image_url, \"status\": istatus, \"content_type\": itype, \"bytes\": len(image),\n                           \"sha256\": hashlib.sha256(image).hexdigest(),\n                           \"dimensions\": list(struct.unpack(\">II\", image[16:24])) if image[:8] == b\"\\x89PNG\\r\\n\\x1a\\n\" else None,\n                           \"identical_to_repository_file\": image == committed}\nfor path in [\"test-worker.js\", \"docs/DESIGN.md\", \"credits.html\"]:\n    report[f\"status_{path}\"] = fetch(path)[0]\n_, _, config = fetch(\"runtime-config.json\")\nreport[\"runtime_config_testMode\"] = json.loads(config)[\"testMode\"]\n\ndownloads = Path(tempfile.mkdtemp(prefix=\"ol-showcase-dl-\"))\noptions = webdriver.ChromeOptions()\nfor flag in [\"--headless=new\", \"--window-size=1440,1000\", \"--no-first-run\", \"--no-default-browser-check\",\n             f\"--user-data-dir={tempfile.mkdtemp(prefix='ol-showcase-profile-')}\"]:\n    options.add_argument(flag)\noptions.set_capability(\"goog:loggingPrefs\", {\"browser\": \"ALL\"})\ndriver = webdriver.Chrome(options=options)\ntry:\n    driver.execute_cdp_cmd(\"Browser.setDownloadBehavior\", {\"behavior\": \"allow\", \"downloadPath\": str(downloads)})\n    report[\"browser_version\"] = driver.capabilities.get(\"browserVersion\")\n    state = lambda: driver.find_element(By.TAG_NAME, \"html\").get_attribute(\"data-state\")\n    rows = lambda: [[r.get_attribute(\"data-label\"), round(float(r.get_attribute(\"data-score\")), 3)] for r in driver.find_elements(By.CSS_SELECTOR, \".result-row\")]\n    start = time.perf_counter(); driver.get(URL)\n    WebDriverWait(driver, 180, 0.2).until(lambda d: state() in {\"ready\", \"error\"})\n    report[\"ready_seconds_including_model_download\"] = round(time.perf_counter() - start, 1)\n    report[\"state_after_load\"] = state()\n    start = time.perf_counter(); driver.find_element(By.ID, \"try-sample\").click()\n    WebDriverWait(driver, 120, 0.2).until(lambda d: state() in {\"complete\", \"empty\", \"error\"})\n    report[\"sample_seconds\"] = round(time.perf_counter() - start, 1)\n    report[\"predictions_at_0_50\"] = rows()\n    driver.execute_script(\"const e=document.getElementById('minimum-score');e.value='0.80';e.dispatchEvent(new Event('input',{bubbles:true}));\")\n    report[\"predictions_at_0_80\"] = rows()\n    driver.find_element(By.ID, \"save-result\").click()\n    files = WebDriverWait(driver, 30).until(lambda d: [p for p in downloads.glob(\"*.png\")] if not list(downloads.glob(\"*.crdownload\")) else [])\n    payload = files[0].read_bytes()\n    report[\"saved_png\"] = {\"name\": files[0].name, \"width\": struct.unpack(\">II\", payload[16:24])[0], \"height\": struct.unpack(\">II\", payload[16:24])[1]}\n    driver.execute_script(\"const e=document.getElementById('minimum-score');e.value='0.50';e.dispatchEvent(new Event('input',{bubbles:true}));\")\n    report[\"predictions_restored\"] = rows()\n    report[\"console_errors\"] = [e[\"message\"] for e in driver.get_log(\"browser\") if e[\"level\"] == \"SEVERE\"]\nfinally:\n    driver.quit()\nreport[\"passed\"] = (report[\"page_status\"] == 200 and report[\"state_after_load\"] == \"ready\"\n                    and report[\"preview_tags_match_repository_index_html\"]\n                    and report[\"preview_image\"][\"status\"] == 200 and report[\"preview_image\"][\"identical_to_repository_file\"]\n                    and report[\"status_test-worker.js\"] == 404 and report[\"status_docs/DESIGN.md\"] == 404\n                    and report[\"runtime_config_testMode\"] is False and report[\"saved_png\"][\"width\"] == 600\n                    and report[\"predictions_restored\"] == report[\"predictions_at_0_50\"])\nreport[\"limits\"] = [\"One visit from one Windows laptop in headless Chrome; not a load test, not a mobile or other-browser check.\",\n                    \"Ready time depends on the network and on GitHub Pages caching; it is one observation.\",\n                    \"Checks the tags and image LinkedIn reads; how LinkedIn renders the card is shown only by its Post Inspector.\"]\nreport[\"check_source\"] = Path(__file__).read_text(encoding=\"utf-8\")\nassert not out.exists()\nout.write_text(json.dumps(report, indent=2) + \"\\n\", encoding=\"utf-8\", newline=\"\\n\")\nprint(json.dumps({k: v for k, v in report.items() if k != \"check_source\"}, indent=1)[:3000])\n",
+  "package_check_source": "import hashlib, json, sys\nfrom datetime import datetime, timezone\nfrom pathlib import Path\nfrom urllib.error import HTTPError\nfrom urllib.request import Request, urlopen\nrepo = Path(sys.argv[1]); URL = \"https://lejie710.github.io/object-lens/\"\npackage = json.loads((repo / \"docs/evidence/v1-0-3-package.json\").read_text(encoding=\"utf-8\"))\nrows = []\nfor item in package[\"files\"]:\n    try:\n        with urlopen(Request(URL + item[\"path\"], headers={\"Cache-Control\": \"no-cache\"}), timeout=120) as r:\n            body = r.read(); status = r.status\n    except HTTPError as e:\n        body, status = b\"\", e.code\n    rows.append({\"path\": item[\"path\"], \"status\": status, \"bytes\": len(body),\n                 \"matches_package_record\": status == 200 and len(body) == item[\"bytes\"] and hashlib.sha256(body).hexdigest() == item[\"sha256\"]})\nresult = {\"checked_at_utc\": datetime.now(timezone.utc).isoformat(timespec=\"seconds\"),\n          \"package_record\": \"docs/evidence/v1-0-3-package.json\", \"package_content_id\": package[\"content_id\"],\n          \"files_checked\": len(rows), \"files_matching\": sum(r[\"matches_package_record\"] for r in rows),\n          \"mismatches\": [r for r in rows if not r[\"matches_package_record\"]]}\npath = repo / \"docs/evidence/showcase-check.json\"\nrecord = json.loads(path.read_text(encoding=\"utf-8\"))\nrecord[\"deployed_files_against_package_record\"] = result\nrecord[\"passed\"] = record[\"passed\"] and result[\"files_matching\"] == result[\"files_checked\"]\nsrc = record.pop(\"check_source\"); record[\"check_source\"] = src\nrecord[\"package_check_source\"] = Path(__file__).read_text(encoding=\"utf-8\")\npath.write_text(json.dumps(record, indent=2) + \"\\n\", encoding=\"utf-8\", newline=\"\\n\")\nprint(json.dumps(result, indent=1)); print(\"passed\", record[\"passed\"])\n"
 }

@@ -1,0 +1,77 @@
+{
+  "evidence_type": "live GitHub Pages showcase opened in a fresh headless Chrome profile; README try-it steps",
+  "url": "https://lejie710.github.io/object-lens/",
+  "checked_at_utc": "2026-11-06T01:19:13+00:00",
+  "passed": true,
+  "ready_seconds_including_model_download": 11.2,
+  "state_after_load": "ready",
+  "runtime_config_testMode": false,
+  "sample_seconds": 10.0,
+  "predictions_at_0_50": [
+    [
+      "spoon",
+      0.667
+    ],
+    [
+      "dining table",
+      0.991
+    ],
+    [
+      "cup",
+      0.998
+    ],
+    [
+      "spoon",
+      0.927
+    ]
+  ],
+  "predictions_at_0_80": [
+    [
+      "dining table",
+      0.991
+    ],
+    [
+      "cup",
+      0.998
+    ],
+    [
+      "spoon",
+      0.927
+    ]
+  ],
+  "saved_png": {
+    "name": "coffee-object-lens-min-0.80.png",
+    "width": 600,
+    "height": 400
+  },
+  "predictions_restored": [
+    [
+      "spoon",
+      0.667
+    ],
+    [
+      "dining table",
+      0.991
+    ],
+    [
+      "cup",
+      0.998
+    ],
+    [
+      "spoon",
+      0.927
+    ]
+  ],
+  "status_test-worker.js": 404,
+  "status_docs/DESIGN.md": 404,
+  "status_credits.html": 200,
+  "console_errors": [
+    "https://lejie710.github.io/object-lens/test-worker.js - Failed to load resource: the server responded with a status of 404 ()",
+    "https://lejie710.github.io/object-lens/docs/DESIGN.md - Failed to load resource: the server responded with a status of 404 ()"
+  ],
+  "note": "The two console errors are the deliberate 404 probes for test-worker.js and docs/DESIGN.md, which confirm those files are not published.",
+  "limits": [
+    "One visit from one Windows laptop in headless Chrome 156; not a load test, not a mobile or other-browser check.",
+    "Ready time depends on the network and on GitHub Pages caching; it is one observation."
+  ]
+}
