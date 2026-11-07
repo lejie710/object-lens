@@ -208,13 +208,18 @@ class _MetaTags(HTMLParser):
     def __init__(self):
         super().__init__()
         self.tags = {}
+        self.kinds = {}
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
-        key = attrs.get("property") or attrs.get("name")
-        if tag == "meta" and key:
-            assert key not in self.tags, f"Duplicate meta tag: {key}"
-            self.tags[key] = attrs.get("content")
+        if tag != "meta" or not ({"property", "name"} & set(attrs)):
+            return
+        assert not {"property", "name"} <= set(attrs), f"Meta tag with both property and name: {attrs}"
+        kind = "property" if "property" in attrs else "name"
+        key = attrs[kind]
+        assert key not in self.tags, f"Duplicate meta tag: {key}"
+        self.tags[key] = attrs.get("content")
+        self.kinds[key] = kind
 
 
 def test_link_preview_tags_point_to_the_packaged_image():
@@ -222,6 +227,10 @@ def test_link_preview_tags_point_to_the_packaged_image():
     parser = _MetaTags()
     parser.feed((ROOT / "dist" / "index.html").read_text(encoding="utf-8"))
     tags = parser.tags
+    # Open Graph is defined on the property attribute and Twitter cards on name.
+    for key, kind in parser.kinds.items():
+        expected = "property" if key.startswith("og:") else "name"
+        assert kind == expected, f"{key} must use the {expected} attribute"
     site = "https://lejie710.github.io/object-lens/"
     assert tags["og:url"] == site
     image_url = tags["og:image"]
@@ -238,7 +247,7 @@ def test_link_preview_tags_point_to_the_packaged_image():
     assert tags["og:image:type"] == "image/png" and payload[:8] == b"\x89PNG\r\n\x1a\n"
     width, height = struct.unpack(">II", payload[16:24])
     assert (width, height) == (int(tags["og:image:width"]), int(tags["og:image:height"])) == (1200, 630)
-    assert len(payload) < 5_000_000, "LinkedIn rejects preview images of 5 MB or more"
+    assert len(payload) < 5_000_000, "LinkedIn's sharing guidance allows at most 5 MB"
 
 
 @pytest.mark.inference
