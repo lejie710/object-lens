@@ -1,0 +1,72 @@
+{
+  "evidence_type": "Hosted CI failure: console, context, page state and file hashes from the run's test-failures artifact; test result, failure message and local server log lines from the job log as shown by GitHub",
+  "workflow": "tests (.github/workflows/ci.yml), job test, pull_request event for branch feat/link-preview, windows-latest runner",
+  "step": "Controlled test suite: python -m pytest -m \"not inference\"",
+  "result_as_shown_by_github": "1 failed, 99 passed, 4 deselected in 590.25s",
+  "failed_test": "tests/test_sample.py::test_nonresponding_sample_fetch_times_out_and_a_new_attempt_recovers",
+  "failure_message": "Timed out waiting for UI state 'ready' (timeout=10s). Observed state: 'error'. Displayed filename: 'No image selected'. UI error: Object detection could not start. Try again or reload the page.",
+  "local_server_log_lines_captured_by_pytest": [
+    "127.0.0.1 - - [07/Nov/2026 05:55:57] \"GET / HTTP/1.1\" 200 -",
+    "127.0.0.1 - - [07/Nov/2026 05:55:57] \"GET /style.css HTTP/1.1\" 200 -",
+    "127.0.0.1 - - [07/Nov/2026 05:55:57] \"GET /app.js HTTP/1.1\" 200 -",
+    "127.0.0.1 - - [07/Nov/2026 05:55:57] \"GET /png-export.js HTTP/1.1\" 200 -",
+    "127.0.0.1 - - [07/Nov/2026 05:55:57] \"GET /runtime-config.json HTTP/1.1\" 200 -"
+  ],
+  "server_log_note": "Python's http.server writes its request line only when it sends a response; a request that arrives and fails before a response leaves no request line. The lines are transcribed verbatim from a screenshot of the job log's captured stderr (lines 37 to 41).",
+  "observation": "The local server logged responses for the page, its style, script and configuration files, but none for the controlled worker script (/test-worker.js). Whether that request reached the server is not recorded.",
+  "artifact": {
+    "name": "test-failures.zip",
+    "zip_sha256": "845755910dfe51ba13072e458dc455604dc43124adfc15179fd28cb896051573",
+    "files": {
+      "browser.png": {
+        "bytes": 46623,
+        "sha256": "5fb676aea6c1ecafcf267fe37ce19a5c3ff76b321930a0464466715191c4ab72"
+      },
+      "console.json": {
+        "bytes": 190,
+        "sha256": "a4db9c4333f8eb70204b1786603da2328752b2fc15c1bf7095d62641a88a4cdb"
+      },
+      "context.json": {
+        "bytes": 223,
+        "sha256": "a25183d2f606b8f3a7e104995347bc03ed463da1cc39ccb7f72a8549f6abbade"
+      },
+      "page.html": {
+        "bytes": 7847,
+        "sha256": "d9b15374556861f606f1c7ad3adecf9b43fabb02bc57d949221926f11b80c69a"
+      }
+    }
+  },
+  "console": [
+    {
+      "level": "SEVERE",
+      "message": "http://127.0.0.1:51109/app.js 665:14 \"Object Lens worker:\" undefined",
+      "source": "console-api",
+      "timestamp": 1794030958340
+    }
+  ],
+  "context": {
+    "url": "http://127.0.0.1:51109/",
+    "title": "Object Lens",
+    "test": "tests/test_sample.py::test_nonresponding_sample_fetch_times_out_and_a_new_attempt_recovers",
+    "evidence_type": "controlled application test"
+  },
+  "page_state": "error",
+  "network_log": "Not captured: the browser fixture recorded only the console at the time of this run.",
+  "limits": "One hosted run. The network error code of the failed worker script request was not recorded, so the cause on the runner is not established.",
+  "sources": {
+    "test-failures artifact": [
+      "artifact",
+      "console",
+      "context",
+      "page_state"
+    ],
+    "job log": [
+      "result_as_shown_by_github",
+      "failed_test",
+      "failure_message",
+      "local_server_log_lines_captured_by_pytest"
+    ]
+  },
+  "source_commit": "Not recorded: the artifact and the copied job log lines do not name the commit the run tested.",
+  "run_time": "The console entry's timestamp (1794030958340 ms) is 2026-11-07 05:55:58 UTC, after commit 90672cc (05:46:25 UTC); the commit the run tested is not recorded."
+}
