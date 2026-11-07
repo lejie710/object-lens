@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.633" timestamp="2026-11-07T12:01:27.568114+08:00"><testcase classname="tests.test_helpers" name="test_helper_assertion_failure_names_the_failed_check" time="0.001"><failure message="AssertionError: assert 'is_displayed' in ''&#10; +  where '' = str(AssertionError())&#10; +    where AssertionError() = &lt;ExceptionInfo AssertionError() tblen=2&gt;.value">def test_helper_assertion_failure_names_the_failed_check():
+        # pytest only explains assertions in modules it rewrites. A helper failure must
+        # name its check: the deliberate-fault runner matches that text, and a bare
+        # AssertionError hides which invariant broke.
+        with pytest.raises(AssertionError) as failure:
+            helpers.assert_no_visible_image(_BrowserShowingAnImage())
+&gt;       assert "is_displayed" in str(failure.value)
+E       AssertionError: assert 'is_displayed' in ''
+E        +  where '' = str(AssertionError())
+E        +    where AssertionError() = &lt;ExceptionInfo AssertionError() tblen=2&gt;.value
+
+tests\test_helpers.py:25: AssertionError</failure></testcase></testsuite></testsuites>

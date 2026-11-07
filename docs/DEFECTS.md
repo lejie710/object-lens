@@ -2,7 +2,7 @@
 
 This document lists every confirmed defect in Object Lens, grouped by area. Each entry gives what failed, how it was detected, its impact, the cause in the system and the test that prevents it from returning. [VERIFICATION.md](VERIFICATION.md) holds the current results and source hashes.
 
-Several defects have a deliberate fault in [`tools/check_review_sensitivity.py`](../tools/check_review_sensitivity.py) that restores the defective behavior in a disposable copy; the named test must then fail. [v1-0-1-sensitivity.json](evidence/v1-0-1-sensitivity.json) records those outcomes (a passing clean control, 16 faults with 28 intended failures, and one equivalent fault that passes as expected), and [branch-review-sensitivity.json](evidence/history/branch-review-sensitivity.json) records 11 of those faults against an earlier commit.
+Several defects have a deliberate fault in [`tools/check_review_sensitivity.py`](../tools/check_review_sensitivity.py) that restores the defective behavior in a disposable copy; the named test must then fail. [v1-0-2-sensitivity.json](evidence/v1-0-2-sensitivity.json) records those outcomes (a passing clean control, 16 faults with 28 intended failures, and one equivalent fault that passes as expected), and [branch-review-sensitivity.json](evidence/history/branch-review-sensitivity.json) records 11 of those faults against an earlier commit.
 
 ## How defects were found
 
@@ -224,13 +224,21 @@ At that checkpoint, with the configuration, input-error, file-read, outside-chec
 - **Cause in the system:** the shared `app` fixture loaded the page once and waited with no diagnosis. A failed module request stops the page before any application code runs.
 - **Test that prevents it:** `tests/conftest.py` `app` fixture. It reloads the page once only when the browser log shows `net::ERR_NO_BUFFER_SPACE`, records a warning naming the loaded files and the error, and otherwise fails at once with the page state, the loaded files and the browser errors. No automated test exercises this rule; it was checked with a fake browser driver covering a ready page, the runner error, another error and a page that stays broken after the reload.
 
+### Shared helpers raised assertion errors with no message
+
+- **What failed:** in the deliberate-fault run, the `core-late-sample-defences-removed` fault made both of its intended tests fail, but the runner reported that the outcome did not match, because one failure's message was a bare `AssertionError`.
+- **How it was detected:** the sensitivity run for the link preview change ([link-preview-sensitivity-before-fix.json](evidence/history/link-preview-sensitivity-before-fix.json)). The `[clear]` case failed with a bare `AssertionError` and no other detail. The only assertions on that path without pytest's explanation are the three in `tests/helpers.py::assert_no_visible_image`, so one of its Clear checks failed (an image, a box or a result was still visible after Clear), the symptom the fault is meant to cause. Earlier runs had failed that case at the file name check instead (`'coffee.png' == 'No image selected'`), so the problem stayed hidden.
+- **Impact:** none on users. The planted fault was caught; the runner could not recognise one of its two intended symptoms, so whether the run passed depended on which symptom appeared first. Every assertion failing inside a shared helper also gave no detail in ordinary runs.
+- **Cause in the system:** pytest explains failed assertions only in test modules, `conftest.py` and modules registered for rewriting. When the assertions moved into `tests/helpers.py` (`0c7e890`), they lost their explanation, and the runner's expected reason `is_displayed` could no longer appear in the message. `tests/conftest.py` now registers `helpers` for rewriting before its first import.
+- **Test that prevents it:** `tests/test_helpers.py::test_helper_assertion_failure_names_the_failed_check`. Run against the `tests/conftest.py` of `e24155b`, before the change, it failed with an empty message ([helpers-test-before-fix.xml](evidence/history/helpers-test-before-fix.xml)). The sensitivity run for the corrected source passed ([v1-0-2-sensitivity.json](evidence/v1-0-2-sensitivity.json)); in that run the `[clear]` case failed at the file name check, so the unit test, not that run, shows the helper's message is now recognised.
+
 ### Real-model references hold only on the recording machine
 
 - **What failed:** a manual CI run of the real-model tests on a GitHub-hosted Windows runner failed `tests/test_inference.py::test_real_model_detects_reviewed_object[coffee.png-cup]` and `[chelsea.png-cat]`. The astronaut case and the static-package workflow passed.
 - **How it was detected:** the failure evidence that CI uploads held each page as it was. Every label matched, but the coffee spoon scored 0.710 instead of the recorded 0.667, the other spoon 0.945 instead of 0.927, and the cat box's right edge was at 0.9325 instead of 0.9412. The browser console had no errors.
 - **Impact:** none on users; the app showed the model's output correctly. The checks would fail on any machine whose model output differs this much, so they cannot run in CI.
 - **Cause in the system:** the references in `docs/evidence/model-observations.json` are earlier outputs of the same pinned model on the owner's laptop, compared within 0.01 for scores and 0.005 for box edges. A different machine produces slightly different numbers from the same model and image. Widening the tolerances would let the deliberate fault that scales every score by 0.95 pass for the cup (0.998 becomes 0.948), so the tolerances stay.
-- **Test that prevents it:** none. CI runs the 98 controlled tests only, and the real-model tests stay a local check on the recording machine. The real-model regression references are recorded outputs of the same pinned model on the owner's Windows laptop.
+- **Test that prevents it:** none. CI runs the 100 controlled tests only, and the real-model tests stay a local check on the recording machine. The real-model regression references are recorded outputs of the same pinned model on the owner's Windows laptop.
 
 ### Repository presentation errors
 

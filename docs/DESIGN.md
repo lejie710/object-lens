@@ -10,7 +10,7 @@ When someone tries a browser object detector on their own photos, switching imag
 
 Measure: a controlled test for each of those failures, every core rule the answer depends on caught when broken on purpose, and a model download throttled to 2.5 Mbps compared with a fixed loading deadline and with stall-based loading.
 
-Result: each failure has a controlled test, the suite has 102 tests, and every core rule made at least one test fail when it was broken on purpose ([Core rules broken on purpose](VERIFICATION.md#core-rules-broken-on-purpose)). At 2.5 Mbps, a fixed 120-second deadline failed at 121 s with 86% of the model received; the stall-based loading reached ready at 140.6 s ([slow-transfer-2-5-mbps.json](evidence/slow-transfer-2-5-mbps.json)).
+Result: each failure has a controlled test, the suite has 104 tests, and every core rule made at least one test fail when it was broken on purpose ([Core rules broken on purpose](VERIFICATION.md#core-rules-broken-on-purpose)). At 2.5 Mbps, a fixed 120-second deadline failed at 121 s with 86% of the model received; the stall-based loading reached ready at 140.6 s ([slow-transfer-2-5-mbps.json](evidence/slow-transfer-2-5-mbps.json)).
 
 Scope the answer holds for: Windows with Chrome, one image at a time, the pinned model (Transformers.js 2.17.2 with a quantized DETR model), synthetic test images and small public photos. Failure cases use a controlled test worker; four tests run the real model. The answer says nothing about how accurate the model is.
 
@@ -87,11 +87,11 @@ Test mix, with actual counts:
 
 | Layer | Why this layer, tied to the risks | Tests |
 | --- | --- | --- |
-| Unit (browser-free Python) | The public package must not ship test mode, private files or changed assets, must record git provenance only from its own repository, and the test harness must not leave browsers running; none needs a browser. 3 in `test_harness_cleanup.py`, 10 in `test_public_package.py` | 13 |
+| Unit (browser-free Python) | The public package must not ship test mode, private files or changed assets, must record git provenance only from its own repository, its link-preview tags must name a packaged image, the shared assertion helpers must say which check failed, and the test harness must not leave browsers running; none needs a browser. 3 in `test_harness_cleanup.py`, 11 in `test_public_package.py`, 1 in `test_helpers.py` | 15 |
 | Integration | A normal server must never serve the controlled test worker, otherwise a real user could see fabricated predictions presented as model results (`test_server.py`) | 1 |
 | Browser end-to-end with the controlled worker | Risks 1, 2, 3, 5, 6 and 7 need exact timing, stalls, crashes and malformed output on demand, which the real model cannot produce reproducibly. 25 in `test_ui.py`, 26 in `test_recovery.py`, 8 in `test_export.py`, 7 in `test_filter.py`, 7 in `test_sample.py`, 6 in `test_startup.py`, 5 in `test_loading.py` | 84 |
 | Real-model end-to-end | Risk 4 and the real inference path need the actual model; each run is slow, so there are few. 3 in `test_inference.py`, 1 in `test_public_package.py` | 4 |
-| Total | | 102 |
+| Total | | 104 |
 
 ## Decisions
 
@@ -109,7 +109,7 @@ Consequences: photos never leave the browser and no server-side inference exists
 
 Context: the risks that matter most are about timing, stalls, crashes and malformed output, which the real model cannot produce on demand.
 
-Option chosen: 98 tests run without the real model; 84 of them are browser tests that use a controlled test worker returning chosen predictions, delays and failures. 4 tests run the real model: three compare its output with the pinned model's own recorded output, and one runs the packaged site end to end.
+Option chosen: 100 tests run without the real model; 84 of them are browser tests that use a controlled test worker returning chosen predictions, delays and failures. 4 tests run the real model: three compare its output with the pinned model's own recorded output, and one runs the packaged site end to end.
 
 Alternatives weighed: testing everything against the real model, which would be slow and could not create most failure cases reproducibly.
 
@@ -221,7 +221,7 @@ Disposable-copy fault experiments deliberately remove visible result text, displ
 
 Late-reply tests prove that the late reply was actually delivered. The browser fixture installs a small worker trace that records which inference requests are still waiting for a reply. `tests/helpers.py::assert_for_late_response_window` holds the invariant (for example, "dog never appears") until the trace reports no outstanding reply from a live worker, then for a short further hold. A test that passed only because the late reply had not yet arrived therefore cannot pass. Tests that wait on a held encoder callback or a held sample response use a longer 1.4-second further hold, because their late event is not a worker reply, and tests that exercise a real 15-second deadline wait up to 30 seconds.
 
-Continuous integration runs on GitHub Actions (`.github/workflows/ci.yml`) for pushes to `main`, pull requests and manual runs, on a hosted Windows runner with Chrome. It restores and verifies the hash-pinned model and runtime assets and the committed sample photos, and runs the 98 controlled tests and the dependency audit. The 4 real-model tests run locally only, because their references hold only on the machine that recorded them ([DEFECTS.md](DEFECTS.md#real-model-references-hold-only-on-the-recording-machine)). When a run fails, it uploads `artifacts/test-failures` as a workflow artifact. Results of hosted runs are not recorded in this repository; the recorded results in [the verification record](VERIFICATION.md) come from local runs. Only Windows and Chrome are verified.
+Continuous integration runs on GitHub Actions (`.github/workflows/ci.yml`) for pushes to `main`, pull requests and manual runs, on a hosted Windows runner with Chrome. It restores and verifies the hash-pinned model and runtime assets and the committed sample photos, and runs the 100 controlled tests and the dependency audit. The 4 real-model tests run locally only, because their references hold only on the machine that recorded them ([DEFECTS.md](DEFECTS.md#real-model-references-hold-only-on-the-recording-machine)). When a run fails, it uploads `artifacts/test-failures` as a workflow artifact. Results of hosted runs are not recorded in this repository; the recorded results in [the verification record](VERIFICATION.md) come from local runs. Only Windows and Chrome are verified.
 
 Failures are investigated using reproduction steps, assertions, screenshots and browser logs. Initial loading and warm inference timing are recorded separately. No load, scalability, GPU or physical-hardware qualification is claimed.
 
