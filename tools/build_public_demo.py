@@ -18,7 +18,7 @@ from pathlib import Path, PurePosixPath
 ROOT = Path(__file__).resolve().parents[1]
 APP_FILES = (
     "index.html", "style.css", "app.js", "worker.js", "png-export.js",
-    "credits.html", "runtime-config.json",
+    "credits.html", "runtime-config.json", "social-preview.png",
 )
 ASSET_FILES = frozenset({
     "assets/runtime/transformers.min.js",
