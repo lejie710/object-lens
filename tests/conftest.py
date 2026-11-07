@@ -21,6 +21,10 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 
+# pytest explains failed assertions only in modules it rewrites. Register the shared
+# helpers before their first import, so their failures say which check broke.
+pytest.register_assert_rewrite("helpers")
+
 from helpers import WORKER_TRACE_SCRIPT
 from serve import AppHandler, make_server
 
