@@ -5,13 +5,105 @@ Helpers used by a single module stay in that module.
 from __future__ import annotations
 
 import base64
+import json
 import struct
 import time
+import warnings
 
 import pytest
 from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+
+
+# Two failures on a test runner are the machine, not the app, and earn one reload.
+# A Windows runner can briefly run out of socket buffer space, so a static file fails
+# to load before any application code runs.
+RUNNER_NETWORK_ERROR = "net::ERR_NO_BUFFER_SPACE"
+# A worker script whose request Chrome's network log reports as failed in transport. In a
+# local probe Chrome logged such a failure only as a canceled net::ERR_ABORTED, so the
+# runner's error code could not be seen (docs/evidence/history/worker-load-probe.json).
+# An HTTP error such as 404 or 503 is not a transport failure and never reloads.
+WORKER_SCRIPTS = frozenset({"worker.js", "test-worker.js"})
+
+
+def _page_ready(driver, timeout):
+    try:
+        WebDriverWait(driver, timeout).until(
+            lambda d: d.find_element(By.TAG_NAME, "html").get_attribute("data-state") == "ready"
+        )
+        return True
+    except TimeoutException:
+        return False
+
+
+def network_failures(driver):
+    """Requests that failed in transport, from Chrome's network log; reading drains it.
+
+    Request URLs are remembered across reads: a request can start before one read and
+    fail before the next.
+    """
+    urls = driver.__dict__.setdefault("_object_lens_request_urls", {})
+    failures = []
+    for entry in driver.get_log("performance"):
+        message = json.loads(entry["message"])["message"]
+        params = message.get("params", {})
+        if message.get("method") == "Network.requestWillBeSent":
+            urls[params.get("requestId")] = params.get("request", {}).get("url", "")
+        elif message.get("method") == "Network.loadingFailed":
+            request = params.get("requestId")
+            url = urls.get(request)
+            name = url.split("?", 1)[0].rsplit("/", 1)[-1] if url else f"<request {request}>"
+            failures.append({"file": name, "error": params.get("errorText", ""),
+                             "canceled": bool(params.get("canceled"))})
+    return failures
+
+
+def _read_logs(driver):
+    """Read both logs and keep a copy, so failure evidence still has what was read here."""
+    console, failures = driver.get_log("browser"), network_failures(driver)
+    kept = driver.__dict__.setdefault("_object_lens_kept_logs", {"console": [], "network": []})
+    kept["console"].extend(console)
+    kept["network"].extend(failures)
+    return console, failures
+
+
+def kept_logs(driver):
+    """Everything both logs have shown, including entries an earlier check already read."""
+    _read_logs(driver)
+    return driver.__dict__["_object_lens_kept_logs"]
+
+
+def _page_load_report(driver, console, failures):
+    loaded = driver.execute_script(
+        "return performance.getEntriesByType('resource').map((entry) => entry.name.split('/').pop());"
+    )
+    state = driver.find_element(By.TAG_NAME, "html").get_attribute("data-state")
+    errors = [entry.get("message", "") for entry in console if entry.get("level") == "SEVERE"]
+    return f"page state {state!r}; loaded files {loaded}; browser errors {errors}; failed requests {failures}"
+
+
+def _runner_failure(console, failures):
+    return (any(RUNNER_NETWORK_ERROR in entry.get("message", "") for entry in console)
+            or any(failure["error"] == RUNNER_NETWORK_ERROR or failure["file"] in WORKER_SCRIPTS
+                   for failure in failures))
+
+
+def open_ready_page(browser, url, timeout=10):
+    """Open the app and wait until it is ready; reload once only after a runner failure."""
+    browser.get(url)
+    if _page_ready(browser, timeout):
+        return browser
+    console, failures = _read_logs(browser)
+    report = _page_load_report(browser, console, failures)
+    if not _runner_failure(console, failures):
+        pytest.fail(f"The page did not become ready within {timeout} s: {report}")
+    warnings.warn(f"Reloaded the page once after a runner failure: {report}")
+    browser.get(url)
+    if not _page_ready(browser, timeout):
+        report = _page_load_report(browser, *_read_logs(browser))
+        pytest.fail(f"The page did not become ready after one reload: {report}")
+    return browser
 
 
 def upload(browser, path):

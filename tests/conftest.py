@@ -7,7 +7,6 @@ import os
 import re
 import struct
 import threading
-import warnings
 import zlib
 from datetime import datetime, timezone
 from functools import partial
@@ -17,15 +16,13 @@ from urllib.parse import urlsplit
 
 import pytest
 from selenium import webdriver
-from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import WebDriverWait
 
 # pytest explains failed assertions only in modules it rewrites. Register the shared
 # helpers before their first import, so their failures say which check broke.
 pytest.register_assert_rewrite("helpers")
 
-from helpers import WORKER_TRACE_SCRIPT
+from helpers import WORKER_TRACE_SCRIPT, kept_logs, open_ready_page
 from serve import AppHandler, make_server
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -93,7 +90,9 @@ def browser(request):
     # The application and model are local. Keep this isolated test browser from
     # resolving unrelated hosts or starting ambient network downloads.
     options.add_argument("--host-resolver-rules=MAP * ~NOTFOUND, EXCLUDE localhost, EXCLUDE 127.0.0.1")
-    options.set_capability("goog:loggingPrefs", {"browser": "ALL"})
+    # The performance log carries Chrome network events, so a failed request is named
+    # even when it is a worker script that the console never reports.
+    options.set_capability("goog:loggingPrefs", {"browser": "ALL", "performance": "ALL"})
     os.environ.setdefault("SE_CACHE_PATH", str(ROOT / ".local" / "selenium"))
     os.environ.setdefault("SE_AVOID_STATS", "true")
     driver = webdriver.Chrome(options=options)
@@ -116,8 +115,10 @@ def browser(request):
                 target.mkdir(parents=True, exist_ok=True)
                 driver.save_screenshot(str(target / "browser.png"))
                 (target / "page.html").write_text(driver.page_source, encoding="utf-8")
-                (target / "console.json").write_text(
-                    json.dumps(driver.get_log("browser"), indent=2), encoding="utf-8"
+                logs = kept_logs(driver)
+                (target / "console.json").write_text(json.dumps(logs["console"], indent=2), encoding="utf-8")
+                (target / "network-failures.json").write_text(
+                    json.dumps(logs["network"], indent=2), encoding="utf-8"
                 )
                 (target / "context.json").write_text(
                     json.dumps({"url": driver.current_url, "title": driver.title,
@@ -147,46 +148,9 @@ def pytest_runtest_makereport(item, call):
     setattr(item, f"rep_{report.when}", report)
 
 
-# A Windows runner can briefly run out of socket buffer space, so one static file
-# fails to load before any application code runs. That is the test machine, not the
-# app, and it is the only failure that earns one reload.
-RUNNER_NETWORK_ERROR = "net::ERR_NO_BUFFER_SPACE"
-
-
-def _page_ready(driver, timeout):
-    try:
-        WebDriverWait(driver, timeout).until(
-            lambda d: d.find_element("tag name", "html").get_attribute("data-state") == "ready"
-        )
-        return True
-    except TimeoutException:
-        return False
-
-
-def _page_load_report(driver, browser_log):
-    loaded = driver.execute_script(
-        "return performance.getEntriesByType('resource').map((entry) => entry.name.split('/').pop());"
-    )
-    state = driver.find_element("tag name", "html").get_attribute("data-state")
-    errors = [entry.get("message", "") for entry in browser_log if entry.get("level") == "SEVERE"]
-    return f"page state {state!r}; loaded files {loaded}; browser errors {errors}"
-
-
 @pytest.fixture
 def app(browser, controlled_url):
-    browser.get(controlled_url)
-    if _page_ready(browser, 10):
-        return browser
-    browser_log = browser.get_log("browser")
-    report = _page_load_report(browser, browser_log)
-    if not any(RUNNER_NETWORK_ERROR in entry.get("message", "") for entry in browser_log):
-        pytest.fail(f"The controlled page did not become ready within 10 s: {report}")
-    warnings.warn(f"Reloaded the controlled page once after a runner network error: {report}")
-    browser.get(controlled_url)
-    if not _page_ready(browser, 10):
-        report = _page_load_report(browser, browser.get_log("browser"))
-        pytest.fail(f"The controlled page did not become ready after one reload: {report}")
-    return browser
+    return open_ready_page(browser, controlled_url)
 
 
 @pytest.fixture
